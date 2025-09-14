@@ -1,44 +1,49 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useParams, useLocation } from 'react-router-dom';
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useParams, useLocation } from "react-router-dom";
 
 // Base API configuration
-const API_BASE_URL = 'http://localhost:3001';
+const API_BASE_URL = "http://localhost:3001";
 
 // Utility function to fetch page data
 export const fetchPageData = async (pageName) => {
   if (!pageName) {
-    throw new Error('Page name is required');
+    throw new Error("Page name is required");
   }
 
   // Add timestamp to prevent caching
   const timestamp = Date.now();
   const response = await fetch(`${API_BASE_URL}/${pageName}?_t=${timestamp}`);
-  
+
   if (!response.ok) {
-    throw new Error(`Failed to fetch ${pageName}: ${response.status} ${response.statusText}`);
+    throw new Error(
+      `Failed to fetch ${pageName}: ${response.status} ${response.statusText}`
+    );
   }
 
   const data = await response.json();
-  console.log(`🔥 Fresh data fetched for ${pageName}:`, data.hero?.title || 'No hero title');
+  console.log(
+    `🔥 Fresh data fetched for ${pageName}:`,
+    data.hero?.title || "No hero title"
+  );
   return data;
 };
 
 // Map route paths to JSON Server endpoints
 const routeToEndpointMap = {
-  '/': 'home',
-  '/home': 'home',
-  '/hr': 'hr',
-  '/hrsolution': 'hr',
-  '/payroll': 'payroll',
-  '/about': 'home', // About might use home data or separate endpoint
-  '/implementation': 'Implementation',
-  '/training': 'training',
-  '/netsuite-consulting': 'netsuite-consulting',
-  '/customization': 'customization',
-  '/integration': 'integration',
-  '/support': 'home', // Assuming support uses home data
-  '/industries/manufacturing': 'manufacturing',
-  '/industries/retail': 'retail',
+  "/": "home",
+  "/home": "home",
+  "/hr": "hr",
+  "/hrsolution": "hr",
+  "/payroll": "payroll",
+  "/about": "home", // About might use home data or separate endpoint
+  "/implementation": "Implementation",
+  "/training": "training",
+  "/netsuite-consulting": "netsuite-consulting",
+  "/customization": "customization",
+  "/integration": "integration",
+  "/support": "home", // Assuming support uses home data
+  "/industries/manufacturing": "manufacturing",
+  "/industries/retail": "retail",
   // Add more mappings as needed
 };
 
@@ -48,35 +53,42 @@ export const getEndpointFromRoute = (pathname) => {
   if (routeToEndpointMap[pathname.toLowerCase()]) {
     return routeToEndpointMap[pathname.toLowerCase()];
   }
-  
+
   // Try to extract from path
-  const segments = pathname.split('/').filter(Boolean);
+  const segments = pathname.split("/").filter(Boolean);
   if (segments.length > 0) {
     const lastSegment = segments[segments.length - 1];
     // Check if it matches any known endpoints
     const knownEndpoints = [
-      'home', 'hr', 'payroll', 'implementation', 'training', 
-      'netsuite-consulting', 'customization', 'integration',
-      'manufacturing', 'retail'
+      "home",
+      "hr",
+      "payroll",
+      "implementation",
+      "training",
+      "netsuite-consulting",
+      "customization",
+      "integration",
+      "manufacturing",
+      "retail",
     ];
-    
+
     if (knownEndpoints.includes(lastSegment.toLowerCase())) {
       return lastSegment.toLowerCase();
     }
   }
-  
+
   // Default fallback
-  return 'home';
+  return "home";
 };
 
 // Custom hook for fetching page data based on current route
 export const usePageData = (pageName = null, options = {}) => {
   const location = useLocation();
   const params = useParams();
-  
+
   // Determine the endpoint to use
   let endpoint = pageName;
-  
+
   if (!endpoint) {
     // Try to get from URL params first
     if (params.slug || params.pageId) {
@@ -86,7 +98,7 @@ export const usePageData = (pageName = null, options = {}) => {
       endpoint = getEndpointFromRoute(location.pathname);
     }
   }
-  
+
   const {
     enabled = true,
     staleTime = 5 * 60 * 1000, // 5 minutes
@@ -97,15 +109,15 @@ export const usePageData = (pageName = null, options = {}) => {
   } = options;
 
   return useQuery({
-    queryKey: ['pageData', endpoint, Date.now()], // Add timestamp to force fresh queries
+    queryKey: ["pageData", endpoint], // Remove timestamp to prevent infinite refetching
     queryFn: () => fetchPageData(endpoint),
     enabled: enabled && !!endpoint,
-    staleTime: 0, // Make data stale immediately for real-time updates
-    cacheTime: 0, // Don't cache at all for testing
+    staleTime,
+    cacheTime,
     refetchOnWindowFocus,
     refetchInterval,
     retry: 2,
-    retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000),
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
     ...restOptions,
   });
 };
@@ -114,10 +126,10 @@ export const usePageData = (pageName = null, options = {}) => {
 export const useDynamicPageData = (options = {}) => {
   const { slug } = useParams();
   const location = useLocation();
-  
+
   // Get endpoint from slug or location
   const endpoint = slug || getEndpointFromRoute(location.pathname);
-  
+
   return usePageData(endpoint, options);
 };
 
@@ -129,34 +141,34 @@ export const useSpecificPageData = (endpointName, options = {}) => {
 // Utility hook for prefetching page data
 export const usePrefetchPageData = () => {
   const queryClient = useQueryClient();
-  
+
   const prefetchPage = (pageName) => {
     queryClient.prefetchQuery({
-      queryKey: ['pageData', pageName],
+      queryKey: ["pageData", pageName],
       queryFn: () => fetchPageData(pageName),
       staleTime: 5 * 60 * 1000,
     });
   };
-  
+
   return { prefetchPage };
 };
 
 // Utility hook for invalidating and refetching data
 export const useRefreshPageData = () => {
   const queryClient = useQueryClient();
-  
+
   const refreshPage = (pageName) => {
     queryClient.invalidateQueries({
-      queryKey: ['pageData', pageName]
+      queryKey: ["pageData", pageName],
     });
   };
-  
+
   const refreshAllPages = () => {
     queryClient.invalidateQueries({
-      queryKey: ['pageData']
+      queryKey: ["pageData"],
     });
   };
-  
+
   return { refreshPage, refreshAllPages };
 };
 
@@ -174,12 +186,14 @@ export const PageDataLoader = ({ children, loading, error, data }) => {
       </div>
     );
   }
-  
+
   if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-red-600 mb-2">Error Loading Page</h2>
+          <h2 className="text-2xl font-bold text-red-600 mb-2">
+            Error Loading Page
+          </h2>
           <p className="text-gray-600">{error.message}</p>
           <button
             onClick={() => window.location.reload()}
@@ -191,7 +205,7 @@ export const PageDataLoader = ({ children, loading, error, data }) => {
       </div>
     );
   }
-  
+
   if (!data) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -199,6 +213,6 @@ export const PageDataLoader = ({ children, loading, error, data }) => {
       </div>
     );
   }
-  
+
   return children;
 };

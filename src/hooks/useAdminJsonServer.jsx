@@ -4,17 +4,17 @@ import { getCacheManager } from '../utils/cacheManager.js';
 
 const JSON_SERVER_BASE = 'http://localhost:3001';
 
-// Available endpoints mapping
+// Available endpoints mapping - now using unified /api/data endpoint
 const ENDPOINTS = {
   'customization.json': 'customization',
-  'homeData.json': 'home', 
+  'homeData.json': 'homeData', 
   'hr.json': 'hr',
   'Implementation.json': 'Implementation',
-  'integration-data.json': 'integration',
-  'manufacturing-data.json': 'manufacturing',
-  'netSuiteConsulting.json': 'netsuite-consulting',
+  'integration-data.json': 'integration-data',
+  'manufacturing-data.json': 'manufacturing-data',
+  'netSuiteConsulting.json': 'netSuiteConsulting',
   'payroll.json': 'payroll',
-  'retail-data.json': 'retail',
+  'retail-data.json': 'retail-data',
   'training.json': 'training'
 };
 
@@ -41,12 +41,14 @@ export const useAdminJsonData = (filename) => {
         throw new Error(`No endpoint found for file: ${filename}`);
       }
       
-      const response = await fetch(`${JSON_SERVER_BASE}/${endpoint}`);
+      const response = await fetch(`${JSON_SERVER_BASE}/api/data/${endpoint}`);
       if (!response.ok) {
         throw new Error(`Failed to fetch ${filename}: ${response.statusText}`);
       }
       
-      return response.json();
+      const result = await response.json();
+      // The server returns { filename, data, lastModified }, so extract the data
+      return result.data || result;
     },
     enabled: !!filename && !!endpoint,
     staleTime: 1000 * 60 * 5, // 5 minutes
@@ -75,13 +77,13 @@ export const useAdminSaveData = () => {
 
       console.log('Saving data to endpoint:', endpoint, 'with data:', data);
 
-      // Update the JSON Server endpoint
-      const response = await fetch(`${JSON_SERVER_BASE}/${endpoint}`, {
+      // Update using the new unified /api/data endpoint
+      const response = await fetch(`${JSON_SERVER_BASE}/api/data/${endpoint}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ data }),
       });
 
       if (!response.ok) {
@@ -93,13 +95,19 @@ export const useAdminSaveData = () => {
       const result = await response.json();
       console.log('Save response:', result);
 
-      // Small delay to ensure JSON Server has written the data
+      // Small delay to ensure file has been written
       await new Promise(resolve => setTimeout(resolve, 100));
 
       return result;
     },
     onSuccess: async (data, variables) => {
       console.log('Save successful, invalidating caches for:', variables.filename);
+      
+      // Show success notification
+      if (window.showUpdateNotification) {
+        const pageDisplayName = variables.filename.replace('.json', '').replace('-data', '').replace(/([A-Z])/g, ' $1').trim();
+        window.showUpdateNotification(`${pageDisplayName} page updated successfully!`, 'success');
+      }
       
       // Invalidate and refetch the specific file's data
       queryClient.invalidateQueries(['admin-data', variables.filename]);
@@ -134,6 +142,12 @@ export const useAdminSaveData = () => {
     },
     onError: (error, variables) => {
       console.error('Save failed for:', variables.filename, error);
+      
+      // Show error notification
+      if (window.showUpdateNotification) {
+        const pageDisplayName = variables.filename.replace('.json', '').replace('-data', '').replace(/([A-Z])/g, ' $1').trim();
+        window.showUpdateNotification(`Failed to save ${pageDisplayName}: ${error.message}`, 'error');
+      }
     },
   });
 };

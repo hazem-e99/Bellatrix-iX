@@ -1,6 +1,6 @@
 {
   "hero": {
-    "title": "Modern HR, Payroll & People Managementttttt",
+    "title": "Modern HR, Payroll & People Management",
     "subtitle": "Automate HR, empower employees, and stay compliant—on one secure platform designed for the future of work.",
     "bgVideo": "/Videos/hrVideo.mp4",
     "bgColor": "bg-gradient-to-br from-[#191970] via-black to-blue-700"
@@ -142,7 +142,8 @@
         "Custom report development",
         "Integration with 3rd party tools"
       ],
-      "ctaText": "Choose Professional"
+      "ctaText": "Choose Professional",
+      "isPopular": true
     },
     {
       "name": "Enterprise",
