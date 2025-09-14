@@ -11,46 +11,58 @@ import Manufacturing from "./pages/Industries/Manufacturing";
 import Retail from "./pages/Industries/Retail";
 import IndustryMain from "./components/industries/IndustryMain";
 import PayrollPage from "./pages/Payroll";
-import AdminDashboard from "./components/Admin/AdminDashboard";
-import AdminLayout from "./components/Admin/AdminLayout";
+
+// Modern Admin Components
+import AdminLayout from "./components/Layout/AdminLayout";
+import ModernDashboard from "./components/Dashboard/ModernDashboard";
+import PagesManagement from "./components/Pages/PagesManagement";
+import TemplatesManagement from "./components/Templates/TemplatesManagement";
+import SettingsManagement from "./components/Settings/SettingsManagement";
+import { NotificationProvider } from "./components/UI/Notifications";
 function App() {
   return (
-    <Routes>
-      {/* Public Routes */}
-      <Route path="/" element={<Layout />}>
-        <Route index element={<LandingPage />} />
-        <Route path="Home" element={<LandingPage />} />
-        <Route path="Implementation" element={<MainServices />} />
-        <Route path="Training" element={<MainServices />} />
-        <Route path="netsuite-consulting" element={<MainServices />} />
-        <Route path="customization" element={<MainServices />} />
-        <Route path="integration" element={<MainServices />} />
-        <Route path="Support" element={<MainServices />} />
-        <Route path="about" element={<About />} />
-        <Route path="HRSolution" element={<SolutionMain />} />
-        <Route path="/hr" element={<HRPage />} />
-        {/* <Route path="Payroll" element={<SolutionMain />} /> */}
-        <Route path="/Payroll" element={<PayrollPage />} />
-        <Route path="/industries/manufacturing" element={<Manufacturing />} />
-        <Route path="/industries/retail" element={<Retail />} />
+    <NotificationProvider>
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/" element={<Layout />}>
+          <Route index element={<LandingPage />} />
+          <Route path="Home" element={<LandingPage />} />
+          <Route path="Implementation" element={<MainServices />} />
+          <Route path="Training" element={<MainServices />} />
+          <Route path="netsuite-consulting" element={<MainServices />} />
+          <Route path="customization" element={<MainServices />} />
+          <Route path="integration" element={<MainServices />} />
+          <Route path="Support" element={<MainServices />} />
+          <Route path="about" element={<About />} />
+          <Route path="HRSolution" element={<SolutionMain />} />
+          <Route path="/hr" element={<HRPage />} />
+          {/* <Route path="Payroll" element={<SolutionMain />} /> */}
+          <Route path="/Payroll" element={<PayrollPage />} />
+          <Route path="/industries/manufacturing" element={<Manufacturing />} />
+          <Route path="/industries/retail" element={<Retail />} />
 
-        {/* 
-        <Route path="Support" element={<Support />} />
-        <Route path="industries/manufacturing" element={<IndustryMain />} />
-        <Route path="industries/retail" element={<IndustryMain />} />
-        Add more industry routes as needed, all handled by IndustryMain 
-        */}
-      </Route>
+          {/* 
+          <Route path="Support" element={<Support />} />
+          <Route path="industries/manufacturing" element={<IndustryMain />} />
+          <Route path="industries/retail" element={<IndustryMain />} />
+          Add more industry routes as needed, all handled by IndustryMain 
+          */}
+        </Route>
 
-      {/* Admin Routes */}
-      <Route path="/admin/*" element={<AdminLayout />}>
-        <Route index element={<AdminDashboard />} />
-        <Route path="pages" element={<AdminDashboard />} />
-        <Route path="pages/:pageId" element={<AdminDashboard />} />
-        <Route path="templates" element={<AdminDashboard />} />
-        <Route path="settings" element={<AdminDashboard />} />
-      </Route>
-    </Routes>
+        {/* Modern Admin Routes */}
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<ModernDashboard />} />
+          <Route path="pages" element={<PagesManagement />} />
+          <Route path="pages/:pageId" element={<PagesManagement />} />
+          <Route path="templates" element={<TemplatesManagement />} />
+          <Route path="templates/:templateId" element={<TemplatesManagement />} />
+          <Route path="settings" element={<SettingsManagement />} />
+          <Route path="analytics" element={<div className="p-8 text-center">Analytics Coming Soon</div>} />
+          <Route path="users" element={<div className="p-8 text-center">User Management Coming Soon</div>} />
+          <Route path="notifications" element={<div className="p-8 text-center">Notifications Coming Soon</div>} />
+        </Route>
+      </Routes>
+    </NotificationProvider>
   );
 }
 
