@@ -1,0 +1,1356 @@
+{
+  "info": {
+    "_postman_id": "a7b8c9d0-e29b-41d4-a716-556655440000",
+    "name": "Belletrix API Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Create Admin",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"adminuser\",\n  \"email\": \"admin@example.com\",\n  \"password\": \"securepassword123\",\n  \"phone\": \"+1234567890\",\n  \"isAdmin\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/create-admin",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "create-admin"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"securepassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Upload Image",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/upload-image",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "upload-image"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "profile"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Hero",
+      "item": [
+        {
+          "name": "Get Hero",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/landing/hero",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "landing", "hero"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Hero",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"slides\": [\n    {\n      \"title\": \"New Strategic Transformation\",\n      \"subtitle\": \"NetSuite Expertise\",\n      \"description\": \"Unlock your business potential with our solutions.\",\n      \"video\": \"/Videos/NewHeroVideo.mp4\",\n      \"cta\": \"Get Started\"\n    }\n  ],\n  \"stats\": [\n    { \"value\": \"250+\", \"label\": \"Projects Completed\" }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/landing/hero",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "landing", "hero"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Hero",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"slides\": [\n    {\n      \"title\": \"Updated Strategic Transformation\",\n      \"subtitle\": \"Enhanced NetSuite Expertise\",\n      \"description\": \"Updated solutions for your business.\",\n      \"video\": \"/Videos/UpdatedHeroVideo.mp4\",\n      \"cta\": \"Discover Now\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/landing/hero",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "landing", "hero"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Hero",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/landing/hero",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "landing", "hero"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Services",
+      "item": [
+        {
+          "name": "Get Services",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/landing/services",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "landing", "services"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Services",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"services\": [\n    {\n      \"title\": \"New Service\",\n      \"description\": \"A new service for your business.\",\n      \"icon\": \"StarOutlined\",\n      \"color\": \"#FF0000\",\n      \"details\": [\"Feature 1\", \"Feature 2\"],\n      \"stats\": \"90% success rate\"\n    }\n  ],\n  \"sectionHeader\": {\n    \"title\": \"New Services\",\n    \"subtitle\": \"Explore our new offerings\",\n    \"gradientText\": \"New Offerings\"\n  },\n  \"viewAllButton\": {\n    \"text\": \"View All New Services\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/landing/services",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "landing", "services"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Services",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"services\": [\n    {\n      \"title\": \"Updated Service\",\n      \"description\": \"Updated service description.\",\n      \"icon\": \"StarOutlined\",\n      \"color\": \"#FF0000\",\n      \"details\": [\"Updated Feature 1\", \"Updated Feature 2\"],\n      \"stats\": \"95% success rate\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/landing/services",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "landing", "services"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Services",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/landing/services",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "landing", "services"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Testimonials",
+      "item": [
+        {
+          "name": "Get Testimonials",
+          "request": {
+            "method": "GET",
+            "header": [],
+
+
+            "url": {
+              "raw": "{{baseUrl}}/api/landing/testimonials",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "landing", "testimonials"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Testimonials",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"testimonials\": [\n    {\n      \"id\": 6,\n      \"quote\": \"Amazing service! Highly recommend.\",\n      \"name\": \"Alice Brown\",\n      \"title\": \"CTO\",\n      \"avatar\": \"AB\",\n      \"rating\": 5,\n      \"results\": [\"Great support\", \"Fast delivery\"]\n    }\n  ],\n  \"sectionHeader\": {\n    \"title\": \"New Testimonials\",\n    \"subtitle\": \"What our new clients say\",\n    \"gradientText\": \"New Clients\"\n  },\n  \"ctaButton\": {\n    \"text\": \"Contact Us\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/landing/testimonials",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "landing", "testimonials"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Testimonials",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"testimonials\": [\n    {\n      \"id\": 6,\n      \"quote\": \"Updated amazing service! Highly recommend.\",\n      \"name\": \"Alice Brown\",\n      \"title\": \"CTO\",\n      \"avatar\": \"AB\",\n      \"rating\": 5,\n      \"results\": [\"Updated support\", \"Faster delivery\"]\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/landing/testimonials",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "landing", "testimonials"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Testimonials",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/landing/testimonials",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "landing", "testimonials"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Industries",
+      "item": [
+        {
+          "name": "Get Industries",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/landing/industries",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "landing", "industries"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Industries",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"industries\": [\n    {\n      \"id\": \"healthcare\",\n      \"label\": \"Healthcare\",\n      \"icon\": \"HealthAndSafety\",\n      \"content\": {\n        \"title\": \"Healthcare Solutions\",\n        \"description\": \"Optimize healthcare operations with NetSuite.\",\n        \"features\": [\"Patient management\", \"Billing automation\"],\n        \"image\": \"https://images.unsplash.com/photo-1516321310762-97b900d9b0a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80\"\n      }\n    }\n  ],\n  \"sectionHeader\": {\n    \"chipLabel\": \"NEW INDUSTRY\",\n    \"title\": \"New Industry Solutions\",\n    \"highlightedWord\": \"New\",\n    \"description\": \"Tailored solutions for new industries.\"\n  },\n  \"styles\": {\n    \"blueGradient\": \"linear-gradient(135deg, #2563eb 0%, #60a5fa 100%)\",\n    \"glassBg\": \"rgba(255,255,255,0.7)\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/landing/industries",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "landing", "industries"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Industries",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"industries\": [\n    {\n      \"id\": \"healthcare\",\n      \"label\": \"Healthcare\",\n      \"icon\": \"HealthAndSafety\",\n      \"content\": {\n        \"title\": \"Updated Healthcare Solutions\",\n        \"description\": \"Enhanced healthcare operations with NetSuite.\",\n        \"features\": [\"Updated patient management\", \"Advanced billing\"],\n        \"image\": \"https://images.unsplash.com/photo-1516321310762-97b900d9b0a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80\"\n      }\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/landing/industries",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "landing", "industries"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Industries",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/landing/industries",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "landing", "industries"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Implementation Hero Section",
+      "item": [
+        {
+          "name": "Get Implementation Hero Section",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/implementation/hero",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "implementation", "hero"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Implementation Hero Section",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "media", "type": "file", "src": [] },
+                { "key": "titleParts", "type": "text", "value": "[\"Where\", \"Vision\", \"Meets\", \"Reality\"]" },
+                { "key": "description", "type": "text", "value": "We don't just implement solutions—we craft digital experiences that transform the way you do business" },
+                { "key": "ctaButton", "type": "text", "value": "{\"text\":\"Start Implementation\",\"icon\":\"M13 7l5 5m0 0l-5 5m5-5H6\"}" }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/implementation/hero",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "implementation", "hero"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Implementation Hero Section",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "media", "type": "file", "src": [] },
+                { "key": "titleParts", "type": "text", "value": "[\"Where\", \"Vision\", \"Meets\", \"Success\"]" },
+                { "key": "description", "type": "text", "value": "Updated digital experiences for your business transformation." },
+                { "key": "ctaButton", "type": "text", "value": "{\"text\":\"Begin Now\",\"icon\":\"M13 7l5 5m0 0l-5 5m5-5H6\"}" }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/implementation/hero",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "implementation", "hero"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Implementation Hero Section",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/implementation/hero",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "implementation", "hero"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Process Section",
+      "item": [
+        {
+          "name": "Get Process Section",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/process-section",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "process-section"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Process Section",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Our Implementation Process\",\n  \"subtitle\": \"A proven methodology for seamless business transformation\",\n  \"image\": \"/Videos/implementation/implementProcess.jpg\",\n  \"steps\": [\n    {\n      \"number\": 1,\n      \"title\": \"Analysis & Planning\",\n      \"description\": \"System analysis and strategic roadmap creation\",\n      \"icon\": \"M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z\"\n    }\n  ],\n  \"ctaButton\": \"Start Your Journey\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/process-section",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "process-section"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Process Section",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Implementation Process\",\n  \"subtitle\": \"Enhanced methodology for business transformation\",\n  \"image\": \"/Videos/implementation/updatedProcess.jpg\",\n  \"steps\": [\n    {\n      \"number\": 1,\n      \"title\": \"Updated Analysis & Planning\",\n      \"description\": \"Enhanced system analysis and roadmap creation\",\n      \"icon\": \"M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z\"\n    }\n  ],\n  \"ctaButton\": \"Begin Now\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/process-section",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "process-section"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Process Section",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/process-section",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "process-section"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Why Choose Section",
+      "item": [
+        {
+          "name": "Get Why Choose Section",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/why-choose-section",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "why-choose-section"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Why Choose Section",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Why Choose Bellatrix for Implementation?\",\n  \"subtitle\": \"We bring years of expertise, proven methodologies, and cutting-edge solutions to ensure your implementation success\",\n  \"image\": \"/Videos/implementation/whyChoese.jpg\",\n  \"features\": [\n    {\n      \"number\": \"01\",\n      \"title\": \"Proven Expertise\",\n      \"description\": \"500+ successful implementations across industries\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/why-choose-section",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "why-choose-section"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Why Choose Section",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Why Choose Bellatrix?\",\n  \"subtitle\": \"Enhanced expertise and methodologies for success\",\n  \"image\": \"/Videos/implementation/updatedWhyChoose.jpg\",\n  \"features\": [\n    {\n      \"number\": \"01\",\n      \"title\": \"Updated Expertise\",\n      \"description\": \"600+ successful implementations across industries\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/why-choose-section",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "why-choose-section"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Why Choose Section",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/why-choose-section",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "why-choose-section"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Pricing Section",
+      "item": [
+        {
+          "name": "Get Pricing Section",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/pricing-section",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pricing-section"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Pricing Section",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Implementation Pricing\",\n  \"subtitle\": \"Choose the perfect implementation plan that fits your business needs and budget\",\n  \"plans\": [\n    {\n      \"name\": \"Basic\",\n      \"description\": \"Perfect for small businesses\",\n      \"price\": \"$2,500\",\n      \"priceNote\": \"starting from\",\n      \"features\": [\"Basic system analysis\", \"Standard implementation\", \"Basic testing & QA\", \"30 days support\", \"Email support\"],\n      \"ctaText\": \"Get Started\"\n    }\n  ],\n  \"additionalInfo\": {\n    \"note\": \"All plans include free consultation and project scoping\",\n    \"contactText\": \"Need a custom solution? Contact our team for personalized pricing\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/pricing-section",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pricing-section"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Pricing Section",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Implementation Pricing\",\n  \"subtitle\": \"Updated plans for your business needs\",\n  \"plans\": [\n    {\n      \"name\": \"Basic\",\n      \"description\": \"Updated for small businesses\",\n      \"price\": \"$3,000\",\n      \"priceNote\": \"starting from\",\n      \"features\": [\"Updated system analysis\", \"Standard implementation\", \"Basic testing & QA\", \"45 days support\", \"Email support\"],\n      \"ctaText\": \"Begin Now\"\n    }\n  ],\n  \"additionalInfo\": {\n    \"note\": \"Updated plans include free consultation\",\n    \"contactText\": \"Contact for custom pricing\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/pricing-section",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pricing-section"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Pricing Section",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pricing-section",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pricing-section"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "CTA Section",
+      "item": [
+        {
+          "name": "Get CTA Section",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/cta-section",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cta-section"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create CTA Section",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Ready for a Seamless NetSuite Implementation?\",\n  \"subtitle\": \"Transform your business operations with our expert NetSuite implementation services.\",\n  \"ctaButton\": \"Get Started Today\",\n  \"features\": [\n    {\n      \"title\": \"Quick Response\",\n      \"description\": \"Get a detailed proposal within 24 hours\",\n      \"icon\": \"M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/cta-section",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cta-section"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update CTA Section",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated NetSuite Implementation Call\",\n  \"subtitle\": \"Enhanced services for business transformation.\",\n  \"ctaButton\": \"Begin Now\",\n  \"features\": [\n    {\n      \"title\": \"Updated Response\",\n      \"description\": \"Get a proposal within 12 hours\",\n      \"icon\": \"M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/cta-section",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cta-section"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete CTA Section",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/cta-section",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cta-section"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Modal Content",
+      "item": [
+        {
+          "name": "Get Modal Content",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/modal-content",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "modal-content"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Modal Content",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Contact Us\",\n  \"subtitle\": \"Let's discuss your project\",\n  \"formFields\": {\n    \"contactInfo\": {\n      \"title\": \"Contact Information\",\n      \"fields\": [\n        {\n          \"label\": \"Full Name *\",\n          \"type\": \"text\",\n          \"placeholder\": \"John Doe\",\n          \"required\": true\n        },\n        {\n          \"label\": \"Email Address *\",\n          \"type\": \"email\",\n          \"placeholder\": \"john@company.com\",\n          \"required\": true\n        }\n      ]\n    },\n    \"companyInfo\": {\n      \"title\": \"Company Details\",\n      \"fields\": [\n        {\n          \"label\": \"Company Name\",\n          \"type\": \"text\",\n          \"placeholder\": \"Your Company Inc.\"\n        }\n      ]\n    },\n    \"message\": {\n      \"label\": \"Message\",\n      \"placeholder\": \"Tell us about your project requirements...\"\n    },\n    \"submitNote\": \"✓ 24hr response\",\n    \"submitText\": \"Send Message\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/modal-content",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "modal-content"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Modal Content",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Contact Us\",\n  \"subtitle\": \"Discuss your updated project\",\n  \"formFields\": {\n    \"contactInfo\": {\n      \"title\": \"Updated Contact Information\",\n      \"fields\": [\n        {\n          \"label\": \"Full Name *\",\n          \"type\": \"text\",\n          \"placeholder\": \"Jane Doe\",\n          \"required\": true\n        },\n        {\n          \"label\": \"Email Address *\",\n          \"type\": \"email\",\n          \"placeholder\": \"jane@company.com\",\n          \"required\": true\n        }\n      ]\n    },\n    \"companyInfo\": {\n      \"title\": \"Updated Company Details\",\n      \"fields\": [\n        {\n          \"label\": \"Company Name\",\n          \"type\": \"text\",\n          \"placeholder\": \"Your Updated Company Inc.\"\n        }\n      ]\n    },\n    \"message\": {\n      \"label\": \"Message\",\n      \"placeholder\": \"Tell us about your updated project requirements...\"\n    },\n    \"submitNote\": \"✓ 12hr response\",\n    \"submitText\": \"Send Updated Message\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/modal-content",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "modal-content"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Modal Content",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/modal-content",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "modal-content"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Training",
+      "item": [
+        {
+          "name": "Get Training",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/training",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "training"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Training",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{ /* training JSON here */ }" },
+            "url": {
+              "raw": "{{baseUrl}}/api/training",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "training"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Training",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{ /* training JSON here */ }" },
+            "url": {
+              "raw": "{{baseUrl}}/api/training",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "training"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Training",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/training",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "training"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "About",
+      "item": [
+        {
+          "name": "Get About",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/about",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "about"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create About",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"hero\": {\n    \"title\": \"About Bellatrix\",\n    \"subtitle\": \"Empowering businesses...\",\n    \"buttonText\": \"Discover Our Story\",\n    \"backgroundVideo\": \"/public/Videos/about-hero.mp4\"\n  },\n  ...\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/about",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "about"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update About",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"hero\": {\n    \"title\": \"Updated About Title\"\n  },\n  ...\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/about",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "about"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete About",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/about",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "about"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Integration",
+      "item": [
+        {
+          "name": "Get Integration",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/integration",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "integration"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Integration",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"heroContent\": {\n    \"title\": \"NetSuite Integration Solutions\",\n    ...\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/integration",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "integration"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Integration",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"heroContent\": {\n    \"title\": \"Updated Integration Title\"\n  },\n  ...\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/integration",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "integration"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Integration",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/integration",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "integration"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Consulting",
+      "item": [
+        {
+          "name": "Get Consulting",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/consulting",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "consulting"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Consulting",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "media", "type": "file", "src": [] },
+                { "key": "hero", "type": "text", "value": "{\"title\":\"Consulting Hero\",\"subtitle\":\"Subtitle\",\"backgroundImage\":\"/uploads/example.jpg\"}" }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/consulting",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "consulting"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Consulting",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "media", "type": "file", "src": [] },
+                { "key": "hero", "type": "text", "value": "{\"title\":\"Updated Consulting Hero\",\"subtitle\":\"Updated Subtitle\",\"backgroundImage\":\"/uploads/example.jpg\"}" }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/consulting",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "consulting"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Consulting",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/consulting",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "consulting"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Payroll",
+      "item": [
+        {
+          "name": "Get Payroll",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/payroll",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "payroll"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Payroll",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "media", "type": "file", "src": [] },
+                { "key": "hero", "type": "text", "value": "{\"title\":\"Payroll Hero\",\"subtitle\":\"Subtitle\",\"backgroundImage\":\"/uploads/example.jpg\"}" }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/payroll",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "payroll"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Payroll",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "media", "type": "file", "src": [] },
+                { "key": "hero", "type": "text", "value": "{\"title\":\"Updated Payroll Hero\",\"subtitle\":\"Updated Subtitle\",\"backgroundImage\":\"/uploads/example.jpg\"}" }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/payroll",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "payroll"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Payroll",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/payroll",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "payroll"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5005"
+    },
+    {
+      "key": "jwtToken",
+      "value": ""
+    }
+  ]
+}

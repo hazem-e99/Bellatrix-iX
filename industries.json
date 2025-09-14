@@ -1,0 +1,621 @@
+{
+    "info": {
+        "name": "Industries API",
+        "description": "Complete API collection for Industries management with file upload support",
+        "version": "1.0.0",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "variable": [
+        {
+            "key": "baseUrl",
+            "value": "http://localhost:5005/api",
+            "type": "string"
+        },
+        {
+            "key": "industryId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "industrySlug",
+            "value": "retail-excellence",
+            "type": "string"
+        }
+    ],
+    "item": [
+        {
+            "name": "GET All Industries",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test('Status code is 200', function () {",
+                            "    pm.response.to.have.status(200);",
+                            "});",
+                            "",
+                            "pm.test('Response has success true', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.success).to.be.true;",
+                            "});",
+                            "",
+                            "pm.test('Response has data array', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.data).to.be.an('array');",
+                            "});",
+                            "",
+                            "pm.test('Response has pagination', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.pagination).to.be.an('object');",
+                            "});",
+                            "",
+                            "// Store first industry ID for other requests",
+                            "if (pm.response.json().data.length > 0) {",
+                            "    pm.collectionVariables.set('industryId', pm.response.json().data[0]._id);",
+                            "}"
+                        ]
+                    }
+                }
+            ],
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "{{baseUrl}}/industries?page=1&limit=10&isActive=true",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "industries"
+                    ],
+                    "query": [
+                        {
+                            "key": "page",
+                            "value": "1",
+                            "description": "Page number for pagination"
+                        },
+                        {
+                            "key": "limit",
+                            "value": "10",
+                            "description": "Number of items per page"
+                        },
+                        {
+                            "key": "isActive",
+                            "value": "true",
+                            "description": "Filter by active status"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "GET Industry by Slug",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test('Status code is 200', function () {",
+                            "    pm.response.to.have.status(200);",
+                            "});",
+                            "",
+                            "pm.test('Response has success true', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.success).to.be.true;",
+                            "});",
+                            "",
+                            "pm.test('Response has industry data', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.data).to.be.an('object');",
+                            "    pm.expect(jsonData.data.slug).to.equal(pm.collectionVariables.get('industrySlug'));",
+                            "});"
+                        ]
+                    }
+                }
+            ],
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "{{baseUrl}}/industries/slug/{{industrySlug}}",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "industries",
+                        "slug",
+                        "{{industrySlug}}"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "GET Industry by ID",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test('Status code is 200', function () {",
+                            "    pm.response.to.have.status(200);",
+                            "});",
+                            "",
+                            "pm.test('Response has success true', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.success).to.be.true;",
+                            "});",
+                            "",
+                            "pm.test('Response has industry data', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.data).to.be.an('object');",
+                            "    pm.expect(jsonData.data._id).to.equal(pm.collectionVariables.get('industryId'));",
+                            "});"
+                        ]
+                    }
+                }
+            ],
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "{{baseUrl}}/industries/{{industryId}}",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "industries",
+                        "{{industryId}}"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "CREATE Industry (Basic)",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test('Status code is 201', function () {",
+                            "    pm.response.to.have.status(201);",
+                            "});",
+                            "",
+                            "pm.test('Response has success true', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.success).to.be.true;",
+                            "});",
+                            "",
+                            "pm.test('Response has industry data', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.data).to.be.an('object');",
+                            "    pm.expect(jsonData.data.name).to.be.a('string');",
+                            "});",
+                            "",
+                            "// Store created industry ID",
+                            "pm.collectionVariables.set('createdIndustryId', pm.response.json().data._id);"
+                        ]
+                    }
+                }
+            ],
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"name\": \"Healthcare Solutions\",\n  \"slug\": \"healthcare-solutions\",\n  \"description\": \"Comprehensive healthcare management solutions for modern medical facilities\",\n  \"hero\": {\n    \"title\": \"Healthcare Excellence\",\n    \"subtitle\": \"Powered by Innovation\",\n    \"description\": \"Transform your healthcare operations with integrated solutions\",\n    \"show\": true,\n    \"buttons\": [\n      {\n        \"text\": \"Get Demo\",\n        \"variant\": \"primary\",\n        \"action\": \"openModal\",\n        \"show\": true\n      }\n    ]\n  },\n  \"stats\": {\n    \"title\": \"Healthcare Impact\",\n    \"subtitle\": \"Proven results in healthcare\",\n    \"items\": [\n      {\n        \"value\": \"200+\",\n        \"label\": \"Healthcare Clients\",\n        \"description\": \"Successful implementations\",\n        \"show\": true\n      }\n    ],\n    \"show\": true\n  },\n  \"cta\": {\n    \"title\": \"Ready to Transform Healthcare?\",\n    \"description\": \"Get started today\",\n    \"buttonText\": \"Schedule Demo\",\n    \"show\": true\n  },\n  \"contactModal\": {\n    \"title\": \"Schedule Demo\",\n    \"subtitle\": \"Let's discuss your needs\",\n    \"show\": true\n  }\n}"
+                },
+                "url": {
+                    "raw": "{{baseUrl}}/industries",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "industries"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "CREATE Industry with Files",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test('Status code is 201', function () {",
+                            "    pm.response.to.have.status(201);",
+                            "});",
+                            "",
+                            "pm.test('Response has success true', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.success).to.be.true;",
+                            "});",
+                            "",
+                            "pm.test('Files uploaded successfully', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    // Check if hero background image was uploaded",
+                            "    if (jsonData.data.hero && jsonData.data.hero.backgroundImage) {",
+                            "        pm.expect(jsonData.data.hero.backgroundImage).to.include('uploads');",
+                            "    }",
+                            "});"
+                        ]
+                    }
+                }
+            ],
+            "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                    "mode": "formdata",
+                    "formdata": [
+                        {
+                            "key": "name",
+                            "value": "Manufacturing Excellence",
+                            "type": "text"
+                        },
+                        {
+                            "key": "slug",
+                            "value": "manufacturing-excellence",
+                            "type": "text"
+                        },
+                        {
+                            "key": "description",
+                            "value": "Advanced manufacturing solutions for Industry 4.0",
+                            "type": "text"
+                        },
+                        {
+                            "key": "hero",
+                            "value": "{\"title\":\"Manufacturing Excellence\",\"subtitle\":\"Industry 4.0 Solutions\",\"description\":\"Transform your manufacturing operations\",\"show\":true,\"buttons\":[{\"text\":\"Get Started\",\"variant\":\"primary\",\"action\":\"openModal\",\"show\":true}]}",
+                            "type": "text"
+                        },
+                        {
+                            "key": "cta",
+                            "value": "{\"title\":\"Ready to Modernize?\",\"description\":\"Start your digital transformation\",\"buttonText\":\"Schedule Consultation\",\"show\":true}",
+                            "type": "text"
+                        },
+                        {
+                            "key": "contactModal",
+                            "value": "{\"title\":\"Schedule Consultation\",\"subtitle\":\"Discuss your manufacturing needs\",\"show\":true}",
+                            "type": "text"
+                        },
+                        {
+                            "key": "heroBackgroundImage",
+                            "type": "file",
+                            "src": "/path/to/hero-image.jpg",
+                            "disabled": true
+                        },
+                        {
+                            "key": "challengeImages",
+                            "type": "file",
+                            "src": "/path/to/challenge1.jpg",
+                            "disabled": true
+                        },
+                        {
+                            "key": "solutionImages",
+                            "type": "file",
+                            "src": "/path/to/solution1.jpg",
+                            "disabled": true
+                        }
+                    ]
+                },
+                "url": {
+                    "raw": "{{baseUrl}}/industries",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "industries"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "UPDATE Industry (PATCH)",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test('Status code is 200', function () {",
+                            "    pm.response.to.have.status(200);",
+                            "});",
+                            "",
+                            "pm.test('Response has success true', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.success).to.be.true;",
+                            "});",
+                            "",
+                            "pm.test('Industry updated successfully', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.message).to.include('updated successfully');",
+                            "});"
+                        ]
+                    }
+                }
+            ],
+            "request": {
+                "method": "PATCH",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"description\": \"Updated description for healthcare solutions with latest features\",\n  \"hero\": {\n    \"title\": \"Healthcare Excellence Updated\",\n    \"subtitle\": \"Advanced Medical Solutions\",\n    \"description\": \"Updated transform your healthcare operations with integrated solutions\",\n    \"show\": true\n  }\n}"
+                },
+                "url": {
+                    "raw": "{{baseUrl}}/industries/{{createdIndustryId}}",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "industries",
+                        "{{createdIndustryId}}"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "UPDATE Industry with Files (PATCH)",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test('Status code is 200', function () {",
+                            "    pm.response.to.have.status(200);",
+                            "});",
+                            "",
+                            "pm.test('Response has success true', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.success).to.be.true;",
+                            "});"
+                        ]
+                    }
+                }
+            ],
+            "request": {
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                    "mode": "formdata",
+                    "formdata": [
+                        {
+                            "key": "description",
+                            "value": "Updated manufacturing solutions with new file uploads",
+                            "type": "text"
+                        },
+                        {
+                            "key": "hero",
+                            "value": "{\"title\":\"Updated Manufacturing Excellence\",\"subtitle\":\"Next-Gen Industry 4.0\",\"description\":\"Revolutionary manufacturing transformation\",\"show\":true}",
+                            "type": "text"
+                        },
+                        {
+                            "key": "heroBackgroundImage",
+                            "type": "file",
+                            "src": "/path/to/updated-hero.jpg",
+                            "disabled": true
+                        }
+                    ]
+                },
+                "url": {
+                    "raw": "{{baseUrl}}/industries/{{createdIndustryId}}",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "industries",
+                        "{{createdIndustryId}}"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "TOGGLE Industry Status",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test('Status code is 200', function () {",
+                            "    pm.response.to.have.status(200);",
+                            "});",
+                            "",
+                            "pm.test('Response has success true', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.success).to.be.true;",
+                            "});",
+                            "",
+                            "pm.test('Status toggled successfully', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.message).to.include('activated').or.include('deactivated');",
+                            "});"
+                        ]
+                    }
+                }
+            ],
+            "request": {
+                "method": "PATCH",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "{{baseUrl}}/industries/{{createdIndustryId}}/toggle-status",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "industries",
+                        "{{createdIndustryId}}",
+                        "toggle-status"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "DELETE Industry",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test('Status code is 200', function () {",
+                            "    pm.response.to.have.status(200);",
+                            "});",
+                            "",
+                            "pm.test('Response has success true', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.success).to.be.true;",
+                            "});",
+                            "",
+                            "pm.test('Industry deleted successfully', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.message).to.include('deleted successfully');",
+                            "});"
+                        ]
+                    }
+                }
+            ],
+            "request": {
+                "method": "DELETE",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "{{baseUrl}}/industries/{{createdIndustryId}}",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "industries",
+                        "{{createdIndustryId}}"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Error Cases",
+            "item": [
+                {
+                    "name": "GET Non-existent Industry",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "pm.test('Status code is 404', function () {",
+                                    "    pm.response.to.have.status(404);",
+                                    "});",
+                                    "",
+                                    "pm.test('Response has success false', function () {",
+                                    "    const jsonData = pm.response.json();",
+                                    "    pm.expect(jsonData.success).to.be.false;",
+                                    "});",
+                                    "",
+                                    "pm.test('Error message is appropriate', function () {",
+                                    "    const jsonData = pm.response.json();",
+                                    "    pm.expect(jsonData.message).to.include('not found');",
+                                    "});"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/industries/nonexistent-slug",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "industries",
+                                "nonexistent-slug"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "CREATE Industry with Invalid Data",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "pm.test('Status code is 400', function () {",
+                                    "    pm.response.to.have.status(400);",
+                                    "});",
+                                    "",
+                                    "pm.test('Response has success false', function () {",
+                                    "    const jsonData = pm.response.json();",
+                                    "    pm.expect(jsonData.success).to.be.false;",
+                                    "});",
+                                    "",
+                                    "pm.test('Error message exists', function () {",
+                                    "    const jsonData = pm.response.json();",
+                                    "    pm.expect(jsonData.error).to.be.a('string');",
+                                    "});"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"description\": \"Missing required name field\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/industries",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "industries"
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

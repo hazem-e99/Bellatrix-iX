@@ -1,0 +1,2098 @@
+{
+  "customization": {
+    "hero": {
+      "title": "NetSuite Customization & Development",
+      "subtitle": "Tailor NetSuite to fit your unique business processes and requirements"
+    },
+    "services": {
+      "title": "Our Customization Services",
+      "items": [
+        {
+          "title": "Custom Workflows",
+          "description": "Design automated workflows that match your business processes",
+          "icon": "🔄"
+        },
+        {
+          "title": "Custom Fields & Forms",
+          "description": "Create custom fields and forms to capture your specific data",
+          "icon": "📝"
+        },
+        {
+          "title": "SuiteScript Development",
+          "description": "Advanced scripting to extend NetSuite functionality",
+          "icon": "💻"
+        },
+        {
+          "title": "Custom Reports & Dashboards",
+          "description": "Build tailored reports and dashboards for better insights",
+          "icon": "📊"
+        },
+        {
+          "title": "SuiteApps Development",
+          "description": "Develop custom applications for NetSuite",
+          "icon": "🚀"
+        },
+        {
+          "title": "Third-Party Integrations",
+          "description": "Connect NetSuite with external systems and applications",
+          "icon": "🔗"
+        }
+      ]
+    },
+    "process": {
+      "title": "Our Development Process",
+      "steps": [
+        {
+          "step": "01",
+          "title": "Requirements Analysis",
+          "description": "We analyze your business requirements and current NetSuite setup"
+        },
+        {
+          "step": "02",
+          "title": "Solution Design",
+          "description": "Design custom solutions that align with your business goals"
+        },
+        {
+          "step": "03",
+          "title": "Development & Testing",
+          "description": "Develop and thoroughly test all customizations"
+        },
+        {
+          "step": "04",
+          "title": "Deployment & Support",
+          "description": "Deploy solutions and provide ongoing support"
+        }
+      ]
+    },
+    "cta": {
+      "title": "Ready to Customize NetSuite?",
+      "subtitle": "Let's discuss your customization needs and create a solution that works for you.",
+      "buttonText": "Get Started"
+    }
+  },
+  "home": {
+    "hero": {
+      "slides": [
+        {
+          "title": "Strategic Business Transformationsss",
+          "subtitle": "Oracle NetSuite Consultancyss",
+          "description": "Streamline operations and drive growth with our comprehensive NetSuite solutions.",
+          "video": "/Videos/HomeHeroSectionV.mp4",
+          "cta": "Explore Services"
+        },
+        {
+          "title": "Digital Optimization Experts",
+          "subtitle": "Cloud Solutions Specialists",
+          "description": "Enhance productivity with our tailored implementation and consulting services.",
+          "video": "/video2.mp4",
+          "cta": "View Case Studies"
+        },
+        {
+          "title": "Data-Driven Decision Making",
+          "subtitle": "Business Intelligence Partners",
+          "description": "Leverage real-time analytics to transform your operations.",
+          "video": "/video3.mp4",
+          "cta": "Request Consultation"
+        }
+      ],
+      "stats": [
+        {
+          "value": "200+",
+          "label": "Projects"
+        },
+        {
+          "value": "98%",
+          "label": "Satisfaction"
+        },
+        {
+          "value": "15+",
+          "label": "Years"
+        }
+      ]
+    },
+    "services": {
+      "services": [
+        {
+          "title": "Strategic Consultation",
+          "description": "Expert analysis to optimize your NetSuite roadmap with actionable insights",
+          "icon": "LightbulbOutlined",
+          "color": "#10B981",
+          "details": [
+            "Business process analysis",
+            "ROI forecasting",
+            "System architecture planning",
+            "Change management strategy"
+          ],
+          "stats": "92% client satisfaction rate",
+          "link": "/netsuite-consulting"
+        },
+        {
+          "title": "Implementation",
+          "description": "End-to-end deployment with minimal disruption to operations",
+          "icon": "BuildOutlined",
+          "color": "#0EA5E9",
+          "details": [
+            "Phased rollout planning",
+            "Data migration services",
+            "Configuration best practices",
+            "Go-live support"
+          ],
+          "stats": "40% faster than industry average",
+          "link": "/Implementation"
+        },
+        {
+          "title": "Training",
+          "description": "Customized learning paths for all user levels and roles",
+          "icon": "SchoolOutlined",
+          "color": "#8B5CF6",
+          "details": [
+            "Role-based training programs",
+            "Interactive e-learning modules",
+            "Custom documentation",
+            "Ongoing certification"
+          ],
+          "stats": "85% faster user adoption",
+          "link": "/Training"
+        },
+        {
+          "title": "Tailored Customization",
+          "description": "Bespoke solutions addressing your unique business needs",
+          "icon": "SettingsOutlined",
+          "color": "#EC4899",
+          "details": [
+            "Workflow automation",
+            "Custom dashboards",
+            "Advanced reporting",
+            "Third-party integrations"
+          ],
+          "stats": "300+ custom solutions delivered",
+          "link": "#"
+        },
+        {
+          "title": "Seamless Integration",
+          "description": "Unified ecosystem connecting NetSuite with your tech stack",
+          "icon": "LinkOutlined",
+          "color": "#F59E0B",
+          "details": [
+            "API development",
+            "Middleware configuration",
+            "Data synchronization",
+            "Real-time analytics"
+          ],
+          "stats": "99.9% integration uptime",
+          "link": "#"
+        }
+      ],
+      "sectionHeader": {
+        "title": "Our Professional Services",
+        "subtitle": "Comprehensive solutions tailored to your business needs",
+        "gradientText": "Professional Services"
+      },
+      "viewAllButton": {
+        "text": "View All Services"
+      }
+    },
+    "testimonials": {
+      "testimonials": [
+        {
+          "id": 1,
+          "quote": "Bellatrix transformed our operations. Their NetSuite expertise is unmatched.",
+          "name": "John Doe",
+          "title": "CEO of TechCorp",
+          "avatar": "JD",
+          "rating": 5,
+          "results": [
+            "40% efficiency boost",
+            "Seamless migration",
+            "24/7 support"
+          ]
+        },
+        {
+          "id": 2,
+          "quote": "The implementation was flawless. Their team delivered beyond expectations.",
+          "name": "Jane Smith",
+          "title": "COO of Innovate Inc.",
+          "avatar": "JS",
+          "rating": 5,
+          "results": [
+            "50% faster deployment",
+            "Zero downtime",
+            "Custom integrations"
+          ]
+        },
+        {
+          "id": 3,
+          "quote": "Our productivity skyrocketed by 40% after switching to Bellatrix.",
+          "name": "Sam Wilson",
+          "title": "CFO of Global Solutions",
+          "avatar": "SW",
+          "rating": 5,
+          "results": [
+            "Real-time analytics",
+            "Cost savings",
+            "Scalable infrastructure"
+          ]
+        },
+        {
+          "id": 4,
+          "quote": "Exceptional technical skills with deep business understanding.",
+          "name": "Sarah Johnson",
+          "title": "Director of Operations",
+          "avatar": "SJ",
+          "rating": 4,
+          "results": [
+            "Automated workflows",
+            "User-friendly UI",
+            "Training included"
+          ]
+        },
+        {
+          "id": 5,
+          "quote": "The best investment in our digital transformation journey.",
+          "name": "Michael Brown",
+          "title": "IT Manager",
+          "avatar": "MB",
+          "rating": 5,
+          "results": [
+            "Cloud optimization",
+            "Security upgrades",
+            "API integrations"
+          ]
+        }
+      ],
+      "sectionHeader": {
+        "title": "Trusted by Industry Leaders",
+        "subtitle": "Don't just take our word for it—here's what our clients say.",
+        "gradientText": "Trusted by Industry Leaders"
+      },
+      "ctaButton": {
+        "text": "Contact This Client's Success Manager"
+      }
+    },
+    "industries": {
+      "industries": [
+        {
+          "id": "manufacturing",
+          "label": "Manufacturing",
+          "icon": "Factory",
+          "content": {
+            "title": "Manufacturing Solutions",
+            "description": "Streamline your manufacturing operations with our comprehensive NetSuite solutions. From production planning to inventory management, we help you optimize every aspect of your manufacturing process.",
+            "features": [
+              "Production planning and scheduling",
+              "Inventory and supply chain management",
+              "Quality control and compliance",
+              "Cost accounting and analysis",
+              "Shop floor control"
+            ],
+            "image": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+          },
+          "link": "/industries/manufacturing"
+        },
+        {
+          "id": "retail",
+          "label": "Retail",
+          "icon": "Store",
+          "content": {
+            "title": "Retail Solutions",
+            "description": "Transform your retail operations with integrated commerce solutions that unify online, mobile, and in-store experiences while optimizing inventory and enhancing customer satisfaction.",
+            "features": [
+              "Omnichannel commerce platform",
+              "Real-time inventory management",
+              "Unified customer experience",
+              "Point of sale integration",
+              "Advanced analytics and reporting"
+            ],
+            "image": "https://images.unsplash.com/photo-1441986300917-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+          },
+          "link": "/industries/retail"
+        },
+        {
+          "id": "professional-services",
+          "label": "Professional Services",
+          "icon": "Briefcase",
+          "content": {
+            "title": "Professional Services Solutions",
+            "description": "Optimize your service delivery with our NetSuite solutions for professional services firms. From project management to resource allocation, we help you deliver exceptional service.",
+            "features": [
+              "Project management and tracking",
+              "Resource allocation and planning",
+              "Time and expense management",
+              "Client billing and invoicing",
+              "Service delivery automation"
+            ],
+            "image": "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+          }
+        },
+        {
+          "id": "wholesale-distribution",
+          "label": "Wholesale Distribution",
+          "icon": "Package",
+          "content": {
+            "title": "Wholesale Distribution Solutions",
+            "description": "Optimize your wholesale distribution operations with our NetSuite solutions. From order management to inventory control, we help you streamline your distribution processes.",
+            "features": [
+              "Order management and fulfillment",
+              "Inventory and warehouse management",
+              "Supplier relationship management",
+              "Pricing and discount management",
+              "Multi-channel distribution"
+            ],
+            "image": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+          }
+        }
+      ],
+      "sectionHeader": {
+        "chipLabel": "INDUSTRY SOLUTIONS",
+        "title": "Discover Modern Industry Solutions",
+        "highlightedWord": "Modern",
+        "description": "Explore how our blue-powered platform transforms your sector with interactive, tailored solutions."
+      },
+      "styles": {
+        "blueGradient": "linear-gradient(135deg, #2563eb 0%, #60a5fa 100%)",
+        "glassBg": "rgba(255,255,255,0.7)"
+      }
+    },
+    "solutions": {
+      "solutions": [
+        {
+          "title": "NetSuite Implementation",
+          "description": "Complete NetSuite deployment and configuration solutions for your business"
+        },
+        {
+          "title": "Custom Development",
+          "description": "Tailored software solutions designed to meet your unique business requirements"
+        },
+        {
+          "title": "System Integration",
+          "description": "Seamless integration between NetSuite and your existing business systems"
+        },
+        {
+          "title": "Training & Support",
+          "description": "Comprehensive training programs and ongoing technical support services"
+        },
+        {
+          "title": "Data Migration",
+          "description": "Secure and efficient migration of your business data to NetSuite"
+        },
+        {
+          "title": "Process Optimization",
+          "description": "Business process improvement and workflow automation solutions"
+        },
+        {
+          "title": "Cloud Solutions",
+          "description": "Modern cloud-based infrastructure and scalable solution architecture"
+        },
+        {
+          "title": "Business Intelligence",
+          "description": "Advanced analytics and reporting solutions for data-driven decisions"
+        }
+      ],
+      "sectionHeader": {
+        "title": "Our Solution Portfolio",
+        "subtitle": "Comprehensive solutions designed to transform your business operations",
+        "gradientText": "Solution Portfolio"
+      }
+    }
+  },
+  "hr": {
+    "hero": {
+      "title": "Modern HR, Payroll & People Managementttt2sd",
+      "subtitle": "ssssssssssd",
+      "bgVideo": "/Videos/hrVideo.mp4",
+      "bgColor": "bg-gradient-to-br from-[#191970] via-black to-blue-700"
+    },
+    "features": {
+      "title": "Why Choose Our HR Solution?",
+      "description": "Discover the key advantages that make our HR platform the smart choice for modern businesses of all sizes and industries.",
+      "items": [
+        {
+          "icon": "💸",
+          "title": "Payroll Automation",
+          "desc": "Automate payroll processing, tax calculations, and compliance with built-in error checking and real-time updates."
+        },
+        {
+          "icon": "📂",
+          "title": "Centralized Employee Data",
+          "desc": "All employee records, contracts, documents, and history in one secure, searchable cloud-based platform."
+        },
+        {
+          "icon": "🚀",
+          "title": "Streamlined Onboarding",
+          "desc": "Digitize onboarding with automated workflows, e-signatures, task assignments, and welcome packages."
+        },
+        {
+          "icon": "📊",
+          "title": "Real-Time Performance Tracking",
+          "desc": "Monitor goals, feedback, 360° reviews, and performance metrics with customizable dashboards."
+        },
+        {
+          "icon": "⏰",
+          "title": "Attendance & Leave Management",
+          "desc": "Track attendance, shifts, overtime, and leave requests with automated approvals and calendar sync."
+        },
+        {
+          "icon": "🔒",
+          "title": "Enterprise-Grade Security",
+          "desc": "GDPR compliant, SOC 2 certified, with encryption, access controls, and audit trails for all data."
+        },
+        {
+          "icon": "🌍",
+          "title": "Global Compliance",
+          "desc": "Built-in compliance for multiple countries with automatic updates for changing labor laws."
+        },
+        {
+          "icon": "📱",
+          "title": "Mobile Accessibility",
+          "desc": "Full mobile app for employees and managers with push notifications and offline capabilities."
+        },
+        {
+          "icon": "🔄",
+          "title": "Seamless Integrations",
+          "desc": "Connect with your existing tools including Slack, Microsoft Teams, Google Workspace, and more."
+        }
+      ]
+    },
+    "modules": [
+      {
+        "icon": "👥",
+        "title": "Employee Management",
+        "desc": "Complete employee lifecycle management from hiring to offboarding with customizable workflows."
+      },
+      {
+        "icon": "⏱️",
+        "title": "Time & Attendance",
+        "desc": "Automated time tracking, shift planning, overtime management, and absence tracking."
+      },
+      {
+        "icon": "💰",
+        "title": "Payroll & Compensation",
+        "desc": "End-to-end payroll processing, tax filing, benefits administration, and compensation planning."
+      },
+      {
+        "icon": "🧑‍💼",
+        "title": "Recruitment & ATS",
+        "desc": "Applicant tracking, interview scheduling, candidate scoring, and offer management."
+      },
+      {
+        "icon": "⚖️",
+        "title": "Compliance & Legal",
+        "desc": "Automated compliance monitoring, document management, and audit preparation."
+      },
+      {
+        "icon": "📈",
+        "title": "Analytics & Reporting",
+        "desc": "Advanced analytics, custom reports, predictive insights, and data visualization."
+      }
+    ],
+    "useCases": [
+      {
+        "title": "Startups & Scale-ups",
+        "desc": "Scale your team rapidly with automated HR processes that grow with your business from 10 to 10,000 employees."
+      },
+      {
+        "title": "Enterprise Organizations",
+        "desc": "Centralize HR operations across multiple locations, departments, and countries with enterprise-grade security."
+      },
+      {
+        "title": "Remote & Hybrid Teams",
+        "desc": "Support distributed workforces with cloud-based tools, async communication, and global compliance."
+      },
+      {
+        "title": "SMBs & Growing Businesses",
+        "desc": "Affordable, all-in-one HR solution that eliminates manual processes and reduces administrative overhead."
+      }
+    ],
+    "pricing": [
+      {
+        "name": "Essential",
+        "description": "Perfect for small teams getting started with HR automation",
+        "price": "$2,500",
+        "priceNote": "one-time implementation",
+        "features": [
+          "Basic system analysis & configuration",
+          "Standard implementation setup",
+          "Core HR module implementation",
+          "Basic testing & quality assurance",
+          "30 days post-implementation support",
+          "Email support during business hours",
+          "User training for up to 5 administrators"
+        ],
+        "ctaText": "Start with Essential",
+        "isPopular": false
+      },
+      {
+        "name": "Professional",
+        "description": "Ideal for growing companies with complex HR needs",
+        "price": "$5,000",
+        "priceNote": "one-time implementation",
+        "isPopular": true,
+        "features": [
+          "Comprehensive needs analysis",
+          "Custom implementation & configuration",
+          "Multiple module implementation",
+          "Advanced testing & QA processes",
+          "90 days premium support",
+          "Phone & email support",
+          "Dedicated implementation specialist",
+          "Training sessions for entire team",
+          "Custom report development",
+          "Integration with 3rd party tools"
+        ],
+        "ctaText": "Choose Professional"
+      },
+      {
+        "name": "Enterprise",
+        "description": "Complete solution for large organizations with global teams",
+        "price": "Custom",
+        "priceNote": "enterprise pricing",
+        "features": [
+          "Enterprise-grade analysis & planning",
+          "Fully customized implementation",
+          "All modules & advanced features",
+          "Comprehensive testing & validation",
+          "Unlimited support & SLAs",
+          "24/7 dedicated support team",
+          "On-site training & workshops",
+          "Custom development & integrations",
+          "Dedicated account manager",
+          "Priority feature requests",
+          "Multi-country compliance setup",
+          "Advanced security configuration"
+        ],
+        "ctaText": "Contact Enterprise Sales",
+        "isPopular": false
+      }
+    ],
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "items": [
+        {
+          "q": "Is my employee data secure and compliant?",
+          "a": "Yes. We use enterprise-grade 256-bit encryption, regular security audits, and are fully GDPR, SOC 2, and ISO 27001 compliant. All data is stored in secure, geographically redundant data centers with daily backups and comprehensive access controls."
+        },
+        {
+          "q": "Can I integrate with my existing payroll and accounting software?",
+          "a": "Absolutely. We offer pre-built integrations with all major payroll providers (ADP, Paychex, Gusto), accounting software (QuickBooks, Xero, NetSuite), and ERP systems. Our API also allows for custom integrations with any system you use."
+        },
+        {
+          "q": "How long does implementation typically take?",
+          "a": "Implementation time varies based on complexity: Essential (2-3 weeks), Professional (3-5 weeks), Enterprise (6-8 weeks). Most customers are fully operational within their expected timeframe with our guided onboarding process and dedicated support."
+        },
+        {
+          "q": "Is there a free trial or demo available?",
+          "a": "Yes, we offer a 14-day free trial with full access to all features. No credit card required. You can also schedule a personalized demo with our product experts to see specific features tailored to your business needs."
+        },
+        {
+          "q": "Do you offer multi-language and multi-currency support?",
+          "a": "Yes, our platform supports English, Spanish, French, German, Arabic, and 10+ other languages. We also handle multi-currency payroll and compliance for 50+ countries with automatic exchange rate updates."
+        },
+        {
+          "q": "What kind of training and support is included?",
+          "a": "All plans include comprehensive training: video tutorials, live webinars, documentation, and dedicated support. Professional and Enterprise plans include personalized training sessions, on-site workshops, and 24/7 support with guaranteed response times."
+        },
+        {
+          "q": "Can the system handle complex organizational structures?",
+          "a": "Yes, we support complex organizational hierarchies, multiple locations, departments, cost centers, and matrix reporting structures. You can configure custom workflows, approval chains, and access permissions for any organizational setup."
+        }
+      ]
+    },
+    "cta": {
+      "title": "Ready to Transform Your HR Operations?",
+      "description": "Join 10,000+ companies that have automated their HR processes and reduced administrative workload by 70%",
+      "buttonText": "Start Free Trial"
+    },
+    "demoImages": [
+      "/images/Hr/hr-dashboard-1.png",
+      "/images/Hr/hr-analytics-2.png",
+      "/images/Hr/hr-onboarding-3.png",
+      "/images/Hr/hr-performance-4.png",
+      "/images/Hr/hr-recruitment-5.png"
+    ]
+  },
+  "Implementation": {
+    "heroSection": {
+      "backgroundVideo": "/Videos/HomeHeroSectionV.mp4",
+      "titleParts": [
+        "Where",
+        "Vision",
+        "Meets",
+        "Reality"
+      ],
+      "description": "We don't just implement solutions—we craft digital experiences that transform the way you do business",
+      "ctaButton": {
+        "text": "Start Implementation",
+        "icon": "M13 7l5 5m0 0l-5 5m5-5H6"
+      }
+    },
+    "processSection": {
+      "title": "Our Implementation Process",
+      "subtitle": "A proven methodology for seamless business transformation",
+      "image": "/Videos/implementation/implementProcess.jpg",
+      "steps": [
+        {
+          "number": 1,
+          "title": "Analysis & Planning",
+          "description": "System analysis and strategic roadmap creation",
+          "icon": "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+        },
+        {
+          "number": 2,
+          "title": "Design & Development",
+          "description": "Custom solution design and development",
+          "icon": "M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+        },
+        {
+          "number": 3,
+          "title": "Testing & Integration",
+          "description": "Quality assurance and system integration",
+          "icon": "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+        },
+        {
+          "number": 4,
+          "title": "Launch & Support",
+          "description": "Deployment and ongoing support",
+          "icon": "M13 10V3L4 14h7v7l9-11h-7z"
+        }
+      ],
+      "ctaButton": "Start Your Journey"
+    },
+    "whyChooseSection": {
+      "title": "Why Choose Bellatrix for Implementation?",
+      "subtitle": "We bring years of expertise, proven methodologies, and cutting-edge solutions to ensure your implementation success",
+      "image": "/Videos/implementation/whyChoese.jpg",
+      "features": [
+        {
+          "number": "01",
+          "title": "Proven Expertise",
+          "description": "500+ successful implementations across industries"
+        },
+        {
+          "number": "02",
+          "title": "Rapid Deployment",
+          "description": "50% faster implementation with proven tools"
+        },
+        {
+          "number": "03",
+          "title": "24/7 Support",
+          "description": "Round-the-clock technical support & monitoring"
+        },
+        {
+          "number": "04",
+          "title": "Expert Team",
+          "description": "Certified professionals with deep expertise"
+        }
+      ]
+    },
+    "pricingSection": {
+      "title": "Implementation Pricing",
+      "subtitle": "Choose the perfect implementation plan that fits your business needs and budget",
+      "plans": [
+        {
+          "name": "Basic",
+          "description": "Perfect for small businesses",
+          "price": "$2,500",
+          "priceNote": "starting from",
+          "features": [
+            "Basic system analysis",
+            "Standard implementation",
+            "Basic testing & QA",
+            "30 days support",
+            "Email support"
+          ],
+          "ctaText": "Get Started"
+        },
+        {
+          "name": "Professional",
+          "description": "Ideal for growing companies",
+          "price": "$5,000",
+          "priceNote": "starting from",
+          "isPopular": true,
+          "features": [
+            "Comprehensive analysis",
+            "Custom implementation",
+            "Advanced testing & QA",
+            "90 days support",
+            "Phone & email support",
+            "Training sessions"
+          ],
+          "ctaText": "Get Started"
+        },
+        {
+          "name": "Enterprise",
+          "description": "For large organizations",
+          "price": "Custom",
+          "priceNote": "pricing",
+          "features": [
+            "Enterprise-grade analysis",
+            "Fully customized solution",
+            "Comprehensive testing",
+            "Unlimited support",
+            "24/7 dedicated support",
+            "On-site training"
+          ],
+          "ctaText": "Contact Sales"
+        }
+      ],
+      "additionalInfo": {
+        "note": "All plans include free consultation and project scoping",
+        "contactText": "Need a custom solution? Contact our team for personalized pricing"
+      }
+    },
+    "ctaSection": {
+      "title": "Ready for a Seamless NetSuite Implementation?",
+      "subtitle": "Transform your business operations with our expert NetSuite implementation services. Let's turn your vision into reality with proven methodologies and dedicated support.",
+      "ctaButton": "Get Started Today",
+      "features": [
+        {
+          "title": "Quick Response",
+          "description": "Get a detailed proposal within 24 hours",
+          "icon": "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+        },
+        {
+          "title": "Proven Success",
+          "description": "99.9% implementation success rate",
+          "icon": "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+        },
+        {
+          "title": "Expert Support",
+          "description": "Dedicated team of certified professionals",
+          "icon": "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+        }
+      ]
+    },
+    "modalContent": {
+      "title": "Contact Us",
+      "subtitle": "Let's discuss your project",
+      "formFields": {
+        "contactInfo": {
+          "title": "Contact Information",
+          "fields": [
+            {
+              "label": "Full Name *",
+              "type": "text",
+              "placeholder": "John Doe",
+              "required": true
+            },
+            {
+              "label": "Email Address *",
+              "type": "email",
+              "placeholder": "john@company.com",
+              "required": true
+            },
+            {
+              "label": "Phone Number",
+              "type": "tel",
+              "placeholder": "+1 (555) 123-4567"
+            }
+          ]
+        },
+        "companyInfo": {
+          "title": "Company Details",
+          "fields": [
+            {
+              "label": "Company Name",
+              "type": "text",
+              "placeholder": "Your Company Inc."
+            },
+            {
+              "label": "Industry",
+              "type": "select",
+              "options": [
+                "Select Industry",
+                "Manufacturing",
+                "Retail & E-commerce",
+                "Healthcare",
+                "Finance & Banking",
+                "Technology",
+                "Professional Services",
+                "Non-Profit",
+                "Other"
+              ]
+            },
+            {
+              "label": "Country",
+              "type": "select",
+              "options": [
+                "Select Country",
+                "United States",
+                "Canada",
+                "United Kingdom",
+                "Australia",
+                "Germany",
+                "France",
+                "United Arab Emirates",
+                "Saudi Arabia",
+                "Egypt",
+                "Other"
+              ]
+            }
+          ]
+        },
+        "message": {
+          "label": "Message",
+          "placeholder": "Tell us about your project requirements..."
+        },
+        "submitNote": "✓ 24hr response",
+        "submitText": "Send Message"
+      }
+    }
+  },
+  "integration": {
+    "hero": {
+      "title": "NetSuite Integration Services",
+      "subtitle": "Connect NetSuite with your existing systems for seamless data flow"
+    },
+    "integrationTypes": {
+      "title": "Integration Solutions",
+      "items": [
+        {
+          "title": "E-commerce Integration",
+          "description": "Connect NetSuite with Shopify, Magento, WooCommerce, and other platforms",
+          "icon": "🛒"
+        },
+        {
+          "title": "CRM Integration",
+          "description": "Integrate with Salesforce, HubSpot, and other CRM systems",
+          "icon": "👥"
+        },
+        {
+          "title": "Payment Gateway Integration",
+          "description": "Connect with PayPal, Stripe, Square, and other payment processors",
+          "icon": "💳"
+        },
+        {
+          "title": "Warehouse Management",
+          "description": "Integrate with WMS systems for inventory management",
+          "icon": "📦"
+        },
+        {
+          "title": "Banking & Financial",
+          "description": "Connect with banks and financial institutions for automated transactions",
+          "icon": "🏦"
+        },
+        {
+          "title": "Custom API Integration",
+          "description": "Build custom integrations with any third-party system",
+          "icon": "🔌"
+        }
+      ]
+    },
+    "benefits": {
+      "title": "Integration Benefits",
+      "items": [
+        {
+          "title": "Automated Data Sync",
+          "description": "Eliminate manual data entry with real-time synchronization"
+        },
+        {
+          "title": "Improved Accuracy",
+          "description": "Reduce errors caused by manual data transfer"
+        },
+        {
+          "title": "Enhanced Productivity",
+          "description": "Save time and resources with automated processes"
+        },
+        {
+          "title": "Better Visibility",
+          "description": "Get a complete view of your business across all systems"
+        },
+        {
+          "title": "Scalable Solutions",
+          "description": "Integrations that grow with your business needs"
+        },
+        {
+          "title": "Cost Savings",
+          "description": "Reduce operational costs through automation"
+        }
+      ]
+    },
+    "popularIntegrations": {
+      "title": "Popular Integrations",
+      "platforms": [
+        "Shopify",
+        "Magento",
+        "Salesforce",
+        "HubSpot",
+        "PayPal",
+        "Stripe",
+        "Amazon",
+        "eBay",
+        "QuickBooks",
+        "Xero",
+        "Slack",
+        "Microsoft Office"
+      ]
+    },
+    "cta": {
+      "title": "Ready to Integrate?",
+      "subtitle": "Let's connect your systems and streamline your business operations.",
+      "buttonText": "Start Integration"
+    }
+  },
+  "manufacturing": {
+    "meta": {
+      "pageTitle": "Manufacturing",
+      "theme": {
+        "primaryColor": "text-blue-600"
+      }
+    },
+    "hero": {
+      "show": true,
+      "title": "Manufacturing Excellence",
+      "subtitle": "Powered by NetSuite",
+      "description": "Transform your manufacturing operations with integrated ERP solutions that streamline production, optimize inventory, and ensure quality compliance across your entire value chain.",
+      "backgroundImage": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+      "ctaText": null
+    },
+    "industryStats": {
+      "show": true,
+      "items": [
+        {
+          "value": "500+",
+          "label": "Manufacturing Clients",
+          "description": "Successful implementations"
+        },
+        {
+          "value": "40%",
+          "label": "Efficiency Gain",
+          "description": "Average improvement"
+        },
+        {
+          "value": "35%",
+          "label": "Cost Reduction",
+          "description": "In operational costs"
+        },
+        {
+          "value": "98%",
+          "label": "Client Satisfaction",
+          "description": "Success rate"
+        }
+      ]
+    },
+    "challenges": {
+      "show": true,
+      "title": "Manufacturing Challenges",
+      "description": "Modern manufacturing faces complex challenges that require integrated solutions to optimize operations and maintain quality standards.",
+      "items": [
+        {
+          "title": "Complex Production Planning",
+          "description": "Managing multi-level BOMs, work orders, and production schedules across multiple facilities",
+          "icon": "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2",
+          "impact": "30% production delays"
+        },
+        {
+          "title": "Inventory Management Complexity",
+          "description": "Tracking raw materials, WIP, and finished goods across multiple locations with real-time visibility",
+          "icon": "M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4",
+          "impact": "25% excess inventory"
+        },
+        {
+          "title": "Quality Control & Compliance",
+          "description": "Maintaining quality standards and regulatory compliance throughout the manufacturing process",
+          "icon": "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z",
+          "impact": "15% quality issues"
+        },
+        {
+          "title": "Supply Chain Visibility",
+          "description": "Managing supplier relationships and ensuring timely delivery of materials and components",
+          "icon": "M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z",
+          "impact": "20% supply delays"
+        }
+      ]
+    },
+    "solutions": {
+      "show": true,
+      "title": "NetSuite Solutions",
+      "description": "Comprehensive manufacturing solutions that streamline your operations from production planning to quality control.",
+      "items": [
+        {
+          "title": "Advanced Manufacturing",
+          "description": "Complete production planning with work orders, routing, and capacity planning",
+          "features": [
+            "Multi-level BOM management",
+            "Work order scheduling",
+            "Capacity planning",
+            "Shop floor control",
+            "Production reporting"
+          ],
+          "benefits": "40% improvement in production efficiency"
+        },
+        {
+          "title": "Inventory & Warehouse Management",
+          "description": "Real-time inventory tracking with automated replenishment and cycle counting",
+          "features": [
+            "Real-time inventory tracking",
+            "Automated reorder points",
+            "Cycle counting",
+            "Lot and serial tracking",
+            "Multi-location management"
+          ],
+          "benefits": "35% reduction in inventory costs"
+        },
+        {
+          "title": "Quality Management",
+          "description": "Comprehensive quality control with inspection plans and non-conformance tracking",
+          "features": [
+            "Quality inspection plans",
+            "Non-conformance tracking",
+            "Supplier quality management",
+            "Certificate of analysis",
+            "Corrective action tracking"
+          ],
+          "benefits": "50% reduction in quality issues"
+        },
+        {
+          "title": "Supply Chain Management",
+          "description": "End-to-end supply chain visibility with supplier collaboration tools",
+          "features": [
+            "Supplier portal",
+            "Purchase order automation",
+            "Vendor performance tracking",
+            "Drop shipment management",
+            "Supply chain analytics"
+          ],
+          "benefits": "30% improvement in on-time delivery"
+        }
+      ]
+    },
+    "features": {
+      "show": false,
+      "title": null,
+      "description": null,
+      "items": []
+    },
+    "caseStudies": {
+      "show": true,
+      "title": "Success Stories",
+      "description": "Real manufacturing companies achieving remarkable results with NetSuite solutions.",
+      "items": [
+        {
+          "company": "TechManufacturing Corp",
+          "industry": "Electronics Manufacturing",
+          "challenge": "Complex multi-level BOMs and production scheduling across 3 facilities",
+          "solution": "Implemented NetSuite Advanced Manufacturing with custom workflows",
+          "results": [
+            "45% reduction in production lead times",
+            "30% improvement in on-time delivery",
+            "25% reduction in inventory carrying costs",
+            "Real-time visibility across all facilities"
+          ],
+          "image": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+        },
+        {
+          "company": "Precision Parts Ltd",
+          "industry": "Automotive Parts",
+          "challenge": "Quality control and traceability requirements for automotive industry",
+          "solution": "NetSuite Quality Management with lot tracking and supplier integration",
+          "results": [
+            "60% reduction in quality incidents",
+            "100% lot traceability achieved",
+            "40% faster supplier onboarding",
+            "Automated compliance reporting"
+          ],
+          "image": "https://images.unsplash.com/photo-1565043666747-69f6646db940?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+        }
+      ]
+    },
+    "implementationProcess": {
+      "show": true,
+      "title": "Implementation Process",
+      "description": "Streamline your entire NetSuite implementation lifecycle — from discovery to go-live — with a proven, secure methodology.",
+      "steps": [
+        {
+          "title": "Discovery & Assessment",
+          "desc": "Analyze current manufacturing processes, systems, and requirements",
+          "details": "Analyze current manufacturing processes, systems, and requirements",
+          "duration": "2-3 weeks",
+          "benefits": [
+            "Current state assessment",
+            "Gap analysis",
+            "Requirements documentation"
+          ]
+        },
+        {
+          "title": "Solution Design",
+          "desc": "Design NetSuite configuration tailored to manufacturing workflows",
+          "details": "Design NetSuite configuration tailored to manufacturing workflows",
+          "duration": "3-4 weeks",
+          "benefits": [
+            "System architecture",
+            "Process flows",
+            "Integration design"
+          ]
+        },
+        {
+          "title": "Configuration & Development",
+          "desc": "Configure NetSuite modules and develop custom manufacturing features",
+          "details": "Configure NetSuite modules and develop custom manufacturing features",
+          "duration": "6-8 weeks",
+          "benefits": [
+            "Configured system",
+            "Custom developments",
+            "Integration setup"
+          ]
+        },
+        {
+          "title": "Testing & Training",
+          "desc": "Comprehensive testing and user training for manufacturing teams",
+          "details": "Comprehensive testing and user training for manufacturing teams",
+          "duration": "3-4 weeks",
+          "benefits": [
+            "Test results",
+            "Training materials",
+            "User documentation"
+          ]
+        },
+        {
+          "title": "Go-Live & Support",
+          "desc": "Production deployment with ongoing support and optimization",
+          "details": "Production deployment with ongoing support and optimization",
+          "duration": "2-3 weeks",
+          "benefits": [
+            "Live system",
+            "Support documentation",
+            "Performance monitoring"
+          ]
+        }
+      ]
+    },
+    "cta": {
+      "show": true,
+      "title": "Ready to Transform Your Manufacturing Operations?",
+      "description": "Join hundreds of manufacturing companies that have streamlined their operations and improved efficiency with NetSuite. Get started with a free consultation today.",
+      "features": [
+        {
+          "title": "Free Assessment",
+          "description": "Comprehensive evaluation of your manufacturing processes",
+          "icon": "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+        },
+        {
+          "title": "Rapid Implementation",
+          "description": "Get up and running faster with our proven methodology",
+          "icon": "M13 10V3L4 14h7v7l9-11h-7z"
+        },
+        {
+          "title": "Ongoing Support",
+          "description": "Continuous optimization and support for your success",
+          "icon": "M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+        }
+      ],
+      "buttonText": "Schedule Manufacturing Demo"
+    },
+    "modal": {
+      "show": true,
+      "title": "Schedule Your Manufacturing Demo",
+      "subtitle": "Let's discuss your manufacturing challenges and solutions"
+    }
+  },
+  "netsuite-consulting": {
+    "hero": {
+      "title": "NetSuite Consulting",
+      "description": "Strategic guidance and expert consulting to maximize your NetSuite investment and transform your business operations.",
+      "ctaText": "Talk to an Expert",
+      "ctaIcon": "M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+    },
+    "services": {
+      "title": "Our <span>Consulting Services</span>",
+      "description": "Comprehensive NetSuite consulting services designed to optimize your business processes and maximize your return on investment.",
+      "items": [
+        {
+          "title": "NetSuite Implementation Strategy",
+          "description": "Comprehensive planning and roadmap development for successful NetSuite deployment",
+          "icon": "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z",
+          "features": [
+            "Business process analysis and optimization",
+            "System architecture design",
+            "Implementation timeline and milestones",
+            "Risk assessment and mitigation strategies",
+            "Change management planning"
+          ]
+        },
+        {
+          "title": "Business Process Optimization",
+          "description": "Streamline your operations with NetSuite's powerful automation capabilities",
+          "icon": "M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z",
+          "features": [
+            "Workflow automation design",
+            "Custom field and form configuration",
+            "Approval process optimization",
+            "Data validation and integrity",
+            "Performance monitoring setup"
+          ]
+        },
+        {
+          "title": "Financial Management Consulting",
+          "description": "Optimize your financial operations with NetSuite's comprehensive financial suite",
+          "icon": "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z",
+          "features": [
+            "Chart of accounts optimization",
+            "Revenue recognition setup",
+            "Multi-currency configuration",
+            "Financial reporting and dashboards",
+            "Budgeting and forecasting"
+          ]
+        },
+        {
+          "title": "System Integration & Data Migration",
+          "description": "Seamlessly connect NetSuite with your existing systems and migrate critical data",
+          "icon": "M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z",
+          "features": [
+            "Third-party system integrations",
+            "Data mapping and transformation",
+            "API development and management",
+            "Legacy system migration",
+            "Real-time data synchronization"
+          ]
+        }
+      ],
+      "image": "/images/ourProServices.png"
+    },
+    "industries": {
+      "title": "Industry <span>Expertise</span>",
+      "description": "Deep industry knowledge across multiple sectors, ensuring your NetSuite implementation aligns with industry best practices and regulatory requirements.",
+      "items": [
+        {
+          "name": "Manufacturing",
+          "description": "Optimize production planning, inventory management, and supply chain operations",
+          "image": "/images/3.jpg",
+          "solutions": [
+            "Production Planning",
+            "Inventory Optimization",
+            "Quality Control",
+            "Cost Accounting"
+          ],
+          "link": "/industries/manufacturing"
+        },
+        {
+          "name": "Retail & E-commerce",
+          "description": "Streamline multi-channel operations and enhance customer experience",
+          "image": "/images/6.jpg",
+          "solutions": [
+            "Omnichannel Management",
+            "POS Integration",
+            "Customer Analytics",
+            "Inventory Tracking"
+          ],
+          "link": "/industries/retail"
+        },
+        {
+          "name": "HR Solutions",
+          "description": "Modern HR, payroll & people management for all business sizes",
+          "image": "/images/Hr/hrS1.png",
+          "solutions": [
+            "Employee Management",
+            "Performance Tracking",
+            "Compliance",
+            "Automated Workflows"
+          ],
+          "link": "/HRSolution"
+        },
+        {
+          "name": "Payroll Management",
+          "description": "Automated payroll processing with compliance and multi-currency support",
+          "image": "/images/payrollFinal.jpeg",
+          "solutions": [
+            "Automated Processing",
+            "Tax Compliance",
+            "Multi-Currency",
+            "Employee Self-Service"
+          ],
+          "link": "/Payroll"
+        }
+      ]
+    },
+    "process": {
+      "title": "Our Consulting <span>Process</span>",
+      "description": "A proven methodology that ensures successful NetSuite implementations and optimizations tailored to your unique business requirements.",
+      "image": "/images/ourProServicesTwo.png",
+      "steps": [
+        {
+          "step": "01",
+          "title": "Discovery & Assessment",
+          "description": "Comprehensive analysis of your current systems, processes, and business requirements",
+          "duration": "1-2 weeks"
+        },
+        {
+          "step": "02",
+          "title": "Strategy Development",
+          "description": "Create a detailed roadmap with timelines, milestones, and success metrics",
+          "duration": "1 week"
+        },
+        {
+          "step": "03",
+          "title": "Solution Design",
+          "description": "Design custom NetSuite configuration tailored to your specific needs",
+          "duration": "2-3 weeks"
+        },
+        {
+          "step": "04",
+          "title": "Implementation Support",
+          "description": "Hands-on guidance throughout the implementation process",
+          "duration": "4-12 weeks"
+        },
+        {
+          "step": "05",
+          "title": "Optimization & Training",
+          "description": "Fine-tune the system and train your team for maximum efficiency",
+          "duration": "2-4 weeks"
+        }
+      ]
+    },
+    "benefits": {
+      "title": "Why Choose Our <span>Consulting</span>",
+      "description": "Proven results that drive business value and accelerate your digital transformation journey.",
+      "items": [
+        {
+          "title": "Faster Implementation",
+          "description": "Reduce implementation time by up to 40% with our proven methodologies",
+          "metric": "40% Faster"
+        },
+        {
+          "title": "Cost Optimization",
+          "description": "Minimize total cost of ownership through efficient system design",
+          "metric": "30% Savings"
+        },
+        {
+          "title": "Risk Mitigation",
+          "description": "Avoid common pitfalls with our experienced consulting approach",
+          "metric": "95% Success Rate"
+        },
+        {
+          "title": "ROI Acceleration",
+          "description": "Achieve faster return on investment with optimized configurations",
+          "metric": "6 Months ROI"
+        }
+      ]
+    },
+    "cta": {
+      "title": "Ready to Optimize Your <span>NetSuite Investment?</span>",
+      "description": "Get expert guidance from certified NetSuite consultants. Schedule your free consultation today and discover how we can help you achieve maximum ROI.",
+      "features": [
+        {
+          "icon": "M12 8v4l3 3m6 2a9 9 0 11-18 0 9 9 0 0118 0z",
+          "title": "Free Assessment",
+          "description": "Comprehensive evaluation of your current setup"
+        },
+        {
+          "icon": "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z",
+          "title": "Proven Results",
+          "description": "Track record of successful implementations"
+        },
+        {
+          "icon": "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z",
+          "title": "Expert Team",
+          "description": "Certified NetSuite professionals"
+        }
+      ],
+      "buttonText": "Schedule Free Consultation"
+    }
+  },
+  "payroll": {
+    "meta": {
+      "pageTitle": "Payroll",
+      "theme": {
+        "bgColor": "bg-white",
+        "primaryColor": "text-blue-600"
+      }
+    },
+    "hero": {
+      "show": true,
+      "title": "Transform Your Payroll Process",
+      "subtitle": "Streamline operations with our intelligent, automated payroll system",
+      "bgVideo": null,
+      "bgImage": null
+    },
+    "painPoints": {
+      "show": true,
+      "title": "The Payroll <span class=\"text-blue-600\">Struggles</span> We Eliminate",
+      "description": "Our system addresses the most common payroll challenges faced by consultancy firms:",
+      "items": [
+        {
+          "text": "Delayed salary processing and errors",
+          "icon": "time"
+        },
+        {
+          "text": "Manual tax calculations and compliance risks",
+          "icon": "check"
+        },
+        {
+          "text": "Lack of visibility and transparency for employees",
+          "icon": "user"
+        },
+        {
+          "text": "Difficulty scaling payroll operations across geographies",
+          "icon": "globe"
+        },
+        {
+          "text": "Disconnected systems leading to data silos",
+          "icon": "connection"
+        }
+      ]
+    },
+    "howItWorks": {
+      "show": true,
+      "title": "How Our Payroll System Works",
+      "description": "Our payroll process is simple: upload employee and contract details, sync timesheets and leave data, let the system run payroll automatically on schedule, approve via role-based access, execute payments through integrated bank APIs, and download payslips & compliance-ready reports—all in one platform."
+    },
+    "coreWorkflow": {
+      "show": true,
+      "title": "Payroll System Built for All Industries",
+      "description": "Streamline your entire payroll lifecycle — from onboarding to salary disbursement — with a secure, intuitive platform.",
+      "subtitle": "Core Workflow",
+      "steps": [
+        {
+          "title": "Employee data import",
+          "desc": "Easily onboard and manage employee records in one place.",
+          "details": "Import employee data from spreadsheets or integrated HR systems. Supports bulk uploads and data validation with real-time error checking.",
+          "benefits": [
+            "Bulk import from Excel/CSV",
+            "Data validation",
+            "Duplicate detection",
+            "HR system integration"
+          ]
+        },
+        {
+          "title": "Time & attendance sync",
+          "desc": "Integrate timesheets and attendance for accurate payroll.",
+          "details": "Syncs with your time tracking tools to ensure accurate hours and leave data for every employee. Supports multiple time tracking systems.",
+          "benefits": [
+            "Real-time sync",
+            "Multiple time systems",
+            "Leave management",
+            "Overtime calculation"
+          ]
+        },
+        {
+          "title": "Salary & tax auto-calculation",
+          "desc": "Automate salary, tax, and deduction calculations.",
+          "details": "Calculates gross and net pay, taxes, and deductions automatically based on your rules and local compliance. Handles complex tax scenarios.",
+          "benefits": [
+            "Auto tax calculation",
+            "Compliance built-in",
+            "Deduction management",
+            "Bonus processing"
+          ]
+        },
+        {
+          "title": "Approval workflows",
+          "desc": "Streamline approvals with role-based access.",
+          "details": "Multi-level approval flows for payroll runs, with notifications and audit trails. Customizable approval hierarchies.",
+          "benefits": [
+            "Multi-level approval",
+            "Email notifications",
+            "Audit trails",
+            "Role-based access"
+          ]
+        },
+        {
+          "title": "Payment execution",
+          "desc": "Execute payments securely through integrated bank APIs.",
+          "details": "Initiate salary payments directly from the platform with secure, bank-level integrations. Supports multiple payment methods.",
+          "benefits": [
+            "Bank API integration",
+            "Multiple payment methods",
+            "Secure transactions",
+            "Payment tracking"
+          ]
+        },
+        {
+          "title": "Payslip generation & reporting",
+          "desc": "Generate payslips and compliance-ready reports instantly.",
+          "details": "Employees get digital payslips; admins get downloadable, compliance-ready reports. Customizable templates and automated distribution.",
+          "benefits": [
+            "Digital payslips",
+            "Custom templates",
+            "Auto distribution",
+            "Compliance reports"
+          ]
+        }
+      ]
+    },
+    "features": {
+      "show": true,
+      "title": "Key Features for Modern Consultancies",
+      "description": null,
+      "items": [
+        {
+          "title": "Automated Payroll Runs",
+          "desc": "Set up payroll once and let it run automatically, with full audit trails.",
+          "icon": "lightning"
+        },
+        {
+          "title": "Tax & Compliance",
+          "desc": "Stay compliant with local tax laws and generate reports in one click.",
+          "icon": "check"
+        },
+        {
+          "title": "Employee Self-Service",
+          "desc": "Employees access payslips, tax docs, and leave balances anytime.",
+          "icon": "user"
+        },
+        {
+          "title": "Real-Time Analytics",
+          "desc": "Get instant insights into payroll costs, trends, and forecasts.",
+          "icon": "chart"
+        },
+        {
+          "title": "Multi-Country Support",
+          "desc": "Run payroll for teams in multiple countries, currencies, and languages.",
+          "icon": "globe"
+        },
+        {
+          "title": "Integrations",
+          "desc": "Connect with HR, time tracking, and accounting tools you already use.",
+          "icon": "connection"
+        }
+      ]
+    },
+    "modules": {
+      "show": false,
+      "title": null,
+      "items": []
+    },
+    "useCases": {
+      "show": false,
+      "title": null,
+      "items": []
+    },
+    "whyPerfect": {
+      "show": true,
+      "title": "Why It's <span class=\"text-blue-600\">Perfect</span> for Your Business",
+      "items": [
+        "Handles flexible work models (remote, hybrid, contract)",
+        "Built-in compliance for local and global operations",
+        "Reduces time spent on admin work by 70%",
+        "Supports dynamic teams with frequent changes",
+        "Scales with your business — from startup to enterprise"
+      ]
+    },
+    "pricing": {
+      "show": false,
+      "title": null,
+      "plans": []
+    },
+    "faqs": {
+      "show": true,
+      "title": "Common Questions",
+      "description": "Get quick answers to the most frequently asked questions about our payroll system",
+      "items": [
+        {
+          "question": "Does this system support global payroll?",
+          "answer": "Yes, we support multi-country and multi-currency payroll operations."
+        },
+        {
+          "question": "Can it integrate with our existing HR system?",
+          "answer": "Absolutely, we offer seamless integrations and open APIs."
+        },
+        {
+          "question": "How long does implementation take?",
+          "answer": "Most companies are onboarded in less than 2 weeks."
+        },
+        {
+          "question": "Is the platform secure?",
+          "answer": "Yes, we use bank-level encryption and comply with global security standards to protect your sensitive payroll data."
+        },
+        {
+          "question": "Can employees access their payroll information?",
+          "answer": "Yes, through our employee self-service portal, staff can securely access their payslips, tax documents, and payment history."
+        }
+      ]
+    },
+    "cta": {
+      "show": true,
+      "title": "Ready to Simplify Your <span class=\"text-blue-600\">Payroll?</span>",
+      "description": "Get in touch for a personalized demo and see how our solution can transform your payroll process.",
+      "buttonText": "Request Now !"
+    },
+    "demoImages": [
+      "/images/Hr/hrS1.png",
+      "/images/Hr/hrS2.jpeg"
+    ]
+  },
+  "retail": {
+    "meta": {
+      "pageTitle": "Retail",
+      "theme": {
+        "primaryColor": "text-blue-600"
+      }
+    },
+    "hero": {
+      "show": true,
+      "title": "Retail Excellence",
+      "subtitle": null,
+      "description": "Transform your retail operations with integrated commerce solutions that unify online, mobile, and in-store experiences while optimizing inventory and enhancing customer satisfaction.",
+      "backgroundImage": null,
+      "ctaText": "Talk to an Expert"
+    },
+    "industryStats": {
+      "show": true,
+      "items": [
+        {
+          "value": "300+",
+          "label": "Retail Clients",
+          "description": "Successful implementations"
+        },
+        {
+          "value": "50%",
+          "label": "Sales Growth",
+          "description": "Average improvement"
+        },
+        {
+          "value": "40%",
+          "label": "Cost Reduction",
+          "description": "In operational costs"
+        },
+        {
+          "value": "99%",
+          "label": "Uptime",
+          "description": "System availability"
+        }
+      ]
+    },
+    "challenges": {
+      "show": true,
+      "title": "Retail Challenges",
+      "description": "Modern retail faces complex challenges that require integrated solutions to deliver exceptional customer experiences and maintain profitability.",
+      "items": [
+        {
+          "title": "Omnichannel Inventory Management",
+          "description": "Managing inventory across multiple sales channels while maintaining real-time visibility and preventing stockouts",
+          "icon": "M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4",
+          "impact": "35% inventory discrepancies"
+        },
+        {
+          "title": "Customer Experience Consistency",
+          "description": "Delivering consistent customer experience across online, mobile, and physical store touchpoints",
+          "icon": "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z",
+          "impact": "40% customer satisfaction issues"
+        },
+        {
+          "title": "Seasonal Demand Planning",
+          "description": "Accurately forecasting demand for seasonal products and managing inventory levels accordingly",
+          "icon": "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z",
+          "impact": "25% excess seasonal inventory"
+        },
+        {
+          "title": "Price Optimization & Promotions",
+          "description": "Managing dynamic pricing strategies and promotional campaigns across multiple channels",
+          "icon": "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
+          "impact": "20% margin erosion"
+        }
+      ]
+    },
+    "solutions": {
+      "show": true,
+      "title": "NetSuite Solutions",
+      "description": "Comprehensive retail solutions that unify your commerce operations, from inventory management to customer experience optimization.",
+      "items": [
+        {
+          "title": "Omnichannel Commerce",
+          "description": "Unified commerce platform connecting online, mobile, and in-store experiences",
+          "features": [
+            "Real-time inventory visibility",
+            "Cross-channel order management",
+            "Unified customer profiles",
+            "Buy online, pick up in store",
+            "Endless aisle capabilities"
+          ],
+          "benefits": "45% improvement in inventory turnover"
+        },
+        {
+          "title": "Point of Sale (POS) Integration",
+          "description": "Seamlessly integrated POS system with real-time synchronization to back-office operations",
+          "features": [
+            "Cloud-based POS system",
+            "Mobile POS capabilities",
+            "Real-time inventory updates",
+            "Customer loyalty integration",
+            "Multi-location management"
+          ],
+          "benefits": "60% faster checkout process"
+        },
+        {
+          "title": "E-commerce Platform",
+          "description": "Native e-commerce solution with advanced merchandising and personalization",
+          "features": [
+            "Responsive web design",
+            "Product catalog management",
+            "Personalized recommendations",
+            "Advanced search & filtering",
+            "Mobile commerce optimization"
+          ],
+          "benefits": "50% increase in online conversion"
+        },
+        {
+          "title": "Customer Relationship Management",
+          "description": "360-degree customer view with advanced analytics and marketing automation",
+          "features": [
+            "Unified customer database",
+            "Purchase history tracking",
+            "Loyalty program management",
+            "Targeted marketing campaigns",
+            "Customer service integration"
+          ],
+          "benefits": "35% increase in customer retention"
+        }
+      ]
+    },
+    "features": {
+      "show": true,
+      "title": "Retail Features",
+      "description": "Comprehensive features designed specifically for retail operations and customer experience optimization.",
+      "items": [
+        {
+          "title": "Inventory Management",
+          "description": "Real-time inventory tracking across all channels and locations",
+          "icon": "M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4",
+          "benefits": [
+            "Real-time stock levels",
+            "Automated reordering",
+            "Multi-location tracking",
+            "Demand forecasting"
+          ]
+        },
+        {
+          "title": "Customer Management",
+          "description": "Comprehensive customer profiles and loyalty program management",
+          "icon": "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z",
+          "benefits": [
+            "360-degree customer view",
+            "Loyalty programs",
+            "Purchase history",
+            "Personalized marketing"
+          ]
+        },
+        {
+          "title": "Financial Management",
+          "description": "Complete financial oversight with retail-specific reporting",
+          "icon": "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z",
+          "benefits": [
+            "Real-time P&L",
+            "Store performance",
+            "Margin analysis",
+            "Tax compliance"
+          ]
+        },
+        {
+          "title": "Supply Chain",
+          "description": "End-to-end supply chain visibility and vendor management",
+          "icon": "M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z",
+          "benefits": [
+            "Vendor management",
+            "Purchase automation",
+            "Drop shipping",
+            "Supply chain analytics"
+          ]
+        }
+      ]
+    },
+    "caseStudies": {
+      "show": true,
+      "title": "Success Stories",
+      "description": "Real retail companies achieving remarkable results with NetSuite commerce solutions.",
+      "items": [
+        {
+          "company": "Fashion Forward Retail",
+          "industry": "Fashion & Apparel",
+          "challenge": "Managing inventory across 50+ stores and online channels with seasonal variations",
+          "solution": "NetSuite Omnichannel Commerce with advanced inventory management and demand planning",
+          "results": [
+            "55% reduction in stockouts",
+            "40% improvement in inventory turnover",
+            "30% increase in cross-channel sales",
+            "Real-time visibility across all channels"
+          ],
+          "image": "https://images.unsplash.com/photo-1445205170230-053b83016050?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+        },
+        {
+          "company": "Electronics Plus",
+          "industry": "Consumer Electronics",
+          "challenge": "Complex product configurations and warranty management across multiple channels",
+          "solution": "NetSuite E-commerce with product configurator and service management",
+          "results": [
+            "70% reduction in order errors",
+            "45% faster product launches",
+            "60% improvement in warranty processing",
+            "Automated product configuration"
+          ],
+          "image": "https://images.unsplash.com/photo-1498049794561-7780e7231661?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+        }
+      ]
+    },
+    "implementationProcess": {
+      "show": true,
+      "title": "Implementation Process",
+      "description": "Streamline your entire NetSuite implementation lifecycle — from discovery to go-live — with a proven, secure methodology.",
+      "steps": [
+        {
+          "title": "Discovery & Planning",
+          "desc": "Analyze current retail operations, systems, and customer journey requirements",
+          "details": "Comprehensive analysis of your existing retail operations, including process mapping, system evaluation, and requirements gathering. We identify gaps and opportunities for improvement.",
+          "duration": null,
+          "benefits": [
+            "Current state assessment",
+            "Gap analysis",
+            "Implementation roadmap",
+            "Process mapping"
+          ]
+        },
+        {
+          "title": "System Design",
+          "desc": "Design NetSuite configuration for retail workflows and customer touchpoints",
+          "details": "Create a detailed blueprint for your NetSuite implementation, including system architecture, integration points, and customization requirements specific to retail processes.",
+          "duration": null,
+          "benefits": [
+            "System architecture",
+            "Process flows",
+            "Integration design",
+            "Custom requirements"
+          ]
+        },
+        {
+          "title": "Configuration & Integration",
+          "desc": "Configure NetSuite modules and integrate with POS, e-commerce, and other systems",
+          "details": "Implementation of NetSuite configuration based on the approved design, including custom script development, workflow automation, and integration setup.",
+          "duration": null,
+          "benefits": [
+            "Configured system",
+            "Integrations",
+            "Custom developments",
+            "Workflow automation"
+          ]
+        },
+        {
+          "title": "Testing & Training",
+          "desc": "Comprehensive testing and training for retail staff across all locations",
+          "details": "Thorough system testing including unit, integration, and user acceptance testing. Comprehensive training programs for all user groups to ensure smooth adoption.",
+          "duration": null,
+          "benefits": [
+            "Test results",
+            "Training materials",
+            "User documentation",
+            "System validation"
+          ]
+        },
+        {
+          "title": "Go-Live & Optimization",
+          "desc": "Production deployment with ongoing support and performance optimization",
+          "details": "Carefully managed production deployment with real-time monitoring, immediate support, and post-implementation optimization to ensure successful system adoption.",
+          "duration": null,
+          "benefits": [
+            "Live system",
+            "Support documentation",
+            "Performance monitoring",
+            "Optimization"
+          ]
+        }
+      ]
+    },
+    "cta": {
+      "show": true,
+      "title": "Ready to Transform Your Retail Operations?",
+      "description": "Join hundreds of retail companies that have unified their commerce operations and improved customer experience with NetSuite. Get started with a free consultation today.",
+      "features": [
+        {
+          "title": "Free Assessment",
+          "description": "Comprehensive evaluation of your retail processes",
+          "icon": null
+        },
+        {
+          "title": "Rapid Implementation",
+          "description": "Get up and running faster with our proven methodology",
+          "icon": null
+        },
+        {
+          "title": "Ongoing Support",
+          "description": "Continuous optimization and support for your success",
+          "icon": null
+        }
+      ],
+      "buttonText": "Schedule Retail Demo"
+    },
+    "modal": {
+      "show": false,
+      "title": null,
+      "subtitle": null
+    }
+  },
+  "training": {
+    "trainingPrograms": {
+      "image": "",
+      "programs": [
+        {
+          "id": 1,
+          "title": "NetSuite Fundamentals",
+          "shortDescription": "Core concepts and navigation basics",
+          "longDescription": "This comprehensive fundamentals program introduces you to the core concepts of NetSuite, covering essential navigation, basic configuration, and understanding the platform's architecture. Perfect for new users who want to build a solid foundation in NetSuite operations. You'll learn about dashboards, basic record management, user interface customization, and essential business processes. Our expert instructors will guide you through hands-on exercises to ensure practical understanding of the system.",
+          "icon": "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+        },
+        {
+          "id": 2,
+          "title": "Advanced Modules",
+          "shortDescription": "Financial management and reporting",
+          "longDescription": "Dive deep into NetSuite's advanced modules with focus on financial management, advanced reporting, and complex business processes. This program covers general ledger management, accounts payable and receivable, budgeting and forecasting, financial reporting, and period-end procedures. You'll master advanced workflows, approval processes, and learn to create sophisticated financial reports. Ideal for finance professionals and power users who need to leverage NetSuite's full financial capabilities.",
+          "icon": "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+        },
+        {
+          "id": 3,
+          "title": "Customization Training",
+          "shortDescription": "SuiteScript and custom solutions",
+          "longDescription": "Master NetSuite customization through comprehensive SuiteScript training and custom solution development. This advanced program covers SuiteScript 2.0, custom fields, forms, records, workflows, and restlets. You'll learn to build custom applications, integrate with external systems, and create sophisticated automation solutions. The course includes practical projects where you'll develop real-world customizations, user event scripts, scheduled scripts, and client scripts. Perfect for developers and technical consultants.",
+          "icon": "M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+        },
+        {
+          "id": 4,
+          "title": "Admin & Security",
+          "shortDescription": "System administration and security",
+          "longDescription": "Comprehensive system administration and security training for NetSuite environments. Learn user management, role configuration, permission settings, data security, and system maintenance. This program covers advanced topics including single sign-on (SSO), two-factor authentication, IP restrictions, audit trails, and compliance requirements. You'll master user provisioning, role-based access control, and security best practices. Essential for system administrators and IT professionals responsible for NetSuite security and governance.",
+          "icon": "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+        }
+      ]
+    },
+    "trainingFeatures": [
+      {
+        "id": 1,
+        "title": "Expert Instructors",
+        "shortDescription": "Certified professionals with years of experience",
+        "detailedDescription": "Our instructors are certified NetSuite professionals with extensive real-world experience across various industries. They bring practical insights from hundreds of implementations and possess deep technical knowledge of NetSuite's capabilities. Each instructor holds multiple NetSuite certifications and maintains up-to-date expertise through continuous learning and hands-on project experience.",
+        "benefits": [
+          "Industry-proven expertise with 10+ years of NetSuite experience",
+          "Multiple NetSuite certifications (Administrator, Developer, Consultant)",
+          "Real-world implementation experience across 500+ projects",
+          "Specialized knowledge in various industry verticals",
+          "Continuous learning and certification maintenance",
+          "Direct access to NetSuite development team insights"
+        ],
+        "statistics": {
+          "experience": "10+ Years Average",
+          "certifications": "5+ Per Instructor",
+          "projectsCompleted": "500+ Projects",
+          "studentsSatisfaction": "98% Rating"
+        },
+        "icon": "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+      },
+      {
+        "id": 2,
+        "title": "Hands-on Learning",
+        "shortDescription": "Practical exercises with real-world scenarios",
+        "detailedDescription": "Our training methodology emphasizes practical, hands-on learning through real-world scenarios and interactive exercises. Students work with live NetSuite environments, complete actual business processes, and solve real implementation challenges. This approach ensures immediate application of knowledge and builds confidence in using NetSuite effectively.",
+        "benefits": [
+          "Live NetSuite sandbox environments for each student",
+          "Real business scenarios from actual client implementations",
+          "Step-by-step guided exercises with immediate feedback",
+          "Group projects that simulate workplace collaboration",
+          "Access to sample data from various industries",
+          "Practice with actual business workflows and processes"
+        ],
+        "statistics": {
+          "practicalTime": "70% Hands-on",
+          "scenarios": "50+ Real Cases",
+          "environments": "Individual Sandboxes",
+          "completionRate": "95% Success"
+        },
+        "icon": "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+      },
+      {
+        "id": 3,
+        "title": "Flexible Scheduling",
+        "shortDescription": "Multiple training formats to fit your needs",
+        "detailedDescription": "We understand that every organization has unique scheduling requirements. Our flexible training options include multiple formats, timing options, and customization levels to accommodate your team's availability and learning preferences. Whether you need intensive workshops or extended learning programs, we have options that work for you.",
+        "benefits": [
+          "In-person, virtual, and hybrid training formats",
+          "Weekend and evening session availability",
+          "Self-paced online modules with instructor support",
+          "Custom scheduling for corporate groups",
+          "Recorded sessions for future reference",
+          "Flexible start dates throughout the year"
+        ],
+        "statistics": {
+          "formats": "3 Training Modes",
+          "flexibility": "24/7 Online Access",
+          "customization": "100% Adaptable",
+          "availability": "Year-round"
+        },
+        "icon": "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+      },
+      {
+        "id": 4,
+        "title": "Ongoing Support",
+        "shortDescription": "Continuous assistance beyond training completion",
+        "detailedDescription": "Our commitment to your success extends far beyond the classroom. We provide comprehensive ongoing support to ensure you can apply your new skills effectively in your work environment. This includes technical assistance, best practice guidance, and access to our expert community for continued learning and problem-solving.",
+        "benefits": [
+          "6 months of post-training email and phone support",
+          "Access to exclusive online community and forums",
+          "Monthly Q&A sessions with expert instructors",
+          "Updated training materials as NetSuite evolves",
+          "Priority access to advanced courses and webinars",
+          "Direct line to implementation consultants for complex issues"
+        ],
+        "statistics": {
+          "supportDuration": "6+ Months",
+          "responseTime": "24 Hours",
+          "community": "1000+ Members",
+          "satisfaction": "97% Positive"
+        },
+        "icon": "M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 2.25a9.75 9.75 0 109.75 9.75A9.75 9.75 0 0012 2.25z"
+      }
+    ],
+    "keyModules": [
+      {
+        "title": "System Architecture",
+        "description": "Core system structure, data flow, and integration patterns",
+        "duration": "8 hours",
+        "icon": "M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+      },
+      {
+        "title": "Financial Management",
+        "description": "General ledger, budgeting, financial reporting, and analytics",
+        "duration": "12 hours",
+        "icon": "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+      },
+      {
+        "title": "E-commerce & CRM",
+        "description": "Customer relationship management and e-commerce integration",
+        "duration": "10 hours",
+        "icon": "M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+      },
+      {
+        "title": "Customization & Scripts",
+        "description": "SuiteScript, custom fields, forms, and workflow automation",
+        "duration": "16 hours",
+        "icon": "M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+      },
+      {
+        "title": "Advanced Reporting",
+        "description": "Saved searches, dashboard creation, and analytics tools",
+        "duration": "8 hours",
+        "icon": "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+      },
+      {
+        "title": "User Administration",
+        "description": "Role-based permissions, security setup, and user management",
+        "duration": "6 hours",
+        "icon": "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+      }
+    ],
+    "heroContent": {
+      "title": "Professional Training Programs",
+      "description": "Empower your team with comprehensive training solutions designed to enhance skills and drive success"
+    },
+    "programsSection": {
+      "title": "Our Training Programs",
+      "description": "Comprehensive training solutions designed to empower your team with the skills they need to excel",
+      "image": "/images/traning.jpg",
+      "Professional_Badge": "Certified Training"
+    },
+    "keyModulesSection": {
+      "title": "Key Training Modules",
+      "description": "Comprehensive curriculum designed to master NetSuite from foundation to advanced implementation"
+    },
+    "whyChooseSection": {
+      "title": "Why Choose Our Training?",
+      "description": "We provide world-class training solutions that combine expertise, innovation, and practical application to ensure your team's success",
+      "image": "/images/chooese.png",
+      "Professional_Badge": "Excellence Training"
+    }
+  }
+}

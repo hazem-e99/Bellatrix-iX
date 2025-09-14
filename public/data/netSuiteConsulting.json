@@ -1,0 +1,182 @@
+{
+  "hero": {
+    "title": "NetSuite Consulting",
+    "description": "Strategic guidance and expert consulting to maximize your NetSuite investment and transform your business operations.",
+    "ctaText": "Talk to an Expert",
+    "ctaIcon": "M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+  },
+  "services": {
+    "title": "Our <span>Consulting Services</span>",
+    "description": "Comprehensive NetSuite consulting services designed to optimize your business processes and maximize your return on investment.",
+    "items": [
+      {
+        "title": "NetSuite Implementation Strategy",
+        "description": "Comprehensive planning and roadmap development for successful NetSuite deployment",
+        "icon": "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z",
+        "features": [
+          "Business process analysis and optimization",
+          "System architecture design",
+          "Implementation timeline and milestones",
+          "Risk assessment and mitigation strategies",
+          "Change management planning"
+        ]
+      },
+      {
+        "title": "Business Process Optimization",
+        "description": "Streamline your operations with NetSuite's powerful automation capabilities",
+        "icon": "M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z",
+        "features": [
+          "Workflow automation design",
+          "Custom field and form configuration",
+          "Approval process optimization",
+          "Data validation and integrity",
+          "Performance monitoring setup"
+        ]
+      },
+      {
+        "title": "Financial Management Consulting",
+        "description": "Optimize your financial operations with NetSuite's comprehensive financial suite",
+        "icon": "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z",
+        "features": [
+          "Chart of accounts optimization",
+          "Revenue recognition setup",
+          "Multi-currency configuration",
+          "Financial reporting and dashboards",
+          "Budgeting and forecasting"
+        ]
+      },
+      {
+        "title": "System Integration & Data Migration",
+        "description": "Seamlessly connect NetSuite with your existing systems and migrate critical data",
+        "icon": "M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z",
+        "features": [
+          "Third-party system integrations",
+          "Data mapping and transformation",
+          "API development and management",
+          "Legacy system migration",
+          "Real-time data synchronization"
+        ]
+      }
+    ],
+    "image": "/images/ourProServices.png"
+  },
+  "industries": {
+    "title": "Industry <span>Expertise</span>",
+    "description": "Deep industry knowledge across multiple sectors, ensuring your NetSuite implementation aligns with industry best practices and regulatory requirements.",
+    "items": [
+      {
+        "name": "Manufacturing",
+        "description": "Optimize production planning, inventory management, and supply chain operations",
+        "image": "/images/3.jpg",
+        "solutions": ["Production Planning", "Inventory Optimization", "Quality Control", "Cost Accounting"],
+        "link": "/industries/manufacturing"
+      },
+      {
+        "name": "Retail & E-commerce",
+        "description": "Streamline multi-channel operations and enhance customer experience",
+        "image": "/images/6.jpg",
+        "solutions": ["Omnichannel Management", "POS Integration", "Customer Analytics", "Inventory Tracking"],
+        "link": "/industries/retail"
+      },
+      {
+        "name": "HR Solutions",
+        "description": "Modern HR, payroll & people management for all business sizes",
+        "image": "/images/Hr/hrS1.png",
+        "solutions": ["Employee Management", "Performance Tracking", "Compliance", "Automated Workflows"],
+        "link": "/HRSolution"
+      },
+      {
+        "name": "Payroll Management",
+        "description": "Automated payroll processing with compliance and multi-currency support",
+        "image": "/images/payrollFinal.jpeg",
+        "solutions": ["Automated Processing", "Tax Compliance", "Multi-Currency", "Employee Self-Service"],
+        "link": "/Payroll"
+      }
+    ]
+  },
+  "process": {
+    "title": "Our Consulting <span>Process</span>",
+    "description": "A proven methodology that ensures successful NetSuite implementations and optimizations tailored to your unique business requirements.",
+    "image": "/images/ourProServicesTwo.png",
+    "steps": [
+      {
+        "step": "01",
+        "title": "Discovery & Assessment",
+        "description": "Comprehensive analysis of your current systems, processes, and business requirements",
+        "duration": "1-2 weeks"
+      },
+      {
+        "step": "02",
+        "title": "Strategy Development",
+        "description": "Create a detailed roadmap with timelines, milestones, and success metrics",
+        "duration": "1 week"
+      },
+      {
+        "step": "03",
+        "title": "Solution Design",
+        "description": "Design custom NetSuite configuration tailored to your specific needs",
+        "duration": "2-3 weeks"
+      },
+      {
+        "step": "04",
+        "title": "Implementation Support",
+        "description": "Hands-on guidance throughout the implementation process",
+        "duration": "4-12 weeks"
+      },
+      {
+        "step": "05",
+        "title": "Optimization & Training",
+        "description": "Fine-tune the system and train your team for maximum efficiency",
+        "duration": "2-4 weeks"
+      }
+    ]
+  },
+  "benefits": {
+    "title": "Why Choose Our <span>Consulting</span>",
+    "description": "Proven results that drive business value and accelerate your digital transformation journey.",
+    "items": [
+      {
+        "title": "Faster Implementation",
+        "description": "Reduce implementation time by up to 40% with our proven methodologies",
+        "metric": "40% Faster"
+      },
+      {
+        "title": "Cost Optimization",
+        "description": "Minimize total cost of ownership through efficient system design",
+        "metric": "30% Savings"
+      },
+      {
+        "title": "Risk Mitigation",
+        "description": "Avoid common pitfalls with our experienced consulting approach",
+        "metric": "95% Success Rate"
+      },
+      {
+        "title": "ROI Acceleration",
+        "description": "Achieve faster return on investment with optimized configurations",
+        "metric": "6 Months ROI"
+      }
+    ]
+  },
+  "cta": {
+    "title": "Ready to Optimize Your <span>NetSuite Investment?</span>",
+    "description": "Get expert guidance from certified NetSuite consultants. Schedule your free consultation today and discover how we can help you achieve maximum ROI.",
+    "features": [
+      {
+        "icon": "M12 8v4l3 3m6 2a9 9 0 11-18 0 9 9 0 0118 0z",
+        "title": "Free Assessment",
+        "description": "Comprehensive evaluation of your current setup"
+      },
+      {
+        "icon": "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z",
+        "title": "Proven Results",
+        "description": "Track record of successful implementations"
+      },
+      {
+        "icon": "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z",
+        "title": "Expert Team",
+        "description": "Certified NetSuite professionals"
+      }
+    ],
+    "buttonText": "Schedule Free Consultation"
+  }
+}

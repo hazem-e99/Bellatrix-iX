@@ -1,0 +1,219 @@
+{
+  "meta": {
+    "pageTitle": "Payroll",
+    "theme": {
+      "bgColor": "bg-white",
+      "primaryColor": "text-blue-600"
+    }
+  },
+  "hero": {
+    "show": true,
+    "title": "Transform Your Payroll Process",
+    "subtitle": "Streamline operations with our intelligent, automated payroll system",
+    "bgVideo": null,
+    "bgImage": null
+  },
+  "painPoints": {
+    "show": true,
+    "title": "The Payroll <span class=\"text-blue-600\">Struggles</span> We Eliminate",
+    "description": "Our system addresses the most common payroll challenges faced by consultancy firms:",
+    "items": [
+      {
+        "text": "Delayed salary processing and errors",
+        "icon": "time"
+      },
+      {
+        "text": "Manual tax calculations and compliance risks",
+        "icon": "check"
+      },
+      {
+        "text": "Lack of visibility and transparency for employees",
+        "icon": "user"
+      },
+      {
+        "text": "Difficulty scaling payroll operations across geographies",
+        "icon": "globe"
+      },
+      {
+        "text": "Disconnected systems leading to data silos",
+        "icon": "connection"
+      }
+    ]
+  },
+  "howItWorks": {
+    "show": true,
+    "title": "How Our Payroll System Works",
+    "description": "Our payroll process is simple: upload employee and contract details, sync timesheets and leave data, let the system run payroll automatically on schedule, approve via role-based access, execute payments through integrated bank APIs, and download payslips & compliance-ready reports—all in one platform."
+  },
+  "coreWorkflow": {
+    "show": true,
+    "title": "Payroll System Built for All Industries",
+    "description": "Streamline your entire payroll lifecycle — from onboarding to salary disbursement — with a secure, intuitive platform.",
+    "subtitle": "Core Workflow",
+    "steps": [
+      {
+        "title": "Employee data import",
+        "desc": "Easily onboard and manage employee records in one place.",
+        "details": "Import employee data from spreadsheets or integrated HR systems. Supports bulk uploads and data validation with real-time error checking.",
+        "benefits": [
+          "Bulk import from Excel/CSV",
+          "Data validation",
+          "Duplicate detection",
+          "HR system integration"
+        ]
+      },
+      {
+        "title": "Time & attendance sync",
+        "desc": "Integrate timesheets and attendance for accurate payroll.",
+        "details": "Syncs with your time tracking tools to ensure accurate hours and leave data for every employee. Supports multiple time tracking systems.",
+        "benefits": [
+          "Real-time sync",
+          "Multiple time systems",
+          "Leave management",
+          "Overtime calculation"
+        ]
+      },
+      {
+        "title": "Salary & tax auto-calculation",
+        "desc": "Automate salary, tax, and deduction calculations.",
+        "details": "Calculates gross and net pay, taxes, and deductions automatically based on your rules and local compliance. Handles complex tax scenarios.",
+        "benefits": [
+          "Auto tax calculation",
+          "Compliance built-in",
+          "Deduction management",
+          "Bonus processing"
+        ]
+      },
+      {
+        "title": "Approval workflows",
+        "desc": "Streamline approvals with role-based access.",
+        "details": "Multi-level approval flows for payroll runs, with notifications and audit trails. Customizable approval hierarchies.",
+        "benefits": [
+          "Multi-level approval",
+          "Email notifications",
+          "Audit trails",
+          "Role-based access"
+        ]
+      },
+      {
+        "title": "Payment execution",
+        "desc": "Execute payments securely through integrated bank APIs.",
+        "details": "Initiate salary payments directly from the platform with secure, bank-level integrations. Supports multiple payment methods.",
+        "benefits": [
+          "Bank API integration",
+          "Multiple payment methods",
+          "Secure transactions",
+          "Payment tracking"
+        ]
+      },
+      {
+        "title": "Payslip generation & reporting",
+        "desc": "Generate payslips and compliance-ready reports instantly.",
+        "details": "Employees get digital payslips; admins get downloadable, compliance-ready reports. Customizable templates and automated distribution.",
+        "benefits": [
+          "Digital payslips",
+          "Custom templates",
+          "Auto distribution",
+          "Compliance reports"
+        ]
+      }
+    ]
+  },
+  "features": {
+    "show": true,
+    "title": "Key Features for Modern Consultancies",
+    "description": null,
+    "items": [
+      {
+        "title": "Automated Payroll Runs",
+        "desc": "Set up payroll once and let it run automatically, with full audit trails.",
+        "icon": "lightning"
+      },
+      {
+        "title": "Tax & Compliance",
+        "desc": "Stay compliant with local tax laws and generate reports in one click.",
+        "icon": "check"
+      },
+      {
+        "title": "Employee Self-Service",
+        "desc": "Employees access payslips, tax docs, and leave balances anytime.",
+        "icon": "user"
+      },
+      {
+        "title": "Real-Time Analytics",
+        "desc": "Get instant insights into payroll costs, trends, and forecasts.",
+        "icon": "chart"
+      },
+      {
+        "title": "Multi-Country Support",
+        "desc": "Run payroll for teams in multiple countries, currencies, and languages.",
+        "icon": "globe"
+      },
+      {
+        "title": "Integrations",
+        "desc": "Connect with HR, time tracking, and accounting tools you already use.",
+        "icon": "connection"
+      }
+    ]
+  },
+  "modules": {
+    "show": false,
+    "title": null,
+    "items": []
+  },
+  "useCases": {
+    "show": false,
+    "title": null,
+    "items": []
+  },
+  "whyPerfect": {
+    "show": true,
+    "title": "Why It's <span class=\"text-blue-600\">Perfect</span> for Your Business",
+    "items": [
+      "Handles flexible work models (remote, hybrid, contract)",
+      "Built-in compliance for local and global operations",
+      "Reduces time spent on admin work by 70%",
+      "Supports dynamic teams with frequent changes",
+      "Scales with your business — from startup to enterprise"
+    ]
+  },
+  "pricing": {
+    "show": false,
+    "title": null,
+    "plans": []
+  },
+  "faqs": {
+    "show": true,
+    "title": "Common Questions",
+    "description": "Get quick answers to the most frequently asked questions about our payroll system",
+    "items": [
+      {
+        "question": "Does this system support global payroll?",
+        "answer": "Yes, we support multi-country and multi-currency payroll operations."
+      },
+      {
+        "question": "Can it integrate with our existing HR system?",
+        "answer": "Absolutely, we offer seamless integrations and open APIs."
+      },
+      {
+        "question": "How long does implementation take?",
+        "answer": "Most companies are onboarded in less than 2 weeks."
+      },
+      {
+        "question": "Is the platform secure?",
+        "answer": "Yes, we use bank-level encryption and comply with global security standards to protect your sensitive payroll data."
+      },
+      {
+        "question": "Can employees access their payroll information?",
+        "answer": "Yes, through our employee self-service portal, staff can securely access their payslips, tax documents, and payment history."
+      }
+    ]
+  },
+  "cta": {
+    "show": true,
+    "title": "Ready to Simplify Your <span class=\"text-blue-600\">Payroll?</span>",
+    "description": "Get in touch for a personalized demo and see how our solution can transform your payroll process.",
+    "buttonText": "Request Now !"
+  },
+  "demoImages": ["/images/Hr/hrS1.png", "/images/Hr/hrS2.jpeg"]
+}

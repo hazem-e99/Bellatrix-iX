@@ -1,0 +1,252 @@
+{
+  "meta": {
+    "pageTitle": "Manufacturing",
+    "theme": {
+      "primaryColor": "text-blue-600"
+    }
+  },
+  "hero": {
+    "show": true,
+    "title": "Manufacturing Excellence",
+    "subtitle": "Powered by NetSuite",
+    "description": "Transform your manufacturing operations with integrated ERP solutions that streamline production, optimize inventory, and ensure quality compliance across your entire value chain.",
+    "backgroundImage": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+    "ctaText": null
+  },
+  "industryStats": {
+    "show": true,
+    "items": [
+      {
+        "value": "500+",
+        "label": "Manufacturing Clients",
+        "description": "Successful implementations"
+      },
+      {
+        "value": "40%",
+        "label": "Efficiency Gain",
+        "description": "Average improvement"
+      },
+      {
+        "value": "35%",
+        "label": "Cost Reduction",
+        "description": "In operational costs"
+      },
+      {
+        "value": "98%",
+        "label": "Client Satisfaction",
+        "description": "Success rate"
+      }
+    ]
+  },
+  "challenges": {
+    "show": true,
+    "title": "Manufacturing Challenges",
+    "description": "Modern manufacturing faces complex challenges that require integrated solutions to optimize operations and maintain quality standards.",
+    "items": [
+      {
+        "title": "Complex Production Planning",
+        "description": "Managing multi-level BOMs, work orders, and production schedules across multiple facilities",
+        "icon": "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2",
+        "impact": "30% production delays"
+      },
+      {
+        "title": "Inventory Management Complexity",
+        "description": "Tracking raw materials, WIP, and finished goods across multiple locations with real-time visibility",
+        "icon": "M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4",
+        "impact": "25% excess inventory"
+      },
+      {
+        "title": "Quality Control & Compliance",
+        "description": "Maintaining quality standards and regulatory compliance throughout the manufacturing process",
+        "icon": "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z",
+        "impact": "15% quality issues"
+      },
+      {
+        "title": "Supply Chain Visibility",
+        "description": "Managing supplier relationships and ensuring timely delivery of materials and components",
+        "icon": "M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z",
+        "impact": "20% supply delays"
+      }
+    ]
+  },
+  "solutions": {
+    "show": true,
+    "title": "NetSuite Solutions",
+    "description": "Comprehensive manufacturing solutions that streamline your operations from production planning to quality control.",
+    "items": [
+      {
+        "title": "Advanced Manufacturing",
+        "description": "Complete production planning with work orders, routing, and capacity planning",
+        "features": [
+          "Multi-level BOM management",
+          "Work order scheduling",
+          "Capacity planning",
+          "Shop floor control",
+          "Production reporting"
+        ],
+        "benefits": "40% improvement in production efficiency"
+      },
+      {
+        "title": "Inventory & Warehouse Management",
+        "description": "Real-time inventory tracking with automated replenishment and cycle counting",
+        "features": [
+          "Real-time inventory tracking",
+          "Automated reorder points",
+          "Cycle counting",
+          "Lot and serial tracking",
+          "Multi-location management"
+        ],
+        "benefits": "35% reduction in inventory costs"
+      },
+      {
+        "title": "Quality Management",
+        "description": "Comprehensive quality control with inspection plans and non-conformance tracking",
+        "features": [
+          "Quality inspection plans",
+          "Non-conformance tracking",
+          "Supplier quality management",
+          "Certificate of analysis",
+          "Corrective action tracking"
+        ],
+        "benefits": "50% reduction in quality issues"
+      },
+      {
+        "title": "Supply Chain Management",
+        "description": "End-to-end supply chain visibility with supplier collaboration tools",
+        "features": [
+          "Supplier portal",
+          "Purchase order automation",
+          "Vendor performance tracking",
+          "Drop shipment management",
+          "Supply chain analytics"
+        ],
+        "benefits": "30% improvement in on-time delivery"
+      }
+    ]
+  },
+  "features": {
+    "show": false,
+    "title": null,
+    "description": null,
+    "items": []
+  },
+  "caseStudies": {
+    "show": true,
+    "title": "Success Stories",
+    "description": "Real manufacturing companies achieving remarkable results with NetSuite solutions.",
+    "items": [
+      {
+        "company": "TechManufacturing Corp",
+        "industry": "Electronics Manufacturing",
+        "challenge": "Complex multi-level BOMs and production scheduling across 3 facilities",
+        "solution": "Implemented NetSuite Advanced Manufacturing with custom workflows",
+        "results": [
+          "45% reduction in production lead times",
+          "30% improvement in on-time delivery",
+          "25% reduction in inventory carrying costs",
+          "Real-time visibility across all facilities"
+        ],
+        "image": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        "company": "Precision Parts Ltd",
+        "industry": "Automotive Parts",
+        "challenge": "Quality control and traceability requirements for automotive industry",
+        "solution": "NetSuite Quality Management with lot tracking and supplier integration",
+        "results": [
+          "60% reduction in quality incidents",
+          "100% lot traceability achieved",
+          "40% faster supplier onboarding",
+          "Automated compliance reporting"
+        ],
+        "image": "https://images.unsplash.com/photo-1565043666747-69f6646db940?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      }
+    ]
+  },
+  "implementationProcess": {
+    "show": true,
+    "title": "Implementation Process",
+    "description": "Streamline your entire NetSuite implementation lifecycle — from discovery to go-live — with a proven, secure methodology.",
+    "steps": [
+      {
+        "title": "Discovery & Assessment",
+        "desc": "Analyze current manufacturing processes, systems, and requirements",
+        "details": "Analyze current manufacturing processes, systems, and requirements",
+        "duration": "2-3 weeks",
+        "benefits": [
+          "Current state assessment",
+          "Gap analysis",
+          "Requirements documentation"
+        ]
+      },
+      {
+        "title": "Solution Design",
+        "desc": "Design NetSuite configuration tailored to manufacturing workflows",
+        "details": "Design NetSuite configuration tailored to manufacturing workflows",
+        "duration": "3-4 weeks",
+        "benefits": [
+          "System architecture",
+          "Process flows",
+          "Integration design"
+        ]
+      },
+      {
+        "title": "Configuration & Development",
+        "desc": "Configure NetSuite modules and develop custom manufacturing features",
+        "details": "Configure NetSuite modules and develop custom manufacturing features",
+        "duration": "6-8 weeks",
+        "benefits": [
+          "Configured system",
+          "Custom developments",
+          "Integration setup"
+        ]
+      },
+      {
+        "title": "Testing & Training",
+        "desc": "Comprehensive testing and user training for manufacturing teams",
+        "details": "Comprehensive testing and user training for manufacturing teams",
+        "duration": "3-4 weeks",
+        "benefits": ["Test results", "Training materials", "User documentation"]
+      },
+      {
+        "title": "Go-Live & Support",
+        "desc": "Production deployment with ongoing support and optimization",
+        "details": "Production deployment with ongoing support and optimization",
+        "duration": "2-3 weeks",
+        "benefits": [
+          "Live system",
+          "Support documentation",
+          "Performance monitoring"
+        ]
+      }
+    ]
+  },
+  "cta": {
+    "show": true,
+    "title": "Ready to Transform Your Manufacturing Operations?",
+    "description": "Join hundreds of manufacturing companies that have streamlined their operations and improved efficiency with NetSuite. Get started with a free consultation today.",
+    "features": [
+      {
+        "title": "Free Assessment",
+        "description": "Comprehensive evaluation of your manufacturing processes",
+        "icon": "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+      },
+      {
+        "title": "Rapid Implementation",
+        "description": "Get up and running faster with our proven methodology",
+        "icon": "M13 10V3L4 14h7v7l9-11h-7z"
+      },
+      {
+        "title": "Ongoing Support",
+        "description": "Continuous optimization and support for your success",
+        "icon": "M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+      }
+    ],
+    "buttonText": "Schedule Manufacturing Demo"
+  },
+  "modal": {
+    "show": true,
+    "title": "Schedule Your Manufacturing Demo",
+    "subtitle": "Let's discuss your manufacturing challenges and solutions"
+  }
+}

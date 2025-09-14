@@ -1,0 +1,79 @@
+{
+    "info": {
+      "name": "Services API",
+      "description": "Postman collection for Services API endpoints",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+      "_postman_id": "services-api-collection",
+      "version": {
+        "major": 1,
+        "minor": 0,
+        "patch": 0
+      }
+    },
+    "item": [
+      {
+        "name": "Get All Services",
+        "request": {
+          "method": "GET",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "url": {
+            "raw": "{{BASE_URL}}/api/services",
+            "host": ["{{BASE_URL}}"],
+            "path": ["api", "services"]
+          },
+          "description": "Get both support and consultation services (flattened implementation and training pages)"
+        },
+        "response": []
+      },
+      {
+        "name": "Get Consultation Services Only",
+        "request": {
+          "method": "GET",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "url": {
+            "raw": "{{BASE_URL}}/api/services/consultation",
+            "host": ["{{BASE_URL}}"],
+            "path": ["api", "services", "consultation"]
+          },
+          "description": "Get flattened array of all implementation and training pages"
+        },
+        "response": []
+      },
+      {
+        "name": "Get Support Services Only",
+        "request": {
+          "method": "GET",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "url": {
+            "raw": "{{BASE_URL}}/api/services/support",
+            "host": ["{{BASE_URL}}"],
+            "path": ["api", "services", "support"]
+          },
+          "description": "Get support services object with technical support information"
+        },
+        "response": []
+      }
+    ],
+    "variable": [
+      {
+        "key": "BASE_URL",
+        "value": "http://localhost:5005",
+        "type": "string"
+      }
+    ]
+  }

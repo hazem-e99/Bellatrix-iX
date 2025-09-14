@@ -1,0 +1,325 @@
+{
+  "hero": {
+    "slides": [
+      {
+        "title": "Strategic Business Transformationsss",
+        "subtitle": "Oracle NetSuite Consultancy",
+        "description": "Streamline operations and drive growth with our comprehensive NetSuite solutions.",
+        "video": "/Videos/HomeHeroSectionV.mp4",
+        "cta": "Explore Services"
+      },
+      {
+        "title": "Digital Optimization Experts",
+        "subtitle": "Cloud Solutions Specialists",
+        "description": "Enhance productivity with our tailored implementation and consulting services.",
+        "video": "/video2.mp4",
+        "cta": "View Case Studies"
+      },
+      {
+        "title": "Data-Driven Decision Making",
+        "subtitle": "Business Intelligence Partners",
+        "description": "Leverage real-time analytics to transform your operations.",
+        "video": "/video3.mp4",
+        "cta": "Request Consultation"
+      }
+    ],
+    "stats": [
+      {
+        "value": "200+",
+        "label": "Projects"
+      },
+      {
+        "value": "98%",
+        "label": "Satisfaction"
+      },
+      {
+        "value": "15+",
+        "label": "Years"
+      }
+    ]
+  },
+  "services": {
+    "services": [
+      {
+        "title": "Strategic Consultation",
+        "description": "Expert analysis to optimize your NetSuite roadmap with actionable insights",
+        "icon": "LightbulbOutlined",
+        "color": "#10B981",
+        "details": [
+          "Business process analysis",
+          "ROI forecasting",
+          "System architecture planning",
+          "Change management strategy"
+        ],
+        "stats": "92% client satisfaction rate",
+        "link": "/netsuite-consulting"
+      },
+      {
+        "title": "Implementation",
+        "description": "End-to-end deployment with minimal disruption to operations",
+        "icon": "BuildOutlined",
+        "color": "#0EA5E9",
+        "details": [
+          "Phased rollout planning",
+          "Data migration services",
+          "Configuration best practices",
+          "Go-live support"
+        ],
+        "stats": "40% faster than industry average",
+        "link": "/Implementation"
+      },
+      {
+        "title": "Training",
+        "description": "Customized learning paths for all user levels and roles",
+        "icon": "SchoolOutlined",
+        "color": "#8B5CF6",
+        "details": [
+          "Role-based training programs",
+          "Interactive e-learning modules",
+          "Custom documentation",
+          "Ongoing certification"
+        ],
+        "stats": "85% faster user adoption",
+        "link": "/Training"
+      },
+      {
+        "title": "Tailored Customization",
+        "description": "Bespoke solutions addressing your unique business needs",
+        "icon": "SettingsOutlined",
+        "color": "#EC4899",
+        "details": [
+          "Workflow automation",
+          "Custom dashboards",
+          "Advanced reporting",
+          "Third-party integrations"
+        ],
+        "stats": "300+ custom solutions delivered",
+        "link": "#"
+      },
+      {
+        "title": "Seamless Integration",
+        "description": "Unified ecosystem connecting NetSuite with your tech stack",
+        "icon": "LinkOutlined",
+        "color": "#F59E0B",
+        "details": [
+          "API development",
+          "Middleware configuration",
+          "Data synchronization",
+          "Real-time analytics"
+        ],
+        "stats": "99.9% integration uptime",
+        "link": "#"
+      }
+    ],
+    "sectionHeader": {
+      "title": "Our Professional Services",
+      "subtitle": "Comprehensive solutions tailored to your business needs",
+      "gradientText": "Professional Services"
+    },
+    "viewAllButton": {
+      "text": "View All Services"
+    }
+  },
+  "testimonials": {
+    "testimonials": [
+      {
+        "id": 1,
+        "quote": "Bellatrix transformed our operations. Their NetSuite expertise is unmatched.",
+        "name": "John Doe",
+        "title": "CEO of TechCorp",
+        "avatar": "JD",
+        "rating": 5,
+        "results": [
+          "40% efficiency boost",
+          "Seamless migration",
+          "24/7 support"
+        ]
+      },
+      {
+        "id": 2,
+        "quote": "The implementation was flawless. Their team delivered beyond expectations.",
+        "name": "Jane Smith",
+        "title": "COO of Innovate Inc.",
+        "avatar": "JS",
+        "rating": 5,
+        "results": [
+          "50% faster deployment",
+          "Zero downtime",
+          "Custom integrations"
+        ]
+      },
+      {
+        "id": 3,
+        "quote": "Our productivity skyrocketed by 40% after switching to Bellatrix.",
+        "name": "Sam Wilson",
+        "title": "CFO of Global Solutions",
+        "avatar": "SW",
+        "rating": 5,
+        "results": [
+          "Real-time analytics",
+          "Cost savings",
+          "Scalable infrastructure"
+        ]
+      },
+      {
+        "id": 4,
+        "quote": "Exceptional technical skills with deep business understanding.",
+        "name": "Sarah Johnson",
+        "title": "Director of Operations",
+        "avatar": "SJ",
+        "rating": 4,
+        "results": [
+          "Automated workflows",
+          "User-friendly UI",
+          "Training included"
+        ]
+      },
+      {
+        "id": 5,
+        "quote": "The best investment in our digital transformation journey.",
+        "name": "Michael Brown",
+        "title": "IT Manager",
+        "avatar": "MB",
+        "rating": 5,
+        "results": [
+          "Cloud optimization",
+          "Security upgrades",
+          "API integrations"
+        ]
+      }
+    ],
+    "sectionHeader": {
+      "title": "Trusted by Industry Leaders",
+      "subtitle": "Don't just take our word for it—here's what our clients say.",
+      "gradientText": "Trusted by Industry Leaders"
+    },
+    "ctaButton": {
+      "text": "Contact This Client's Success Manager"
+    }
+  },
+  "industries": {
+    "industries": [
+      {
+        "id": "manufacturing",
+        "label": "Manufacturing",
+        "icon": "Factory",
+        "content": {
+          "title": "Manufacturing Solutions",
+          "description": "Streamline your manufacturing operations with our comprehensive NetSuite solutions. From production planning to inventory management, we help you optimize every aspect of your manufacturing process.",
+          "features": [
+            "Production planning and scheduling",
+            "Inventory and supply chain management",
+            "Quality control and compliance",
+            "Cost accounting and analysis",
+            "Shop floor control"
+          ],
+          "image": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+        },
+        "link": "/industries/manufacturing"
+      },
+      {
+        "id": "retail",
+        "label": "Retail",
+        "icon": "Store",
+        "content": {
+          "title": "Retail Solutions",
+          "description": "Transform your retail operations with integrated commerce solutions that unify online, mobile, and in-store experiences while optimizing inventory and enhancing customer satisfaction.",
+          "features": [
+            "Omnichannel commerce platform",
+            "Real-time inventory management",
+            "Unified customer experience",
+            "Point of sale integration",
+            "Advanced analytics and reporting"
+          ],
+          "image": "https://images.unsplash.com/photo-1441986300917-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+        },
+        "link": "/industries/retail"
+      },
+      {
+        "id": "professional-services",
+        "label": "Professional Services",
+        "icon": "Briefcase",
+        "content": {
+          "title": "Professional Services Solutions",
+          "description": "Optimize your service delivery with our NetSuite solutions for professional services firms. From project management to resource allocation, we help you deliver exceptional service.",
+          "features": [
+            "Project management and tracking",
+            "Resource allocation and planning",
+            "Time and expense management",
+            "Client billing and invoicing",
+            "Service delivery automation"
+          ],
+          "image": "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+        }
+      },
+      {
+        "id": "wholesale-distribution",
+        "label": "Wholesale Distribution",
+        "icon": "Package",
+        "content": {
+          "title": "Wholesale Distribution Solutions",
+          "description": "Optimize your wholesale distribution operations with our NetSuite solutions. From order management to inventory control, we help you streamline your distribution processes.",
+          "features": [
+            "Order management and fulfillment",
+            "Inventory and warehouse management",
+            "Supplier relationship management",
+            "Pricing and discount management",
+            "Multi-channel distribution"
+          ],
+          "image": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+        }
+      }
+    ],
+    "sectionHeader": {
+      "chipLabel": "INDUSTRY SOLUTIONS",
+      "title": "Discover Modern Industry Solutions",
+      "highlightedWord": "Modern",
+      "description": "Explore how our blue-powered platform transforms your sector with interactive, tailored solutions."
+    },
+    "styles": {
+      "blueGradient": "linear-gradient(135deg, #2563eb 0%, #60a5fa 100%)",
+      "glassBg": "rgba(255,255,255,0.7)"
+    }
+  },
+  "solutions": {
+    "solutions": [
+      {
+        "title": "NetSuite Implementation",
+        "description": "Complete NetSuite deployment and configuration solutions for your business"
+      },
+      {
+        "title": "Custom Development",
+        "description": "Tailored software solutions designed to meet your unique business requirements"
+      },
+      {
+        "title": "System Integration",
+        "description": "Seamless integration between NetSuite and your existing business systems"
+      },
+      {
+        "title": "Training & Support",
+        "description": "Comprehensive training programs and ongoing technical support services"
+      },
+      {
+        "title": "Data Migration",
+        "description": "Secure and efficient migration of your business data to NetSuite"
+      },
+      {
+        "title": "Process Optimization",
+        "description": "Business process improvement and workflow automation solutions"
+      },
+      {
+        "title": "Cloud Solutions",
+        "description": "Modern cloud-based infrastructure and scalable solution architecture"
+      },
+      {
+        "title": "Business Intelligence",
+        "description": "Advanced analytics and reporting solutions for data-driven decisions"
+      }
+    ],
+    "sectionHeader": {
+      "title": "Our Solution Portfolio",
+      "subtitle": "Comprehensive solutions designed to transform your business operations",
+      "gradientText": "Solution Portfolio"
+    }
+  }
+}

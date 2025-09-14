@@ -1,0 +1,506 @@
+{
+  "info": {
+    "name": "Solutions API",
+    "description": "Postman collection for Solutions/Services API endpoints with comprehensive CRUD operations and media upload support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "solutions-api-collection",
+    "version": {
+      "major": 1,
+      "minor": 0,
+      "patch": 0
+    }
+  },
+  "item": [
+    {
+      "name": "Public Endpoints",
+      "item": [
+        {
+          "name": "Get All Solutions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/solutions?page=1&limit=10&sort=-createdAt&search=",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "solutions"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (default: 1)"
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Number of solutions per page (default: 10, max: 100)"
+                },
+                {
+                  "key": "sort",
+                  "value": "-createdAt",
+                  "description": "Sort order: createdAt, -createdAt, name, -name"
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Search term for solution name or description"
+                }
+              ]
+            },
+            "description": "Retrieve a paginated list of active solutions with optional search and sorting"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Solution by Slug",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/solutions/{{SOLUTION_SLUG}}",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "solutions", "{{SOLUTION_SLUG}}"]
+            },
+            "description": "Retrieve a specific solution by its slug (URL-friendly identifier)"
+          },
+          "response": []
+        },
+        {
+          "name": "Search Solutions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/solutions?search=HR&limit=5",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "solutions"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "HR",
+                  "description": "Search for solutions containing 'HR'"
+                },
+                {
+                  "key": "limit",
+                  "value": "5",
+                  "description": "Limit results to 5"
+                }
+              ]
+            },
+            "description": "Search solutions by name or description"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin Endpoints",
+      "item": [
+        {
+          "name": "Create Solution (JSON)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{AUTH_TOKEN}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"HR Management Solution\",\n  \"description\": \"Complete HR solution for businesses of all sizes\",\n  \"hero\": {\n    \"title\": \"Transform Your HR Operations\",\n    \"subtitle\": \"Streamline HR processes with our comprehensive solution\",\n    \"description\": \"From recruitment to payroll, manage all HR functions in one platform\",\n    \"ctaText\": \"Get Started\",\n    \"ctaLink\": \"/contact\"\n  },\n  \"benefits\": {\n    \"title\": \"Key Benefits\",\n    \"items\": [\n      {\n        \"title\": \"Automated Payroll\",\n        \"description\": \"Streamline payroll processing with automated calculations\",\n        \"icon\": \"dollar-sign\"\n      },\n      {\n        \"title\": \"Employee Self-Service\",\n        \"description\": \"Empower employees with self-service portal\",\n        \"icon\": \"user-circle\"\n      }\n    ]\n  },\n  \"modules\": {\n    \"title\": \"Core Modules\",\n    \"items\": [\n      {\n        \"name\": \"Recruitment\",\n        \"description\": \"End-to-end recruitment management\",\n        \"features\": [\"Job Posting\", \"Candidate Tracking\", \"Interview Scheduling\"]\n      },\n      {\n        \"name\": \"Payroll\",\n        \"description\": \"Automated payroll processing\",\n        \"features\": [\"Salary Calculation\", \"Tax Management\", \"Benefits Administration\"]\n      }\n    ]\n  },\n  \"pricing\": {\n    \"title\": \"Pricing Plans\",\n    \"plans\": [\n      {\n        \"name\": \"Starter\",\n        \"price\": \"$29\",\n        \"period\": \"per month\",\n        \"features\": [\"Up to 50 employees\", \"Basic reporting\", \"Email support\"]\n      },\n      {\n        \"name\": \"Professional\",\n        \"price\": \"$59\",\n        \"period\": \"per month\",\n        \"features\": [\"Up to 200 employees\", \"Advanced reporting\", \"Priority support\"],\n        \"recommended\": true\n      }\n    ]\n  }\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/solutions",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "solutions"]
+            },
+            "description": "Create a new solution without media upload using JSON data"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Solution with Media",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{AUTH_TOKEN}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "CRM Solution",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "Complete customer relationship management solution",
+                  "type": "text"
+                },
+                {
+                  "key": "mediaSection",
+                  "value": "hero",
+                  "type": "text",
+                  "description": "Section to attach media (hero, benefits, modules)"
+                },
+                {
+                  "key": "altText",
+                  "value": "CRM Dashboard Overview",
+                  "type": "text"
+                },
+                {
+                  "key": "fallbackColor",
+                  "value": "#001038",
+                  "type": "text"
+                },
+                {
+                  "key": "media",
+                  "type": "file",
+                  "description": "Image or video file for hero section"
+                },
+                {
+                  "key": "hero[title]",
+                  "value": "Transform Customer Relations",
+                  "type": "text"
+                },
+                {
+                  "key": "hero[subtitle]",
+                  "value": "Manage customers like never before",
+                  "type": "text"
+                },
+                {
+                  "key": "hero[description]",
+                  "value": "Comprehensive CRM solution for growing businesses",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/solutions",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "solutions"]
+            },
+            "description": "Create a new solution with media upload (image or video)"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Solution (JSON)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{AUTH_TOKEN}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated HR Management Solution\",\n  \"description\": \"Enhanced HR solution with new features\",\n  \"hero\": {\n    \"title\": \"Enhanced HR Operations\",\n    \"subtitle\": \"Now with AI-powered insights\",\n    \"description\": \"Advanced HR management with machine learning capabilities\"\n  },\n  \"benefits\": {\n    \"title\": \"Enhanced Benefits\",\n    \"items\": [\n      {\n        \"title\": \"AI-Powered Analytics\",\n        \"description\": \"Get insights from your HR data with AI\",\n        \"icon\": \"brain\"\n      },\n      {\n        \"title\": \"Mobile App\",\n        \"description\": \"Access HR functions on the go\",\n        \"icon\": \"mobile\"\n      }\n    ]\n  }\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/solutions/{{SOLUTION_SLUG}}",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "solutions", "{{SOLUTION_SLUG}}"]
+            },
+            "description": "Update solution information without media upload"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Solution with Media",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{AUTH_TOKEN}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "Updated Solution Name",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "Updated solution description",
+                  "type": "text"
+                },
+                {
+                  "key": "mediaSection",
+                  "value": "hero",
+                  "type": "text"
+                },
+                {
+                  "key": "altText",
+                  "value": "Updated media description",
+                  "type": "text"
+                },
+                {
+                  "key": "fallbackColor",
+                  "value": "#ff6b6b",
+                  "type": "text"
+                },
+                {
+                  "key": "media",
+                  "type": "file",
+                  "description": "New media file to replace existing"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/solutions/{{SOLUTION_SLUG}}/with-media",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "solutions", "{{SOLUTION_SLUG}}", "with-media"]
+            },
+            "description": "Update solution with new media upload"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Solution Section",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{AUTH_TOKEN}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Hero Section\",\n  \"subtitle\": \"New and improved hero content\",\n  \"description\": \"This hero section has been updated with new content\",\n  \"ctaText\": \"Learn More\",\n  \"ctaLink\": \"/demo\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/solutions/{{SOLUTION_SLUG}}/sections/hero",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "solutions", "{{SOLUTION_SLUG}}", "sections", "hero"]
+            },
+            "description": "Update a specific section of the solution (hero, benefits, modules, etc.)"
+          },
+          "response": []
+        },
+        {
+          "name": "Upload Solution Media",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{AUTH_TOKEN}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "section",
+                  "value": "benefits",
+                  "type": "text",
+                  "description": "Section to upload media to (hero, benefits, modules, etc.)"
+                },
+                {
+                  "key": "altText",
+                  "value": "Benefits section illustration",
+                  "type": "text"
+                },
+                {
+                  "key": "fallbackColor",
+                  "value": "#4CAF50",
+                  "type": "text"
+                },
+                {
+                  "key": "media",
+                  "type": "file",
+                  "description": "Media file to upload"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/solutions/{{SOLUTION_SLUG}}/media",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "solutions", "{{SOLUTION_SLUG}}", "media"]
+            },
+            "description": "Upload media for a specific solution section"
+          },
+          "response": []
+        },
+        {
+          "name": "Toggle Solution Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{AUTH_TOKEN}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/solutions/{{SOLUTION_SLUG}}/status",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "solutions", "{{SOLUTION_SLUG}}", "status"]
+            },
+            "description": "Toggle solution active/inactive status"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Solution",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{AUTH_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/solutions/{{SOLUTION_SLUG}}",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "solutions", "{{SOLUTION_SLUG}}"]
+            },
+            "description": "Permanently delete a solution"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Advanced Operations",
+      "item": [
+        {
+          "name": "Bulk Create Demo Solutions",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{AUTH_TOKEN}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"E-commerce Platform\",\n  \"description\": \"Complete e-commerce solution for online businesses\",\n  \"hero\": {\n    \"title\": \"Launch Your Online Store\",\n    \"subtitle\": \"Everything you need to sell online\",\n    \"description\": \"From product catalog to payment processing, we've got you covered\",\n    \"ctaText\": \"Start Free Trial\",\n    \"ctaLink\": \"/trial\"\n  },\n  \"benefits\": {\n    \"title\": \"Why Choose Our Platform\",\n    \"items\": [\n      {\n        \"title\": \"Mobile Responsive\",\n        \"description\": \"Your store looks great on all devices\",\n        \"icon\": \"mobile-alt\"\n      },\n      {\n        \"title\": \"Secure Payments\",\n        \"description\": \"PCI compliant payment processing\",\n        \"icon\": \"shield-alt\"\n      },\n      {\n        \"title\": \"Analytics Dashboard\",\n        \"description\": \"Track sales and customer behavior\",\n        \"icon\": \"chart-line\"\n      }\n    ]\n  },\n  \"modules\": {\n    \"title\": \"Platform Features\",\n    \"items\": [\n      {\n        \"name\": \"Product Management\",\n        \"description\": \"Easily manage your product catalog\",\n        \"features\": [\"Unlimited Products\", \"Inventory Tracking\", \"Product Variants\"]\n      },\n      {\n        \"name\": \"Order Management\",\n        \"description\": \"Streamlined order processing\",\n        \"features\": [\"Order Tracking\", \"Automated Emails\", \"Return Management\"]\n      },\n      {\n        \"name\": \"Marketing Tools\",\n        \"description\": \"Built-in marketing features\",\n        \"features\": [\"Discount Codes\", \"Email Campaigns\", \"SEO Optimization\"]\n      }\n    ]\n  },\n  \"painPoints\": {\n    \"title\": \"Common E-commerce Challenges\",\n    \"items\": [\n      {\n        \"problem\": \"High cart abandonment rates\",\n        \"solution\": \"Our optimized checkout process reduces abandonment by 40%\"\n      },\n      {\n        \"problem\": \"Managing inventory across channels\",\n        \"solution\": \"Centralized inventory management with real-time sync\"\n      }\n    ]\n  },\n  \"useCases\": {\n    \"title\": \"Perfect For\",\n    \"cases\": [\n      {\n        \"title\": \"Small Businesses\",\n        \"description\": \"Get started quickly with our easy setup process\",\n        \"icon\": \"store\"\n      },\n      {\n        \"title\": \"Growing Brands\",\n        \"description\": \"Scale your business with enterprise features\",\n        \"icon\": \"trending-up\"\n      }\n    ]\n  },\n  \"pricing\": {\n    \"title\": \"Simple Pricing\",\n    \"plans\": [\n      {\n        \"name\": \"Basic\",\n        \"price\": \"$29\",\n        \"period\": \"per month\",\n        \"features\": [\"Up to 100 products\", \"Basic analytics\", \"Email support\"]\n      },\n      {\n        \"name\": \"Pro\",\n        \"price\": \"$79\",\n        \"period\": \"per month\",\n        \"features\": [\"Unlimited products\", \"Advanced analytics\", \"Priority support\", \"Custom domain\"],\n        \"recommended\": true\n      },\n      {\n        \"name\": \"Enterprise\",\n        \"price\": \"Custom\",\n        \"period\": \"contact us\",\n        \"features\": [\"All Pro features\", \"API access\", \"Dedicated support\", \"Custom integrations\"]\n      }\n    ]\n  },\n  \"faq\": {\n    \"title\": \"Frequently Asked Questions\",\n    \"items\": [\n      {\n        \"question\": \"How long does setup take?\",\n        \"answer\": \"Most stores are up and running within 24 hours of setup.\"\n      },\n      {\n        \"question\": \"Can I migrate from another platform?\",\n        \"answer\": \"Yes, we offer free migration solutions for all new customers.\"\n      }\n    ]\n  },\n  \"cta\": {\n    \"title\": \"Ready to Start Selling?\",\n    \"description\": \"Join thousands of successful online stores using our platform\",\n    \"buttonText\": \"Start Your Free Trial\",\n    \"buttonLink\": \"/signup\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/solutions",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "solutions"]
+            },
+            "description": "Create a comprehensive solution with all sections populated"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Solutions with Pagination",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/solutions?page=2&limit=5&sort=name",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "solutions"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "2",
+                  "description": "Get second page"
+                },
+                {
+                  "key": "limit",
+                  "value": "5",
+                  "description": "5 solutions per page"
+                },
+                {
+                  "key": "sort",
+                  "value": "name",
+                  "description": "Sort by name alphabetically"
+                }
+              ]
+            },
+            "description": "Test pagination and sorting functionality"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "BASE_URL",
+      "value": "http://localhost:5005",
+      "type": "string",
+      "description": "Base URL for the API"
+    },
+    {
+      "key": "AUTH_TOKEN",
+      "value": "your-jwt-token-here",
+      "type": "string",
+      "description": "JWT authentication token for admin endpoints"
+    },
+    {
+      "key": "SOLUTION_SLUG",
+      "value": "hr-management-solution",
+      "type": "string",
+      "description": "URL-friendly identifier for a solution"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{AUTH_TOKEN}}",
+        "type": "string"
+      }
+    ]
+  }
+}

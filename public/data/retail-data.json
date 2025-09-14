@@ -1,0 +1,306 @@
+{
+  "meta": {
+    "pageTitle": "Retail",
+    "theme": {
+      "primaryColor": "text-blue-600"
+    }
+  },
+  "hero": {
+    "show": true,
+    "title": "Retail Excellence",
+    "subtitle": null,
+    "description": "Transform your retail operations with integrated commerce solutions that unify online, mobile, and in-store experiences while optimizing inventory and enhancing customer satisfaction.",
+    "backgroundImage": null,
+    "ctaText": "Talk to an Expert"
+  },
+  "industryStats": {
+    "show": true,
+    "items": [
+      {
+        "value": "300+",
+        "label": "Retail Clients",
+        "description": "Successful implementations"
+      },
+      {
+        "value": "50%",
+        "label": "Sales Growth",
+        "description": "Average improvement"
+      },
+      {
+        "value": "40%",
+        "label": "Cost Reduction",
+        "description": "In operational costs"
+      },
+      {
+        "value": "99%",
+        "label": "Uptime",
+        "description": "System availability"
+      }
+    ]
+  },
+  "challenges": {
+    "show": true,
+    "title": "Retail Challenges",
+    "description": "Modern retail faces complex challenges that require integrated solutions to deliver exceptional customer experiences and maintain profitability.",
+    "items": [
+      {
+        "title": "Omnichannel Inventory Management",
+        "description": "Managing inventory across multiple sales channels while maintaining real-time visibility and preventing stockouts",
+        "icon": "M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4",
+        "impact": "35% inventory discrepancies"
+      },
+      {
+        "title": "Customer Experience Consistency",
+        "description": "Delivering consistent customer experience across online, mobile, and physical store touchpoints",
+        "icon": "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z",
+        "impact": "40% customer satisfaction issues"
+      },
+      {
+        "title": "Seasonal Demand Planning",
+        "description": "Accurately forecasting demand for seasonal products and managing inventory levels accordingly",
+        "icon": "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z",
+        "impact": "25% excess seasonal inventory"
+      },
+      {
+        "title": "Price Optimization & Promotions",
+        "description": "Managing dynamic pricing strategies and promotional campaigns across multiple channels",
+        "icon": "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
+        "impact": "20% margin erosion"
+      }
+    ]
+  },
+  "solutions": {
+    "show": true,
+    "title": "NetSuite Solutions",
+    "description": "Comprehensive retail solutions that unify your commerce operations, from inventory management to customer experience optimization.",
+    "items": [
+      {
+        "title": "Omnichannel Commerce",
+        "description": "Unified commerce platform connecting online, mobile, and in-store experiences",
+        "features": [
+          "Real-time inventory visibility",
+          "Cross-channel order management",
+          "Unified customer profiles",
+          "Buy online, pick up in store",
+          "Endless aisle capabilities"
+        ],
+        "benefits": "45% improvement in inventory turnover"
+      },
+      {
+        "title": "Point of Sale (POS) Integration",
+        "description": "Seamlessly integrated POS system with real-time synchronization to back-office operations",
+        "features": [
+          "Cloud-based POS system",
+          "Mobile POS capabilities",
+          "Real-time inventory updates",
+          "Customer loyalty integration",
+          "Multi-location management"
+        ],
+        "benefits": "60% faster checkout process"
+      },
+      {
+        "title": "E-commerce Platform",
+        "description": "Native e-commerce solution with advanced merchandising and personalization",
+        "features": [
+          "Responsive web design",
+          "Product catalog management",
+          "Personalized recommendations",
+          "Advanced search & filtering",
+          "Mobile commerce optimization"
+        ],
+        "benefits": "50% increase in online conversion"
+      },
+      {
+        "title": "Customer Relationship Management",
+        "description": "360-degree customer view with advanced analytics and marketing automation",
+        "features": [
+          "Unified customer database",
+          "Purchase history tracking",
+          "Loyalty program management",
+          "Targeted marketing campaigns",
+          "Customer service integration"
+        ],
+        "benefits": "35% increase in customer retention"
+      }
+    ]
+  },
+  "features": {
+    "show": true,
+    "title": "Retail Features",
+    "description": "Comprehensive features designed specifically for retail operations and customer experience optimization.",
+    "items": [
+      {
+        "title": "Inventory Management",
+        "description": "Real-time inventory tracking across all channels and locations",
+        "icon": "M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4",
+        "benefits": [
+          "Real-time stock levels",
+          "Automated reordering",
+          "Multi-location tracking",
+          "Demand forecasting"
+        ]
+      },
+      {
+        "title": "Customer Management",
+        "description": "Comprehensive customer profiles and loyalty program management",
+        "icon": "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z",
+        "benefits": [
+          "360-degree customer view",
+          "Loyalty programs",
+          "Purchase history",
+          "Personalized marketing"
+        ]
+      },
+      {
+        "title": "Financial Management",
+        "description": "Complete financial oversight with retail-specific reporting",
+        "icon": "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z",
+        "benefits": [
+          "Real-time P&L",
+          "Store performance",
+          "Margin analysis",
+          "Tax compliance"
+        ]
+      },
+      {
+        "title": "Supply Chain",
+        "description": "End-to-end supply chain visibility and vendor management",
+        "icon": "M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z",
+        "benefits": [
+          "Vendor management",
+          "Purchase automation",
+          "Drop shipping",
+          "Supply chain analytics"
+        ]
+      }
+    ]
+  },
+  "caseStudies": {
+    "show": true,
+    "title": "Success Stories",
+    "description": "Real retail companies achieving remarkable results with NetSuite commerce solutions.",
+    "items": [
+      {
+        "company": "Fashion Forward Retail",
+        "industry": "Fashion & Apparel",
+        "challenge": "Managing inventory across 50+ stores and online channels with seasonal variations",
+        "solution": "NetSuite Omnichannel Commerce with advanced inventory management and demand planning",
+        "results": [
+          "55% reduction in stockouts",
+          "40% improvement in inventory turnover",
+          "30% increase in cross-channel sales",
+          "Real-time visibility across all channels"
+        ],
+        "image": "https://images.unsplash.com/photo-1445205170230-053b83016050?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        "company": "Electronics Plus",
+        "industry": "Consumer Electronics",
+        "challenge": "Complex product configurations and warranty management across multiple channels",
+        "solution": "NetSuite E-commerce with product configurator and service management",
+        "results": [
+          "70% reduction in order errors",
+          "45% faster product launches",
+          "60% improvement in warranty processing",
+          "Automated product configuration"
+        ],
+        "image": "https://images.unsplash.com/photo-1498049794561-7780e7231661?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      }
+    ]
+  },
+  "implementationProcess": {
+    "show": true,
+    "title": "Implementation Process",
+    "description": "Streamline your entire NetSuite implementation lifecycle — from discovery to go-live — with a proven, secure methodology.",
+    "steps": [
+      {
+        "title": "Discovery & Planning",
+        "desc": "Analyze current retail operations, systems, and customer journey requirements",
+        "details": "Comprehensive analysis of your existing retail operations, including process mapping, system evaluation, and requirements gathering. We identify gaps and opportunities for improvement.",
+        "duration": null,
+        "benefits": [
+          "Current state assessment",
+          "Gap analysis",
+          "Implementation roadmap",
+          "Process mapping"
+        ]
+      },
+      {
+        "title": "System Design",
+        "desc": "Design NetSuite configuration for retail workflows and customer touchpoints",
+        "details": "Create a detailed blueprint for your NetSuite implementation, including system architecture, integration points, and customization requirements specific to retail processes.",
+        "duration": null,
+        "benefits": [
+          "System architecture",
+          "Process flows",
+          "Integration design",
+          "Custom requirements"
+        ]
+      },
+      {
+        "title": "Configuration & Integration",
+        "desc": "Configure NetSuite modules and integrate with POS, e-commerce, and other systems",
+        "details": "Implementation of NetSuite configuration based on the approved design, including custom script development, workflow automation, and integration setup.",
+        "duration": null,
+        "benefits": [
+          "Configured system",
+          "Integrations",
+          "Custom developments",
+          "Workflow automation"
+        ]
+      },
+      {
+        "title": "Testing & Training",
+        "desc": "Comprehensive testing and training for retail staff across all locations",
+        "details": "Thorough system testing including unit, integration, and user acceptance testing. Comprehensive training programs for all user groups to ensure smooth adoption.",
+        "duration": null,
+        "benefits": [
+          "Test results",
+          "Training materials",
+          "User documentation",
+          "System validation"
+        ]
+      },
+      {
+        "title": "Go-Live & Optimization",
+        "desc": "Production deployment with ongoing support and performance optimization",
+        "details": "Carefully managed production deployment with real-time monitoring, immediate support, and post-implementation optimization to ensure successful system adoption.",
+        "duration": null,
+        "benefits": [
+          "Live system",
+          "Support documentation",
+          "Performance monitoring",
+          "Optimization"
+        ]
+      }
+    ]
+  },
+  "cta": {
+    "show": true,
+    "title": "Ready to Transform Your Retail Operations?",
+    "description": "Join hundreds of retail companies that have unified their commerce operations and improved customer experience with NetSuite. Get started with a free consultation today.",
+    "features": [
+      {
+        "title": "Free Assessment",
+        "description": "Comprehensive evaluation of your retail processes",
+        "icon": null
+      },
+      {
+        "title": "Rapid Implementation",
+        "description": "Get up and running faster with our proven methodology",
+        "icon": null
+      },
+      {
+        "title": "Ongoing Support",
+        "description": "Continuous optimization and support for your success",
+        "icon": null
+      }
+    ],
+    "buttonText": "Schedule Retail Demo"
+  },
+  "modal": {
+    "show": false,
+    "title": null,
+    "subtitle": null
+  }
+}

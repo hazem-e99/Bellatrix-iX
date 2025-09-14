@@ -1,0 +1,71 @@
+{
+  "hero": {
+    "title": "NetSuite Customization & Development",
+    "subtitle": "Tailor NetSuite to fit your unique business processes and requirements"
+  },
+  "services": {
+    "title": "Our Customization Services",
+    "items": [
+      {
+        "title": "Custom Workflows",
+        "description": "Design automated workflows that match your business processes",
+        "icon": "🔄"
+      },
+      {
+        "title": "Custom Fields & Forms",
+        "description": "Create custom fields and forms to capture your specific data",
+        "icon": "📝"
+      },
+      {
+        "title": "SuiteScript Development",
+        "description": "Advanced scripting to extend NetSuite functionality",
+        "icon": "💻"
+      },
+      {
+        "title": "Custom Reports & Dashboards",
+        "description": "Build tailored reports and dashboards for better insights",
+        "icon": "📊"
+      },
+      {
+        "title": "SuiteApps Development",
+        "description": "Develop custom applications for NetSuite",
+        "icon": "🚀"
+      },
+      {
+        "title": "Third-Party Integrations",
+        "description": "Connect NetSuite with external systems and applications",
+        "icon": "🔗"
+      }
+    ]
+  },
+  "process": {
+    "title": "Our Development Process",
+    "steps": [
+      {
+        "step": "01",
+        "title": "Requirements Analysis",
+        "description": "We analyze your business requirements and current NetSuite setup"
+      },
+      {
+        "step": "02",
+        "title": "Solution Design",
+        "description": "Design custom solutions that align with your business goals"
+      },
+      {
+        "step": "03",
+        "title": "Development & Testing",
+        "description": "Develop and thoroughly test all customizations"
+      },
+      {
+        "step": "04",
+        "title": "Deployment & Support",
+        "description": "Deploy solutions and provide ongoing support"
+      }
+    ]
+  },
+  "cta": {
+    "title": "Ready to Customize NetSuite?",
+    "subtitle": "Let's discuss your customization needs and create a solution that works for you.",
+    "buttonText": "Get Started"
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "hero": {
+    "title": "NetSuite Integration Services",
+    "subtitle": "Connect NetSuite with your existing systems for seamless data flow"
+  },
+  "integrationTypes": {
+    "title": "Integration Solutions",
+    "items": [
+      {
+        "title": "E-commerce Integration",
+        "description": "Connect NetSuite with Shopify, Magento, WooCommerce, and other platforms",
+        "icon": "🛒"
+      },
+      {
+        "title": "CRM Integration",
+        "description": "Integrate with Salesforce, HubSpot, and other CRM systems",
+        "icon": "👥"
+      },
+      {
+        "title": "Payment Gateway Integration",
+        "description": "Connect with PayPal, Stripe, Square, and other payment processors",
+        "icon": "💳"
+      },
+      {
+        "title": "Warehouse Management",
+        "description": "Integrate with WMS systems for inventory management",
+        "icon": "📦"
+      },
+      {
+        "title": "Banking & Financial",
+        "description": "Connect with banks and financial institutions for automated transactions",
+        "icon": "🏦"
+      },
+      {
+        "title": "Custom API Integration",
+        "description": "Build custom integrations with any third-party system",
+        "icon": "🔌"
+      }
+    ]
+  },
+  "benefits": {
+    "title": "Integration Benefits",
+    "items": [
+      {
+        "title": "Automated Data Sync",
+        "description": "Eliminate manual data entry with real-time synchronization"
+      },
+      {
+        "title": "Improved Accuracy",
+        "description": "Reduce errors caused by manual data transfer"
+      },
+      {
+        "title": "Enhanced Productivity",
+        "description": "Save time and resources with automated processes"
+      },
+      {
+        "title": "Better Visibility",
+        "description": "Get a complete view of your business across all systems"
+      },
+      {
+        "title": "Scalable Solutions",
+        "description": "Integrations that grow with your business needs"
+      },
+      {
+        "title": "Cost Savings",
+        "description": "Reduce operational costs through automation"
+      }
+    ]
+  },
+  "popularIntegrations": {
+    "title": "Popular Integrations",
+    "platforms": [
+      "Shopify", "Magento", "Salesforce", "HubSpot", "PayPal", "Stripe",
+      "Amazon", "eBay", "QuickBooks", "Xero", "Slack", "Microsoft Office"
+    ]
+  },
+  "cta": {
+    "title": "Ready to Integrate?",
+    "subtitle": "Let's connect your systems and streamline your business operations.",
+    "buttonText": "Start Integration"
+  }
+}

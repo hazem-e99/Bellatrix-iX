@@ -1,0 +1,223 @@
+{
+  "heroSection": {
+    "backgroundVideo": "/Videos/HomeHeroSectionV.mp4",
+    "titleParts": ["Where", "Vision", "Meets", "Reality"],
+    "description": "We don't just implement solutions—we craft digital experiences that transform the way you do business",
+    "ctaButton": {
+      "text": "Start Implementation",
+      "icon": "M13 7l5 5m0 0l-5 5m5-5H6"
+    }
+  },
+  "processSection": {
+    "title": "Our Implementation Process",
+    "subtitle": "A proven methodology for seamless business transformation",
+    "image": "/Videos/implementation/implementProcess.jpg",
+    "steps": [
+      {
+        "number": 1,
+        "title": "Analysis & Planning",
+        "description": "System analysis and strategic roadmap creation",
+        "icon": "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+      },
+      {
+        "number": 2,
+        "title": "Design & Development",
+        "description": "Custom solution design and development",
+        "icon": "M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+      },
+      {
+        "number": 3,
+        "title": "Testing & Integration",
+        "description": "Quality assurance and system integration",
+        "icon": "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+      },
+      {
+        "number": 4,
+        "title": "Launch & Support",
+        "description": "Deployment and ongoing support",
+        "icon": "M13 10V3L4 14h7v7l9-11h-7z"
+      }
+    ],
+    "ctaButton": "Start Your Journey"
+  },
+  "whyChooseSection": {
+    "title": "Why Choose Bellatrix for Implementation?",
+    "subtitle": "We bring years of expertise, proven methodologies, and cutting-edge solutions to ensure your implementation success",
+    "image": "/Videos/implementation/whyChoese.jpg",
+    "features": [
+      {
+        "number": "01",
+        "title": "Proven Expertise",
+        "description": "500+ successful implementations across industries"
+      },
+      {
+        "number": "02",
+        "title": "Rapid Deployment",
+        "description": "50% faster implementation with proven tools"
+      },
+      {
+        "number": "03",
+        "title": "24/7 Support",
+        "description": "Round-the-clock technical support & monitoring"
+      },
+      {
+        "number": "04",
+        "title": "Expert Team",
+        "description": "Certified professionals with deep expertise"
+      }
+    ]
+  },
+  "pricingSection": {
+    "title": "Implementation Pricing",
+    "subtitle": "Choose the perfect implementation plan that fits your business needs and budget",
+    "plans": [
+      {
+        "name": "Basic",
+        "description": "Perfect for small businesses",
+        "price": "$2,500",
+        "priceNote": "starting from",
+        "features": [
+          "Basic system analysis",
+          "Standard implementation",
+          "Basic testing & QA",
+          "30 days support",
+          "Email support"
+        ],
+        "ctaText": "Get Started"
+      },
+      {
+        "name": "Professional",
+        "description": "Ideal for growing companies",
+        "price": "$5,000",
+        "priceNote": "starting from",
+        "isPopular": true,
+        "features": [
+          "Comprehensive analysis",
+          "Custom implementation",
+          "Advanced testing & QA",
+          "90 days support",
+          "Phone & email support",
+          "Training sessions"
+        ],
+        "ctaText": "Get Started"
+      },
+      {
+        "name": "Enterprise",
+        "description": "For large organizations",
+        "price": "Custom",
+        "priceNote": "pricing",
+        "features": [
+          "Enterprise-grade analysis",
+          "Fully customized solution",
+          "Comprehensive testing",
+          "Unlimited support",
+          "24/7 dedicated support",
+          "On-site training"
+        ],
+        "ctaText": "Contact Sales"
+      }
+    ],
+    "additionalInfo": {
+      "note": "All plans include free consultation and project scoping",
+      "contactText": "Need a custom solution? Contact our team for personalized pricing"
+    }
+  },
+  "ctaSection": {
+    "title": "Ready for a Seamless NetSuite Implementation?",
+    "subtitle": "Transform your business operations with our expert NetSuite implementation services. Let's turn your vision into reality with proven methodologies and dedicated support.",
+    "ctaButton": "Get Started Today",
+    "features": [
+      {
+        "title": "Quick Response",
+        "description": "Get a detailed proposal within 24 hours",
+        "icon": "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+      },
+      {
+        "title": "Proven Success",
+        "description": "99.9% implementation success rate",
+        "icon": "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+      },
+      {
+        "title": "Expert Support",
+        "description": "Dedicated team of certified professionals",
+        "icon": "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+      }
+    ]
+  },
+  "modalContent": {
+    "title": "Contact Us",
+    "subtitle": "Let's discuss your project",
+    "formFields": {
+      "contactInfo": {
+        "title": "Contact Information",
+        "fields": [
+          {
+            "label": "Full Name *",
+            "type": "text",
+            "placeholder": "John Doe",
+            "required": true
+          },
+          {
+            "label": "Email Address *",
+            "type": "email",
+            "placeholder": "john@company.com",
+            "required": true
+          },
+          {
+            "label": "Phone Number",
+            "type": "tel",
+            "placeholder": "+1 (555) 123-4567"
+          }
+        ]
+      },
+      "companyInfo": {
+        "title": "Company Details",
+        "fields": [
+          {
+            "label": "Company Name",
+            "type": "text",
+            "placeholder": "Your Company Inc."
+          },
+          {
+            "label": "Industry",
+            "type": "select",
+            "options": [
+              "Select Industry",
+              "Manufacturing",
+              "Retail & E-commerce",
+              "Healthcare",
+              "Finance & Banking",
+              "Technology",
+              "Professional Services",
+              "Non-Profit",
+              "Other"
+            ]
+          },
+          {
+            "label": "Country",
+            "type": "select",
+            "options": [
+              "Select Country",
+              "United States",
+              "Canada",
+              "United Kingdom",
+              "Australia",
+              "Germany",
+              "France",
+              "United Arab Emirates",
+              "Saudi Arabia",
+              "Egypt",
+              "Other"
+            ]
+          }
+        ]
+      },
+      "message": {
+        "label": "Message",
+        "placeholder": "Tell us about your project requirements..."
+      },
+      "submitNote": "✓ 24hr response",
+      "submitText": "Send Message"
+    }
+  }
+}
