@@ -274,13 +274,204 @@ app.get("/retail", async (req, res) => {
   }
 });
 
+// ========== PAGES MANAGEMENT API ==========
+
+// Get list of all pages (JSON files)
+app.get("/api/pages", async (req, res) => {
+  try {
+    const files = await fs.readdir(DATA_DIR);
+    const jsonFiles = files.filter((file) => file.endsWith(".json"));
+
+    const pages = await Promise.all(
+      jsonFiles.map(async (file) => {
+        try {
+          const filePath = path.join(DATA_DIR, file);
+          const stats = await fs.stat(filePath);
+          const content = await fs.readFile(filePath, "utf8");
+          const data = JSON.parse(content);
+
+          return {
+            name: file.replace(".json", ""),
+            filename: file,
+            lastModified: stats.mtime,
+            size: stats.size,
+            hasData: Object.keys(data).length > 0,
+            dataPreview: Object.keys(data).slice(0, 3), // First 3 keys for preview
+          };
+        } catch (error) {
+          return {
+            name: file.replace(".json", ""),
+            filename: file,
+            lastModified: null,
+            size: 0,
+            hasData: false,
+            error: "Failed to read file",
+          };
+        }
+      })
+    );
+
+    res.json(pages);
+  } catch (error) {
+    console.error("Error reading pages:", error);
+    res.status(500).json({ error: "Failed to read pages directory" });
+  }
+});
+
+// Get specific page data
+app.get("/api/pages/:name", async (req, res) => {
+  try {
+    const { name } = req.params;
+    const filename = name.endsWith(".json") ? name : `${name}.json`;
+    const filePath = path.join(DATA_DIR, filename);
+
+    const content = await fs.readFile(filePath, "utf8");
+    const data = JSON.parse(content);
+
+    res.json({
+      name: name.replace(".json", ""),
+      filename,
+      data,
+    });
+  } catch (error) {
+    if (error.code === "ENOENT") {
+      res.status(404).json({ error: "Page not found" });
+    } else {
+      console.error("Error reading page:", error);
+      res.status(500).json({ error: "Failed to read page data" });
+    }
+  }
+});
+
+// Create new page
+app.post("/api/pages", async (req, res) => {
+  try {
+    const { name, data } = req.body;
+
+    if (!name || !name.trim()) {
+      return res.status(400).json({ error: "Page name is required" });
+    }
+
+    const sanitizedName = name
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9-_]/g, "-");
+    const filename = `${sanitizedName}.json`;
+    const filePath = path.join(DATA_DIR, filename);
+
+    // Check if file already exists
+    try {
+      await fs.access(filePath);
+      return res.status(409).json({ error: "Page already exists" });
+    } catch (error) {
+      // File doesn't exist, which is what we want
+      if (error.code !== "ENOENT") {
+        throw error;
+      }
+    }
+    const pageData = data || {
+      title: sanitizedName,
+      content: "",
+      createdAt: new Date().toISOString(),
+    };
+
+    await fs.writeFile(filePath, JSON.stringify(pageData, null, 2));
+
+    // Broadcast update
+    broadcastUpdate(filename, pageData);
+
+    res.status(201).json({
+      name: sanitizedName,
+      filename,
+      data: pageData,
+      message: "Page created successfully",
+    });
+  } catch (error) {
+    console.error("Error creating page:", error);
+    res.status(500).json({ error: "Failed to create page" });
+  }
+});
+
+// Update page data
+app.put("/api/pages/:name", async (req, res) => {
+  try {
+    const { name } = req.params;
+    const { data } = req.body;
+
+    if (!data) {
+      return res.status(400).json({ error: "Page data is required" });
+    }
+
+    const filename = name.endsWith(".json") ? name : `${name}.json`;
+    const filePath = path.join(DATA_DIR, filename);
+
+    // Check if file exists
+    try {
+      await fs.access(filePath);
+    } catch (accessError) {
+      return res.status(404).json({ error: "Page not found" });
+    }
+
+    // Add lastModified timestamp
+    const updatedData = {
+      ...data,
+      lastModified: new Date().toISOString(),
+    };
+
+    await fs.writeFile(filePath, JSON.stringify(updatedData, null, 2));
+
+    // Broadcast update
+    broadcastUpdate(filename, updatedData);
+
+    res.json({
+      name: name.replace(".json", ""),
+      filename,
+      data: updatedData,
+      message: "Page updated successfully",
+    });
+  } catch (error) {
+    console.error("Error updating page:", error);
+    res.status(500).json({ error: "Failed to update page" });
+  }
+});
+
+// Delete page
+app.delete("/api/pages/:name", async (req, res) => {
+  try {
+    const { name } = req.params;
+    const filename = name.endsWith(".json") ? name : `${name}.json`;
+    const filePath = path.join(DATA_DIR, filename);
+
+    // Check if file exists
+    try {
+      await fs.access(filePath);
+    } catch (accessError) {
+      return res.status(404).json({ error: "Page not found" });
+    }
+
+    await fs.unlink(filePath);
+
+    // Broadcast deletion
+    broadcastUpdate(filename, null);
+
+    res.json({
+      name: name.replace(".json", ""),
+      filename,
+      message: "Page deleted successfully",
+    });
+  } catch (error) {
+    console.error("Error deleting page:", error);
+    res.status(500).json({ error: "Failed to delete page" });
+  }
+});
+
 // Health check endpoint
 app.get("/api/health", (req, res) => {
   res.json({ status: "OK", timestamp: new Date().toISOString() });
 });
 
 // Error handling middleware
-app.use((err, req, res, next) => {
+app.use((err, req, res, _next) => {
   console.error("Server error:", err);
   if (res && typeof res.status === "function") {
     res.status(500).json({ error: "Internal server error" });

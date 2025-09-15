@@ -1,6 +1,6 @@
 {
   "hero": {
-    "title": "Modern HR, Payroll & People Managementttttt",
+    "title": "Modern HR, Payroll & People Management",
     "subtitle": "Automate HR, empower employees, and stay compliant—on one secure platform designed for the future of work.",
     "bgVideo": "/Videos/hrVideo.mp4",
     "bgColor": "bg-gradient-to-br from-[#191970] via-black to-blue-700"
@@ -211,5 +211,6 @@
     "/images/Hr/hr-onboarding-3.png",
     "/images/Hr/hr-performance-4.png",
     "/images/Hr/hr-recruitment-5.png"
-  ]
+  ],
+  "lastModified": "2025-09-15T12:26:42.633Z"
 }
