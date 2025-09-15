@@ -17,7 +17,6 @@ import ModernAdminLayout from "./components/Admin/ModernAdminLayout";
 import ModernDashboard from "./components/Admin/ModernDashboard";
 import PagesManagement from "./components/Admin/PagesManagement";
 import TemplatesManagement from "./components/Admin/TemplatesManagement";
-import TemplatesDashboard from "./pages/Templates/TemplatesDashboard";
 import SettingsManagement from "./components/Admin/SettingsManagement";
 import { ThemeProvider } from "./contexts/ThemeContext";
 
@@ -57,11 +56,10 @@ function App() {
           <Route path="dashboard" element={<ModernDashboard />} />
           <Route path="pages" element={<PagesManagement />} />
           <Route path="pages/:pageId" element={<PagesManagement />} />
-          <Route path="templates" element={<TemplatesDashboard />} />
-          <Route path="templates-management" element={<TemplatesManagement />} />
+          <Route path="templates" element={<TemplatesManagement />} />
           <Route
             path="templates/:templateId"
-            element={<TemplatesDashboard />}
+            element={<TemplatesManagement />}
           />
           <Route path="settings" element={<SettingsManagement />} />
         </Route>
