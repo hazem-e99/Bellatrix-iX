@@ -201,10 +201,10 @@ const TemplatesManagement = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">
+          <h2 className="text-2xl font-bold text-gray-800">
             Templates Management
           </h2>
-          <p className="text-gray-700">
+          <p className="text-gray-600">
             Manage and organize your design templates
           </p>
         </div>
@@ -224,13 +224,13 @@ const TemplatesManagement = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: index * 0.1 }}
           >
-            <Card className="bg-white border border-gray-300 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+            <Card className="bg-white border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
               <CardContent>
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-gray-900">
+                  <p className="text-2xl font-bold text-gray-800">
                     {stat.value}
                   </p>
-                  <p className="text-sm font-semibold text-gray-700">
+                  <p className="text-sm font-medium text-gray-600">
                     {stat.label}
                   </p>
                 </div>
@@ -241,23 +241,22 @@ const TemplatesManagement = () => {
       </div>
 
       {/* Filters */}
-      <Card className="bg-white border border-gray-300 shadow-lg">
+      <Card className="bg-white border border-gray-200 shadow-lg">
         <CardContent>
           <div className="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
             <div className="flex-1">
               <Input
                 placeholder="Search templates..."
-                icon={<MagnifyingGlassIcon className="h-4 w-4 text-gray-600" />}
+                icon={<MagnifyingGlassIcon className="h-4 w-4" />}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="text-gray-900"
               />
             </div>
             <div className="flex items-center space-x-4">
               <select
                 value={filterCategory}
                 onChange={(e) => setFilterCategory(e.target.value)}
-                className="rounded-lg border border-gray-400 bg-white px-3 py-2 text-sm focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-gray-800"
+                className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700"
               >
                 {categories.map((category) => (
                   <option key={category} value={category}>
@@ -305,14 +304,14 @@ const TemplatesManagement = () => {
                   {/* Template Info */}
                   <div>
                     <div className="flex items-center justify-between">
-                      <h3 className="font-semibold text-gray-900">
+                      <h3 className="font-semibold text-gray-800">
                         {template.name}
                       </h3>
-                      <span className="text-xs px-2 py-1 bg-blue-200 text-blue-800 rounded-full">
+                      <span className="text-xs px-2 py-1 bg-blue-100 text-blue-600 rounded-full">
                         {template.category}
                       </span>
                     </div>
-                    <p className="text-sm text-gray-700 mt-1">
+                    <p className="text-sm text-gray-600 mt-1">
                       {template.description}
                     </p>
                   </div>
@@ -322,7 +321,7 @@ const TemplatesManagement = () => {
                     {template.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="text-xs px-2 py-1 bg-gray-200 text-gray-700 rounded"
+                        className="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded"
                       >
                         #{tag}
                       </span>
@@ -330,7 +329,7 @@ const TemplatesManagement = () => {
                   </div>
 
                   {/* Meta Info */}
-                  <div className="flex items-center justify-between text-xs text-gray-600">
+                  <div className="flex items-center justify-between text-xs text-gray-500">
                     <div className="flex items-center space-x-1">
                       <UserIcon className="h-3 w-3" />
                       <span>{template.author}</span>
@@ -342,12 +341,12 @@ const TemplatesManagement = () => {
                   </div>
 
                   {/* Actions */}
-                  <div className="flex items-center justify-between pt-2 border-t border-gray-300">
+                  <div className="flex items-center justify-between pt-2 border-t border-gray-200">
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={() => openDetailModal(template)}
-                      className="text-blue-700 hover:text-blue-800 hover:bg-blue-100"
+                      className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
                     >
                       <EyeIcon className="h-4 w-4 mr-1" />
                       View
@@ -356,7 +355,7 @@ const TemplatesManagement = () => {
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="h-8 w-8 hover:bg-blue-100 hover:text-blue-700"
+                        className="h-8 w-8 hover:bg-blue-50 hover:text-blue-600"
                         onClick={() => duplicateTemplate(template)}
                       >
                         <DocumentDuplicateIcon className="h-4 w-4" />
@@ -364,14 +363,14 @@ const TemplatesManagement = () => {
                       <Button 
                         variant="ghost" 
                         size="icon" 
-                        className="h-8 w-8 hover:bg-blue-100 hover:text-blue-700"
+                        className="h-8 w-8 hover:bg-blue-50 hover:text-blue-600"
                       >
                         <PencilIcon className="h-4 w-4" />
                       </Button>
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="h-8 w-8 text-red-700 hover:text-red-800 hover:bg-red-100"
+                        className="h-8 w-8 text-red-600 hover:text-red-700 hover:bg-red-50"
                         onClick={() => setDeleteModal({ open: true, template })}
                       >
                         <TrashIcon className="h-4 w-4" />
@@ -419,7 +418,7 @@ const TemplatesManagement = () => {
               </div>
               <div className="flex-1">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-xl font-semibold text-gray-900">
+                  <h3 className="text-xl font-semibold text-gray-800">
                     {selectedTemplate.name}
                   </h3>
                   <button
@@ -433,10 +432,10 @@ const TemplatesManagement = () => {
                     )}
                   </button>
                 </div>
-                <p className="text-gray-700 mt-1">
+                <p className="text-gray-600 mt-1">
                   {selectedTemplate.description}
                 </p>
-                <div className="flex items-center space-x-4 mt-2 text-sm text-gray-600">
+                <div className="flex items-center space-x-4 mt-2 text-sm text-gray-500">
                   <div className="flex items-center space-x-1">
                     <CalendarIcon className="h-4 w-4" />
                     <span>{selectedTemplate.createdDate}</span>
@@ -455,7 +454,7 @@ const TemplatesManagement = () => {
 
             {/* Template Fields */}
             <div>
-              <h4 className="text-lg font-medium text-gray-900 mb-4">
+              <h4 className="text-lg font-medium text-gray-800 mb-4">
                 Template Fields
               </h4>
               <div className="space-y-3">
@@ -465,10 +464,10 @@ const TemplatesManagement = () => {
                     className="flex items-center justify-between p-3 bg-blue-50 rounded-lg"
                   >
                     <div>
-                      <p className="font-medium text-gray-900">
+                      <p className="font-medium text-gray-800">
                         {field.label}
                       </p>
-                      <p className="text-sm text-gray-700">
+                      <p className="text-sm text-gray-600">
                         Field: {field.name} • Type: {field.type}
                       </p>
                     </div>
@@ -482,14 +481,14 @@ const TemplatesManagement = () => {
 
             {/* Tags */}
             <div>
-              <h4 className="text-lg font-medium text-gray-900 mb-3">
+              <h4 className="text-lg font-medium text-gray-800 mb-3">
                 Tags
               </h4>
               <div className="flex flex-wrap gap-2">
                 {selectedTemplate.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="inline-flex items-center px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm"
+                    className="inline-flex items-center px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm"
                   >
                     <TagIcon className="h-3 w-3 mr-1" />
                     {tag}
@@ -523,7 +522,7 @@ const TemplatesManagement = () => {
       >
         {deleteModal.template && (
           <div className="space-y-4">
-            <p className="text-gray-800">
+            <p className="text-gray-600">
               Are you sure you want to delete the template "
               {deleteModal.template.name}"? This action cannot be undone.
             </p>

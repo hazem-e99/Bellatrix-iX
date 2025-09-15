@@ -205,17 +205,17 @@ const PagesManagement = () => {
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="bg-white border border-gray-300 shadow-lg hover:shadow-xl transition-all duration-300">
+        <Card className="bg-white border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300">
           <CardContent className="p-6">
             <div className="flex items-center">
-              <div className="p-2 bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg shadow-lg">
+              <div className="p-2 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg shadow-lg">
                 <DocumentTextIcon className="h-6 w-6 text-white" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-semibold text-gray-700">
+                <p className="text-sm font-medium text-gray-600">
                   Total Pages
                 </p>
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-2xl font-bold text-gray-800">
                   {pages.length}
                 </p>
               </div>
@@ -223,17 +223,17 @@ const PagesManagement = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-white border border-gray-300 shadow-lg hover:shadow-xl transition-all duration-300">
+        <Card className="bg-white border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300">
           <CardContent className="p-6">
             <div className="flex items-center">
-              <div className="p-2 bg-gradient-to-r from-green-600 to-blue-600 rounded-lg shadow-lg">
+              <div className="p-2 bg-gradient-to-r from-green-500 to-blue-500 rounded-lg shadow-lg">
                 <CheckCircleIcon className="h-6 w-6 text-white" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-semibold text-gray-700">
+                <p className="text-sm font-medium text-gray-600">
                   With Data
                 </p>
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-2xl font-bold text-gray-800">
                   {pages.filter((p) => p.hasData).length}
                 </p>
               </div>
@@ -241,17 +241,17 @@ const PagesManagement = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-white border border-gray-300 shadow-lg hover:shadow-xl transition-all duration-300">
+        <Card className="bg-white border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300">
           <CardContent className="p-6">
             <div className="flex items-center">
-              <div className="p-2 bg-gradient-to-r from-blue-700 to-purple-700 rounded-lg shadow-lg">
+              <div className="p-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg shadow-lg">
                 <CalendarIcon className="h-6 w-6 text-white" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-semibold text-gray-700">
+                <p className="text-sm font-medium text-gray-600">
                   Last Updated
                 </p>
-                <p className="text-sm font-bold text-gray-900">
+                <p className="text-sm font-bold text-gray-800">
                   {pages.length > 0
                     ? formatDate(
                         Math.max(
@@ -310,27 +310,27 @@ const PagesManagement = () => {
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-300">
-                <thead className="bg-gradient-to-r from-blue-100 to-cyan-100">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gradient-to-r from-blue-50 to-cyan-50">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-800 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
                       Page
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-800 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
                       Status
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-800 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
                       Size
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-800 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
                       Last Modified
                     </th>
-                    <th className="px-6 py-3 text-right text-xs font-semibold text-gray-800 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">
                       Actions
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-300">
+                <tbody className="bg-white divide-y divide-gray-200">
                   <AnimatePresence>
                     {paginatedPages.map((page, index) => (
                       <motion.tr
@@ -339,21 +339,21 @@ const PagesManagement = () => {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
                         transition={{ delay: index * 0.1 }}
-                        className="hover:bg-blue-100"
+                        className="hover:bg-blue-50"
                       >
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center">
-                            <DocumentTextIcon className="h-5 w-5 text-blue-700 mr-3" />
+                            <DocumentTextIcon className="h-5 w-5 text-blue-500 mr-3" />
                             <div>
-                              <div className="text-sm font-semibold text-gray-900">
+                              <div className="text-sm font-medium text-gray-800">
                                 {page.name}
                               </div>
-                              <div className="text-sm text-gray-700">
+                              <div className="text-sm text-gray-600">
                                 {page.filename}
                               </div>
                               {page.dataPreview &&
                                 page.dataPreview.length > 0 && (
-                                  <div className="text-xs text-gray-600 mt-1">
+                                  <div className="text-xs text-gray-500 mt-1">
                                     Fields: {page.dataPreview.join(", ")}
                                   </div>
                                 )}
@@ -373,10 +373,10 @@ const PagesManagement = () => {
                             </span>
                           )}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                           {formatFileSize(page.size)}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                           {formatDate(page.lastModified)}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -385,7 +385,7 @@ const PagesManagement = () => {
                               size="sm"
                               variant="outline"
                               onClick={() => handleView(page)}
-                              className="hover:bg-blue-100 hover:border-blue-400 hover:text-blue-700"
+                              className="hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600"
                             >
                               <EyeIcon className="h-4 w-4" />
                             </Button>
@@ -393,7 +393,7 @@ const PagesManagement = () => {
                               size="sm"
                               variant="outline"
                               onClick={() => handleEdit(page)}
-                              className="hover:bg-blue-100 hover:border-blue-400 hover:text-blue-700"
+                              className="hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600"
                             >
                               <PencilIcon className="h-4 w-4" />
                             </Button>
@@ -401,7 +401,7 @@ const PagesManagement = () => {
                               size="sm"
                               variant="outline"
                               onClick={() => handleDelete(page)}
-                              className="text-red-700 hover:text-red-800 border-red-300 hover:border-red-400 hover:bg-red-100"
+                              className="text-red-600 hover:text-red-700 border-red-200 hover:border-red-300 hover:bg-red-50"
                             >
                               <TrashIcon className="h-4 w-4" />
                             </Button>
@@ -417,8 +417,8 @@ const PagesManagement = () => {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="flex items-center justify-between mt-6 p-4 bg-gray-100 rounded-lg">
-              <div className="text-sm text-gray-800">
+            <div className="flex items-center justify-between mt-6 p-4 bg-gray-50 rounded-lg">
+              <div className="text-sm text-gray-700">
                 Showing {startIndex + 1} to{" "}
                 {Math.min(startIndex + ITEMS_PER_PAGE, filteredPages.length)} of{" "}
                 {filteredPages.length} results
@@ -488,7 +488,7 @@ const PagesManagement = () => {
               <h3 className="text-lg font-medium text-gray-900 dark:text-white">
                 Are you sure you want to delete this page?
               </h3>
-              <p className="text-gray-800 dark:text-gray-300">
+              <p className="text-gray-600 dark:text-gray-400">
                 This action cannot be undone. The page "{selectedPage?.name}"
                 and all its data will be permanently removed.
               </p>
@@ -539,7 +539,7 @@ const ViewPageModal = ({ isOpen, onClose, page }) => {
       <div className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-800 dark:text-gray-300">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
               Page Name
             </label>
             <p className="mt-1 text-sm text-gray-900 dark:text-white">
@@ -547,7 +547,7 @@ const ViewPageModal = ({ isOpen, onClose, page }) => {
             </p>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-800 dark:text-gray-300">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
               Filename
             </label>
             <p className="mt-1 text-sm text-gray-900 dark:text-white">
@@ -557,11 +557,11 @@ const ViewPageModal = ({ isOpen, onClose, page }) => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-800 dark:text-gray-300 mb-2">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             JSON Data
           </label>
           <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 max-h-96 overflow-auto">
-            <pre className="text-sm text-gray-900 dark:text-gray-200">
+            <pre className="text-sm text-gray-800 dark:text-gray-200">
               {JSON.stringify(page.data, null, 2)}
             </pre>
           </div>
@@ -586,7 +586,7 @@ const buildFormFields = (data, onChange, prefix = "") => {
     if (value === null || value === undefined) {
       fields.push(
         <div key={fieldKey}>
-          <label className="block text-sm font-medium text-gray-800 dark:text-gray-300 mb-1">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             {key}
           </label>
           <Input
@@ -605,7 +605,7 @@ const buildFormFields = (data, onChange, prefix = "") => {
             onChange={(e) => onChange(fieldKey, e.target.checked)}
             className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
           />
-          <label className="ml-2 text-sm font-medium text-gray-800 dark:text-gray-300">
+          <label className="ml-2 text-sm font-medium text-gray-700 dark:text-gray-300">
             {key}
           </label>
         </div>
@@ -614,21 +614,21 @@ const buildFormFields = (data, onChange, prefix = "") => {
       if (value.length > 100) {
         fields.push(
           <div key={fieldKey}>
-            <label className="block text-sm font-medium text-gray-800 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               {key}
             </label>
             <textarea
               value={value}
               onChange={(e) => onChange(fieldKey, e.target.value)}
               rows={4}
-              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white text-gray-900"
+              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
             />
           </div>
         );
       } else {
         fields.push(
           <div key={fieldKey}>
-            <label className="block text-sm font-medium text-gray-800 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               {key}
             </label>
             <Input
@@ -641,7 +641,7 @@ const buildFormFields = (data, onChange, prefix = "") => {
     } else if (typeof value === "number") {
       fields.push(
         <div key={fieldKey}>
-          <label className="block text-sm font-medium text-gray-800 dark:text-gray-300 mb-1">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             {key}
           </label>
           <Input
@@ -656,7 +656,7 @@ const buildFormFields = (data, onChange, prefix = "") => {
     } else if (Array.isArray(value)) {
       fields.push(
         <div key={fieldKey}>
-          <label className="block text-sm font-medium text-gray-800 dark:text-gray-300 mb-1">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             {key} (Array)
           </label>
           <textarea
@@ -670,7 +670,7 @@ const buildFormFields = (data, onChange, prefix = "") => {
               }
             }}
             rows={4}
-            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white font-mono text-sm text-gray-900"
+            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white font-mono text-sm"
           />
         </div>
       );
@@ -678,7 +678,7 @@ const buildFormFields = (data, onChange, prefix = "") => {
       fields.push(
         <div
           key={fieldKey}
-          className="border border-gray-300 dark:border-gray-700 rounded-lg p-4"
+          className="border border-gray-200 dark:border-gray-700 rounded-lg p-4"
         >
           <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-3">
             {key}
@@ -831,7 +831,7 @@ const CreatePageModal = ({ isOpen, onClose, onSave, showToast }) => {
     <Modal isOpen={isOpen} onClose={onClose} title="Create New Page" size="lg">
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-800 dark:text-gray-300 mb-1">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Page Name
           </label>
           <Input
@@ -839,21 +839,21 @@ const CreatePageModal = ({ isOpen, onClose, onSave, showToast }) => {
             onChange={(e) => setPageName(e.target.value)}
             placeholder="e.g., about, contact, services"
           />
-          <p className="mt-1 text-xs text-gray-600">
+          <p className="mt-1 text-xs text-gray-500">
             Use lowercase letters, numbers, and hyphens only. Will be saved as{" "}
             {pageName || "page-name"}.json
           </p>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-800 dark:text-gray-300 mb-1">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Initial Data (JSON)
           </label>
           <textarea
             value={pageData}
             onChange={(e) => setPageData(e.target.value)}
             rows={10}
-            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white font-mono text-sm text-gray-900"
+            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white font-mono text-sm"
             placeholder="Enter JSON data for the page"
           />
         </div>

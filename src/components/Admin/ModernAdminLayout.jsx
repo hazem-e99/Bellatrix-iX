@@ -117,7 +117,7 @@ const ModernAdminLayout = () => {
   const unreadCount = notifications.filter((n) => n.unread).length;
 
   return (
-    <div className="flex min-h-screen bg-gray-50 font-['Inter',_system-ui,_sans-serif]">
+    <div className="flex min-h-screen bg-gray-50 transition-colors duration-200" style={{backgroundColor: '#f7fafc'}}>
       {/* Mobile sidebar backdrop */}
       <AnimatePresence>
         {sidebarOpen && (
@@ -128,46 +128,43 @@ const ModernAdminLayout = () => {
             exit={{ opacity: 0 }}
             onClick={() => setSidebarOpen(false)}
           >
-            <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
+            <div className="absolute inset-0 bg-gray-600 opacity-75" />
           </motion.div>
         )}
       </AnimatePresence>
 
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 z-50 w-80 bg-white border-r border-gray-200 shadow-xl transform transition-all duration-300 ease-out lg:relative lg:translate-x-0 lg:flex lg:flex-col ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 shadow-xl transform transition-transform duration-200 ease-in-out lg:relative lg:translate-x-0 lg:flex lg:flex-col ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
+        style={{
+          background: 'linear-gradient(135deg, #001038 0%, #001248 50%, #001458 100%)',
+        }}
       >
         <div className="flex h-full flex-col">
-          {/* Logo Section */}
-          <div className="flex h-20 items-center justify-between px-8 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-indigo-50">
-            <div className="flex items-center space-x-4">
-              <div className="relative group">
-                <div className="h-12 w-12 bg-gradient-to-br from-blue-900 to-blue-800 rounded-2xl flex items-center justify-center shadow-lg transform transition-transform group-hover:scale-105">
-                  <span className="text-white font-bold text-xl">B</span>
-                </div>
-                <div className="absolute -inset-1 bg-gradient-to-br from-blue-900 to-blue-800 rounded-2xl blur opacity-20 group-hover:opacity-40 transition-opacity"></div>
+          {/* Logo */}
+          <div className="flex h-16 items-center justify-between px-6 border-b border-white/10">
+            <div className="flex items-center space-x-3">
+              <div className="h-8 w-8 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-lg flex items-center justify-center shadow-lg">
+                <span className="text-white font-bold text-sm">B</span>
               </div>
-              <div>
-                <span className="text-2xl font-bold text-gray-900 tracking-tight">
-                  Bellatrix
-                </span>
-                <div className="text-sm text-blue-700 font-medium">Admin Dashboard</div>
-              </div>
+              <span className="text-xl font-bold text-white">
+                Bellatrix
+              </span>
             </div>
             <Button
               variant="ghost"
               size="icon"
-              className="lg:hidden text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-xl"
+              className="lg:hidden text-white hover:bg-white/10"
               onClick={() => setSidebarOpen(false)}
             >
-              <XMarkIcon className="h-6 w-6" />
+              <XMarkIcon className="h-5 w-5" />
             </Button>
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 px-6 py-8 space-y-2 overflow-y-auto">
+          <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
             {menuItems.map((item) => {
               const IconComponent = isActive(item.path)
                 ? item.iconSolid
@@ -176,61 +173,43 @@ const ModernAdminLayout = () => {
                 <motion.button
                   key={item.id}
                   onClick={() => handleNavigation(item.path)}
-                  className={`w-full flex items-center px-6 py-4 text-left font-medium rounded-2xl transition-all duration-300 group relative ${
+                  className={`w-full flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-all duration-200 group ${
                     isActive(item.path)
-                      ? "bg-blue-900 text-white shadow-lg shadow-blue-900/25"
-                      : "text-gray-700 hover:bg-blue-50 hover:text-blue-900"
+                      ? "bg-gradient-to-r from-blue-500/20 to-cyan-500/20 text-white border border-blue-400/30 shadow-lg backdrop-blur-sm"
+                      : "text-gray-300 hover:bg-white/10 hover:text-white"
                   }`}
-                  whileHover={{ scale: 1.02, x: 4 }}
+                  whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
                   <IconComponent
-                    className={`mr-4 h-6 w-6 transition-colors duration-300 ${
+                    className={`mr-3 h-5 w-5 ${
                       isActive(item.path)
-                        ? "text-blue-100"
-                        : "text-gray-500 group-hover:text-blue-700"
+                        ? "text-blue-300"
+                        : "text-gray-400"
                     }`}
                   />
-                  <div className="flex-1">
-                    <div className="text-base font-semibold">{item.name}</div>
+                  <div className="flex-1 text-left">
+                    <div className="font-medium">{item.name}</div>
                     <div
-                      className={`text-sm mt-1 ${
+                      className={`text-xs ${
                         isActive(item.path)
-                          ? "text-blue-100"
-                          : "text-gray-500 group-hover:text-blue-600"
+                          ? "text-blue-200"
+                          : "text-gray-500"
                       }`}
                     >
                       {item.description}
                     </div>
                   </div>
-                  {isActive(item.path) && (
-                    <div className="w-3 h-3 bg-blue-200 rounded-full shadow-sm"></div>
-                  )}
                 </motion.button>
               );
             })}
           </nav>
 
-          {/* Bottom Status Section */}
-          <div className="border-t border-gray-100 p-6 bg-gray-50">
-            <div className="flex items-center space-x-3 text-sm text-gray-700 bg-green-50 rounded-2xl p-4 border border-green-200">
-              <div className="relative">
-                <div className="h-3 w-3 bg-green-500 rounded-full"></div>
-                <div className="absolute inset-0 h-3 w-3 bg-green-500 rounded-full animate-ping opacity-75"></div>
-              </div>
-              <span className="font-medium">All systems operational</span>
-            </div>
-            
-            {/* Quick Stats */}
-            <div className="mt-4 grid grid-cols-2 gap-3">
-              <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
-                <div className="text-xs font-medium text-gray-500 uppercase tracking-wide">Active Users</div>
-                <div className="text-blue-900 font-bold text-xl mt-1">24</div>
-              </div>
-              <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
-                <div className="text-xs font-medium text-gray-500 uppercase tracking-wide">Response</div>
-                <div className="text-blue-900 font-bold text-xl mt-1">98ms</div>
-              </div>
+          {/* Bottom section */}
+          <div className="border-t border-white/10 p-4">
+            <div className="flex items-center space-x-3 text-sm text-gray-300">
+              <div className="h-2 w-2 bg-green-400 rounded-full animate-pulse"></div>
+              <span>All systems operational</span>
             </div>
           </div>
         </div>
@@ -239,97 +218,86 @@ const ModernAdminLayout = () => {
       {/* Main content */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Top navbar */}
-        <header className="bg-white/80 backdrop-blur-md border-b border-slate-200/60 sticky top-0 z-30 shadow-sm">
-          <div className="flex h-20 items-center justify-between px-6 lg:px-8">
-            <div className="flex items-center space-x-6">
+        <header className="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm">
+          <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center space-x-4">
               <Button
                 variant="ghost"
                 size="icon"
-                className="lg:hidden text-slate-600 hover:bg-slate-100 rounded-xl"
+                className="lg:hidden"
                 onClick={() => setSidebarOpen(true)}
               >
-                <Bars3Icon className="h-6 w-6" />
+                <Bars3Icon className="h-5 w-5" />
               </Button>
 
-              {/* Page title with breadcrumb */}
+              {/* Page title */}
               <div>
-                <div className="flex items-center space-x-2 text-sm text-slate-600 mb-1">
-                  <span>Admin</span>
-                  <span>/</span>
-                  <span className="text-blue-700 font-semibold">{getCurrentPageTitle()}</span>
-                </div>
-                <h1 className="text-2xl font-bold text-slate-900">
+                <h1 className="text-2xl font-bold text-gray-800">
                   {getCurrentPageTitle()}
                 </h1>
+                <p className="text-sm text-gray-600">
+                  {menuItems.find((item) => isActive(item.path))?.description}
+                </p>
               </div>
             </div>
 
             <div className="flex items-center space-x-4">
               {/* Search */}
               <div className="hidden md:block">
-                <div className="relative">
-                  <Input
-                    placeholder="Search... (⌘K)"
-                    icon={<MagnifyingGlassIcon className="h-4 w-4 text-slate-600" />}
-                    className="w-80 bg-white border-slate-300 focus:bg-white focus:border-blue-500 transition-all duration-200 text-slate-900"
-                  />
-                  <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                    <kbd className="inline-flex items-center rounded border border-slate-400 px-1 font-mono text-xs text-slate-700 bg-slate-100">⌘K</kbd>
-                  </div>
-                </div>
+                <Input
+                  placeholder="Search..."
+                  icon={<MagnifyingGlassIcon className="h-4 w-4" />}
+                  className="w-64"
+                />
               </div>
 
-              {/* Quick Actions */}
-              <div className="flex items-center space-x-2">
-                {/* Theme toggle */}
+              {/* Theme toggle */}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleTheme}
+                className="text-gray-500 hover:text-blue-600 hover:bg-blue-50"
+              >
+                {isDark ? (
+                  <SunIcon className="h-5 w-5" />
+                ) : (
+                  <MoonIcon className="h-5 w-5" />
+                )}
+              </Button>
+
+              {/* Notifications */}
+              <div className="relative">
                 <Button
                   variant="ghost"
                   size="icon"
-                  onClick={toggleTheme}
-                  className="text-slate-700 hover:text-blue-700 hover:bg-blue-100 rounded-xl transition-all duration-200"
+                  onClick={() => setNotificationsOpen(!notificationsOpen)}
+                  className="text-gray-500 hover:text-blue-600 hover:bg-blue-50"
                 >
-                  {isDark ? (
-                    <SunIcon className="h-5 w-5" />
-                  ) : (
-                    <MoonIcon className="h-5 w-5" />
+                  <BellIcon className="h-5 w-5" />
+                  {unreadCount > 0 && (
+                    <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-blue-500 ring-2 ring-white" />
                   )}
                 </Button>
 
-                {/* Notifications */}
-                <div className="relative">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => setNotificationsOpen(!notificationsOpen)}
-                    className="text-slate-700 hover:text-blue-700 hover:bg-blue-100 rounded-xl transition-all duration-200 relative"
-                  >
-                    <BellIcon className="h-5 w-5" />
-                    {unreadCount > 0 && (
-                      <span className="absolute -top-1 -right-1 flex h-4 w-4 rounded-full bg-gradient-to-r from-red-600 to-pink-600 text-white text-xs items-center justify-center font-bold shadow-lg animate-pulse">
-                        {unreadCount}
-                      </span>
-                    )}
-                  </Button>
-
-                  {/* Notifications dropdown */}
-                  <AnimatePresence>
-                    {notificationsOpen && (
-                      <motion.div
-                        className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 z-50 border border-gray-200"
-                        initial={{ opacity: 0, scale: 0.95, y: -10 }}
-                        animate={{ opacity: 1, scale: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.95, y: -10 }}
-                      >
-                        <div className="p-4 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-cyan-50">
-                          <h3 className="text-lg font-semibold text-gray-900">
-                            Notifications
-                          </h3>
-                        </div>
+                {/* Notifications dropdown */}
+                <AnimatePresence>
+                  {notificationsOpen && (
+                    <motion.div
+                      className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 z-50 border border-gray-200"
+                      initial={{ opacity: 0, scale: 0.95, y: -10 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.95, y: -10 }}
+                    >
+                      <div className="p-4 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-cyan-50">
+                        <h3 className="text-lg font-semibold text-black">
+                          Notifications
+                        </h3>
+                      </div>
                       <div className="max-h-64 overflow-y-auto">
                         {notifications.map((notification) => (
                           <div
                             key={notification.id}
-                            className="p-4 border-b border-gray-200 last:border-b-0 hover:bg-blue-50"
+                            className="p-4 border-b border-gray-200 last:border-b-0 hover:bg-blue-50 transition-colors duration-150"
                           >
                             <div className="flex items-start space-x-3">
                               <div
@@ -340,13 +308,13 @@ const ModernAdminLayout = () => {
                                 }`}
                               />
                               <div className="flex-1">
-                                <p className="text-sm font-semibold text-gray-900">
+                                <p className="text-sm font-semibold text-black">
                                   {notification.title}
                                 </p>
-                                <p className="text-sm text-gray-700">
+                                <p className="text-sm text-gray-800 mt-1">
                                   {notification.message}
                                 </p>
-                                <p className="text-xs text-gray-600 mt-1">
+                                <p className="text-xs text-gray-600 mt-2">
                                   {notification.time}
                                 </p>
                               </div>
@@ -364,7 +332,7 @@ const ModernAdminLayout = () => {
                 <Button
                   variant="ghost"
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
-                  className="flex items-center space-x-2 text-gray-800 hover:text-blue-700 hover:bg-blue-100"
+                  className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50"
                 >
                   <UserCircleIcon className="h-6 w-6" />
                   <ChevronDownIcon className="h-4 w-4" />
@@ -374,23 +342,23 @@ const ModernAdminLayout = () => {
                 <AnimatePresence>
                   {userMenuOpen && (
                     <motion.div
-                      className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 z-50 border border-gray-300"
+                      className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 z-50 border border-gray-200"
                       initial={{ opacity: 0, scale: 0.95, y: -10 }}
                       animate={{ opacity: 1, scale: 1, y: 0 }}
                       exit={{ opacity: 0, scale: 0.95, y: -10 }}
                     >
-                      <div className="p-4 border-b border-gray-300 bg-gradient-to-r from-blue-50 to-cyan-50">
-                        <p className="text-sm font-semibold text-gray-900">
+                      <div className="p-4 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-cyan-50">
+                        <p className="text-sm font-semibold text-black">
                           Admin User
                         </p>
-                        <p className="text-sm text-gray-700">
+                        <p className="text-sm text-gray-800">
                           admin@bellatrix.com
                         </p>
                       </div>
                       <div className="py-2">
                         <button
                           onClick={() => navigate("/")}
-                          className="flex w-full items-center px-4 py-2 text-sm text-gray-800 hover:bg-blue-100 hover:text-blue-800"
+                          className="flex w-full items-center px-4 py-3 text-sm font-medium text-black hover:bg-blue-50 hover:text-blue-700 transition-colors duration-150"
                         >
                           <PowerIcon className="mr-3 h-4 w-4" />
                           Exit Admin
@@ -400,10 +368,11 @@ const ModernAdminLayout = () => {
                   )}
                 </AnimatePresence>
               </div>
-              </div>
             </div>
           </div>
-        </header>        {/* Page content */}
+        </header>
+
+        {/* Page content */}
         <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-auto">
           <Outlet />
         </main>

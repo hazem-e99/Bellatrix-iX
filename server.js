@@ -274,6 +274,31 @@ app.get("/retail", async (req, res) => {
   }
 });
 
+app.get("/about", async (req, res) => {
+  try {
+    const filePath = path.join(DATA_DIR, "about.json");
+    const fileContent = await fs.readFile(filePath, "utf8");
+    const data = JSON.parse(fileContent);
+    res.json(data);
+  } catch (error) {
+    console.error("Error reading about data:", error);
+    res.status(500).json({ error: "Failed to read about data" });
+  }
+});
+
+// API endpoint for about data (for Redux store)
+app.get("/api/about", async (req, res) => {
+  try {
+    const filePath = path.join(DATA_DIR, "about.json");
+    const fileContent = await fs.readFile(filePath, "utf8");
+    const data = JSON.parse(fileContent);
+    res.json({ data });
+  } catch (error) {
+    console.error("Error reading about data:", error);
+    res.status(500).json({ error: "Failed to read about data" });
+  }
+});
+
 // ========== PAGES MANAGEMENT API ==========
 
 // Get list of all pages (JSON files)

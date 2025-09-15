@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchAbout, selectAboutItem, selectAboutStatus } from '../store/about/aboutSlice';
 import AboutHero from '../components/About/AboutHero';
 import AboutMission from '../components/About/AboutMission';
 import AboutJourney from '../components/About/AboutJourney';
@@ -11,15 +13,27 @@ import ContactForm from '../components/ContactForm';
 import Modal from '../components/Modal';
 
 const About = () => {
+  const dispatch = useDispatch();
+  const aboutData = useSelector(selectAboutItem);
+  const aboutStatus = useSelector(selectAboutStatus);
+  
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [cardsPerScreen, setCardsPerScreen] = useState(3);
   const [slideOffset, setSlideOffset] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
 
+  // Fetch about data on component mount
+  useEffect(() => {
+    if (!aboutData) {
+      dispatch(fetchAbout());
+    }
+  }, [dispatch, aboutData]);
+
   const openContactModal = () => setIsContactModalOpen(true);
   const closeContactModal = () => setIsContactModalOpen(false);
 
-  const values = [
+  // Use data from Redux store or fallback to default values
+  const values = aboutData?.values?.items || [
     {
       title: 'Innovation',
       description: 'We embrace cutting-edge technologies and creative thinking to solve complex business challenges.',
@@ -42,7 +56,7 @@ const About = () => {
     }
   ];
 
-  const teamMembers = [
+  const teamMembers = aboutData?.team?.members || [
     {
       name: 'Sarah Johnson',
       role: 'Chief Executive Officer',
@@ -128,7 +142,7 @@ const About = () => {
     return () => cancelAnimationFrame(animationId);
   }, [needsCarousel, cardsPerScreen, teamMembers.length, isHovering]);
 
-  const milestones = [
+  const milestones = aboutData?.milestones?.items || aboutData?.journey?.timeline || [
     {
       year: '2008',
       title: 'Company Founded',
@@ -161,7 +175,7 @@ const About = () => {
     }
   ];
 
-  const differentiators = [
+  const differentiators = aboutData?.differentiators?.items || [
     {
       title: 'Industry Expertise',
       description: 'Deep understanding of various industries and their unique challenges.',
@@ -184,22 +198,35 @@ const About = () => {
     }
   ];
 
+  // Show loading state while data is being fetched
+  if (aboutStatus === 'loading') {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
-      <AboutHero />
-      <AboutMission />
-      <AboutJourney />
+      <AboutHero data={aboutData?.hero} />
+      <AboutMission data={aboutData?.mission} />
+      <AboutJourney data={aboutData?.journey} />
       <AboutTeam
         teamMembers={teamMembers}
         cardsPerScreen={cardsPerScreen}
         slideOffset={slideOffset}
         isHovering={isHovering}
         setIsHovering={setIsHovering}
+        data={aboutData?.team}
       />
-      <AboutValues values={values} />
-      <AboutDifferentiators differentiators={differentiators} />
-      <AboutMilestones milestones={milestones} />
-      <AboutCTA onOpenContactModal={openContactModal} />
+      <AboutValues values={values} data={aboutData?.values} />
+      <AboutDifferentiators differentiators={differentiators} data={aboutData?.differentiators} />
+      <AboutMilestones milestones={milestones} data={aboutData?.milestones} />
+      <AboutCTA onOpenContactModal={openContactModal} data={aboutData?.cta} />
       <Modal
         isOpen={isContactModalOpen}
         onClose={closeContactModal}

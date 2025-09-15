@@ -1,7 +1,21 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const AboutHero = () => (
+const AboutHero = ({ data }) => {
+  const heroData = data || {
+    title: "About Bellatrix",
+    subtitle: "Your trusted partner in digital transformation",
+    description: "We are a leading consultancy firm specializing in NetSuite implementations, business process optimization, and technology solutions that drive growth and efficiency.",
+    backgroundVideo: "/Videos/about-hero.mp4",
+    stats: [
+      { value: "500+", label: "Projects Completed" },
+      { value: "15+", label: "Years Experience" },
+      { value: "98%", label: "Client Satisfaction" },
+      { value: "200+", label: "Happy Clients" }
+    ]
+  };
+
+  return (
   <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
     {/* Background Video */}
     <video
@@ -11,7 +25,7 @@ const AboutHero = () => (
       playsInline
       className="absolute inset-0 w-full h-full object-cover"
     >
-      <source src="/public/Videos/about-hero.mp4" type="video/mp4" />
+      <source src={heroData.backgroundVideo || "/Videos/about-hero.mp4"} type="video/mp4" />
     </video>
     {/* Overlay */}
     <div className="absolute inset-0 bg-gradient-to-br from-blue-900/80 via-gray-900/60 to-cyan-900/80"></div>
@@ -36,11 +50,13 @@ const AboutHero = () => (
         transition={{ duration: 0.8 }}
       >
         <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-blue-200 to-cyan-200 bg-clip-text text-transparent">
-          About Bellatrix
+          {heroData.title}
         </h1>
-        <p className="text-xl md:text-2xl text-gray-200 mb-8 leading-relaxed max-w-4xl mx-auto">
-          Empowering businesses worldwide with innovative Oracle NetSuite solutions, 
-          expert consulting, and transformative digital experiences that drive sustainable growth.
+        <p className="text-xl md:text-2xl text-gray-200 mb-4 leading-relaxed max-w-4xl mx-auto font-medium">
+          {heroData.subtitle}
+        </p>
+        <p className="text-lg text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto">
+          {heroData.description}
         </p>
         <motion.button
           whileHover={{ scale: 1.05 }}
@@ -63,6 +79,7 @@ const AboutHero = () => (
       </svg>
     </motion.div>
   </section>
-);
+  );
+};
 
 export default AboutHero; 

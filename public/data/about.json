@@ -1,1 +1,243 @@
-{}
+{
+  "hero": {
+    "title": "About Bellatrix",
+    "subtitle": "Your trusted partner in digital transformation",
+    "description": "We are a leading consultancy firm specializing in NetSuite implementations, business process optimization, and technology solutions that drive growwwth and efficiency.",
+    "backgroundVideo": "/Videos/about-hero.mp4",
+    "stats": [
+      {
+        "value": "500+",
+        "label": "Projects Completed"
+      },
+      {
+        "value": "15+",
+        "label": "Years Experience"
+      },
+      {
+        "value": "98%",
+        "label": "Client Satisfaction"
+      },
+      {
+        "value": "200+",
+        "label": "Happy Clients"
+      }
+    ]
+  },
+  "mission": {
+    "title": "Our Mission",
+    "description": "To empower businesses with innovative technology solutions that transform operations, enhance productivity, and drive sustainable growth.",
+    "vision": "To be the global leader in business transformation consulting, helping organizations achieve their full potential through technology excellence."
+  },
+  "journey": {
+    "title": "Our Journey",
+    "description": "From humble beginnings to becoming a trusted global partner",
+    "timeline": [
+      {
+        "year": "2008",
+        "title": "Company Founded",
+        "description": "Bellatrix was established with a vision to transform businesses through technology."
+      },
+      {
+        "year": "2012",
+        "title": "First 100 Clients",
+        "description": "Reached our first major milestone of serving 100 satisfied clients."
+      },
+      {
+        "year": "2016",
+        "title": "NetSuite Gold Partner",
+        "description": "Achieved NetSuite Gold Partner status, recognizing our expertise."
+      },
+      {
+        "year": "2020",
+        "title": "Global Expansion",
+        "description": "Expanded operations to serve clients across multiple continents."
+      },
+      {
+        "year": "2023",
+        "title": "500+ Projects",
+        "description": "Successfully completed over 500 implementation projects."
+      },
+      {
+        "year": "2024",
+        "title": "AI Integration",
+        "description": "Pioneered AI-powered solutions for enhanced business intelligence."
+      }
+    ]
+  },
+  "team": {
+    "title": "Meet Our Team",
+    "description": "Experienced professionals dedicated to your success",
+    "members": [
+      {
+        "name": "Sarah Johnson",
+        "role": "Chief Executive Officer",
+        "image": "/images/ourteam/1.jpg",
+        "bio": "Visionary leader with 20+ years in enterprise software solutions.",
+        "expertise": [
+          "Strategic Planning",
+          "Business Development",
+          "Leadership"
+        ]
+      },
+      {
+        "name": "Michael Chen",
+        "role": "Chief Technology Officer",
+        "image": "/images/ourteam/2.jpg",
+        "bio": "Technology expert specializing in NetSuite implementations and cloud solutions.",
+        "expertise": [
+          "NetSuite Development",
+          "Cloud Architecture",
+          "System Integration"
+        ]
+      },
+      {
+        "name": "Emily Rodriguez",
+        "role": "Head of Operations",
+        "image": "/images/ourteam/3.jpg",
+        "bio": "Operations specialist ensuring seamless project delivery and client success.",
+        "expertise": [
+          "Project Management",
+          "Process Optimization",
+          "Quality Assurance"
+        ]
+      },
+      {
+        "name": "David Kim",
+        "role": "Lead Consultant",
+        "image": "/images/ourteam/1.jpg",
+        "bio": "Senior consultant with expertise in business process optimization.",
+        "expertise": [
+          "Business Analysis",
+          "Process Design",
+          "Training"
+        ]
+      },
+      {
+        "name": "Lisa Thompson",
+        "role": "Senior Developer",
+        "image": "/images/ourteam/2.jpg",
+        "bio": "Full-stack developer with deep expertise in NetSuite customization.",
+        "expertise": [
+          "NetSuite SuiteScript",
+          "JavaScript",
+          "API Integration"
+        ]
+      },
+      {
+        "name": "Alex Martinez",
+        "role": "Business Analyst",
+        "image": "/images/ourteam/3.jpg",
+        "bio": "Experienced analyst specializing in business process mapping and optimization.",
+        "expertise": [
+          "Requirements Gathering",
+          "Process Mapping",
+          "User Training"
+        ]
+      }
+    ]
+  },
+  "values": {
+    "title": "Our Values",
+    "description": "The principles that guide everything we do",
+    "items": [
+      {
+        "title": "Innovation",
+        "description": "We embrace cutting-edge technologies and creative thinking to solve complex business challenges.",
+        "color": "from-blue-500 to-cyan-500",
+        "icon": "🚀"
+      },
+      {
+        "title": "Excellence",
+        "description": "We deliver exceptional quality in every project, exceeding client expectations consistently.",
+        "color": "from-purple-500 to-pink-500",
+        "icon": "⭐"
+      },
+      {
+        "title": "Integrity",
+        "description": "We act with honesty and transparency, building trust through ethical business practices.",
+        "color": "from-green-500 to-teal-500",
+        "icon": "🤝"
+      },
+      {
+        "title": "Partnership",
+        "description": "We work closely with our clients as trusted partners in their digital transformation journey.",
+        "color": "from-orange-500 to-red-500",
+        "icon": "🤝"
+      }
+    ]
+  },
+  "differentiators": {
+    "title": "What Makes Us Different",
+    "description": "Key factors that set us apart from the competition",
+    "items": [
+      {
+        "title": "Industry Expertise",
+        "description": "Deep understanding of various industries and their unique challenges.",
+        "stats": "15+ Industries",
+        "icon": "🏭"
+      },
+      {
+        "title": "Proven Methodology",
+        "description": "Time-tested implementation methodology ensuring project success.",
+        "stats": "98% Success Rate",
+        "icon": "📊"
+      },
+      {
+        "title": "Ongoing Support",
+        "description": "24/7 support and maintenance services for continuous optimization.",
+        "stats": "24/7 Support",
+        "icon": "🛠️"
+      },
+      {
+        "title": "Custom Solutions",
+        "description": "Tailored solutions designed specifically for your business needs.",
+        "stats": "100% Custom",
+        "icon": "⚙️"
+      }
+    ]
+  },
+  "milestones": {
+    "title": "Our Milestones",
+    "description": "Key achievements in our journey",
+    "items": [
+      {
+        "year": "2008",
+        "title": "Company Founded",
+        "description": "Bellatrix was established with a vision to transform businesses through technology."
+      },
+      {
+        "year": "2012",
+        "title": "First 100 Clients",
+        "description": "Reached our first major milestone of serving 100 satisfied clients."
+      },
+      {
+        "year": "2016",
+        "title": "NetSuite Gold Partner",
+        "description": "Achieved NetSuite Gold Partner status, recognizing our expertise."
+      },
+      {
+        "year": "2020",
+        "title": "Global Expansion",
+        "description": "Expanded operations to serve clients across multiple continents."
+      },
+      {
+        "year": "2023",
+        "title": "500+ Projects",
+        "description": "Successfully completed over 500 implementation projects."
+      },
+      {
+        "year": "2024",
+        "title": "AI Integration",
+        "description": "Pioneered AI-powered solutions for enhanced business intelligence."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Ready to Transform Your Business?",
+    "subtitle": "Let's work together to achieve your goals",
+    "description": "Contact us today to discuss how we can help you optimize your operations and drive growth.",
+    "buttonText": "Get Started",
+    "buttonLink": "/contact"
+  },
+  "lastModified": "2025-09-15T23:04:01.938Z"
+}

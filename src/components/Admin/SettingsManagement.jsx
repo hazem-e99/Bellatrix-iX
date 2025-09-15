@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 import {
   Cog6ToothIcon,
   UserGroupIcon,
@@ -141,9 +142,9 @@ const SettingsManagement = () => {
   const renderGeneralSettings = () => (
     <div className="space-y-6">
       {/* Site Information */}
-      <Card className="dark:bg-gray-800 dark:border-gray-700 border-gray-300">
+      <Card className="dark:bg-gray-800 dark:border-gray-700">
         <CardHeader>
-          <CardTitle className="dark:text-white text-gray-900">Site Information</CardTitle>
+          <CardTitle className="dark:text-white">Site Information</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -157,7 +158,6 @@ const SettingsManagement = () => {
                 })
               }
               placeholder="Enter site name"
-              className="text-gray-900"
             />
             <Input
               label="Admin Email"
@@ -170,7 +170,6 @@ const SettingsManagement = () => {
                 })
               }
               placeholder="admin@example.com"
-              className="text-gray-900"
             />
             <Select
               label="Timezone"
@@ -230,21 +229,20 @@ const SettingsManagement = () => {
                 })
               }
               placeholder="https://yoursite.com"
-              className="text-gray-900"
             />
           </div>
         </CardContent>
       </Card>
 
       {/* Branding */}
-      <Card className="dark:bg-gray-800 dark:border-gray-700 border-gray-300">
+      <Card className="dark:bg-gray-800 dark:border-gray-700">
         <CardHeader>
-          <CardTitle className="dark:text-white text-gray-900">Branding</CardTitle>
+          <CardTitle className="dark:text-white">Branding</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-800 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Primary Color
               </label>
               <div className="flex items-center space-x-3">
@@ -268,12 +266,12 @@ const SettingsManagement = () => {
                     })
                   }
                   placeholder="#3B82F6"
-                  className="flex-1 text-gray-900"
+                  className="flex-1"
                 />
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-800 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Secondary Color
               </label>
               <div className="flex items-center space-x-3">
@@ -297,19 +295,19 @@ const SettingsManagement = () => {
                     })
                   }
                   placeholder="#10B981"
-                  className="flex-1 text-gray-900"
+                  className="flex-1"
                 />
               </div>
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
             <div>
-              <label className="block text-sm font-medium text-gray-800 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Logo
               </label>
               <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center">
                 <PhotoIcon className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-                <p className="text-sm text-gray-700 dark:text-gray-400 mb-2">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
                   Upload your logo (recommended: 200x50px)
                 </p>
                 <Button variant="outline" size="sm">
@@ -318,12 +316,12 @@ const SettingsManagement = () => {
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-800 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Favicon
               </label>
               <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center">
                 <PhotoIcon className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-                <p className="text-sm text-gray-700 dark:text-gray-400 mb-2">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
                   Upload favicon (recommended: 32x32px)
                 </p>
                 <Button variant="outline" size="sm">
@@ -348,10 +346,10 @@ const SettingsManagement = () => {
   const renderPermissionSettings = () => (
     <div className="space-y-6">
       {/* Roles Management */}
-      <Card className="dark:bg-gray-800 dark:border-gray-700 border-gray-300">
+      <Card className="dark:bg-gray-800 dark:border-gray-700">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="dark:text-white text-gray-900">User Roles</CardTitle>
+            <CardTitle className="dark:text-white">User Roles</CardTitle>
             <Button size="sm">Add Role</Button>
           </div>
         </CardHeader>
@@ -360,7 +358,7 @@ const SettingsManagement = () => {
             {permissionSettings.roles.map((role) => (
               <div
                 key={role.id}
-                className="flex items-center justify-between p-4 border border-gray-300 dark:border-gray-700 rounded-lg"
+                className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg"
               >
                 <div className="flex-1">
                   <div className="flex items-center space-x-3">
@@ -369,7 +367,7 @@ const SettingsManagement = () => {
                       <h4 className="font-medium text-gray-900 dark:text-white">
                         {role.name}
                       </h4>
-                      <p className="text-sm text-gray-700 dark:text-gray-400">
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
                         {role.users} user{role.users !== 1 ? "s" : ""} •{" "}
                         {role.permissions.length} permission
                         {role.permissions.length !== 1 ? "s" : ""}
@@ -406,9 +404,9 @@ const SettingsManagement = () => {
       </Card>
 
       {/* Security Settings */}
-      <Card className="dark:bg-gray-800 dark:border-gray-700 border-gray-300">
+      <Card className="dark:bg-gray-800 dark:border-gray-700">
         <CardHeader>
-          <CardTitle className="dark:text-white text-gray-900">Security Settings</CardTitle>
+          <CardTitle className="dark:text-white">Security Settings</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
@@ -417,7 +415,7 @@ const SettingsManagement = () => {
                 <label className="text-sm font-medium text-gray-900 dark:text-white">
                   Require approval for new users
                 </label>
-                <p className="text-sm text-gray-700 dark:text-gray-400">
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                   New user accounts must be approved by an administrator
                 </p>
               </div>
@@ -469,7 +467,6 @@ const SettingsManagement = () => {
                   })
                 }
                 placeholder="24"
-                className="text-gray-900"
               />
             </div>
           </div>
@@ -488,9 +485,9 @@ const SettingsManagement = () => {
   const renderIntegrationSettings = () => (
     <div className="space-y-6">
       {/* Analytics */}
-      <Card className="dark:bg-gray-800 dark:border-gray-700 border-gray-300">
+      <Card className="dark:bg-gray-800 dark:border-gray-700">
         <CardHeader>
-          <CardTitle className="dark:text-white text-gray-900">
+          <CardTitle className="dark:text-white">
             Analytics & Tracking
           </CardTitle>
         </CardHeader>
@@ -506,7 +503,6 @@ const SettingsManagement = () => {
                 })
               }
               placeholder="G-XXXXXXXXXX"
-              className="text-gray-900"
             />
             <Input
               label="Google Tag Manager ID"
@@ -518,7 +514,6 @@ const SettingsManagement = () => {
                 })
               }
               placeholder="GTM-XXXXXXX"
-              className="text-gray-900"
             />
             <Input
               label="Facebook Pixel ID"
@@ -530,16 +525,15 @@ const SettingsManagement = () => {
                 })
               }
               placeholder="123456789012345"
-              className="text-gray-900"
             />
           </div>
         </CardContent>
       </Card>
 
       {/* API Keys */}
-      <Card className="dark:bg-gray-800 dark:border-gray-700 border-gray-300">
+      <Card className="dark:bg-gray-800 dark:border-gray-700">
         <CardHeader>
-          <CardTitle className="dark:text-white text-gray-900">API Keys</CardTitle>
+          <CardTitle className="dark:text-white">API Keys</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
@@ -558,7 +552,6 @@ const SettingsManagement = () => {
               }
               placeholder="••••••••••••••••"
               icon={<KeyIcon className="h-4 w-4" />}
-              className="text-gray-900"
             />
             <Input
               label="Payment Gateway API Key"
@@ -575,7 +568,6 @@ const SettingsManagement = () => {
               }
               placeholder="••••••••••••••••"
               icon={<KeyIcon className="h-4 w-4" />}
-              className="text-gray-900"
             />
             <Input
               label="Cloud Storage API Key"
@@ -592,17 +584,16 @@ const SettingsManagement = () => {
               }
               placeholder="••••••••••••••••"
               icon={<KeyIcon className="h-4 w-4" />}
-              className="text-gray-900"
             />
           </div>
         </CardContent>
       </Card>
 
       {/* Webhooks */}
-      <Card className="dark:bg-gray-800 dark:border-gray-700 border-gray-300">
+      <Card className="dark:bg-gray-800 dark:border-gray-700">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="dark:text-white text-gray-900">Webhooks</CardTitle>
+            <CardTitle className="dark:text-white">Webhooks</CardTitle>
             <Button size="sm">Add Webhook</Button>
           </div>
         </CardHeader>
@@ -611,13 +602,13 @@ const SettingsManagement = () => {
             {integrationSettings.webhooks.map((webhook) => (
               <div
                 key={webhook.id}
-                className="flex items-center justify-between p-3 border border-gray-300 dark:border-gray-700 rounded-lg"
+                className="flex items-center justify-between p-3 border border-gray-200 dark:border-gray-700 rounded-lg"
               >
                 <div>
                   <h4 className="font-medium text-gray-900 dark:text-white">
                     {webhook.name}
                   </h4>
-                  <p className="text-sm text-gray-700 dark:text-gray-400">
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
                     {webhook.url}
                   </p>
                   <div className="flex space-x-1 mt-1">
@@ -650,9 +641,9 @@ const SettingsManagement = () => {
       </Card>
 
       {/* Notifications */}
-      <Card className="dark:bg-gray-800 dark:border-gray-700 border-gray-300">
+      <Card className="dark:bg-gray-800 dark:border-gray-700">
         <CardHeader>
-          <CardTitle className="dark:text-white text-gray-900">
+          <CardTitle className="dark:text-white">
             Notification Preferences
           </CardTitle>
         </CardHeader>
@@ -667,7 +658,7 @@ const SettingsManagement = () => {
                       <label className="text-sm font-medium text-gray-900 dark:text-white capitalize">
                         {key} Notifications
                       </label>
-                      <p className="text-sm text-gray-700 dark:text-gray-400">
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
                         Receive notifications via {key}
                       </p>
                     </div>
@@ -715,7 +706,7 @@ const SettingsManagement = () => {
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
           Settings
         </h2>
-        <p className="text-gray-700 dark:text-gray-400">
+        <p className="text-gray-600 dark:text-gray-400">
           Configure your application settings and preferences
         </p>
       </div>
@@ -734,19 +725,20 @@ const SettingsManagement = () => {
                 className={`group relative py-4 px-1 font-medium text-sm whitespace-nowrap transition-colors ${
                   isActive
                     ? "text-blue-600 dark:text-blue-400"
-                    : "text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-300"
+                    : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
                 }`}
               >
                 <div className="flex items-center space-x-2">
                   <IconComponent className="h-5 w-5" />
                   <span>{tab.name}</span>
                 </div>
-                <div className="text-xs text-gray-500 dark:text-gray-500 mt-1">
+                <div className="text-xs text-gray-400 dark:text-gray-500 mt-1">
                   {tab.description}
                 </div>
                 {isActive && (
-                  <div
+                  <motion.div
                     className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 dark:bg-blue-400"
+                    layoutId="activeTab"
                   />
                 )}
               </button>
@@ -756,13 +748,16 @@ const SettingsManagement = () => {
       </div>
 
       {/* Tab Content */}
-      <div
+      <motion.div
         key={activeTab}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
       >
         {activeTab === "general" && renderGeneralSettings()}
         {activeTab === "permissions" && renderPermissionSettings()}
         {activeTab === "integrations" && renderIntegrationSettings()}
-      </div>
+      </motion.div>
 
       {/* Toast Notification */}
       <Toast

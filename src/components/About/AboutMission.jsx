@@ -1,6 +1,13 @@
 import React from 'react';
 
-const AboutMission = () => (
+const AboutMission = ({ data }) => {
+  const missionData = data || {
+    title: "Our Mission",
+    description: "To empower businesses with innovative technology solutions that transform operations, enhance productivity, and drive sustainable growth.",
+    vision: "To be the global leader in business transformation consulting, helping organizations achieve their full potential through technology excellence."
+  };
+
+  return (
   <section id="about-section" className="bg-gray-50 py-20 light-section">
     <div className="container mx-auto px-6">
       <div className="text-center mb-16">
@@ -88,6 +95,7 @@ const AboutMission = () => (
       </div>
     </div>
   </section>
-);
+  );
+};
 
 export default AboutMission; 
