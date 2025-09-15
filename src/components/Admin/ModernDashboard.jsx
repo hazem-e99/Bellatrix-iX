@@ -129,24 +129,28 @@ const ModernDashboard = () => {
   const getColorClasses = (color) => {
     const colors = {
       blue: {
-        bg: "bg-blue-50 dark:bg-blue-900/20",
-        text: "text-blue-600 dark:text-blue-400",
-        border: "border-blue-200 dark:border-blue-800",
+        bg: "bg-gradient-to-br from-blue-50 to-blue-100",
+        text: "text-blue-800",
+        border: "border-blue-300",
+        icon: "bg-gradient-to-r from-blue-600 to-blue-700",
       },
       purple: {
-        bg: "bg-purple-50 dark:bg-purple-900/20",
-        text: "text-purple-600 dark:text-purple-400",
-        border: "border-purple-200 dark:border-purple-800",
+        bg: "bg-gradient-to-br from-blue-100 to-purple-100",
+        text: "text-blue-800",
+        border: "border-blue-400",
+        icon: "bg-gradient-to-r from-blue-700 to-purple-700",
       },
       green: {
-        bg: "bg-green-50 dark:bg-green-900/20",
-        text: "text-green-600 dark:text-green-400",
-        border: "border-green-200 dark:border-green-800",
+        bg: "bg-gradient-to-br from-blue-50 to-green-50",
+        text: "text-blue-800",
+        border: "border-blue-300",
+        icon: "bg-gradient-to-r from-blue-600 to-green-600",
       },
       orange: {
-        bg: "bg-orange-50 dark:bg-orange-900/20",
-        text: "text-orange-600 dark:text-orange-400",
-        border: "border-orange-200 dark:border-orange-800",
+        bg: "bg-gradient-to-br from-blue-50 to-orange-50",
+        text: "text-blue-800",
+        border: "border-blue-300",
+        icon: "bg-gradient-to-r from-blue-600 to-orange-600",
       },
     };
     return colors[color] || colors.blue;
@@ -155,17 +159,17 @@ const ModernDashboard = () => {
   const getActivityIcon = (type) => {
     switch (type) {
       case "create":
-        return <PlusIcon className="h-4 w-4 text-green-500" />;
+        return <PlusIcon className="h-4 w-4 text-green-700" />;
       case "update":
-        return <DocumentTextIcon className="h-4 w-4 text-blue-500" />;
+        return <DocumentTextIcon className="h-4 w-4 text-blue-700" />;
       case "publish":
         return (
-          <ArrowTopRightOnSquareIcon className="h-4 w-4 text-purple-500" />
+          <ArrowTopRightOnSquareIcon className="h-4 w-4 text-purple-700" />
         );
       case "settings":
-        return <ClockIcon className="h-4 w-4 text-orange-500" />;
+        return <ClockIcon className="h-4 w-4 text-orange-700" />;
       default:
-        return <DocumentTextIcon className="h-4 w-4 text-gray-500" />;
+        return <DocumentTextIcon className="h-4 w-4 text-gray-700" />;
     }
   };
 
@@ -178,10 +182,10 @@ const ModernDashboard = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">
             Welcome back! 👋
           </h2>
-          <p className="text-gray-600 dark:text-gray-400 text-lg">
+          <p className="text-gray-700 text-lg">
             Here's what's happening with your website today.
           </p>
         </motion.div>
@@ -204,39 +208,39 @@ const ModernDashboard = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <Card className="dark:bg-gray-800 dark:border-gray-700">
+              <Card className="bg-white border border-gray-300 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
                 <CardContent>
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                      <p className="text-sm font-semibold text-gray-700">
                         {stat.name}
                       </p>
-                      <p className="text-3xl font-bold text-gray-900 dark:text-white mt-2">
+                      <p className="text-3xl font-bold text-gray-900 mt-2">
                         {stat.value}
                       </p>
                       <div className="flex items-center mt-2">
                         <TrendIcon
                           className={`h-4 w-4 mr-1 ${
                             stat.changeType === "increase"
-                              ? "text-green-500"
-                              : "text-red-500"
+                              ? "text-green-700"
+                              : "text-red-700"
                           }`}
                         />
                         <span
-                          className={`text-sm font-medium ${
+                          className={`text-sm font-semibold ${
                             stat.changeType === "increase"
-                              ? "text-green-600"
-                              : "text-red-600"
+                              ? "text-green-700"
+                              : "text-red-700"
                           }`}
                         >
                           {stat.change}
                         </span>
-                        <span className="text-sm text-gray-500 dark:text-gray-400 ml-2">
+                        <span className="text-sm text-gray-600 ml-2">
                           vs last month
                         </span>
                       </div>
                     </div>
-                    <div className={`p-3 rounded-lg ${colorClasses.bg}`}>
+                    <div className={`p-3 rounded-lg ${colorClasses.bg} shadow-lg`}>
                       <IconComponent
                         className={`h-6 w-6 ${colorClasses.text}`}
                       />
@@ -258,9 +262,9 @@ const ModernDashboard = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
-          <Card className="dark:bg-gray-800 dark:border-gray-700">
+          <Card className="bg-white border border-gray-300 shadow-lg">
             <CardHeader>
-              <CardTitle className="dark:text-white">Quick Actions</CardTitle>
+              <CardTitle className="text-gray-900">Quick Actions</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -276,18 +280,18 @@ const ModernDashboard = () => {
                     >
                       <Button
                         variant="outline"
-                        className="h-auto p-4 flex-col items-start space-y-2 w-full hover:border-blue-300 dark:hover:border-blue-600"
+                        className="h-auto p-4 flex-col items-start space-y-2 w-full hover:border-blue-400 hover:bg-blue-100 border-gray-300"
                       >
-                        <div className={`p-2 rounded-lg ${colorClasses.bg}`}>
+                        <div className={`p-2 rounded-lg ${colorClasses.bg} shadow-md`}>
                           <IconComponent
                             className={`h-5 w-5 ${colorClasses.text}`}
                           />
                         </div>
                         <div className="text-left">
-                          <div className="font-medium text-gray-900 dark:text-white">
+                          <div className="font-semibold text-gray-900">
                             {action.name}
                           </div>
-                          <div className="text-sm text-gray-500 dark:text-gray-400">
+                          <div className="text-sm text-gray-700">
                             {action.description}
                           </div>
                         </div>
@@ -306,37 +310,37 @@ const ModernDashboard = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.6 }}
         >
-          <Card className="dark:bg-gray-800 dark:border-gray-700">
+          <Card className="bg-white border border-gray-300 shadow-lg">
             <CardHeader>
-              <CardTitle className="dark:text-white">Recent Activity</CardTitle>
+              <CardTitle className="text-gray-900">Recent Activity</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 {recentActivity.map((activity) => (
                   <motion.div
                     key={activity.id}
-                    className="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                    className="flex items-start space-x-3 p-3 rounded-lg hover:bg-blue-100 transition-colors"
                     whileHover={{ scale: 1.01 }}
                   >
                     <div className="flex-shrink-0 mt-1">
                       {getActivityIcon(activity.type)}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 dark:text-white">
+                      <p className="text-sm font-semibold text-gray-900">
                         {activity.action}
                       </p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                      <p className="text-sm text-gray-700">
                         {activity.item}
                       </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
+                      <p className="text-xs text-gray-600 mt-1">
                         {activity.time} • by {activity.user}
                       </p>
                     </div>
                   </motion.div>
                 ))}
               </div>
-              <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                <Button variant="ghost" className="w-full text-sm">
+              <div className="mt-4 pt-4 border-t border-gray-300">
+                <Button variant="ghost" className="w-full text-sm text-blue-700 hover:text-blue-800 hover:bg-blue-100">
                   View all activity
                 </Button>
               </div>
@@ -351,41 +355,41 @@ const ModernDashboard = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.8 }}
       >
-        <Card className="dark:bg-gray-800 dark:border-gray-700">
+        <Card className="bg-white border border-gray-300 shadow-lg">
           <CardHeader>
-            <CardTitle className="dark:text-white">System Status</CardTitle>
+            <CardTitle className="text-gray-900">System Status</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="flex items-center space-x-3">
-                <div className="h-3 w-3 bg-green-500 rounded-full"></div>
+                <div className="h-3 w-3 bg-green-600 rounded-full animate-pulse"></div>
                 <div>
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">
+                  <p className="text-sm font-semibold text-gray-900">
                     Website
                   </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                  <p className="text-xs text-gray-700">
                     Online & Operational
                   </p>
                 </div>
               </div>
               <div className="flex items-center space-x-3">
-                <div className="h-3 w-3 bg-green-500 rounded-full"></div>
+                <div className="h-3 w-3 bg-green-500 rounded-full animate-pulse"></div>
                 <div>
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">
+                  <p className="text-sm font-medium text-gray-800">
                     Database
                   </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                  <p className="text-xs text-gray-600">
                     Connected
                   </p>
                 </div>
               </div>
               <div className="flex items-center space-x-3">
-                <div className="h-3 w-3 bg-yellow-500 rounded-full"></div>
+                <div className="h-3 w-3 bg-yellow-500 rounded-full animate-pulse"></div>
                 <div>
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">
+                  <p className="text-sm font-medium text-gray-800">
                     Backup
                   </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                  <p className="text-xs text-gray-600">
                     Last: 2 hours ago
                   </p>
                 </div>

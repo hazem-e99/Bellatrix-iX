@@ -201,15 +201,15 @@ const TemplatesManagement = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-            Templates
+          <h2 className="text-2xl font-bold text-gray-900">
+            Templates Management
           </h2>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-gray-700">
             Manage and organize your design templates
           </p>
         </div>
         <div className="mt-4 sm:mt-0">
-          <Button icon={<PlusIcon className="h-4 w-4" />}>
+          <Button icon={<PlusIcon className="h-4 w-4" />} className="bg-blue-600 hover:bg-blue-700 text-white">
             Create Template
           </Button>
         </div>
@@ -224,13 +224,13 @@ const TemplatesManagement = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: index * 0.1 }}
           >
-            <Card className="dark:bg-gray-800 dark:border-gray-700">
+            <Card className="bg-white border border-gray-300 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
               <CardContent>
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  <p className="text-2xl font-bold text-gray-900">
                     {stat.value}
                   </p>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                  <p className="text-sm font-semibold text-gray-700">
                     {stat.label}
                   </p>
                 </div>
@@ -241,22 +241,23 @@ const TemplatesManagement = () => {
       </div>
 
       {/* Filters */}
-      <Card className="dark:bg-gray-800 dark:border-gray-700">
+      <Card className="bg-white border border-gray-300 shadow-lg">
         <CardContent>
           <div className="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
             <div className="flex-1">
               <Input
                 placeholder="Search templates..."
-                icon={<MagnifyingGlassIcon className="h-4 w-4" />}
+                icon={<MagnifyingGlassIcon className="h-4 w-4 text-gray-600" />}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
+                className="text-gray-900"
               />
             </div>
             <div className="flex items-center space-x-4">
               <select
                 value={filterCategory}
                 onChange={(e) => setFilterCategory(e.target.value)}
-                className="rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 dark:text-white"
+                className="rounded-lg border border-gray-400 bg-white px-3 py-2 text-sm focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-gray-800"
               >
                 {categories.map((category) => (
                   <option key={category} value={category}>
@@ -279,16 +280,16 @@ const TemplatesManagement = () => {
             transition={{ duration: 0.3, delay: index * 0.1 }}
             whileHover={{ y: -4 }}
           >
-            <Card className="dark:bg-gray-800 dark:border-gray-700 overflow-hidden">
+            <Card className="bg-white border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 overflow-hidden">
               {/* Template Thumbnail */}
-              <div className="relative aspect-video bg-gray-100 dark:bg-gray-700">
+              <div className="relative aspect-video bg-gradient-to-br from-blue-50 to-cyan-50">
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <PhotoIcon className="h-12 w-12 text-gray-400" />
+                  <PhotoIcon className="h-12 w-12 text-blue-400" />
                 </div>
                 <div className="absolute top-2 right-2 flex space-x-1">
                   <button
                     onClick={() => toggleFavorite(template.id)}
-                    className="p-1 bg-white dark:bg-gray-800 rounded-full shadow-sm hover:shadow-md transition-shadow"
+                    className="p-1 bg-white rounded-full shadow-sm hover:shadow-md transition-all duration-200 hover:scale-110"
                   >
                     {template.isFavorite ? (
                       <HeartIconSolid className="h-4 w-4 text-red-500" />
@@ -304,14 +305,14 @@ const TemplatesManagement = () => {
                   {/* Template Info */}
                   <div>
                     <div className="flex items-center justify-between">
-                      <h3 className="font-semibold text-gray-900 dark:text-white">
+                      <h3 className="font-semibold text-gray-900">
                         {template.name}
                       </h3>
-                      <span className="text-xs px-2 py-1 bg-blue-100 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-full">
+                      <span className="text-xs px-2 py-1 bg-blue-200 text-blue-800 rounded-full">
                         {template.category}
                       </span>
                     </div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                    <p className="text-sm text-gray-700 mt-1">
                       {template.description}
                     </p>
                   </div>
@@ -321,7 +322,7 @@ const TemplatesManagement = () => {
                     {template.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded"
+                        className="text-xs px-2 py-1 bg-gray-200 text-gray-700 rounded"
                       >
                         #{tag}
                       </span>
@@ -329,7 +330,7 @@ const TemplatesManagement = () => {
                   </div>
 
                   {/* Meta Info */}
-                  <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+                  <div className="flex items-center justify-between text-xs text-gray-600">
                     <div className="flex items-center space-x-1">
                       <UserIcon className="h-3 w-3" />
                       <span>{template.author}</span>
@@ -341,11 +342,12 @@ const TemplatesManagement = () => {
                   </div>
 
                   {/* Actions */}
-                  <div className="flex items-center justify-between pt-2 border-t border-gray-200 dark:border-gray-700">
+                  <div className="flex items-center justify-between pt-2 border-t border-gray-300">
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={() => openDetailModal(template)}
+                      className="text-blue-700 hover:text-blue-800 hover:bg-blue-100"
                     >
                       <EyeIcon className="h-4 w-4 mr-1" />
                       View
@@ -354,18 +356,22 @@ const TemplatesManagement = () => {
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="h-8 w-8"
+                        className="h-8 w-8 hover:bg-blue-100 hover:text-blue-700"
                         onClick={() => duplicateTemplate(template)}
                       >
                         <DocumentDuplicateIcon className="h-4 w-4" />
                       </Button>
-                      <Button variant="ghost" size="icon" className="h-8 w-8">
+                      <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        className="h-8 w-8 hover:bg-blue-100 hover:text-blue-700"
+                      >
                         <PencilIcon className="h-4 w-4" />
                       </Button>
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="h-8 w-8 text-red-600 hover:text-red-700"
+                        className="h-8 w-8 text-red-700 hover:text-red-800 hover:bg-red-100"
                         onClick={() => setDeleteModal({ open: true, template })}
                       >
                         <TrashIcon className="h-4 w-4" />
@@ -387,13 +393,13 @@ const TemplatesManagement = () => {
           className="text-center py-12"
         >
           <PhotoIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+          <h3 className="text-lg font-medium text-gray-800 mb-2">
             No templates found
           </h3>
-          <p className="text-gray-600 dark:text-gray-400 mb-4">
+          <p className="text-gray-600 mb-4">
             Try adjusting your search terms or filters
           </p>
-          <Button>Create Your First Template</Button>
+          <Button className="bg-blue-600 hover:bg-blue-700 text-white">Create Your First Template</Button>
         </motion.div>
       )}
 
@@ -408,17 +414,17 @@ const TemplatesManagement = () => {
           <div className="space-y-6">
             {/* Template Header */}
             <div className="flex items-start space-x-4">
-              <div className="w-24 h-24 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center">
-                <PhotoIcon className="h-8 w-8 text-gray-400" />
+              <div className="w-24 h-24 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-lg flex items-center justify-center">
+                <PhotoIcon className="h-8 w-8 text-blue-400" />
               </div>
               <div className="flex-1">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                  <h3 className="text-xl font-semibold text-gray-900">
                     {selectedTemplate.name}
                   </h3>
                   <button
                     onClick={() => toggleFavorite(selectedTemplate.id)}
-                    className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                    className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
                   >
                     {selectedTemplate.isFavorite ? (
                       <HeartIconSolid className="h-5 w-5 text-red-500" />
@@ -427,10 +433,10 @@ const TemplatesManagement = () => {
                     )}
                   </button>
                 </div>
-                <p className="text-gray-600 dark:text-gray-400 mt-1">
+                <p className="text-gray-700 mt-1">
                   {selectedTemplate.description}
                 </p>
-                <div className="flex items-center space-x-4 mt-2 text-sm text-gray-500 dark:text-gray-400">
+                <div className="flex items-center space-x-4 mt-2 text-sm text-gray-600">
                   <div className="flex items-center space-x-1">
                     <CalendarIcon className="h-4 w-4" />
                     <span>{selectedTemplate.createdDate}</span>
@@ -449,24 +455,24 @@ const TemplatesManagement = () => {
 
             {/* Template Fields */}
             <div>
-              <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+              <h4 className="text-lg font-medium text-gray-900 mb-4">
                 Template Fields
               </h4>
               <div className="space-y-3">
                 {selectedTemplate.fields.map((field, index) => (
                   <div
                     key={index}
-                    className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg"
+                    className="flex items-center justify-between p-3 bg-blue-50 rounded-lg"
                   >
                     <div>
-                      <p className="font-medium text-gray-900 dark:text-white">
+                      <p className="font-medium text-gray-900">
                         {field.label}
                       </p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                      <p className="text-sm text-gray-700">
                         Field: {field.name} • Type: {field.type}
                       </p>
                     </div>
-                    <span className="text-xs px-2 py-1 bg-blue-100 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded">
+                    <span className="text-xs px-2 py-1 bg-blue-100 text-blue-600 rounded">
                       {field.type}
                     </span>
                   </div>
@@ -476,14 +482,14 @@ const TemplatesManagement = () => {
 
             {/* Tags */}
             <div>
-              <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
+              <h4 className="text-lg font-medium text-gray-900 mb-3">
                 Tags
               </h4>
               <div className="flex flex-wrap gap-2">
                 {selectedTemplate.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="inline-flex items-center px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-sm"
+                    className="inline-flex items-center px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm"
                   >
                     <TagIcon className="h-3 w-3 mr-1" />
                     {tag}
@@ -497,11 +503,11 @@ const TemplatesManagement = () => {
           <Button variant="outline" onClick={() => setDetailModal(false)}>
             Close
           </Button>
-          <Button onClick={() => duplicateTemplate(selectedTemplate)}>
+          <Button onClick={() => duplicateTemplate(selectedTemplate)} className="bg-blue-600 hover:bg-blue-700 text-white">
             <DocumentDuplicateIcon className="h-4 w-4 mr-1" />
             Duplicate
           </Button>
-          <Button>
+          <Button className="bg-blue-600 hover:bg-blue-700 text-white">
             <PencilIcon className="h-4 w-4 mr-1" />
             Edit
           </Button>
@@ -517,7 +523,7 @@ const TemplatesManagement = () => {
       >
         {deleteModal.template && (
           <div className="space-y-4">
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-gray-800">
               Are you sure you want to delete the template "
               {deleteModal.template.name}"? This action cannot be undone.
             </p>
@@ -536,6 +542,7 @@ const TemplatesManagement = () => {
               console.log("Delete template:", deleteModal.template);
               setDeleteModal({ open: false, template: null });
             }}
+            className="bg-red-600 hover:bg-red-700 text-white"
           >
             Delete
           </Button>

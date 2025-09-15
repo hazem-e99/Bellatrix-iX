@@ -537,52 +537,50 @@ const PageManager = () => {
           </DialogTitle>
           <DialogContent className="bg-gray-800">
             <div className="space-y-6 pt-6">
-              <TextField
-                label="Page Name"
-                fullWidth
-                value={pageForm.name}
-                onChange={(e) =>
-                  setPageForm({ ...pageForm, name: e.target.value })
-                }
-                placeholder="e.g., About Us, Services, Contact"
-                className="bg-gray-700/50 rounded-xl"
-                InputProps={{
-                  className: "text-white bg-gray-700/50 rounded-xl",
-                }}
-                InputLabelProps={{
-                  className: "text-gray-400",
-                }}
-              />
+                <TextField
+                  label="Page Name"
+                  fullWidth
+                  value={pageForm.name}
+                  onChange={(e) =>
+                    setPageForm({ ...pageForm, name: e.target.value })
+                  }
+                  placeholder="e.g., About Us, Services, Contact"
+                  className="bg-gray-700/50 rounded-xl"
+                  InputProps={{
+                    className: "text-gray-900 bg-gray-700/50 rounded-xl",
+                  }}
+                  InputLabelProps={{
+                    className: "text-gray-700",
+                  }}
+                />
 
-              <TextField
-                label="File Name"
-                fullWidth
-                value={pageForm.fileName}
-                onChange={(e) =>
-                  setPageForm({ ...pageForm, fileName: e.target.value })
-                }
-                placeholder="e.g., about.json, services.json"
-                helperText="File name for storing page data (auto-generated if empty)"
-                className="bg-gray-700/50 rounded-xl"
-                InputProps={{
-                  className: "text-white bg-gray-700/50 rounded-xl",
-                }}
-                InputLabelProps={{
-                  className: "text-gray-400",
-                }}
-                FormHelperTextProps={{
-                  className: "text-gray-500",
-                }}
-              />
-
-              <FormControl fullWidth className="bg-gray-700/50 rounded-xl">
-                <InputLabel className="text-gray-400">Template</InputLabel>
+                <TextField
+                  label="File Name"
+                  fullWidth
+                  value={pageForm.fileName}
+                  onChange={(e) =>
+                    setPageForm({ ...pageForm, fileName: e.target.value })
+                  }
+                  placeholder="e.g., about.json, services.json"
+                  helperText="File name for storing page data (auto-generated if empty)"
+                  className="bg-gray-700/50 rounded-xl"
+                  InputProps={{
+                    className: "text-gray-900 bg-gray-700/50 rounded-xl",
+                  }}
+                  InputLabelProps={{
+                    className: "text-gray-700",
+                  }}
+                  FormHelperTextProps={{
+                    className: "text-gray-600",
+                  }}
+                />              <FormControl fullWidth className="bg-gray-700/50 rounded-xl">
+                <InputLabel className="text-gray-700">Template</InputLabel>
                 <Select
                   value={pageForm.template}
                   onChange={(e) =>
                     setPageForm({ ...pageForm, template: e.target.value })
                   }
-                  className="text-white bg-gray-700/50 rounded-xl"
+                  className="text-gray-900 bg-gray-700/50 rounded-xl"
                 >
                   <MenuItem value="">Default</MenuItem>
                   {pageTemplates.map((template) => (
@@ -594,13 +592,13 @@ const PageManager = () => {
               </FormControl>
 
               <FormControl fullWidth className="bg-gray-700/50 rounded-xl">
-                <InputLabel className="text-gray-400">Status</InputLabel>
+                <InputLabel className="text-gray-700">Status</InputLabel>
                 <Select
                   value={pageForm.status}
                   onChange={(e) =>
                     setPageForm({ ...pageForm, status: e.target.value })
                   }
-                  className="text-white bg-gray-700/50 rounded-xl"
+                  className="text-gray-900 bg-gray-700/50 rounded-xl"
                 >
                   <MenuItem value="Draft">Draft</MenuItem>
                   <MenuItem value="Published">Published</MenuItem>
@@ -609,7 +607,7 @@ const PageManager = () => {
 
               {/* SEO Section */}
               <div className="pt-4">
-                <Typography variant="h6" className="text-white font-bold mb-4 flex items-center gap-2">
+                <Typography variant="h6" className="text-gray-900 font-bold mb-4 flex items-center gap-2">
                   🔍 SEO Settings
                 </Typography>
 
@@ -626,10 +624,10 @@ const PageManager = () => {
                     }
                     className="bg-gray-700/50 rounded-xl"
                     InputProps={{
-                      className: "text-white bg-gray-700/50 rounded-xl",
+                      className: "text-gray-900 bg-gray-700/50 rounded-xl",
                     }}
                     InputLabelProps={{
-                      className: "text-gray-400",
+                      className: "text-gray-700",
                     }}
                   />
 
@@ -647,10 +645,10 @@ const PageManager = () => {
                     }
                     className="bg-gray-700/50 rounded-xl"
                     InputProps={{
-                      className: "text-white bg-gray-700/50 rounded-xl",
+                      className: "text-gray-900 bg-gray-700/50 rounded-xl",
                     }}
                     InputLabelProps={{
-                      className: "text-gray-400",
+                      className: "text-gray-700",
                     }}
                   />
 
@@ -667,10 +665,10 @@ const PageManager = () => {
                     placeholder="keyword1, keyword2, keyword3"
                     className="bg-gray-700/50 rounded-xl"
                     InputProps={{
-                      className: "text-white bg-gray-700/50 rounded-xl",
+                      className: "text-gray-900 bg-gray-700/50 rounded-xl",
                     }}
                     InputLabelProps={{
-                      className: "text-gray-400",
+                      className: "text-gray-700",
                     }}
                   />
                 </div>
@@ -681,7 +679,7 @@ const PageManager = () => {
             <Button
               onClick={() => setOpenDialog(false)}
               variant="outlined"
-              className="border-gray-600 text-gray-300 hover:border-gray-500 hover:bg-gray-700/50 rounded-xl px-6 transition-all duration-300"
+              className="border-gray-600 text-gray-800 hover:border-gray-500 hover:bg-gray-700/50 rounded-xl px-6 transition-all duration-300"
             >
               Cancel
             </Button>

@@ -49,7 +49,7 @@ const Modal = ({
             >
               {/* Header */}
               {(title || showCloseButton) && (
-                <div className="flex items-center justify-between p-6 border-b border-gray-200">
+                <div className="flex items-center justify-between p-6 border-b border-gray-300">
                   {title && (
                     <h2 className="text-xl font-semibold text-gray-900">
                       {title}
@@ -69,7 +69,7 @@ const Modal = ({
               )}
 
               {/* Content */}
-              <div className="p-6">{children}</div>
+              <div className="p-6 text-gray-900">{children}</div>
             </MotionDiv>
           </div>
         </div>
@@ -79,14 +79,14 @@ const Modal = ({
 };
 
 const ModalHeader = ({ children, className = "" }) => (
-  <div className={`border-b border-gray-200 pb-4 mb-4 ${className}`}>
+  <div className={`border-b border-gray-300 pb-4 mb-4 text-gray-900 ${className}`}>
     {children}
   </div>
 );
 
 const ModalFooter = ({ children, className = "" }) => (
   <div
-    className={`border-t border-gray-200 pt-4 mt-4 flex justify-end space-x-2 ${className}`}
+    className={`border-t border-gray-300 pt-4 mt-4 flex justify-end space-x-2 ${className}`}
   >
     {children}
   </div>
