@@ -1,7 +1,27 @@
 // components/Implementation/WhyChooseSection.jsx
 import React from 'react';
 
-const WhyChooseSection = ({ data }) => {
+const WhyChooseSection = ({ data = {} }) => {
+    // حماية إضافية من undefined
+    const safeData = data || {};
+    
+    // حماية إضافية من null
+    if (!safeData) {
+        console.warn('WhyChooseSection: data is null or undefined');
+        return (
+            <div className="py-12 relative overflow-hidden" style={{backgroundColor: '#001038'}}>
+                <div className="container mx-auto px-6 text-center">
+                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
+                        Why Choose Bellatrix for Implementation?
+                    </h2>
+                    <p className="text-lg text-gray-300 leading-relaxed max-w-3xl mx-auto">
+                        We bring years of expertise, proven methodologies, and cutting-edge solutions to ensure your implementation success
+                    </p>
+                </div>
+            </div>
+        );
+    }
+    
     return (
         <div className="py-12 relative overflow-hidden animate-background-glow" style={{
             backgroundColor: '#001038',
@@ -11,10 +31,10 @@ const WhyChooseSection = ({ data }) => {
                 {/* Section Header */}
                 <div className="text-center mb-10">
                     <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-                        {data.title}
+                        {safeData.title || 'Why Choose Bellatrix for Implementation?'}
                     </h2>
                     <p className="text-lg text-gray-300 leading-relaxed max-w-3xl mx-auto">
-                        {data.subtitle}
+                        {safeData.subtitle || 'We bring years of expertise, proven methodologies, and cutting-edge solutions to ensure your implementation success'}
                     </p>
                 </div>
 
@@ -28,7 +48,7 @@ const WhyChooseSection = ({ data }) => {
                             <div className="absolute top-1/2 left-1/2 w-16 h-16 bg-gradient-to-r from-cyan-400/20 to-blue-400/20 rounded-full opacity-15 transform -translate-x-8 -translate-y-8 group-hover:opacity-30 transition-opacity duration-500"></div>
                             
                             <div className="relative z-10 space-y-4">
-                                {data.features.map((feature, index) => {
+                                {(safeData.features || []).map((feature, index) => {
                                     const bgGradients = [
                                         'from-blue-700 to-blue-900',
                                         'from-blue-800 to-blue-950',
@@ -65,7 +85,7 @@ const WhyChooseSection = ({ data }) => {
                             {/* Image container with enhanced styling */}
                             <div className="relative bg-gradient-to-br from-white/10 to-white/5 rounded-2xl p-4 backdrop-blur-sm border border-white/20 shadow-2xl">
                                 <img 
-                                    src={data.image} 
+                                    src={safeData.image || '/Videos/implementation/whyChoese.jpg'} 
                                     alt="Why Choose Bellatrix - Digital Innovation & Technology" 
                                     className="w-full h-auto lg:max-w-md rounded-xl shadow-lg brightness-110 contrast-110 saturate-110 group-hover:scale-105 transition-all duration-500"
                                 />

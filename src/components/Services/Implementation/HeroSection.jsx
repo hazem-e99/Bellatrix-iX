@@ -1,7 +1,7 @@
 // components/Implementation/HeroSection.jsx
 import React from 'react';
 
-const HeroSection = ({ data, openModal }) => {
+const HeroSection = ({ data = {}, openModal }) => {
     return (
         <div className="min-h-screen relative overflow-hidden pt-20">
             {/* Background Video */}
@@ -12,7 +12,7 @@ const HeroSection = ({ data, openModal }) => {
                 playsInline
                 className="absolute inset-0 w-full h-full object-cover"
             >
-                <source src={data.backgroundVideo} type="video/mp4" />
+                <source src={data.backgroundVideo || '/Videos/HomeHeroSectionV.mp4'} type="video/mp4" />
                 Your browser does not support the video tag.
             </video>
             

@@ -1,17 +1,17 @@
 // components/Implementation/ProcessSection.jsx
 import React from 'react';
 
-const ProcessSection = ({ data }) => {
+const ProcessSection = ({ data = {} }) => {
     return (
         <div className="bg-gray-50 py-12 light-section">
             <div className="container mx-auto px-6">
                 {/* Section Header */}
                 <div className="text-center mb-10">
                     <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
-                        {data.title} <span className="text-blue-600">Process</span>
+                        {data.title || 'Our Implementation'} <span className="text-blue-600">Process</span>
                     </h2>
                     <p className="text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto">
-                        {data.subtitle}
+                        {data.subtitle || 'A proven methodology for seamless business transformation'}
                     </p>
                 </div>
 

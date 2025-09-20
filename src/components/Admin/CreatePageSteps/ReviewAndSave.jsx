@@ -10,9 +10,9 @@ import {
   ExclamationTriangleIcon,
   Bars3BottomLeftIcon,
 } from "@heroicons/react/24/outline";
-import Button from "../../UI/Button";
-import { Input } from "../../UI/Input";
-import Card, { CardContent, CardHeader, CardTitle } from "../../UI/Card";
+import Button from "../../ui/Button";
+import { Input } from "../../ui/Input";
+import Card, { CardContent, CardHeader, CardTitle } from "../../ui/Card";
 import {
   DndContext,
   closestCenter,
@@ -149,80 +149,80 @@ const ReviewAndSave = ({ pageData, onPageDataUpdate, onSave, loading }) => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="text-center">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+        <h2 className="text-3xl font-bold text-white mb-3 tracking-tight">
           Review & Save
         </h2>
-        <p className="text-gray-600 dark:text-gray-400">
+        <p className="text-lg text-gray-300 leading-relaxed">
           Review your page details and publish when ready
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Page Details Form */}
-        <Card className="bg-white dark:bg-gray-800 shadow-lg">
+        <Card className="bg-white/5 backdrop-blur-sm border border-white/10 shadow-xl">
           <CardHeader>
-            <CardTitle className="text-gray-900 dark:text-white">
+            <CardTitle className="text-white text-xl font-bold">
               Page Details
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-semibold text-white mb-2">
                 Page Title *
               </label>
               <Input
                 value={formData.title}
                 onChange={(e) => handleFieldChange("title", e.target.value)}
                 placeholder="Enter page title"
-                className="w-full"
+                className="w-full bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder-white/50 focus:border-blue-400 focus:ring-blue-400/20"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-semibold text-white mb-2">
                 URL Slug *
               </label>
               <Input
                 value={formData.slug}
                 onChange={(e) => handleFieldChange("slug", e.target.value)}
                 placeholder="page-url-slug"
-                className="w-full"
+                className="w-full bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder-white/50 focus:border-blue-400 focus:ring-blue-400/20"
               />
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              <p className="text-sm text-gray-300 mt-2">
                 URL: /{formData.slug || "page-url-slug"}
               </p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-semibold text-white mb-2">
                 Status
               </label>
               <select
                 value={formData.status}
                 onChange={(e) => handleFieldChange("status", e.target.value)}
-                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                className="block w-full rounded-lg bg-white/10 backdrop-blur-sm border-white/20 text-white focus:border-blue-400 focus:ring-blue-400/20 shadow-sm"
               >
-                <option value="draft">Draft</option>
-                <option value="published">Published</option>
+                <option value="draft" className="bg-gray-800 text-white">Draft</option>
+                <option value="published" className="bg-gray-800 text-white">Published</option>
               </select>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-semibold text-white mb-2">
                 SEO Meta Title
               </label>
               <Input
                 value={formData.meta_title}
                 onChange={(e) => handleFieldChange("meta_title", e.target.value)}
                 placeholder="SEO title for search engines"
-                className="w-full"
+                className="w-full bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder-white/50 focus:border-blue-400 focus:ring-blue-400/20"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-semibold text-white mb-2">
                 SEO Meta Description
               </label>
               <textarea
@@ -230,24 +230,24 @@ const ReviewAndSave = ({ pageData, onPageDataUpdate, onSave, loading }) => {
                 onChange={(e) => handleFieldChange("meta_description", e.target.value)}
                 placeholder="SEO description for search engines"
                 rows={3}
-                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                className="block w-full rounded-lg bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder-white/50 focus:border-blue-400 focus:ring-blue-400/20 shadow-sm resize-none"
               />
             </div>
           </CardContent>
         </Card>
 
         {/* Sections Preview */}
-        <Card className="bg-white dark:bg-gray-800 shadow-lg">
+        <Card className="bg-white/5 backdrop-blur-sm border border-white/10 shadow-xl">
           <CardHeader>
-            <CardTitle className="text-gray-900 dark:text-white">
+            <CardTitle className="text-white text-xl font-bold">
               Page Sections ({pageData.sections.length})
             </CardTitle>
           </CardHeader>
           <CardContent>
             {pageData.sections.length === 0 ? (
-              <div className="text-center py-8">
-                <DocumentTextIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-600 dark:text-gray-400">
+              <div className="text-center py-12">
+                <DocumentTextIcon className="h-16 w-16 text-white/40 mx-auto mb-4" />
+                <p className="text-gray-300 text-base">
                   No sections added yet
                 </p>
               </div>
@@ -280,69 +280,69 @@ const ReviewAndSave = ({ pageData, onPageDataUpdate, onSave, loading }) => {
       </div>
 
       {/* Validation Summary */}
-      <Card className="bg-white dark:bg-gray-800 shadow-lg">
+      <Card className="bg-white/5 backdrop-blur-sm border border-white/10 shadow-xl">
         <CardHeader>
-          <CardTitle className="text-gray-900 dark:text-white">
+          <CardTitle className="text-white text-xl font-bold">
             Validation Summary
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="space-y-3">
-            <div className="flex items-center space-x-3">
+          <div className="space-y-4">
+            <div className="flex items-center space-x-4">
               {formData.title.trim() !== "" ? (
-                <CheckIcon className="h-5 w-5 text-green-500" />
+                <CheckIcon className="h-6 w-6 text-green-400" />
               ) : (
-                <ExclamationTriangleIcon className="h-5 w-5 text-red-500" />
+                <ExclamationTriangleIcon className="h-6 w-6 text-red-400" />
               )}
-              <span className={`text-sm ${
+              <span className={`text-base ${
                 formData.title.trim() !== "" 
-                  ? "text-green-700 dark:text-green-400" 
-                  : "text-red-700 dark:text-red-400"
+                  ? "text-green-300" 
+                  : "text-red-300"
               }`}>
                 Page title is {formData.title.trim() !== "" ? "set" : "required"}
               </span>
             </div>
 
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-4">
               {formData.slug.trim() !== "" ? (
-                <CheckIcon className="h-5 w-5 text-green-500" />
+                <CheckIcon className="h-6 w-6 text-green-400" />
               ) : (
-                <ExclamationTriangleIcon className="h-5 w-5 text-red-500" />
+                <ExclamationTriangleIcon className="h-6 w-6 text-red-400" />
               )}
-              <span className={`text-sm ${
+              <span className={`text-base ${
                 formData.slug.trim() !== "" 
-                  ? "text-green-700 dark:text-green-400" 
-                  : "text-red-700 dark:text-red-400"
+                  ? "text-green-300" 
+                  : "text-red-300"
               }`}>
                 URL slug is {formData.slug.trim() !== "" ? "set" : "required"}
               </span>
             </div>
 
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-4">
               {pageData.sections.length > 0 ? (
-                <CheckIcon className="h-5 w-5 text-green-500" />
+                <CheckIcon className="h-6 w-6 text-green-400" />
               ) : (
-                <ExclamationTriangleIcon className="h-5 w-5 text-yellow-500" />
+                <ExclamationTriangleIcon className="h-6 w-6 text-yellow-400" />
               )}
-              <span className={`text-sm ${
+              <span className={`text-base ${
                 pageData.sections.length > 0 
-                  ? "text-green-700 dark:text-green-400" 
-                  : "text-yellow-700 dark:text-yellow-400"
+                  ? "text-green-300" 
+                  : "text-yellow-300"
               }`}>
                 {pageData.sections.length} section{pageData.sections.length !== 1 ? 's' : ''} added
               </span>
             </div>
 
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-4">
               {formData.meta_title.trim() !== "" ? (
-                <CheckIcon className="h-5 w-5 text-green-500" />
+                <CheckIcon className="h-6 w-6 text-green-400" />
               ) : (
-                <ExclamationTriangleIcon className="h-5 w-5 text-yellow-500" />
+                <ExclamationTriangleIcon className="h-6 w-6 text-yellow-400" />
               )}
-              <span className={`text-sm ${
+              <span className={`text-base ${
                 formData.meta_title.trim() !== "" 
-                  ? "text-green-700 dark:text-green-400" 
-                  : "text-yellow-700 dark:text-yellow-400"
+                  ? "text-green-300" 
+                  : "text-yellow-300"
               }`}>
                 SEO meta title is {formData.meta_title.trim() !== "" ? "set" : "optional"}
               </span>
@@ -352,13 +352,13 @@ const ReviewAndSave = ({ pageData, onPageDataUpdate, onSave, loading }) => {
       </Card>
 
       {/* Save Actions */}
-      <div className="flex items-center justify-center space-x-4 pt-6">
+      <div className="flex items-center justify-center space-x-6 pt-8">
         <Button
           variant="outline"
           onClick={() => onSave("draft")}
           loading={loading}
           disabled={!isFormValid()}
-          className="hover:bg-gray-100 dark:hover:bg-gray-800"
+          className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20 hover:border-white/30 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Save as Draft
         </Button>
@@ -366,7 +366,7 @@ const ReviewAndSave = ({ pageData, onPageDataUpdate, onSave, loading }) => {
           onClick={() => onSave("published")}
           loading={loading}
           disabled={!isFormValid()}
-          className="bg-green-600 hover:bg-green-700 text-white"
+          className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-lg shadow-green-500/25 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Publish Page
         </Button>
@@ -399,45 +399,45 @@ const SortableReviewSectionItem = ({ section, index, onDuplicate, onRemove }) =>
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
-      className={`bg-gray-50 dark:bg-gray-700 rounded-lg p-3 border border-gray-200 dark:border-gray-600 ${
-        isDragging ? "shadow-lg ring-2 ring-blue-500" : ""
+      className={`bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/20 ${
+        isDragging ? "shadow-2xl ring-2 ring-blue-400" : ""
       }`}
     >
       <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-4">
           <div
             {...attributes}
             {...listeners}
-            className="cursor-grab hover:cursor-grabbing p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded"
+            className="cursor-grab hover:cursor-grabbing p-2 hover:bg-white/10 rounded-lg transition-colors"
           >
-            <Bars3BottomLeftIcon className="h-4 w-4 text-gray-400" />
+            <Bars3BottomLeftIcon className="h-5 w-5 text-white/60" />
           </div>
-          <div className="text-lg">{section.icon || "📄"}</div>
+          <div className="text-xl">{section.icon || "📄"}</div>
           <div>
-            <h4 className="text-sm font-medium text-gray-900 dark:text-white">
+            <h4 className="text-base font-semibold text-white">
               {section.name}
             </h4>
-            <p className="text-xs text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-gray-300">
               {section.componentId}
             </p>
           </div>
         </div>
-        <div className="flex items-center space-x-1">
+        <div className="flex items-center space-x-2">
           <Button
             size="sm"
             variant="outline"
             onClick={onDuplicate}
-            className="hover:bg-green-50 hover:border-green-300"
+            className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-green-500/20 hover:border-green-400 transition-all duration-200"
           >
-            <DocumentDuplicateIcon className="h-3 w-3" />
+            <DocumentDuplicateIcon className="h-4 w-4" />
           </Button>
           <Button
             size="sm"
             variant="outline"
             onClick={onRemove}
-            className="hover:bg-red-50 hover:border-red-300 text-red-600"
+            className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-red-500/20 hover:border-red-400 transition-all duration-200"
           >
-            <TrashIcon className="h-3 w-3" />
+            <TrashIcon className="h-4 w-4" />
           </Button>
         </div>
       </div>

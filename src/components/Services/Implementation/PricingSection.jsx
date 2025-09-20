@@ -1,7 +1,7 @@
 // components/Implementation/PricingSection.jsx
 import React from 'react';
 
-const PricingSection = ({ data }) => {
+const PricingSection = ({ data = {} }) => {
     return (
         <div className="bg-gray-50 py-12 light-section">
             <div className="container mx-auto px-6">
@@ -11,7 +11,7 @@ const PricingSection = ({ data }) => {
                         Implementation <span className="text-blue-600">Pricing</span>
                     </h2>
                     <p className="text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto">
-                        {data.subtitle}
+                        {data.subtitle || 'Choose the perfect implementation plan that fits your business needs and budget'}
                     </p>
                 </div>
 

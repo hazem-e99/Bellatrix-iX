@@ -1,15 +1,15 @@
 import React from 'react';
 import { renderIcon } from './utils';
 
-const TrainingPrograms = ({ programsSection, trainingPrograms, openProgramModal }) => {
+const TrainingPrograms = ({ programsSection = {}, trainingPrograms = [], openProgramModal }) => {
   return (
     <div className="container mx-auto px-6">
       <div className="text-center mb-10">
         <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
-          {programsSection.title.split(' ')[0]} <span className="text-blue-600">{programsSection.title.split(' ')[1]}</span>
+          {(programsSection.title || 'Training Programs').split(' ')[0]} <span className="text-blue-600">{(programsSection.title || 'Training Programs').split(' ')[1]}</span>
         </h2>
         <p className="text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto">
-          {programsSection.description}
+          {programsSection.description || 'Comprehensive training programs designed to enhance your skills and knowledge.'}
         </p>
       </div>
 
@@ -90,7 +90,7 @@ const TrainingPrograms = ({ programsSection, trainingPrograms, openProgramModal 
         {/* Training Programs Content - Right Side */}
         <div className="flex-1">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    {trainingPrograms.programs.map((program, index) => (
+                                    {(trainingPrograms.programs || trainingPrograms || []).map((program, index) => (
                                         <div 
                                             key={program.id}
                                             onClick={() => openProgramModal(program)}

@@ -1,7 +1,7 @@
 // components/Implementation/CtaSection.jsx
 import React from 'react';
 
-const CtaSection = ({ data, openModal }) => {
+const CtaSection = ({ data = {}, openModal }) => {
     return (
         <div className="relative py-16 overflow-hidden" style={{backgroundColor: '#001038'}}>
             {/* Simple Background Pattern */}
@@ -23,10 +23,10 @@ const CtaSection = ({ data, openModal }) => {
                 <div className="max-w-4xl mx-auto">
                     {/* Header */}
                     <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
-                        {data.title}
+                        {data.title || 'Ready for a Seamless NetSuite Implementation?'}
                     </h2>
                     <p className="text-lg md:text-xl text-gray-300 leading-relaxed mb-12 max-w-3xl mx-auto">
-                        {data.subtitle}
+                        {data.subtitle || 'Transform your business operations with our expert NetSuite implementation services.'}
                     </p>
                     
                     {/* CTA Button */}
