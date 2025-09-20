@@ -1,6 +1,22 @@
 import React from 'react';
 
 const CaseStudiesSection = ({ data }) => {
+  // Add defensive programming
+  if (!data || !data.caseStudies || !Array.isArray(data.caseStudies) || data.caseStudies.length === 0) {
+    return (
+      <section className="py-20 relative overflow-hidden" style={{backgroundColor: '#001038'}}>
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="text-center">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
+              Success <span className="text-cyan-400">Stories</span>
+            </h2>
+            <p className="text-gray-300">No case studies data available</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="py-20 relative overflow-hidden" style={{backgroundColor: '#001038'}}>
       <div className="absolute inset-0 opacity-10">

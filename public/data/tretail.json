@@ -1,0 +1,240 @@
+{
+  "title": "testretail",
+  "slug": "tretail",
+  "category": "industries",
+  "subCategory": "",
+  "templateId": "industries-default",
+  "status": "published",
+  "sections": [
+    {
+      "uid": "section-1758321430677",
+      "componentId": "RetailHeroSection",
+      "name": "Retail Hero Section",
+      "props": {
+        "title": "Retail & E-commerce Solutions",
+        "subtitle": "Transform your retail business with NetSuite",
+        "ctaText": "Discover More",
+        "backgroundImage": "/images/indleaders.jpg"
+      },
+      "variant": "default",
+      "order_index": 0
+    },
+    {
+      "uid": "section-1758321431429",
+      "componentId": "RetailIndustryStatsSection",
+      "name": "Retail Industry Stats Section",
+      "props": {
+        "title": "Retail Industry Stats",
+        "subtitle": "Key metrics and insights",
+        "stats": [
+          {
+            "number": "30%",
+            "label": "Sales Increase",
+            "description": "Average sales growth"
+          },
+          {
+            "number": "45%",
+            "label": "Customer Retention",
+            "description": "Improved retention rate"
+          },
+          {
+            "number": "70%",
+            "label": "Inventory Accuracy",
+            "description": "Better inventory management"
+          },
+          {
+            "number": "25%",
+            "label": "Cost Reduction",
+            "description": "Operational cost savings"
+          }
+        ]
+      },
+      "variant": "default",
+      "order_index": 1
+    },
+    {
+      "uid": "section-1758321432913",
+      "componentId": "RetailChallengesSection",
+      "name": "Retail Challenges Section",
+      "props": {
+        "title": "Retail Challenges",
+        "subtitle": "Overcome these common retail obstacles",
+        "challenges": [
+          {
+            "title": "Multi-Channel Complexity",
+            "description": "Managing sales across multiple channels"
+          },
+          {
+            "title": "Inventory Management",
+            "description": "Balancing stock levels across locations"
+          },
+          {
+            "title": "Customer Experience",
+            "description": "Providing consistent customer experience"
+          },
+          {
+            "title": "Data Integration",
+            "description": "Integrating data from various sources"
+          }
+        ]
+      },
+      "variant": "default",
+      "order_index": 2
+    },
+    {
+      "uid": "section-1758321434090",
+      "componentId": "RetailSolutionsSection",
+      "name": "Retail Solutions Section",
+      "props": {
+        "title": "Retail Solutions",
+        "subtitle": "Designed for retail success",
+        "solutions": [
+          {
+            "title": "Multi-Channel Sales",
+            "description": "Sell across all channels seamlessly",
+            "icon": "🛒"
+          },
+          {
+            "title": "Customer Management",
+            "description": "Build lasting customer relationships",
+            "icon": "👥"
+          },
+          {
+            "title": "Inventory Optimization",
+            "description": "Smart inventory management",
+            "icon": "📊"
+          },
+          {
+            "title": "E-commerce Integration",
+            "description": "Connect online and offline sales",
+            "icon": "💻"
+          }
+        ]
+      },
+      "variant": "default",
+      "order_index": 3
+    },
+    {
+      "uid": "section-1758321435157",
+      "componentId": "RetailFeaturesSection",
+      "name": "Retail Features Section",
+      "props": {
+        "title": "Retail Features",
+        "subtitle": "Powerful features designed for retail success",
+        "features": [
+          {
+            "title": "Omnichannel Commerce",
+            "description": "Unified commerce across all channels"
+          },
+          {
+            "title": "Advanced Analytics",
+            "description": "Deep insights into customer behavior"
+          },
+          {
+            "title": "Mobile POS",
+            "description": "Point of sale anywhere, anytime"
+          },
+          {
+            "title": "Customer Loyalty",
+            "description": "Build and manage customer loyalty programs"
+          }
+        ]
+      },
+      "variant": "default",
+      "order_index": 4
+    },
+    {
+      "uid": "section-1758321436198",
+      "componentId": "RetailCaseStudiesSection",
+      "name": "Retail Case Studies Section",
+      "props": {
+        "title": "Retail Success Stories",
+        "subtitle": "Real results from retail clients",
+        "caseStudies": [
+          {
+            "company": "Fashion Store",
+            "result": "35% sales increase",
+            "description": "Multi-channel integration"
+          },
+          {
+            "company": "Electronics Retailer",
+            "result": "50% inventory accuracy",
+            "description": "Improved stock management"
+          },
+          {
+            "company": "Home Goods Store",
+            "result": "40% customer retention",
+            "description": "Enhanced customer experience"
+          }
+        ]
+      },
+      "variant": "default",
+      "order_index": 5
+    },
+    {
+      "uid": "section-1758321437452",
+      "componentId": "RetailImplementationSection",
+      "name": "Retail Implementation Section",
+      "props": {
+        "title": "Retail Implementation",
+        "subtitle": "Our proven methodology for retail success",
+        "steps": [
+          {
+            "step": 1,
+            "title": "Assessment",
+            "description": "Comprehensive retail analysis"
+          },
+          {
+            "step": 2,
+            "title": "Design",
+            "description": "Custom retail solution design"
+          },
+          {
+            "step": 3,
+            "title": "Development",
+            "description": "Solution development and testing"
+          },
+          {
+            "step": 4,
+            "title": "Launch",
+            "description": "Go-live and ongoing support"
+          }
+        ]
+      },
+      "variant": "default",
+      "order_index": 6
+    },
+    {
+      "uid": "section-1758321438814",
+      "componentId": "RetailCTASection",
+      "name": "Retail CTA Section",
+      "props": {
+        "title": "Ready to Transform Your Retail Business?",
+        "subtitle": "Take your retail operations to the next level",
+        "ctaText": "Get Started Today",
+        "features": [
+          {
+            "title": "Proven Results",
+            "description": "Increase sales by 30% on average"
+          },
+          {
+            "title": "Expert Team",
+            "description": "Retail specialists at your service"
+          },
+          {
+            "title": "Quick Implementation",
+            "description": "Get up and running in weeks"
+          }
+        ]
+      },
+      "variant": "default",
+      "order_index": 7
+    }
+  ],
+  "meta": {
+    "meta_title": "kkkkkkk",
+    "meta_description": "wwwwwwww"
+  },
+  "created_by": 1,
+  "updated_at": "2025-09-19T22:37:44.049Z"
+}

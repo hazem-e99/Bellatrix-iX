@@ -72,17 +72,19 @@ const PayrollStepper = ({ steps }) => {
               {steps[current].description}
             </p>
             
-            <div className="mb-6">
-              <h4 className="text-sm font-semibold text-gray-600 uppercase mb-3">Key Features</h4>
-              <div className="space-y-2">
-                {steps[current].details.map((detail, idx) => (
-                  <div key={idx} className="flex items-center text-sm text-gray-600">
-                    <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
-                    {detail}
-                  </div>
-                ))}
+            {steps[current].details && Array.isArray(steps[current].details) && steps[current].details.length > 0 && (
+              <div className="mb-6">
+                <h4 className="text-sm font-semibold text-gray-600 uppercase mb-3">Key Features</h4>
+                <div className="space-y-2">
+                  {steps[current].details.map((detail, idx) => (
+                    <div key={idx} className="flex items-center text-sm text-gray-600">
+                      <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
+                      {detail}
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
           
           <div className="lg:w-1/2">

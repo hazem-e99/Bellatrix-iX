@@ -1,0 +1,125 @@
+{
+  "title": "testPage",
+  "slug": "testpage",
+  "category": "solutions",
+  "subCategory": "",
+  "templateId": "solutions-default",
+  "status": "published",
+  "sections": [
+    {
+      "uid": "section-1758320232156",
+      "componentId": "PayrollHeroSection",
+      "name": "Payroll Hero Seeeeeeeeeeeeeeection",
+      "props": {
+        "title": "Payroll Soleeeeeeeeeeeeeeeutions",
+        "subtitle": "Streamline your payroll processes with NetSuite",
+        "ctaText": "Get Started",
+        "backgroundImage": "/images/payrollFinal.jpeg"
+      },
+      "variant": "default",
+      "order_index": 0
+    },
+    {
+      "uid": "section-1758320234038",
+      "componentId": "PayrollHowItWorksSection",
+      "name": "Payroll How It Works Section",
+      "props": {
+        "title": "How Payroll Works",
+        "subtitle": "Simple, automated payroll processing",
+        "steps": [
+          {
+            "title": "Employee Setup",
+            "description": "Configure employee information and payroll settings"
+          },
+          {
+            "title": "Time Tracking",
+            "description": "Track hours worked and overtime"
+          },
+          {
+            "title": "Calculate Payroll",
+            "description": "Automated calculations with tax deductions"
+          },
+          {
+            "title": "Generate Reports",
+            "description": "Comprehensive payroll reports and analytics"
+          }
+        ]
+      },
+      "variant": "default",
+      "order_index": 1
+    },
+    {
+      "uid": "section-1758320245901",
+      "componentId": "PayrollWorkflowSection",
+      "name": "Payroll Workflow Section",
+      "props": {
+        "title": "Payroll Workflow",
+        "subtitle": "Streamlined payroll processing workflow",
+        "workflow": [
+          {
+            "step": 1,
+            "title": "Data Collection",
+            "description": "Collect employee time and attendance data"
+          },
+          {
+            "step": 2,
+            "title": "Calculation",
+            "description": "Automated payroll calculations"
+          },
+          {
+            "step": 3,
+            "title": "Review",
+            "description": "Review and approve payroll"
+          },
+          {
+            "step": 4,
+            "title": "Payment",
+            "description": "Process payments and generate reports"
+          }
+        ]
+      },
+      "variant": "default",
+      "order_index": 2
+    },
+    {
+      "uid": "section-1758320250942",
+      "componentId": "PayrollStepperSection",
+      "name": "Payroll Stepper Section",
+      "props": {
+        "title": "Implementation Steps",
+        "subtitle": "Our proven payroll implementation wwwwwwww",
+        "steps": [
+          {
+            "step": 1,
+            "title": "Setup",
+            "description": "Configure payroll system"
+          },
+          {
+            "step": 2,
+            "title": "Migration",
+            "description": "Migrate existing data"
+          },
+          {
+            "step": 3,
+            "title": "Testing",
+            "description": "Test payroll processes"
+          },
+          {
+            "step": 4,
+            "title": "Go-Live",
+            "description": "Launch payroll system"
+          }
+        ]
+      },
+      "variant": "default",
+      "order_index": 3
+    }
+  ],
+  "meta": {
+    "meta_title": "eee",
+    "meta_description": "eeeeeeeeeeee"
+  },
+  "created_by": 1,
+  "updated_at": "2025-09-19T22:18:11.667Z",
+  "lastModified": "2025-09-20T00:11:53.577Z"
+}

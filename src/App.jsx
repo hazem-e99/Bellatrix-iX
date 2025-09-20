@@ -16,8 +16,10 @@ import AdminLayout from "./components/Admin/AdminLayout";
 import ModernAdminLayout from "./components/Admin/ModernAdminLayout";
 import ModernDashboard from "./components/Admin/ModernDashboard";
 import PagesManagement from "./components/Admin/PagesManagement";
+import CreatePageFlow from "./components/Admin/CreatePageFlow";
 import TemplatesManagement from "./components/Admin/TemplatesManagement";
 import SettingsManagement from "./components/Admin/SettingsManagement";
+import DynamicPageRenderer from "./components/DynamicPageRenderer";
 import { ThemeProvider } from "./contexts/ThemeContext";
 
 function App() {
@@ -42,6 +44,9 @@ function App() {
           <Route path="/industries/manufacturing" element={<Manufacturing />} />
           <Route path="/industries/retail" element={<Retail />} />
 
+          {/* Dynamic Page Routes - This should be last to catch all dynamic pages */}
+          <Route path="/:slug" element={<DynamicPageRenderer />} />
+
           {/* 
           <Route path="Support" element={<Support />} />
           <Route path="industries/manufacturing" element={<IndustryMain />} />
@@ -56,6 +61,7 @@ function App() {
           <Route path="dashboard" element={<ModernDashboard />} />
           <Route path="pages" element={<PagesManagement />} />
           <Route path="pages/:pageId" element={<PagesManagement />} />
+          <Route path="pages/create" element={<CreatePageFlow />} />
           <Route path="templates" element={<TemplatesManagement />} />
           <Route
             path="templates/:templateId"

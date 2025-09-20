@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import {
   MagnifyingGlassIcon,
   PlusIcon,
@@ -21,6 +22,7 @@ import Modal, { ModalFooter } from "../ui/Modal";
 import Toast from "../ui/Toast";
 
 const PagesManagement = () => {
+  const navigate = useNavigate();
   const [pages, setPages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -192,13 +194,20 @@ const PagesManagement = () => {
             Manage your website pages and content
           </p>
         </div>
-        <div className="mt-4 sm:mt-0">
+        <div className="mt-4 sm:mt-0 flex space-x-2">
           <Button
             icon={<PlusIcon className="h-4 w-4" />}
-            onClick={() => setShowCreateModal(true)}
+            onClick={() => navigate("/admin/pages/create")}
             className="bg-blue-600 hover:bg-blue-700 text-white"
           >
-            Create New Page
+            Create Page
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => setShowCreateModal(true)}
+            className="hover:bg-blue-50 hover:border-blue-300"
+          >
+            Quick Create
           </Button>
         </div>
       </div>
@@ -871,3 +880,4 @@ const CreatePageModal = ({ isOpen, onClose, onSave, showToast }) => {
 };
 
 export default PagesManagement;
+
