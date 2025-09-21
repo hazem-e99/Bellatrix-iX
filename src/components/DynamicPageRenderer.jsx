@@ -159,23 +159,35 @@ const DynamicPageRenderer = () => {
         const pageData = data.data;
         setPageData(pageData); // Extract the actual page data from the response
         
-        // Load components for each section
-        if (pageData.sections && pageData.sections.length > 0) {
-          const componentPromises = pageData.sections.map(async (section) => {
-            // Try componentPath first, then fallback to componentId mapping
+        // Load components for each section (support both old sections format and new components format)
+        const sectionsToRender = pageData.sections || pageData.components || [];
+        
+        if (sectionsToRender.length > 0) {
+          const componentPromises = sectionsToRender.map(async (section, index) => {
+            // Handle new components format
+            if (pageData.components) {
+              const componentPath = getComponentPathFromId(section.componentType);
+              if (componentPath) {
+                const Component = await loadComponent(componentPath);
+                return { sectionId: `component-${index}`, Component, sectionData: section };
+              }
+              return { sectionId: `component-${index}`, Component: null, sectionData: section };
+            }
+            
+            // Handle old sections format
             const componentPath = section.componentPath || getComponentPathFromId(section.componentId);
             if (componentPath) {
               const Component = await loadComponent(componentPath);
-              return { sectionId: section.uid, Component };
+              return { sectionId: section.uid, Component, sectionData: section };
             }
-            return { sectionId: section.uid, Component: null };
+            return { sectionId: section.uid, Component: null, sectionData: section };
           });
           
           const loadedComponents = await Promise.all(componentPromises);
           const componentMap = {};
-          loadedComponents.forEach(({ sectionId, Component }) => {
+          loadedComponents.forEach(({ sectionId, Component, sectionData }) => {
             if (Component) {
-              componentMap[sectionId] = Component;
+              componentMap[sectionId] = { Component, sectionData };
             }
           });
           setLoadedComponents(componentMap);
@@ -261,51 +273,71 @@ const DynamicPageRenderer = () => {
 
   // Render page sections dynamically using actual components
   const renderSection = (section, index) => {
-    const Component = loadedComponents[section.uid];
+    const sectionId = pageData.components ? `component-${index}` : section.uid;
+    const componentData = loadedComponents[sectionId];
     
-    if (Component) {
-      // Transform props to match component expectations
-      const transformedProps = transformProps(section.componentId, section.props);
+    if (componentData && componentData.Component) {
+      const { Component, sectionData } = componentData;
       
-      // Render the actual component with its original styling - no wrapper
-      return <Component key={section.uid || index} {...transformedProps} />;
+      // Handle new components format
+      if (pageData.components) {
+        const componentProps = JSON.parse(section.contentJson);
+        return <Component key={sectionId} {...componentProps} />;
+      }
+      
+      // Handle old sections format
+      const transformedProps = transformProps(section.componentId, section.props);
+      return <Component key={sectionId} {...transformedProps} />;
     }
     
     // Fallback: render a placeholder if component couldn't be loaded
     return (
-      <div key={section.uid || index} className="mb-8">
+      <div key={sectionId} className="mb-8">
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 border border-gray-200 dark:border-gray-700">
           <div className="flex items-center mb-4">
-            <span className="text-2xl mr-3">{section.icon || "📄"}</span>
+            <span className="text-2xl mr-3">📄</span>
             <div>
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-                {section.name}
+                {pageData.components ? section.componentName : section.name}
               </h2>
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                {section.componentId} (Component not found)
+                {pageData.components ? section.componentType : section.componentId} (Component not found)
               </p>
             </div>
           </div>
           
           {/* Render section content based on props */}
           <div className="space-y-4">
-            {section.props?.title && (
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white">
-                {section.props.title}
-              </h3>
-            )}
-            
-            {section.props?.subtitle && (
-              <p className="text-gray-600 dark:text-gray-300">
-                {section.props.subtitle}
-              </p>
-            )}
-            
-            {section.props?.description && (
-              <p className="text-gray-600 dark:text-gray-300">
-                {section.props.description}
-              </p>
-            )}
+            {pageData.components ? (
+              // Show component data for new format
+              <div className="space-y-2">
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+                  Component Data:
+                </h3>
+                <pre className="bg-gray-100 dark:bg-gray-700 p-4 rounded text-sm overflow-auto">
+                  {section.contentJson}
+                </pre>
+              </div>
+            ) : (
+              // Show props for old format
+              <>
+                {section.props?.title && (
+                  <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+                    {section.props.title}
+                  </h3>
+                )}
+                
+                {section.props?.subtitle && (
+                  <p className="text-gray-600 dark:text-gray-300">
+                    {section.props.subtitle}
+                  </p>
+                )}
+                
+                {section.props?.description && (
+                  <p className="text-gray-600 dark:text-gray-300">
+                    {section.props.description}
+                  </p>
+                )}
             
             {/* Render arrays like features, steps, etc. */}
             {section.props?.features && Array.isArray(section.props.features) && (
@@ -382,6 +414,8 @@ const DynamicPageRenderer = () => {
                 />
               </div>
             )}
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -391,8 +425,8 @@ const DynamicPageRenderer = () => {
   return (
     <div>
       {/* Render sections directly without any wrapper - let each component handle its own styling */}
-      {pageData.sections && pageData.sections.length > 0 ? (
-        pageData.sections.map((section, index) => renderSection(section, index))
+      {(pageData.sections && pageData.sections.length > 0) || (pageData.components && pageData.components.length > 0) ? (
+        (pageData.components || pageData.sections).map((section, index) => renderSection(section, index))
       ) : (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
           <div className="text-center py-12">

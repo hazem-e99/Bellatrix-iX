@@ -394,11 +394,36 @@ app.post("/api/pages", async (req, res) => {
         throw error;
       }
     }
-    const pageData = data || {
-      title: sanitizedName,
-      content: "",
-      createdAt: new Date().toISOString(),
-    };
+
+    // Handle enhanced page builder data structure
+    let pageData;
+    if (data && data.components && Array.isArray(data.components)) {
+      // Enhanced page builder format
+      pageData = {
+        name: data.name || sanitizedName,
+        categoryId: data.categoryId || 0,
+        slug: data.slug || sanitizedName,
+        metaTitle: data.metaTitle || "",
+        metaDescription: data.metaDescription || "",
+        isHomepage: data.isHomepage || false,
+        isPublished: data.isPublished || false,
+        components: data.components.map(component => ({
+          componentType: component.componentType,
+          componentName: component.componentName,
+          contentJson: component.contentJson,
+          orderIndex: component.orderIndex
+        })),
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+    } else {
+      // Legacy format
+      pageData = data || {
+        title: sanitizedName,
+        content: "",
+        createdAt: new Date().toISOString(),
+      };
+    }
 
     await fs.writeFile(filePath, JSON.stringify(pageData, null, 2));
 

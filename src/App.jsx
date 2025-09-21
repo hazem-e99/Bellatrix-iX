@@ -17,6 +17,7 @@ import ModernAdminLayout from "./components/Admin/ModernAdminLayout";
 import ModernDashboard from "./components/Admin/ModernDashboard";
 import PagesManagement from "./components/Admin/PagesManagement";
 import CreatePageFlow from "./components/Admin/CreatePageFlow";
+import EnhancedPageBuilder from "./components/Admin/EnhancedPageBuilder";
 import TemplatesManagement from "./components/Admin/TemplatesManagement";
 import SettingsManagement from "./components/Admin/SettingsManagement";
 import DynamicPageRenderer from "./components/DynamicPageRenderer";
@@ -62,6 +63,7 @@ function App() {
           <Route path="pages" element={<PagesManagement />} />
           <Route path="pages/:pageId" element={<PagesManagement />} />
           <Route path="pages/create" element={<CreatePageFlow />} />
+          <Route path="pages/enhanced-create" element={<EnhancedPageBuilder />} />
           <Route path="templates" element={<TemplatesManagement />} />
           <Route
             path="templates/:templateId"

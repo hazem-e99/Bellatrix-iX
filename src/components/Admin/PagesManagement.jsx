@@ -197,10 +197,17 @@ const PagesManagement = () => {
         <div className="mt-4 sm:mt-0 flex space-x-2">
           <Button
             icon={<PlusIcon className="h-4 w-4" />}
-            onClick={() => navigate("/admin/pages/create")}
+            onClick={() => navigate("/admin/pages/enhanced-create")}
             className="bg-blue-600 hover:bg-blue-700 text-white"
           >
-            Create Page
+            Enhanced Page Builder
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => navigate("/admin/pages/create")}
+            className="hover:bg-blue-50 hover:border-blue-300"
+          >
+            Classic Create
           </Button>
           <Button
             variant="outline"
