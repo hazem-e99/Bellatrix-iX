@@ -145,7 +145,16 @@ const DynamicPageRenderer = () => {
         setLoading(true);
         setError(null);
 
-        const response = await fetch(`http://localhost:3001/api/pages/${slug}`);
+        // Add cache-busting to ensure fresh data
+        const timestamp = Date.now();
+        const response = await fetch(`http://localhost:3001/api/pages/${slug}?_t=${timestamp}`, {
+          cache: 'no-store',
+          headers: {
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+          }
+        });
         
         if (!response.ok) {
           if (response.status === 404) {
@@ -203,6 +212,22 @@ const DynamicPageRenderer = () => {
     if (slug) {
       fetchPage();
     }
+
+    // Listen for page data updates from the admin dashboard
+    const handlePageDataUpdate = (event) => {
+      const { slug: updatedSlug } = event.detail;
+      if (updatedSlug === slug) {
+        console.log(`🔄 Page data updated for ${slug}, refreshing...`);
+        fetchPage();
+      }
+    };
+
+    window.addEventListener('pageDataUpdated', handlePageDataUpdate);
+
+    // Cleanup event listener
+    return () => {
+      window.removeEventListener('pageDataUpdated', handlePageDataUpdate);
+    };
   }, [slug]);
 
   if (loading) {
@@ -247,36 +272,448 @@ const DynamicPageRenderer = () => {
   // Transform props to match component expectations
   const transformProps = (componentId, props) => {
     switch (componentId) {
+      // ========== PAYROLL COMPONENTS ==========
+      case 'PayrollHeroSection':
+        return {
+          title: props.title,
+          subtitle: props.subtitle,
+          bgColor: props.bgColor,
+          bgVideo: props.bgVideo,
+          onCtaClick: props.onCtaClick
+        };
       case 'PayrollWorkflowSection':
         return {
           workflowData: {
             title: props.title,
             description: props.subtitle,
-            steps: props.workflow
+            steps: props.workflow || props.steps
           }
         };
       case 'PayrollStepperSection':
         return {
-          steps: props.steps
+          steps: props.steps || []
         };
       case 'PayrollHowItWorksSection':
         return {
           data: {
             title: props.title,
             description: props.subtitle,
-            steps: props.steps
+            steps: props.steps || []
           }
         };
+      case 'PayrollPainPointsSection':
+        return {
+          painPoints: props.painPoints || []
+        };
+      case 'PayrollFAQSection':
+        return {
+          faqData: {
+            title: props.title,
+            items: props.faqs || props.items || []
+          }
+        };
+      case 'PayrollCTASection':
+        return {
+          ctaData: props.cta || {
+            title: props.title,
+            description: props.subtitle,
+            buttonText: props.buttonText
+          }
+        };
+
+      // ========== HR COMPONENTS ==========
+      case 'HRHeroSection':
+        return {
+          data: {
+            hero: {
+              title: props.title,
+              subtitle: props.subtitle,
+              bgVideo: props.bgVideo,
+              bgColor: props.bgColor
+            }
+          }
+        };
+      case 'HRModulesSection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            modules: props.modules || props.features || []
+          }
+        };
+      case 'HRBenefitsSection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            benefits: props.benefits || []
+          }
+        };
+      case 'HRUseCasesSection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            useCases: props.useCases || []
+          }
+        };
+      case 'HRPricingSection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            description: props.description,
+            pricing: props.plans || [] // Transform 'plans' to 'pricing'
+          }
+        };
+      case 'HRFAQSection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            faqs: props.faqs || []
+          }
+        };
+      case 'HRCTASection':
+        return {
+          data: {
+            cta: {
+              title: props.title,
+              description: props.subtitle,
+              buttonText: props.buttonText
+            }
+          }
+        };
+
+      // ========== SERVICE COMPONENTS ==========
       case 'ServiceGrid':
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle || props.description,
-            services: props.services
+            services: props.services || []
           }
         };
+
+      // ========== IMPLEMENTATION COMPONENTS ==========
+      case 'ImplementationHeroSection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            bgVideo: props.bgVideo,
+            ctaButton: props.ctaButton
+          }
+        };
+      case 'ImplementationProcessSection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            steps: props.steps || []
+          }
+        };
+      case 'ImplementationWhyChooseSection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            features: props.features || []
+          }
+        };
+      case 'ImplementationPricingSection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            description: props.description,
+            plans: props.plans || []
+          }
+        };
+      case 'ImplementationCTASection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            ctaButton: props.ctaButton
+          }
+        };
+
+      // ========== TRAINING COMPONENTS ==========
+      case 'TrainingHeroSection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            ctaButton: props.ctaButton
+          }
+        };
+      case 'TrainingProgramsSection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            programs: props.programs || []
+          }
+        };
+      case 'TrainingWhyChooseSection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            features: props.features || []
+          }
+        };
+
+      // ========== INTEGRATION COMPONENTS ==========
+      case 'IntegrationHeroSection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            ctaButton: props.ctaButton
+          }
+        };
+      case 'IntegrationTypesSection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            types: props.types || []
+          }
+        };
+      case 'IntegrationBenefitsSection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            benefits: props.benefits || []
+          }
+        };
+
+      // ========== CUSTOMIZATION COMPONENTS ==========
+      case 'CustomizationHeroSection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            ctaButton: props.ctaButton
+          }
+        };
+      case 'CustomizationServicesSection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            services: props.services || []
+          }
+        };
+      case 'CustomizationProcessSection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            steps: props.steps || []
+          }
+        };
+
+      // ========== MANUFACTURING COMPONENTS ==========
+      case 'ManufacturingHeroSection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            ctaButton: props.ctaButton
+          }
+        };
+      case 'ManufacturingIndustryStatsSection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            stats: props.stats || []
+          }
+        };
+      case 'ManufacturingChallengesSection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            challenges: props.challenges || []
+          }
+        };
+      case 'ManufacturingSolutionsSection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            solutions: props.solutions || []
+          }
+        };
+      case 'ManufacturingCaseStudiesSection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            caseStudies: props.caseStudies || []
+          }
+        };
+      case 'ManufacturingImplementationProcessSection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            steps: props.steps || []
+          }
+        };
+      case 'ManufacturingCTASection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            ctaButton: props.ctaButton
+          }
+        };
+
+      // ========== RETAIL COMPONENTS ==========
+      case 'RetailHeroSection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            ctaButton: props.ctaButton
+          }
+        };
+      case 'RetailIndustryStatsSection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            stats: props.stats || []
+          }
+        };
+      case 'RetailChallengesSection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            challenges: props.challenges || []
+          }
+        };
+      case 'RetailSolutionsSection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            solutions: props.solutions || []
+          }
+        };
+      case 'RetailFeaturesSection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            features: props.features || []
+          }
+        };
+      case 'RetailCaseStudiesSection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            caseStudies: props.caseStudies || []
+          }
+        };
+      case 'RetailImplementationSection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            steps: props.steps || []
+          }
+        };
+      case 'RetailCTASection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            ctaButton: props.ctaButton
+          }
+        };
+
+      // ========== ABOUT COMPONENTS ==========
+      case 'AboutHeroSection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            ctaButton: props.ctaButton
+          }
+        };
+      case 'AboutMissionSection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            description: props.description
+          }
+        };
+      case 'AboutValuesSection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            values: props.values || []
+          }
+        };
+      case 'AboutTeamSection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            team: props.team || []
+          }
+        };
+      case 'AboutJourneySection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            timeline: props.timeline || []
+          }
+        };
+      case 'AboutMilestonesSection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            milestones: props.milestones || []
+          }
+        };
+      case 'AboutDifferentiatorsSection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            differentiators: props.differentiators || []
+          }
+        };
+      case 'AboutCTASection':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle,
+            ctaButton: props.ctaButton
+          }
+        };
+
+      // ========== DEFAULT CASE ==========
       default:
-        return props;
+        // For unknown components, try to pass props in a generic data structure
+        return {
+          data: props,
+          ...props
+        };
     }
   };
 
@@ -291,7 +728,8 @@ const DynamicPageRenderer = () => {
       // Handle new components format
       if (pageData.components) {
         const componentProps = JSON.parse(section.contentJson);
-        return <Component key={sectionId} {...componentProps} />;
+        const transformedProps = transformProps(section.componentType, componentProps);
+        return <Component key={sectionId} {...transformedProps} />;
       }
       
       // Handle old sections format

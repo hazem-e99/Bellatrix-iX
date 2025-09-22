@@ -18,6 +18,7 @@ import {
 import Button from "../ui/Button";
 import { Input } from "../ui/Input";
 import Card, { CardContent, CardHeader, CardTitle } from "../ui/Card";
+import ModernPageEditor from "./ModernPageEditor";
 import Modal, { ModalFooter } from "../ui/Modal";
 import Toast from "../ui/Toast";
 
@@ -1081,7 +1082,7 @@ const EditPageModal = ({ isOpen, onClose, page, onSave, showToast }) => {
     }
   };
 
-  const handleSave = async () => {
+  const handleSave = async (dataToSave = formData) => {
     if (!page) return;
 
     try {
@@ -1093,7 +1094,7 @@ const EditPageModal = ({ isOpen, onClose, page, onSave, showToast }) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ data: formData }),
+          body: JSON.stringify({ data: dataToSave }),
         }
       );
 
@@ -1160,12 +1161,16 @@ const EditPageModal = ({ isOpen, onClose, page, onSave, showToast }) => {
       {/* Modal Content */}
       <div className="p-6 bg-gradient-to-br from-white/80 to-blue-50/30 backdrop-blur-sm">
         {activeTab === 'form' ? (
-      <div className="space-y-6">
-            <div className="bg-white/60 backdrop-blur-sm rounded-xl border border-white/20 shadow-lg p-6">
-              <div className="max-h-96 overflow-y-auto space-y-6">
-          {buildFormFields(formData, handleFieldChange)}
-        </div>
-      </div>
+          <div className="h-[600px]">
+            <ModernPageEditor
+              pageData={formData}
+              onSave={async (updatedData) => {
+                setFormData(updatedData);
+                setJsonView(JSON.stringify(updatedData, null, 2));
+                await handleSave(updatedData);
+              }}
+              isLoading={loading}
+            />
           </div>
         ) : (
           <div className="space-y-4">

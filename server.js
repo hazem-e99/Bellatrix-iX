@@ -407,14 +407,14 @@ app.post("/api/pages", async (req, res) => {
         metaDescription: data.metaDescription || "",
         isHomepage: data.isHomepage || false,
         isPublished: data.isPublished || false,
-        components: data.components.map(component => ({
+        components: data.components.map((component) => ({
           componentType: component.componentType,
           componentName: component.componentName,
           contentJson: component.contentJson,
-          orderIndex: component.orderIndex
+          orderIndex: component.orderIndex,
         })),
         createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+        updatedAt: new Date().toISOString(),
       };
     } else {
       // Legacy format
