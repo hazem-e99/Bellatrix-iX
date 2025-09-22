@@ -1,26 +1,31 @@
 {
   "name": "nada",
-  "categoryId": 3,
+  "categoryId": 1,
   "slug": "nada",
   "metaTitle": "nada",
   "metaDescription": "nada",
-  "isHomepage": true,
+  "isHomepage": false,
   "isPublished": true,
   "components": [
     {
-      "componentType": "nada",
-      "componentName": "HR Hero Section",
-      "contentJson": "{\"titleParts\":[{\"0\":\"Nada\",\"1\":\"R\",\"2\":\" \",\"3\":\"M\",\"4\":\"a\",\"5\":\"n\",\"6\":\"a\",\"7\":\"g\",\"8\":\"e\",\"9\":\"m\",\"10\":\"e\",\"11\":\"n\",\"12\":\"t\",\"value\":\"HR ManagementA\"},\"Made Simple\"],\"description\":\"Streamline your human resources with our comprehensive HR solutions\",\"ctaButton\":{\"text\":\"Learn More Naddda\",\"link\":\"/hr\",\"variant\":\"primary\"},\"backgroundVideo\":\"/Videos/hrVideo.mp4\"}",
+      "componentType": "PayrollHeroSection",
+      "componentName": "Payroll Hero Section",
+      "contentJson": "{\"title\":\"nada Payroll Solutions\",\"subtitle\":\"Simplify payroll processing with our advanced system\",\"description\":\"Reduce errors and save time with automated payroll management\",\"ctaButton\":{\"text\":\"Get Started\",\"link\":\"/payroll\",\"variant\":\"primary\"},\"backgroundImage\":\"/images/payrollHeroSection.jpg\"}",
       "orderIndex": 0
     },
     {
-      "componentType": "PayrollHeroSection",
-      "componentName": "Payroll Hero Section",
-      "contentJson": "{\"title\":\"Automated Payroll Solutions\",\"subtitle\":\"Simplify payroll processing with our advanced system\",\"description\":\"Reduce errors and save time with automated payroll management\",\"ctaButton\":{\"text\":\"Get Started\",\"link\":\"/payroll\",\"variant\":\"primary\"},\"backgroundImage\":\"/images/payrollHeroSection.jpg\"}",
+      "componentType": "HRHeroSection",
+      "componentName": "HR Hero Section",
+      "contentJson": "{\"titleParts\":[\"HR Management\",\"Made Simple\"],\"description\":\"Streamline your human resources with our comprehensive HR solutions\",\"ctaButton\":{\"text\":\"Learn More\",\"link\":\"/hr\",\"variant\":\"primary\"},\"backgroundVideo\":\"/Videos/hrVideo.mp4\"}",
       "orderIndex": 1
+    },
+    {
+      "componentType": "HeroSection",
+      "componentName": "Hero Section",
+      "contentJson": "{\"title\":\"Welcome to Our Services\",\"subtitle\":\"Professional solutions for your business\",\"description\":\"Transform your business with our expert services\",\"ctaButton\":{\"text\":\"Get Started\",\"link\":\"/contact\",\"variant\":\"primary\"},\"backgroundImage\":\"/images/HeroSection.png\"}",
+      "orderIndex": 2
     }
   ],
-  "createdAt": "2025-09-22T02:08:06.445Z",
-  "updatedAt": "2025-09-22T02:08:06.445Z",
-  "lastModified": "2025-09-22T02:10:39.323Z"
+  "createdAt": "2025-09-22T18:25:37.003Z",
+  "updatedAt": "2025-09-22T18:25:37.003Z"
 }

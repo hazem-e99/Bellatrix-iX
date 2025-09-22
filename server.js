@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = 3002;
+const PORT = 3001;
 
 // Middleware
 app.use(cors());
@@ -518,6 +518,72 @@ app.delete("/api/pages/:name", async (req, res) => {
 // Health check endpoint
 app.get("/api/health", (req, res) => {
   res.json({ status: "OK", timestamp: new Date().toISOString() });
+});
+
+// ========== JSON SERVER COMPATIBILITY ENDPOINTS ==========
+// Serve db.json content for compatibility with existing frontend code
+
+// Load db.json data
+let dbData = {};
+
+const loadDbData = async () => {
+  try {
+    const dbPath = path.join(__dirname, "db.json");
+    const dbContent = await fs.readFile(dbPath, "utf8");
+    dbData = JSON.parse(dbContent);
+    console.log("✓ Loaded db.json data");
+  } catch (error) {
+    console.error("Error loading db.json:", error);
+  }
+};
+
+// Load data on startup
+loadDbData();
+
+// Serve individual endpoints from db.json
+app.get("/customization", (req, res) => {
+  res.json(dbData.customization || {});
+});
+
+app.get("/home", (req, res) => {
+  res.json(dbData.home || {});
+});
+
+app.get("/hr", (req, res) => {
+  res.json(dbData.hr || {});
+});
+
+app.get("/Implementation", (req, res) => {
+  res.json(dbData.Implementation || {});
+});
+
+app.get("/integration", (req, res) => {
+  res.json(dbData.integration || {});
+});
+
+app.get("/manufacturing", (req, res) => {
+  res.json(dbData.manufacturing || {});
+});
+
+app.get("/netsuite-consulting", (req, res) => {
+  res.json(dbData["netsuite-consulting"] || {});
+});
+
+app.get("/payroll", (req, res) => {
+  res.json(dbData.payroll || {});
+});
+
+app.get("/retail", (req, res) => {
+  res.json(dbData.retail || {});
+});
+
+app.get("/training", (req, res) => {
+  res.json(dbData.training || {});
+});
+
+// Serve the full database
+app.get("/db", (req, res) => {
+  res.json(dbData);
 });
 
 // Error handling middleware
