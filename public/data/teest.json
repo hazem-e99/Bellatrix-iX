@@ -1,0 +1,31 @@
+{
+  "name": "teest",
+  "categoryId": 1,
+  "slug": "teest",
+  "metaTitle": "ee",
+  "metaDescription": "eeeeee",
+  "isHomepage": false,
+  "isPublished": true,
+  "components": [
+    {
+      "componentType": "PayrollHeroSection",
+      "componentName": "Payroll Hero Section",
+      "contentJson": "{\"title\":\"Automated Payroll Solutions\",\"subtitle\":\"Simplify payroll processing with our advanced system\",\"description\":\"Reduce errors and save time with automated payroll management\",\"ctaButton\":{\"text\":\"Get Started\",\"link\":\"/payroll\",\"variant\":\"primary\"},\"backgroundImage\":\"/images/payrollHeroSection.jpg\"}",
+      "orderIndex": 0
+    },
+    {
+      "componentType": "ImplementationProcessSection",
+      "componentName": "Implementation Process Section",
+      "contentJson": "{\"title\":\"Our Implementation Process\",\"subtitle\":\"A proven methodology for seamless business transformation\",\"description\":\"We follow a structured approach to ensure successful implementation\",\"steps\":[{\"title\":\"Discovery & Planning\",\"description\":\"Understanding your business requirements\",\"icon\":\"🔍\",\"duration\":\"1-2 weeks\"},{\"title\":\"Design & Configuration\",\"description\":\"Customizing the system to your needs\",\"icon\":\"🎨\",\"duration\":\"2-4 weeks\"},{\"title\":\"Testing & Training\",\"description\":\"Ensuring everything works perfectly\",\"icon\":\"🧪\",\"duration\":\"1-2 weeks\"},{\"title\":\"Go-Live & Support\",\"description\":\"Launching and ongoing support\",\"icon\":\"🚀\",\"duration\":\"Ongoing\"}],\"image\":\"/images/ProcessImplementattion.png\",\"ctaButton\":{\"text\":\"Start Your Implementation\",\"link\":\"/contact\",\"variant\":\"primary\"}}",
+      "orderIndex": 1
+    },
+    {
+      "componentType": "HRHeroSection",
+      "componentName": "HR Hero Section",
+      "contentJson": "{\"titleParts\":[\"HR Management\",\"Made Simple\"],\"description\":\"Streamline your human resources with our comprehensive HR solutions\",\"ctaButton\":{\"text\":\"Learn More\",\"link\":\"/hr\",\"variant\":\"primary\"},\"backgroundVideo\":\"/Videos/hrVideo.mp4\"}",
+      "orderIndex": 2
+    }
+  ],
+  "createdAt": "2025-09-22T23:17:50.510Z",
+  "updatedAt": "2025-09-22T23:17:50.510Z"
+}

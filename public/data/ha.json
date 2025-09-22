@@ -1,0 +1,31 @@
+{
+  "name": "ha",
+  "categoryId": 2,
+  "slug": "ha",
+  "metaTitle": "aaaaaaa",
+  "metaDescription": "sssssssssss",
+  "isHomepage": false,
+  "isPublished": true,
+  "components": [
+    {
+      "componentType": "PayrollHeroSection",
+      "componentName": "Payroll Hero Section",
+      "contentJson": "{\"title\":\"Automated Payroll Solutions\",\"subtitle\":\"Simplify payroll processing with our advanced system\",\"description\":\"Reduce errors and save time with automated payroll management\",\"ctaButton\":{\"text\":\"Get Started\",\"link\":\"/payroll\",\"variant\":\"primary\"},\"backgroundImage\":\"/images/payrollHeroSection.jpg\"}",
+      "orderIndex": 0
+    },
+    {
+      "componentType": "HRPricingSection",
+      "componentName": "HR Pricing Section",
+      "contentJson": "{\"title\":\"HR Solution Pricing\",\"subtitle\":\"Choose the perfect plan for your organization\",\"description\":\"Flexible pricing options to fit your business size and needs\",\"plans\":[{\"name\":\"Starter\",\"price\":\"$99\",\"period\":\"per month\",\"description\":\"Perfect for small businesses\",\"features\":[\"Up to 50 employees\",\"Basic HR modules\",\"Email support\",\"Standard reporting\"],\"cta\":\"Get Started\",\"popular\":false},{\"name\":\"Professional\",\"price\":\"$199\",\"period\":\"per month\",\"description\":\"Ideal for growing companies\",\"features\":[\"Up to 200 employees\",\"Advanced HR modules\",\"Priority support\",\"Advanced reporting\",\"Custom integrations\"],\"cta\":\"Get Started\",\"popular\":true},{\"name\":\"Enterprise\",\"price\":\"Custom\",\"period\":\"pricing\",\"description\":\"For large organizations\",\"features\":[\"Unlimited employees\",\"All HR modules\",\"24/7 support\",\"Custom reporting\",\"Full customization\",\"Dedicated account manager\"],\"cta\":\"Contact Sales\",\"popular\":false}]}",
+      "orderIndex": 1
+    },
+    {
+      "componentType": "PayrollFAQSection",
+      "componentName": "Payroll FAQ Section",
+      "contentJson": "{\"title\":\"Frequently Asked Questions\",\"subtitle\":\"Everything you need to know about our payroll solutions\",\"description\":\"Find answers to common questions about our payroll services\",\"faqs\":[{\"question\":\"How does automated payroll work?\",\"answer\":\"Our automated payroll system calculates salaries, taxes, and deductions automatically based on your company's policies and employee data.\"},{\"question\":\"Can I integrate with existing HR systems?\",\"answer\":\"Yes, our payroll solution integrates seamlessly with most popular HR systems and accounting software.\"},{\"question\":\"What kind of support do you provide?\",\"answer\":\"We provide comprehensive support including setup assistance, training, and ongoing technical support.\"}]}",
+      "orderIndex": 2
+    }
+  ],
+  "createdAt": "2025-09-22T23:06:01.796Z",
+  "updatedAt": "2025-09-22T23:06:01.796Z"
+}
