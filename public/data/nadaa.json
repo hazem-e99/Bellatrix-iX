@@ -16,7 +16,7 @@
     {
       "componentType": "HRPricingSection",
       "componentName": "HR Pricing Section",
-      "contentJson": "{\"title\":\"nada Solution Pricing\",\"subtitle\":\"Choose the perfect plan for your organization\",\"description\":\"Flexible pricing options to fit your business size and needs\",\"plans\":[{\"name\":\"Starter\",\"price\":\"$999999\",\"period\":\"per month\",\"description\":\"Perfect for small businesses\",\"features\":[\"Up to 50 employees\",\"Basic HR modules\",\"Email support\",\"Standard reporting\"],\"cta\":\"Get Started\",\"popular\":false},{\"name\":\"Professional\",\"price\":\"$199\",\"period\":\"per month\",\"description\":\"Ideal for growing companies\",\"features\":[\"Up to 200 employees\",\"Advanced HR modules\",\"Priority support\",\"Advanced reporting\",\"Custom integrations\"],\"cta\":\"Get Started\",\"popular\":true},{\"name\":\"Enterprise\",\"price\":\"Custom\",\"period\":\"pricing\",\"description\":\"For large organizations\",\"features\":[\"Unlimited employees\",\"All HR modules\",\"24/7 support\",\"Custom reporting\",\"Full customization\",\"Dedicated account manager\"],\"cta\":\"Contact Sales\",\"popular\":false}]}",
+      "contentJson": "{\"title\":\"nada Solution Pricing\",\"subtitle\":\"Choose the perfect plan for your organization\",\"description\":\"Flexible pricing options to fit your business size and needs\",\"plans\":[{\"name\":\"Starter\",\"price\":\"$410\",\"period\":\"per month\",\"description\":\"Perfect for small businesses\",\"features\":[\"Up to 50 employees\",\"Basic HR modules\",\"Email support\",\"Standard reporting\"],\"cta\":\"Get Started\",\"popular\":false},{\"name\":\"Professional\",\"price\":\"$199\",\"period\":\"per month\",\"description\":\"Ideal for growing companies\",\"features\":[\"Up to 200 employees\",\"Advanced HR modules\",\"Priority support\",\"Advanced reporting\",\"Custom integrations\"],\"cta\":\"Get Started\",\"popular\":true},{\"name\":\"Enterprise\",\"price\":\"Custom\",\"period\":\"pricing\",\"description\":\"For large organizations\",\"features\":[\"Unlimited employees\",\"All HR modules\",\"24/7 support\",\"Custom reporting\",\"Full customization\",\"Dedicated account manager\"],\"cta\":\"Contact Sales\",\"popular\":false}]}",
       "orderIndex": 1
     },
     {
@@ -28,5 +28,5 @@
   ],
   "createdAt": "2025-09-22T18:51:21.164Z",
   "updatedAt": "2025-09-22T18:51:21.164Z",
-  "lastModified": "2025-09-22T20:56:33.950Z"
+  "lastModified": "2025-09-22T21:18:38.119Z"
 }

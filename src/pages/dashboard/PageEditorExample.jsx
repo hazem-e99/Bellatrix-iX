@@ -1,5 +1,5 @@
-import React from 'react';
-import PageEditor from './PageEditor';
+import React from "react";
+import PageEditor from "./PageEditor";
 
 const PageEditorExample = () => {
   return (

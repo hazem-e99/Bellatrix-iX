@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 // Custom hook for page editor API operations
 export const usePageEditorAPI = () => {
@@ -12,7 +12,7 @@ export const usePageEditorAPI = () => {
       // Use existing server endpoint that returns full page JSON
       const response = await fetch(`http://localhost:3001/api/pages/${pageId}`);
       if (!response.ok) {
-        throw new Error('Failed to fetch page data');
+        throw new Error("Failed to fetch page data");
       }
       const { data } = await response.json();
       setLoading(false);
@@ -28,18 +28,21 @@ export const usePageEditorAPI = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`http://localhost:3001/api/pages/${pageId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ data: updatedPageData }),
-      });
-      
+      const response = await fetch(
+        `http://localhost:3001/api/pages/${pageId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ data: updatedPageData }),
+        }
+      );
+
       if (!response.ok) {
-        throw new Error('Failed to save component');
+        throw new Error("Failed to save component");
       }
-      
+
       const data = await response.json();
       setLoading(false);
       return data;
@@ -54,18 +57,21 @@ export const usePageEditorAPI = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`http://localhost:3001/api/pages/${pageId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ data: { components } }),
-      });
-      
+      const response = await fetch(
+        `http://localhost:3001/api/pages/${pageId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ data: { components } }),
+        }
+      );
+
       if (!response.ok) {
-        throw new Error('Failed to save page');
+        throw new Error("Failed to save page");
       }
-      
+
       const data = await response.json();
       setLoading(false);
       return data;
@@ -81,18 +87,21 @@ export const usePageEditorAPI = () => {
     setError(null);
     try {
       // Persist re-ordered components by PUTting the whole page
-      const response = await fetch(`http://localhost:3001/api/pages/${pageId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ data: updatedPageData }),
-      });
-      
+      const response = await fetch(
+        `http://localhost:3001/api/pages/${pageId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ data: updatedPageData }),
+        }
+      );
+
       if (!response.ok) {
-        throw new Error('Failed to reorder components');
+        throw new Error("Failed to reorder components");
       }
-      
+
       const data = await response.json();
       setLoading(false);
       return data;
@@ -120,24 +129,24 @@ export const generateId = () => {
 
 export const validateComponentData = (componentData) => {
   const errors = {};
-  
+
   try {
     JSON.parse(componentData.contentJson);
   } catch {
-    errors.contentJson = 'Invalid JSON format';
+    errors.contentJson = "Invalid JSON format";
   }
-  
+
   if (!componentData.componentName?.trim()) {
-    errors.componentName = 'Component name is required';
+    errors.componentName = "Component name is required";
   }
-  
+
   if (!componentData.componentType?.trim()) {
-    errors.componentType = 'Component type is required';
+    errors.componentType = "Component type is required";
   }
-  
+
   return {
     isValid: Object.keys(errors).length === 0,
-    errors
+    errors,
   };
 };
 
@@ -156,59 +165,59 @@ export const debounce = (func, wait) => {
 // Component type configurations for better form rendering
 export const componentTypeConfigs = {
   PayrollHeroSection: {
-    displayName: 'Hero Section',
+    displayName: "Hero Section",
     fields: {
-      title: { type: 'text', required: true },
-      subtitle: { type: 'text', required: true },
-      description: { type: 'textarea', required: true },
-      backgroundImage: { type: 'url', label: 'Background Image URL' },
+      title: { type: "text", required: true },
+      subtitle: { type: "text", required: true },
+      description: { type: "textarea", required: true },
+      backgroundImage: { type: "url", label: "Background Image URL" },
       ctaButton: {
-        type: 'object',
+        type: "object",
         fields: {
-          text: { type: 'text', required: true },
-          link: { type: 'url', required: true },
-          variant: { 
-            type: 'select', 
-            options: ['primary', 'secondary', 'outline'],
-            default: 'primary'
-          }
-        }
-      }
-    }
+          text: { type: "text", required: true },
+          link: { type: "url", required: true },
+          variant: {
+            type: "select",
+            options: ["primary", "secondary", "outline"],
+            default: "primary",
+          },
+        },
+      },
+    },
   },
   ServiceGrid: {
-    displayName: 'Service Grid',
+    displayName: "Service Grid",
     fields: {
-      title: { type: 'text', required: true },
-      subtitle: { type: 'text', required: true },
-      description: { type: 'textarea', required: true },
+      title: { type: "text", required: true },
+      subtitle: { type: "text", required: true },
+      description: { type: "textarea", required: true },
       services: {
-        type: 'array',
-        itemType: 'object',
+        type: "array",
+        itemType: "object",
         fields: {
-          name: { type: 'text', required: true },
-          description: { type: 'textarea', required: true },
-          icon: { type: 'text', label: 'Icon (emoji or class)' },
-          link: { type: 'url', required: true }
-        }
-      }
-    }
+          name: { type: "text", required: true },
+          description: { type: "textarea", required: true },
+          icon: { type: "text", label: "Icon (emoji or class)" },
+          link: { type: "url", required: true },
+        },
+      },
+    },
   },
   HRModulesSection: {
-    displayName: 'HR Modules',
+    displayName: "HR Modules",
     fields: {
-      title: { type: 'text', required: true },
-      subtitle: { type: 'text', required: true },
-      description: { type: 'textarea', required: true },
+      title: { type: "text", required: true },
+      subtitle: { type: "text", required: true },
+      description: { type: "textarea", required: true },
       features: {
-        type: 'array',
-        itemType: 'object',
+        type: "array",
+        itemType: "object",
         fields: {
-          title: { type: 'text', required: true },
-          description: { type: 'textarea', required: true },
-          icon: { type: 'text', label: 'Icon (emoji or class)' }
-        }
-      }
-    }
-  }
+          title: { type: "text", required: true },
+          description: { type: "textarea", required: true },
+          icon: { type: "text", label: "Icon (emoji or class)" },
+        },
+      },
+    },
+  },
 };

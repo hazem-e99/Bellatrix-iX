@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useCallback } from "react";
+import { useSearchParams } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   DndContext,
   closestCenter,
@@ -8,21 +8,19 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
-} from '@dnd-kit/core';
+} from "@dnd-kit/core";
 import {
   arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
-import {
-  useSortable,
-} from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import { Button } from '../../components/UI/Button';
-import { Card } from '../../components/UI/Card';
-import { Input } from '../../components/UI/Input';
-import { usePageEditorAPI, debounce } from '../../hooks/usePageEditor';
+} from "@dnd-kit/sortable";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { Button } from "../../components/UI/Button";
+import { Card } from "../../components/UI/Card";
+import { Input } from "../../components/UI/Input";
+import { usePageEditorAPI, debounce } from "../../hooks/usePageEditor";
 import {
   ChevronDownIcon,
   ChevronUpIcon,
@@ -35,11 +33,11 @@ import {
   CheckIcon,
   ExclamationTriangleIcon,
   InformationCircleIcon,
-} from '@heroicons/react/24/outline';
+} from "@heroicons/react/24/outline";
 
 const PageEditor = () => {
   const [components, setComponents] = useState([]);
-  const [pageMeta, setPageMeta] = useState({ name: '', slug: '' });
+  const [pageMeta, setPageMeta] = useState({ name: "", slug: "" });
   const [searchParams] = useSearchParams();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -48,7 +46,10 @@ const PageEditor = () => {
   const [notification, setNotification] = useState(null);
   const [changedComponents, setChangedComponents] = useState(new Set());
 
-  const { saveComponent: apiSaveComponent, saveAllComponents: apiSaveAll } = usePageEditorAPI();
+  const {
+    saveComponent: apiSaveComponent,
+    saveAllComponents: apiSaveAll,
+  } = usePageEditorAPI();
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -58,40 +59,37 @@ const PageEditor = () => {
   );
 
   // Debounced auto-save function
-  const debouncedAutoSave = useCallback(
-    (componentId, content) => {
-      const debouncedFn = debounce(() => {
-        // Auto-save functionality can be implemented here
-        console.log('Auto-saving component:', componentId, content);
-      }, 2000);
-      debouncedFn();
-    },
-    []
-  );
+  const debouncedAutoSave = useCallback((componentId, content) => {
+    const debouncedFn = debounce(() => {
+      // Auto-save functionality can be implemented here
+      console.log("Auto-saving component:", componentId, content);
+    }, 2000);
+    debouncedFn();
+  }, []);
 
-  const showNotification = (message, type = 'info') => {
+  const showNotification = (message, type = "info") => {
     setNotification({ message, type });
     setTimeout(() => setNotification(null), 3000);
   };
 
   // Load page from API
   useEffect(() => {
-    const page = searchParams.get('page') || 'homeData';
+    const page = searchParams.get("page") || "homeData";
     const load = async () => {
       try {
         const res = await fetch(`http://localhost:3001/api/pages/${page}`);
-        if (!res.ok) throw new Error('Failed to load page');
+        if (!res.ok) throw new Error("Failed to load page");
         const { data } = await res.json();
         const comps = (data.components || []).map((c, idx) => ({
           // Ensure each item has a stable id for DnD; fall back to name+index
           id: `${c.componentType}-${idx}`,
           ...c,
-          orderIndex: typeof c.orderIndex === 'number' ? c.orderIndex : idx,
+          orderIndex: typeof c.orderIndex === "number" ? c.orderIndex : idx,
         }));
         setComponents(comps);
         setPageMeta({ name: data.name || page, slug: data.slug || page });
       } catch (e) {
-        showNotification('Could not load page data', 'error');
+        showNotification("Could not load page data", "error");
       } finally {
         setLoading(false);
       }
@@ -104,20 +102,20 @@ const PageEditor = () => {
 
     if (active.id !== over.id) {
       setComponents((items) => {
-        const oldIndex = items.findIndex(item => item.id === active.id);
-        const newIndex = items.findIndex(item => item.id === over.id);
-        
+        const oldIndex = items.findIndex((item) => item.id === active.id);
+        const newIndex = items.findIndex((item) => item.id === over.id);
+
         const newItems = arrayMove(items, oldIndex, newIndex);
         return newItems.map((item, index) => ({
           ...item,
-          orderIndex: index
+          orderIndex: index,
         }));
       });
     }
   };
 
   const toggleCardExpansion = (componentId) => {
-    setExpandedCards(prev => {
+    setExpandedCards((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(componentId)) {
         newSet.delete(componentId);
@@ -129,30 +127,34 @@ const PageEditor = () => {
   };
 
   const updateComponentContent = (componentId, newContent) => {
-    setComponents(prev => 
-      prev.map(comp => 
-        comp.id === componentId 
+    setComponents((prev) =>
+      prev.map((comp) =>
+        comp.id === componentId
           ? { ...comp, contentJson: JSON.stringify(newContent) }
           : comp
       )
     );
-    setChangedComponents(prev => new Set([...prev, componentId]));
+    setChangedComponents((prev) => new Set([...prev, componentId]));
     debouncedAutoSave(componentId, newContent);
   };
 
   const saveComponent = async (componentId) => {
     try {
       const pageId = pageMeta.slug || pageMeta.name;
-      const updatedPage = { name: pageMeta.name, slug: pageMeta.slug, components };
+      const updatedPage = {
+        name: pageMeta.name,
+        slug: pageMeta.slug,
+        components,
+      };
       await apiSaveComponent(pageId, updatedPage);
-      setChangedComponents(prev => {
+      setChangedComponents((prev) => {
         const newSet = new Set(prev);
         newSet.delete(componentId);
         return newSet;
       });
-      showNotification('Component saved successfully!', 'success');
+      showNotification("Component saved successfully!", "success");
     } catch {
-      showNotification('Failed to save component', 'error');
+      showNotification("Failed to save component", "error");
     }
   };
 
@@ -162,9 +164,9 @@ const PageEditor = () => {
       const pageId = pageMeta.slug || pageMeta.name;
       await apiSaveAll(pageId, components);
       setChangedComponents(new Set());
-      showNotification('All components saved successfully!', 'success');
+      showNotification("All components saved successfully!", "success");
     } catch {
-      showNotification('Failed to save page', 'error');
+      showNotification("Failed to save page", "error");
     } finally {
       setSaving(false);
     }
@@ -193,14 +195,24 @@ const PageEditor = () => {
             exit={{ opacity: 0, y: -50 }}
             className="fixed top-4 right-4 z-50"
           >
-            <div className={`px-4 py-3 rounded-lg shadow-lg flex items-center gap-2 ${
-              notification.type === 'success' ? 'bg-green-600 text-white' :
-              notification.type === 'error' ? 'bg-red-600 text-white' :
-              'bg-blue-600 text-white'
-            }`}>
-              {notification.type === 'success' && <CheckIcon className="w-5 h-5" />}
-              {notification.type === 'error' && <ExclamationTriangleIcon className="w-5 h-5" />}
-              {notification.type === 'info' && <InformationCircleIcon className="w-5 h-5" />}
+            <div
+              className={`px-4 py-3 rounded-lg shadow-lg flex items-center gap-2 ${
+                notification.type === "success"
+                  ? "bg-green-600 text-white"
+                  : notification.type === "error"
+                  ? "bg-red-600 text-white"
+                  : "bg-blue-600 text-white"
+              }`}
+            >
+              {notification.type === "success" && (
+                <CheckIcon className="w-5 h-5" />
+              )}
+              {notification.type === "error" && (
+                <ExclamationTriangleIcon className="w-5 h-5" />
+              )}
+              {notification.type === "info" && (
+                <InformationCircleIcon className="w-5 h-5" />
+              )}
               <span>{notification.message}</span>
             </div>
           </motion.div>
@@ -212,7 +224,9 @@ const PageEditor = () => {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-white">Page Editor</h1>
-            <p className="text-gray-400 text-sm">Drag components to reorder • Click to edit</p>
+            <p className="text-gray-400 text-sm">
+              Drag components to reorder • Click to edit
+            </p>
           </div>
           <div className="flex items-center gap-3">
             <Button
@@ -252,7 +266,10 @@ const PageEditor = () => {
             collisionDetection={closestCenter}
             onDragEnd={handleDragEnd}
           >
-            <SortableContext items={components.map(c => c.id)} strategy={verticalListSortingStrategy}>
+            <SortableContext
+              items={components.map((c) => c.id)}
+              strategy={verticalListSortingStrategy}
+            >
               <div className="space-y-4">
                 {components.map((component) => (
                   <ComponentCard
@@ -285,7 +302,14 @@ const PageEditor = () => {
 };
 
 // Sortable Component Card
-const ComponentCard = ({ component, isExpanded, hasChanges, onToggleExpansion, onUpdateContent, onSave }) => {
+const ComponentCard = ({
+  component,
+  isExpanded,
+  hasChanges,
+  onToggleExpansion,
+  onUpdateContent,
+  onSave,
+}) => {
   const {
     attributes,
     listeners,
@@ -308,7 +332,7 @@ const ComponentCard = ({ component, isExpanded, hasChanges, onToggleExpansion, o
     try {
       setContentData(JSON.parse(component.contentJson));
     } catch (error) {
-      console.error('Error parsing contentJson:', error);
+      console.error("Error parsing contentJson:", error);
       setContentData({});
     }
   }, [component.contentJson]);
@@ -327,12 +351,7 @@ const ComponentCard = ({ component, isExpanded, hasChanges, onToggleExpansion, o
   };
 
   return (
-    <motion.div
-      ref={setNodeRef}
-      style={style}
-      layout
-      className="relative"
-    >
+    <motion.div ref={setNodeRef} style={style} layout className="relative">
       <Card className="bg-gray-800 border-gray-700 hover:border-gray-600 transition-all duration-200">
         <div className="flex items-center justify-between p-4 border-b border-gray-700">
           <div className="flex items-center gap-3">
@@ -347,7 +366,10 @@ const ComponentCard = ({ component, isExpanded, hasChanges, onToggleExpansion, o
               <h3 className="font-semibold text-white flex items-center gap-2">
                 {component.componentName}
                 {(hasChanges || localChanges) && (
-                  <span className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse" title="Unsaved changes" />
+                  <span
+                    className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"
+                    title="Unsaved changes"
+                  />
                 )}
               </h3>
               <p className="text-sm text-gray-400">{component.componentType}</p>
@@ -386,10 +408,7 @@ const ComponentCard = ({ component, isExpanded, hasChanges, onToggleExpansion, o
               className="overflow-hidden"
             >
               <div className="p-4">
-                <DynamicForm
-                  data={contentData}
-                  onChange={handleFieldChange}
-                />
+                <DynamicForm data={contentData} onChange={handleFieldChange} />
               </div>
             </motion.div>
           )}
@@ -401,23 +420,27 @@ const ComponentCard = ({ component, isExpanded, hasChanges, onToggleExpansion, o
 
 // Dynamic Form Component
 const DynamicForm = ({ data, onChange }) => {
-  const renderField = (key, value, path = '') => {
+  const renderField = (key, value, path = "") => {
     const fieldPath = path ? `${path}.${key}` : key;
-    
+
     if (Array.isArray(value)) {
       return (
         <div key={key} className="space-y-3">
           <div className="flex items-center justify-between">
             <label className="text-sm font-medium text-gray-300 capitalize">
-              {key.replace(/([A-Z])/g, ' $1').trim()}
+              {key.replace(/([A-Z])/g, " $1").trim()}
             </label>
             <Button
               size="sm"
               variant="outline"
               onClick={() => {
-                const newItem = typeof value[0] === 'object' 
-                  ? Object.keys(value[0] || {}).reduce((acc, k) => ({ ...acc, [k]: '' }), {})
-                  : '';
+                const newItem =
+                  typeof value[0] === "object"
+                    ? Object.keys(value[0] || {}).reduce(
+                        (acc, k) => ({ ...acc, [k]: "" }),
+                        {}
+                      )
+                    : "";
                 onChange(fieldPath, [...value, newItem]);
               }}
               className="text-xs border-gray-600 text-gray-300 hover:bg-gray-700"
@@ -430,7 +453,7 @@ const DynamicForm = ({ data, onChange }) => {
             {value.map((item, index) => (
               <div key={index} className="flex items-start gap-2 group">
                 <div className="flex-1">
-                  {typeof item === 'object' ? (
+                  {typeof item === "object" ? (
                     <div className="space-y-2 p-3 bg-gray-700 rounded-lg">
                       {Object.entries(item).map(([subKey, subValue]) =>
                         renderField(subKey, subValue, `${fieldPath}.${index}`)
@@ -466,12 +489,12 @@ const DynamicForm = ({ data, onChange }) => {
         </div>
       );
     }
-    
-    if (typeof value === 'object' && value !== null) {
+
+    if (typeof value === "object" && value !== null) {
       return (
         <div key={key} className="space-y-3">
           <label className="text-sm font-medium text-gray-300 capitalize">
-            {key.replace(/([A-Z])/g, ' $1').trim()}
+            {key.replace(/([A-Z])/g, " $1").trim()}
           </label>
           <div className="space-y-2 pl-4 border-l border-gray-600">
             {Object.entries(value).map(([subKey, subValue]) =>
@@ -481,40 +504,55 @@ const DynamicForm = ({ data, onChange }) => {
         </div>
       );
     }
-    
+
     // Handle different input types based on key names
     const getInputType = (key, value) => {
-      if (key.toLowerCase().includes('email')) return 'email';
-      if (key.toLowerCase().includes('url') || key.toLowerCase().includes('link')) return 'url';
-      if (key.toLowerCase().includes('image') || key.toLowerCase().includes('src')) return 'url';
-      if (typeof value === 'number') return 'number';
-      return 'text';
+      if (key.toLowerCase().includes("email")) return "email";
+      if (
+        key.toLowerCase().includes("url") ||
+        key.toLowerCase().includes("link")
+      )
+        return "url";
+      if (
+        key.toLowerCase().includes("image") ||
+        key.toLowerCase().includes("src")
+      )
+        return "url";
+      if (typeof value === "number") return "number";
+      return "text";
     };
-    
-    const isTextarea = key.toLowerCase().includes('description') || 
-                      key.toLowerCase().includes('content') ||
-                      (typeof value === 'string' && value.length > 50);
-    
+
+    const isTextarea =
+      key.toLowerCase().includes("description") ||
+      key.toLowerCase().includes("content") ||
+      (typeof value === "string" && value.length > 50);
+
     return (
       <div key={key} className="space-y-2">
         <label className="text-sm font-medium text-gray-300 capitalize">
-          {key.replace(/([A-Z])/g, ' $1').trim()}
+          {key.replace(/([A-Z])/g, " $1").trim()}
         </label>
         {isTextarea ? (
           <textarea
-            value={value || ''}
+            value={value || ""}
             onChange={(e) => onChange(fieldPath, e.target.value)}
             rows={3}
             className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-            placeholder={`Enter ${key.replace(/([A-Z])/g, ' $1').trim().toLowerCase()}`}
+            placeholder={`Enter ${key
+              .replace(/([A-Z])/g, " $1")
+              .trim()
+              .toLowerCase()}`}
           />
         ) : (
           <Input
             type={getInputType(key, value)}
-            value={value || ''}
+            value={value || ""}
             onChange={(e) => onChange(fieldPath, e.target.value)}
             className="bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder={`Enter ${key.replace(/([A-Z])/g, ' $1').trim().toLowerCase()}`}
+            placeholder={`Enter ${key
+              .replace(/([A-Z])/g, " $1")
+              .trim()
+              .toLowerCase()}`}
           />
         )}
       </div>
@@ -538,10 +576,11 @@ const PreviewPanel = ({ components }) => {
       content = {};
     }
 
-    const baseClasses = "mb-8 p-6 bg-gray-800 rounded-lg border border-gray-700";
+    const baseClasses =
+      "mb-8 p-6 bg-gray-800 rounded-lg border border-gray-700";
 
     switch (component.componentType) {
-      case 'PayrollHeroSection':
+      case "PayrollHeroSection":
         return (
           <div key={component.id} className={`${baseClasses} text-center`}>
             <motion.div
@@ -561,7 +600,7 @@ const PreviewPanel = ({ components }) => {
           </div>
         );
 
-      case 'ServiceGrid':
+      case "ServiceGrid":
         return (
           <div key={component.id} className={baseClasses}>
             <motion.div
@@ -570,7 +609,9 @@ const PreviewPanel = ({ components }) => {
               className="space-y-6"
             >
               <div className="text-center space-y-2">
-                <h2 className="text-3xl font-bold text-white">{content.title}</h2>
+                <h2 className="text-3xl font-bold text-white">
+                  {content.title}
+                </h2>
                 <p className="text-lg text-blue-400">{content.subtitle}</p>
                 <p className="text-gray-300">{content.description}</p>
               </div>
@@ -587,8 +628,12 @@ const PreviewPanel = ({ components }) => {
                       <div className="flex items-center gap-3">
                         <span className="text-2xl">{service.icon}</span>
                         <div>
-                          <h3 className="font-semibold text-white">{service.name}</h3>
-                          <p className="text-sm text-gray-300">{service.description}</p>
+                          <h3 className="font-semibold text-white">
+                            {service.name}
+                          </h3>
+                          <p className="text-sm text-gray-300">
+                            {service.description}
+                          </p>
                         </div>
                       </div>
                     </motion.div>
@@ -599,7 +644,7 @@ const PreviewPanel = ({ components }) => {
           </div>
         );
 
-      case 'HRModulesSection':
+      case "HRModulesSection":
         return (
           <div key={component.id} className={baseClasses}>
             <motion.div
@@ -608,7 +653,9 @@ const PreviewPanel = ({ components }) => {
               className="space-y-6"
             >
               <div className="text-center space-y-2">
-                <h2 className="text-3xl font-bold text-white">{content.title}</h2>
+                <h2 className="text-3xl font-bold text-white">
+                  {content.title}
+                </h2>
                 <p className="text-lg text-blue-400">{content.subtitle}</p>
                 <p className="text-gray-300">{content.description}</p>
               </div>
@@ -622,9 +669,15 @@ const PreviewPanel = ({ components }) => {
                       transition={{ delay: index * 0.1 }}
                       className="p-4 bg-gray-700 rounded-lg text-center hover:bg-gray-600 transition-colors"
                     >
-                      <span className="text-3xl block mb-2">{feature.icon}</span>
-                      <h3 className="font-semibold text-white mb-1">{feature.title}</h3>
-                      <p className="text-sm text-gray-300">{feature.description}</p>
+                      <span className="text-3xl block mb-2">
+                        {feature.icon}
+                      </span>
+                      <h3 className="font-semibold text-white mb-1">
+                        {feature.title}
+                      </h3>
+                      <p className="text-sm text-gray-300">
+                        {feature.description}
+                      </p>
                     </motion.div>
                   ))}
                 </div>
@@ -636,8 +689,12 @@ const PreviewPanel = ({ components }) => {
       default:
         return (
           <div key={component.id} className={`${baseClasses} text-center`}>
-            <h3 className="text-lg font-medium text-white">{component.componentName}</h3>
-            <p className="text-sm text-gray-400 mt-2">Preview for {component.componentType}</p>
+            <h3 className="text-lg font-medium text-white">
+              {component.componentName}
+            </h3>
+            <p className="text-sm text-gray-400 mt-2">
+              Preview for {component.componentType}
+            </p>
             <pre className="text-xs text-gray-500 mt-4 overflow-auto max-h-40">
               {JSON.stringify(content, null, 2)}
             </pre>
@@ -657,9 +714,9 @@ const PreviewPanel = ({ components }) => {
 
 // Helper function to set value at nested path
 const setValueAtPath = (obj, path, value) => {
-  const keys = path.split('.');
+  const keys = path.split(".");
   let current = obj;
-  
+
   for (let i = 0; i < keys.length - 1; i++) {
     const key = keys[i];
     if (!(key in current)) {
@@ -667,7 +724,7 @@ const setValueAtPath = (obj, path, value) => {
     }
     current = current[key];
   }
-  
+
   current[keys[keys.length - 1]] = value;
 };
 
