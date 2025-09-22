@@ -186,32 +186,32 @@ const PagesManagement = () => {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-        <div>
+            <div>
           <h2 className="text-2xl font-bold text-gray-800">
-            Pages Management
-          </h2>
+                Pages Management
+              </h2>
           <p className="text-gray-600">
             Manage your website pages and content
-          </p>
-        </div>
+              </p>
+            </div>
         <div className="mt-4 sm:mt-0 flex space-x-2">
           <Button
             icon={<PlusIcon className="h-4 w-4" />}
-            onClick={() => navigate("/admin/pages/enhanced-create")}
+              onClick={() => navigate("/admin/pages/enhanced-create")}
             className="bg-blue-600 hover:bg-blue-700 text-white"
           >
             Enhanced Page Builder
           </Button>
           <Button
             variant="outline"
-            onClick={() => navigate("/admin/pages/create")}
+              onClick={() => navigate("/admin/pages/create")}
             className="hover:bg-blue-50 hover:border-blue-300"
           >
             Classic Create
           </Button>
           <Button
             variant="outline"
-            onClick={() => setShowCreateModal(true)}
+              onClick={() => setShowCreateModal(true)}
             className="hover:bg-blue-50 hover:border-blue-300"
           >
             Quick Create
@@ -226,15 +226,15 @@ const PagesManagement = () => {
             <div className="flex items-center">
               <div className="p-2 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg shadow-lg">
                 <DocumentTextIcon className="h-6 w-6 text-white" />
-              </div>
+                </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">
-                  Total Pages
-                </p>
+                    Total Pages
+                  </p>
                 <p className="text-2xl font-bold text-gray-800">
-                  {pages.length}
-                </p>
-              </div>
+                    {pages.length}
+                  </p>
+                </div>
             </div>
           </CardContent>
         </Card>
@@ -244,15 +244,15 @@ const PagesManagement = () => {
             <div className="flex items-center">
               <div className="p-2 bg-gradient-to-r from-green-500 to-blue-500 rounded-lg shadow-lg">
                 <CheckCircleIcon className="h-6 w-6 text-white" />
-              </div>
+                </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">
                   With Data
                 </p>
                 <p className="text-2xl font-bold text-gray-800">
-                  {pages.filter((p) => p.hasData).length}
-                </p>
-              </div>
+                    {pages.filter((p) => p.hasData).length}
+                  </p>
+                </div>
             </div>
           </CardContent>
         </Card>
@@ -262,205 +262,463 @@ const PagesManagement = () => {
             <div className="flex items-center">
               <div className="p-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg shadow-lg">
                 <CalendarIcon className="h-6 w-6 text-white" />
-              </div>
+                </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">
-                  Last Updated
-                </p>
+                    Last Updated
+                  </p>
                 <p className="text-sm font-bold text-gray-800">
-                  {pages.length > 0
-                    ? formatDate(
-                        Math.max(
-                          ...pages.map((p) => new Date(p.lastModified || 0))
+                    {pages.length > 0
+                      ? formatDate(
+                          Math.max(
+                            ...pages.map((p) => new Date(p.lastModified || 0))
+                          )
                         )
-                      )
-                    : "N/A"}
-                </p>
-              </div>
+                      : "N/A"}
+                  </p>
+                </div>
             </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Search and Filter */}
-      <Card className="bg-white border border-gray-200 shadow-lg">
-        <CardHeader>
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
-            <CardTitle className="text-gray-800">All Pages ({filteredPages.length})</CardTitle>
-            <div className="flex items-center space-x-2">
-              <Input
+      {/* Modern Search and Filter */}
+      <Card className="bg-gradient-to-r from-white/90 to-blue-50/90 backdrop-blur-sm border border-white/20 shadow-xl">
+        <CardHeader className="pb-4">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg">
+                <DocumentTextIcon className="h-5 w-5 text-white" />
+              </div>
+              <div>
+                <CardTitle className="text-xl font-bold text-gray-800 flex items-center">
+                  All Pages
+                  <span className="ml-2 px-3 py-1 bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 text-sm font-semibold rounded-full">
+                    {filteredPages.length}
+                  </span>
+                </CardTitle>
+                <p className="text-sm text-gray-600 mt-1">Manage and organize your website pages</p>
+              </div>
+            </div>
+            
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
+                </div>
+                <input
+                  type="text"
                 placeholder="Search pages..."
                 value={searchTerm}
                 onChange={(e) => {
                   setSearchTerm(e.target.value);
-                  setCurrentPage(1); // Reset to first page when searching
-                }}
-                icon={<MagnifyingGlassIcon className="h-4 w-4" />}
-                className="w-64"
-              />
-              <Button variant="outline" onClick={fetchPages} className="hover:bg-blue-50 hover:border-blue-300">
-                <ArrowPathIcon className="h-4 w-4" />
-              </Button>
+                    setCurrentPage(1);
+                  }}
+                  className="block w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl bg-white/80 backdrop-blur-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 placeholder-gray-500 text-sm font-medium"
+                />
+              </div>
+              
+              <button
+                onClick={fetchPages}
+                className="group px-4 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white rounded-xl font-semibold text-sm transition-all duration-200 hover:shadow-lg hover:scale-105 flex items-center justify-center space-x-2"
+                title="Refresh Pages"
+              >
+                <ArrowPathIcon className="h-4 w-4 group-hover:rotate-180 transition-transform duration-500" />
+                <span>Refresh</span>
+              </button>
             </div>
           </div>
         </CardHeader>
 
         <CardContent>
           {paginatedPages.length === 0 ? (
-            <div className="text-center py-12">
-              <DocumentTextIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-800 mb-2">
-                No pages found
-              </h3>
-              <p className="text-gray-600 mb-4">
-                {searchTerm
-                  ? "Try adjusting your search criteria"
-                  : "Get started by creating your first page"}
-              </p>
-              {!searchTerm && (
-                <Button onClick={() => setShowCreateModal(true)} className="bg-blue-600 hover:bg-blue-700 text-white">
-                  <PlusIcon className="h-4 w-4 mr-2" />
-                  Create First Page
-                </Button>
+            <div className="text-center py-16">
+              <div className="relative mx-auto w-24 h-24 mb-6">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-2xl transform rotate-6"></div>
+                <div className="relative w-full h-full bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-xl">
+                  <DocumentTextIcon className="h-12 w-12 text-white" />
+                </div>
+                </div>
+                
+              <h3 className="text-2xl font-bold text-gray-800 mb-3">
+                  {searchTerm ? "No pages found" : "No pages yet"}
+                </h3>
+              <p className="text-gray-600 mb-8 max-w-md mx-auto">
+                  {searchTerm
+                  ? "Try adjusting your search criteria or create a new page with different content"
+                  : "Get started by creating your first page to manage your website content"}
+                </p>
+                
+                {!searchTerm && (
+                <div className="flex flex-col sm:flex-row items-center justify-center space-y-3 sm:space-y-0 sm:space-x-4">
+                  <button
+                    onClick={() => setShowCreateModal(true)}
+                    className="group px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white rounded-xl font-semibold transition-all duration-200 hover:shadow-lg hover:scale-105 flex items-center space-x-2"
+                  >
+                    <PlusIcon className="h-5 w-5 group-hover:rotate-90 transition-transform duration-300" />
+                    <span>Create First Page</span>
+                  </button>
+                  
+                  <button
+                    onClick={() => navigate("/admin/pages/enhanced-create")}
+                    className="px-6 py-3 bg-white/80 hover:bg-white border border-gray-200 hover:border-blue-300 text-gray-700 hover:text-blue-600 rounded-xl font-semibold transition-all duration-200 hover:shadow-md flex items-center space-x-2"
+                  >
+                    <DocumentTextIcon className="h-5 w-5" />
+                    <span>Enhanced Builder</span>
+                  </button>
+                </div>
               )}
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gradient-to-r from-blue-50 to-cyan-50">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                      Page
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                      Status
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                      Size
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                      Last Modified
-                    </th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+            <div className="relative">
+              {/* Modern Table Container with Glassmorphism */}
+              <div className="relative overflow-hidden rounded-2xl bg-white/80 backdrop-blur-xl border border-white/20 shadow-2xl">
+                    {/* Sticky Header */}
+                <div className="sticky top-0 z-10 bg-gradient-to-r from-slate-50/95 to-blue-50/95 backdrop-blur-md border-b border-gray-200/50">
+                  <div className="px-6 py-4">
+                    {/* Desktop Header */}
+                    <div className="hidden lg:grid grid-cols-12 gap-4 items-center">
+                      <div className="col-span-4">
+                        <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wider flex items-center">
+                          <DocumentTextIcon className="h-4 w-4 mr-2 text-blue-600" />
+                          Page Details
+                        </h3>
+                          </div>
+                      <div className="col-span-2">
+                        <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wider flex items-center">
+                          <CheckCircleIcon className="h-4 w-4 mr-2 text-green-600" />
+                          Status
+                        </h3>
+                          </div>
+                      <div className="col-span-2">
+                        <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wider flex items-center">
+                          <CalendarIcon className="h-4 w-4 mr-2 text-purple-600" />
+                          Size
+                        </h3>
+                          </div>
+                      <div className="col-span-2">
+                        <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wider flex items-center">
+                          <CalendarIcon className="h-4 w-4 mr-2 text-orange-600" />
+                          Modified
+                        </h3>
+                          </div>
+                      <div className="col-span-2 text-right">
+                        <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wider flex items-center justify-end">
+                          <PencilIcon className="h-4 w-4 mr-2 text-indigo-600" />
+                          Actions
+                        </h3>
+                          </div>
+                    </div>
+                    
+                    {/* Mobile Header */}
+                    <div className="lg:hidden">
+                      <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wider flex items-center">
+                        <DocumentTextIcon className="h-4 w-4 mr-2 text-blue-600" />
+                        Pages ({filteredPages.length})
+                      </h3>
+                    </div>
+                  </div>
+                </div>
+                    
+                    {/* Table Body */}
+                <div className="divide-y divide-gray-100/50">
                   <AnimatePresence>
                     {paginatedPages.map((page, index) => (
-                      <motion.tr
+                      <motion.div
                         key={page.name}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="hover:bg-blue-50"
-                      >
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="flex items-center">
-                            <DocumentTextIcon className="h-5 w-5 text-blue-500 mr-3" />
-                            <div>
-                              <div className="text-sm font-medium text-gray-800">
+                            transition={{ delay: index * 0.05 }}
+                        className={`group px-6 py-5 transition-all duration-300 hover:bg-gradient-to-r hover:from-blue-50/50 hover:to-indigo-50/50 ${
+                          index % 2 === 0 ? 'bg-white/40' : 'bg-gray-50/30'
+                            }`}
+                          >
+                        {/* Desktop Layout */}
+                        <div className="hidden lg:grid grid-cols-12 gap-4 items-center">
+                            {/* Page Details */}
+                          <div className="col-span-4">
+                              <div className="flex items-center space-x-4">
+                                <div className="relative">
+                                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
+                                  <DocumentTextIcon className="h-5 w-5 text-white" />
+                                  </div>
+                                {page.hasData && (
+                                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white shadow-sm"></div>
+                                )}
+                                </div>
+                                <div className="min-w-0 flex-1">
+                                <h4 className="text-sm font-semibold text-gray-900 truncate group-hover:text-blue-700 transition-colors">
                                 {page.name}
-                              </div>
-                              <div className="text-sm text-gray-600">
+                                </h4>
+                                <p className="text-xs text-gray-500 truncate">
                                 {page.filename}
-                              </div>
-                              {page.dataPreview &&
-                                page.dataPreview.length > 0 && (
-                                  <div className="text-xs text-gray-500 mt-1">
-                                    Fields: {page.dataPreview.join(", ")}
+                                </p>
+                                  {page.dataPreview && page.dataPreview.length > 0 && (
+                                  <div className="flex flex-wrap gap-1 mt-1">
+                                    {page.dataPreview.slice(0, 2).map((field, idx) => (
+                                        <span
+                                          key={idx}
+                                        className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
+                                        >
+                                          {field}
+                                        </span>
+                                      ))}
+                                    {page.dataPreview.length > 2 && (
+                                      <span className="text-xs text-gray-400">
+                                        +{page.dataPreview.length - 2} more
+                                        </span>
+                                      )}
                                   </div>
                                 )}
                             </div>
                           </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          {page.hasData ? (
-                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                              <CheckCircleIcon className="h-3 w-3 mr-1" />
-                              Active
-                            </span>
-                          ) : (
-                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
-                              <ExclamationTriangleIcon className="h-3 w-3 mr-1" />
-                              Empty
-                            </span>
-                          )}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                          {formatFileSize(page.size)}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                          {formatDate(page.lastModified)}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                          <div className="flex items-center justify-end space-x-2">
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => handleView(page)}
-                              className="hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600"
-                            >
-                              <EyeIcon className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => handleEdit(page)}
-                              className="hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600"
-                            >
-                              <PencilIcon className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => handleDelete(page)}
-                              className="text-red-600 hover:text-red-700 border-red-200 hover:border-red-300 hover:bg-red-50"
-                            >
-                              <TrashIcon className="h-4 w-4" />
-                            </Button>
                           </div>
-                        </td>
-                      </motion.tr>
+                            
+                            {/* Status */}
+                          <div className="col-span-2">
+                              <div className="flex items-center">
+                          {page.hasData ? (
+                                <div className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 border border-green-200 shadow-sm">
+                                  <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
+                              Active
+                                  </div>
+                          ) : (
+                                <div className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r from-gray-100 to-slate-100 text-gray-700 border border-gray-200 shadow-sm">
+                                  <div className="w-2 h-2 bg-gray-400 rounded-full mr-2"></div>
+                              Empty
+                                  </div>
+                          )}
+                              </div>
+                          </div>
+                            
+                            {/* Size */}
+                          <div className="col-span-2">
+                              <div className="flex items-center space-x-2">
+                              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center">
+                                  <DocumentTextIcon className="h-4 w-4 text-purple-600" />
+                                </div>
+                              <span className="text-sm font-medium text-gray-700">
+                          {formatFileSize(page.size)}
+                                </span>
+                              </div>
+                          </div>
+                            
+                            {/* Last Modified */}
+                          <div className="col-span-2">
+                              <div className="flex items-center space-x-2">
+                              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center">
+                                  <CalendarIcon className="h-4 w-4 text-orange-600" />
+                                </div>
+                              <span className="text-sm font-medium text-gray-700">
+                          {formatDate(page.lastModified)}
+                                </span>
+                              </div>
+                          </div>
+                            
+                            {/* Actions */}
+                          <div className="col-span-2">
+                            <div className="flex items-center justify-end space-x-2">
+                              <button
+                              onClick={() => handleView(page)}
+                                className="group/btn p-2 rounded-lg bg-gradient-to-br from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 text-blue-600 hover:text-blue-700 border border-blue-200 hover:border-blue-300 transition-all duration-200 hover:shadow-md hover:scale-105"
+                                  title="View Page"
+                                >
+                                <EyeIcon className="h-4 w-4" />
+                              </button>
+                              <button
+                              onClick={() => handleEdit(page)}
+                                className="group/btn p-2 rounded-lg bg-gradient-to-br from-indigo-50 to-indigo-100 hover:from-indigo-100 hover:to-indigo-200 text-indigo-600 hover:text-indigo-700 border border-indigo-200 hover:border-indigo-300 transition-all duration-200 hover:shadow-md hover:scale-105"
+                                  title="Edit Page"
+                                >
+                                <PencilIcon className="h-4 w-4" />
+                              </button>
+                              <button
+                                onClick={() => handleDelete(page)}
+                                className="group/btn p-2 rounded-lg bg-gradient-to-br from-red-50 to-red-100 hover:from-red-100 hover:to-red-200 text-red-600 hover:text-red-700 border border-red-200 hover:border-red-300 transition-all duration-200 hover:shadow-md hover:scale-105"
+                                title="Delete Page"
+                              >
+                                <TrashIcon className="h-4 w-4" />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Mobile Layout */}
+                        <div className="lg:hidden space-y-4">
+                          {/* Header with Icon and Actions */}
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center space-x-3">
+                              <div className="relative">
+                                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg">
+                                  <DocumentTextIcon className="h-6 w-6 text-white" />
+                                </div>
+                                {page.hasData && (
+                                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white shadow-sm"></div>
+                                )}
+                              </div>
+                              <div>
+                                <h4 className="text-base font-semibold text-gray-900">
+                                  {page.name}
+                                </h4>
+                                <p className="text-sm text-gray-500">
+                                  {page.filename}
+                                </p>
+                              </div>
+                            </div>
+                            
+                            <div className="flex items-center space-x-2">
+                              <button
+                                onClick={() => handleView(page)}
+                                className="p-2 rounded-lg bg-gradient-to-br from-blue-50 to-blue-100 text-blue-600 border border-blue-200 transition-all duration-200 hover:shadow-md"
+                                title="View Page"
+                              >
+                                <EyeIcon className="h-4 w-4" />
+                              </button>
+                              <button
+                                onClick={() => handleEdit(page)}
+                                className="p-2 rounded-lg bg-gradient-to-br from-indigo-50 to-indigo-100 text-indigo-600 border border-indigo-200 transition-all duration-200 hover:shadow-md"
+                                title="Edit Page"
+                              >
+                                <PencilIcon className="h-4 w-4" />
+                              </button>
+                              <button
+                              onClick={() => handleDelete(page)}
+                                className="p-2 rounded-lg bg-gradient-to-br from-red-50 to-red-100 text-red-600 border border-red-200 transition-all duration-200 hover:shadow-md"
+                                  title="Delete Page"
+                            >
+                                <TrashIcon className="h-4 w-4" />
+                              </button>
+                          </div>
+                          </div>
+
+                          {/* Status and Metadata */}
+                          <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                              <div className="flex items-center">
+                                {page.hasData ? (
+                                  <div className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 border border-green-200 shadow-sm">
+                                    <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
+                                    Active
+                                  </div>
+                                ) : (
+                                  <div className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r from-gray-100 to-slate-100 text-gray-700 border border-gray-200 shadow-sm">
+                                    <div className="w-2 h-2 bg-gray-400 rounded-full mr-2"></div>
+                                    Empty
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                            
+                            <div className="space-y-2">
+                              <div className="flex items-center space-x-2">
+                                <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center">
+                                  <DocumentTextIcon className="h-3 w-3 text-purple-600" />
+                                </div>
+                                <span className="text-sm font-medium text-gray-700">
+                                  {formatFileSize(page.size)}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Data Preview */}
+                          {page.dataPreview && page.dataPreview.length > 0 && (
+                            <div className="space-y-2">
+                              <h5 className="text-xs font-semibold text-gray-600 uppercase tracking-wider">Fields</h5>
+                              <div className="flex flex-wrap gap-1">
+                                {page.dataPreview.map((field, idx) => (
+                                  <span
+                                    key={idx}
+                                    className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
+                                  >
+                                    {field}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Last Modified */}
+                          <div className="flex items-center space-x-2 pt-2 border-t border-gray-100">
+                            <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center">
+                              <CalendarIcon className="h-3 w-3 text-orange-600" />
+                            </div>
+                            <span className="text-sm text-gray-600">
+                              Modified: {formatDate(page.lastModified)}
+                            </span>
+                          </div>
+                        </div>
+                      </motion.div>
                     ))}
                   </AnimatePresence>
-                </tbody>
-              </table>
+                </div>
+              </div>
             </div>
           )}
 
-          {/* Pagination */}
+          {/* Modern Pagination */}
           {totalPages > 1 && (
-            <div className="flex items-center justify-between mt-6 p-4 bg-gray-50 rounded-lg">
-              <div className="text-sm text-gray-700">
-                Showing {startIndex + 1} to{" "}
-                {Math.min(startIndex + ITEMS_PER_PAGE, filteredPages.length)} of{" "}
-                {filteredPages.length} results
-              </div>
-              <div className="flex items-center space-x-2">
-                <Button
-                  variant="outline"
-                  size="sm"
+            <div className="mt-8">
+              <div className="flex items-center justify-between p-6 bg-gradient-to-r from-white/80 to-blue-50/80 backdrop-blur-sm rounded-2xl border border-white/20 shadow-lg">
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                  <span className="text-sm font-medium text-gray-700">
+                    Showing <span className="font-semibold text-blue-600">{startIndex + 1}</span> to{" "}
+                    <span className="font-semibold text-blue-600">
+                        {Math.min(startIndex + ITEMS_PER_PAGE, filteredPages.length)}
+                    </span>{" "}
+                    of <span className="font-semibold text-gray-800">{filteredPages.length}</span> results
+                  </span>
+                    </div>
+                  <div className="flex items-center space-x-3">
+                  <button
                   onClick={() => setCurrentPage(currentPage - 1)}
                   disabled={currentPage === 1}
-                  className="hover:bg-blue-50 hover:border-blue-300"
-                >
-                  <ChevronLeftIcon className="h-4 w-4" />
-                </Button>
-                <span className="text-sm text-gray-700 px-3 py-1 bg-blue-50 rounded-md">
-                  Page {currentPage} of {totalPages}
-                </span>
-                <Button
-                  variant="outline"
-                  size="sm"
+                    className="group p-2 rounded-xl bg-white/60 hover:bg-white/80 border border-gray-200 hover:border-blue-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 hover:shadow-md hover:scale-105"
+                    title="Previous Page"
+                  >
+                    <ChevronLeftIcon className="h-4 w-4 text-gray-600 group-hover:text-blue-600" />
+                  </button>
+                  
+                  <div className="flex items-center space-x-1">
+                    {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                      let pageNum;
+                      if (totalPages <= 5) {
+                        pageNum = i + 1;
+                      } else if (currentPage <= 3) {
+                        pageNum = i + 1;
+                      } else if (currentPage >= totalPages - 2) {
+                        pageNum = totalPages - 4 + i;
+                      } else {
+                        pageNum = currentPage - 2 + i;
+                      }
+                      
+                      return (
+                        <button
+                          key={pageNum}
+                          onClick={() => setCurrentPage(pageNum)}
+                          className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
+                            currentPage === pageNum
+                              ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg'
+                              : 'bg-white/60 hover:bg-white/80 text-gray-700 hover:text-blue-600 border border-gray-200 hover:border-blue-300'
+                          }`}
+                        >
+                          {pageNum}
+                        </button>
+                      );
+                    })}
+                    </div>
+                    
+                  <button
                   onClick={() => setCurrentPage(currentPage + 1)}
                   disabled={currentPage === totalPages}
-                  className="hover:bg-blue-50 hover:border-blue-300"
-                >
-                  <ChevronRightIcon className="h-4 w-4" />
-                </Button>
+                    className="group p-2 rounded-xl bg-white/60 hover:bg-white/80 border border-gray-200 hover:border-blue-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 hover:shadow-md hover:scale-105"
+                    title="Next Page"
+                  >
+                    <ChevronRightIcon className="h-4 w-4 text-gray-600 group-hover:text-blue-600" />
+                  </button>
+                </div>
               </div>
             </div>
           )}
@@ -541,7 +799,7 @@ const PagesManagement = () => {
   );
 };
 
-// View Page Modal Component
+// Enhanced View Page Modal Component
 const ViewPageModal = ({ isOpen, onClose, page }) => {
   if (!page) return null;
 
@@ -549,50 +807,90 @@ const ViewPageModal = ({ isOpen, onClose, page }) => {
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title={`View Page: ${page.name}`}
-      size="lg"
+      title=""
+      size="xl"
     >
-      <div className="space-y-4">
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Page Name
-            </label>
-            <p className="mt-1 text-sm text-gray-900 dark:text-white">
-              {page.name}
-            </p>
+      {/* Modern Modal Header */}
+      <div className="relative bg-gradient-to-r from-blue-50/90 to-indigo-50/90 backdrop-blur-sm border-b border-gray-200/50 px-6 py-4">
+        <div className="flex items-center space-x-4">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg">
+            <EyeIcon className="h-6 w-6 text-white" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Filename
-            </label>
-            <p className="mt-1 text-sm text-gray-900 dark:text-white">
-              {page.filename}
-            </p>
+            <h2 className="text-xl font-bold text-gray-800">View Page</h2>
+            <p className="text-sm text-gray-600">{page.name}</p>
+          </div>
           </div>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            JSON Data
-          </label>
-          <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 max-h-96 overflow-auto">
-            <pre className="text-sm text-gray-800 dark:text-gray-200">
+      {/* Modal Content */}
+      <div className="p-6 bg-gradient-to-br from-white/80 to-blue-50/30 backdrop-blur-sm">
+        <div className="space-y-6">
+          {/* Page Info Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-white/60 backdrop-blur-sm rounded-xl border border-white/20 shadow-lg p-6">
+              <div className="flex items-center space-x-3 mb-3">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
+                  <DocumentTextIcon className="h-4 w-4 text-blue-600" />
+                </div>
+                <h3 className="text-sm font-semibold text-gray-700">Page Name</h3>
+              </div>
+              <p className="text-lg font-medium text-gray-800">{page.name}</p>
+            </div>
+            
+            <div className="bg-white/60 backdrop-blur-sm rounded-xl border border-white/20 shadow-lg p-6">
+              <div className="flex items-center space-x-3 mb-3">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center">
+                  <DocumentTextIcon className="h-4 w-4 text-green-600" />
+                </div>
+                <h3 className="text-sm font-semibold text-gray-700">Filename</h3>
+              </div>
+              <p className="text-lg font-medium text-gray-800">{page.filename}</p>
+            </div>
+          </div>
+
+          {/* JSON Data Viewer */}
+          <div className="bg-white/60 backdrop-blur-sm rounded-xl border border-white/20 shadow-lg">
+            <div className="p-4 border-b border-gray-200/50">
+              <h3 className="text-sm font-semibold text-gray-700 flex items-center">
+                <DocumentTextIcon className="h-4 w-4 mr-2 text-blue-600" />
+                JSON Data Structure
+              </h3>
+              <p className="text-xs text-gray-500 mt-1">Complete data structure for this page</p>
+            </div>
+            <div className="p-4">
+              <div className="bg-gradient-to-r from-gray-50/80 to-blue-50/80 backdrop-blur-sm rounded-lg border border-gray-200/50 p-4 max-h-96 overflow-auto">
+                <pre className="text-sm text-gray-800 font-mono leading-relaxed">
               {JSON.stringify(page.data, null, 2)}
             </pre>
           </div>
         </div>
       </div>
-      <ModalFooter>
-        <Button variant="outline" onClick={onClose}>
-          Close
-        </Button>
-      </ModalFooter>
+        </div>
+      </div>
+
+      {/* Modern Modal Footer */}
+      <div className="bg-gradient-to-r from-gray-50/90 to-blue-50/90 backdrop-blur-sm border-t border-gray-200/50 px-6 py-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+            <span className="text-sm text-gray-600">Read-only view</span>
+          </div>
+          
+          <button
+            onClick={onClose}
+            className="px-6 py-2 bg-white/80 hover:bg-white border border-gray-200 hover:border-gray-300 text-gray-700 hover:text-gray-800 rounded-xl font-semibold text-sm transition-all duration-200 hover:shadow-md flex items-center space-x-2"
+          >
+            <EyeIcon className="h-4 w-4" />
+            <span>Close</span>
+          </button>
+        </div>
+      </div>
     </Modal>
   );
 };
 
-// Dynamic Form Builder for JSON data
+// Enhanced Dynamic Form Builder for JSON data
 const buildFormFields = (data, onChange, prefix = "") => {
   const fields = [];
 
@@ -601,80 +899,107 @@ const buildFormFields = (data, onChange, prefix = "") => {
 
     if (value === null || value === undefined) {
       fields.push(
-        <div key={fieldKey}>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+        <div key={fieldKey} className="group">
+          <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center">
+            <div className="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
             {key}
+            <span className="ml-2 text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">null</span>
           </label>
-          <Input
+          <input
+            type="text"
             value=""
             onChange={(e) => onChange(fieldKey, e.target.value)}
             placeholder="Enter value"
+            className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/80 backdrop-blur-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 placeholder-gray-400"
           />
         </div>
       );
     } else if (typeof value === "boolean") {
       fields.push(
-        <div key={fieldKey} className="flex items-center">
+        <div key={fieldKey} className="group">
+          <div className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50/80 to-blue-50/80 backdrop-blur-sm rounded-xl border border-gray-200/50 hover:border-blue-300 transition-all duration-200">
+            <div className="flex items-center space-x-3">
+              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+              <label className="text-sm font-semibold text-gray-700">
+                {key}
+              </label>
+              <span className="text-xs text-gray-500 bg-green-100 text-green-700 px-2 py-0.5 rounded-full">boolean</span>
+            </div>
+            <div className="relative">
           <input
             type="checkbox"
             checked={value}
             onChange={(e) => onChange(fieldKey, e.target.checked)}
-            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                className="w-5 h-5 text-blue-600 bg-white border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
           />
-          <label className="ml-2 text-sm font-medium text-gray-700 dark:text-gray-300">
-            {key}
-          </label>
+            </div>
+          </div>
         </div>
       );
     } else if (typeof value === "string") {
       if (value.length > 100) {
         fields.push(
-          <div key={fieldKey}>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <div key={fieldKey} className="group">
+            <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center">
+              <div className="w-2 h-2 bg-purple-500 rounded-full mr-2"></div>
               {key}
+              <span className="ml-2 text-xs text-gray-500 bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full">text</span>
             </label>
             <textarea
               value={value}
               onChange={(e) => onChange(fieldKey, e.target.value)}
               rows={4}
-              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/80 backdrop-blur-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-none"
+              placeholder="Enter text content..."
             />
           </div>
         );
       } else {
         fields.push(
-          <div key={fieldKey}>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <div key={fieldKey} className="group">
+            <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center">
+              <div className="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
               {key}
+              <span className="ml-2 text-xs text-gray-500 bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">string</span>
             </label>
-            <Input
+            <input
+              type="text"
               value={value}
               onChange={(e) => onChange(fieldKey, e.target.value)}
+              className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/80 backdrop-blur-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              placeholder="Enter value"
             />
           </div>
         );
       }
     } else if (typeof value === "number") {
       fields.push(
-        <div key={fieldKey}>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+        <div key={fieldKey} className="group">
+          <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center">
+            <div className="w-2 h-2 bg-orange-500 rounded-full mr-2"></div>
             {key}
+            <span className="ml-2 text-xs text-gray-500 bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full">number</span>
           </label>
-          <Input
+          <input
             type="number"
             value={value}
             onChange={(e) =>
               onChange(fieldKey, parseFloat(e.target.value) || 0)
             }
+            className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/80 backdrop-blur-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+            placeholder="Enter number"
           />
         </div>
       );
     } else if (Array.isArray(value)) {
       fields.push(
-        <div key={fieldKey}>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            {key} (Array)
+        <div key={fieldKey} className="group">
+          <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center">
+            <div className="w-2 h-2 bg-indigo-500 rounded-full mr-2"></div>
+            {key}
+            <span className="ml-2 text-xs text-gray-500 bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full">array</span>
           </label>
+          <div className="bg-gradient-to-r from-indigo-50/80 to-purple-50/80 backdrop-blur-sm rounded-xl border border-indigo-200/50 p-4">
           <textarea
             value={JSON.stringify(value, null, 2)}
             onChange={(e) => {
@@ -686,20 +1011,26 @@ const buildFormFields = (data, onChange, prefix = "") => {
               }
             }}
             rows={4}
-            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white font-mono text-sm"
+              className="w-full rounded-lg border border-gray-200 bg-white/80 backdrop-blur-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm p-3 resize-none"
+              placeholder="Enter JSON array..."
           />
+          </div>
         </div>
       );
     } else if (typeof value === "object") {
       fields.push(
         <div
           key={fieldKey}
-          className="border border-gray-200 dark:border-gray-700 rounded-lg p-4"
+          className="group bg-gradient-to-r from-gray-50/80 to-blue-50/80 backdrop-blur-sm rounded-xl border border-gray-200/50 p-6 hover:border-blue-300 transition-all duration-200"
         >
-          <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-3">
+          <div className="flex items-center space-x-3 mb-4">
+            <div className="w-3 h-3 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full"></div>
+            <h4 className="text-sm font-semibold text-gray-800">
             {key}
           </h4>
-          <div className="space-y-4">
+            <span className="text-xs text-gray-500 bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">object</span>
+          </div>
+          <div className="space-y-4 pl-4 border-l-2 border-blue-200/50">
             {buildFormFields(value, onChange, fieldKey)}
           </div>
         </div>
@@ -710,14 +1041,17 @@ const buildFormFields = (data, onChange, prefix = "") => {
   return fields;
 };
 
-// Edit Page Modal Component
+// Enhanced Edit Page Modal Component
 const EditPageModal = ({ isOpen, onClose, page, onSave, showToast }) => {
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState('form');
+  const [jsonView, setJsonView] = useState('');
 
   useEffect(() => {
     if (page?.data) {
       setFormData(JSON.parse(JSON.stringify(page.data))); // Deep clone
+      setJsonView(JSON.stringify(page.data, null, 2));
     }
   }, [page]);
 
@@ -735,6 +1069,16 @@ const EditPageModal = ({ isOpen, onClose, page, onSave, showToast }) => {
       current[keys[keys.length - 1]] = value;
       return newData;
     });
+  };
+
+  const handleJsonChange = (value) => {
+    setJsonView(value);
+    try {
+      const parsed = JSON.parse(value);
+      setFormData(parsed);
+    } catch {
+      // Invalid JSON, don't update formData
+    }
   };
 
   const handleSave = async () => {
@@ -771,22 +1115,120 @@ const EditPageModal = ({ isOpen, onClose, page, onSave, showToast }) => {
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title={`Edit Page: ${page.name}`}
-      size="lg"
+      title=""
+      size="xl"
     >
+      {/* Modern Modal Header */}
+      <div className="relative bg-gradient-to-r from-blue-50/90 to-indigo-50/90 backdrop-blur-sm border-b border-gray-200/50 px-6 py-4">
+        <div className="flex items-center space-x-4">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg">
+            <PencilIcon className="h-6 w-6 text-white" />
+          </div>
+          <div>
+            <h2 className="text-xl font-bold text-gray-800">Edit Page</h2>
+            <p className="text-sm text-gray-600">{page.name}</p>
+          </div>
+        </div>
+        
+        {/* Tab Navigation */}
+        <div className="mt-4 flex space-x-1 bg-white/60 backdrop-blur-sm rounded-lg p-1 border border-gray-200/50">
+          <button
+            onClick={() => setActiveTab('form')}
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
+              activeTab === 'form'
+                ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg'
+                : 'text-gray-600 hover:text-blue-600 hover:bg-white/80'
+            }`}
+          >
+            <DocumentTextIcon className="h-4 w-4 inline mr-2" />
+            Form Editor
+          </button>
+          <button
+            onClick={() => setActiveTab('json')}
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
+              activeTab === 'json'
+                ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg'
+                : 'text-gray-600 hover:text-blue-600 hover:bg-white/80'
+            }`}
+          >
+            <DocumentTextIcon className="h-4 w-4 inline mr-2" />
+            JSON Editor
+          </button>
+        </div>
+      </div>
+
+      {/* Modal Content */}
+      <div className="p-6 bg-gradient-to-br from-white/80 to-blue-50/30 backdrop-blur-sm">
+        {activeTab === 'form' ? (
       <div className="space-y-6">
-        <div className="max-h-96 overflow-y-auto space-y-4">
+            <div className="bg-white/60 backdrop-blur-sm rounded-xl border border-white/20 shadow-lg p-6">
+              <div className="max-h-96 overflow-y-auto space-y-6">
           {buildFormFields(formData, handleFieldChange)}
         </div>
       </div>
-      <ModalFooter>
-        <Button variant="outline" onClick={onClose} disabled={loading}>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            <div className="bg-white/60 backdrop-blur-sm rounded-xl border border-white/20 shadow-lg">
+              <div className="p-4 border-b border-gray-200/50">
+                <h3 className="text-sm font-semibold text-gray-700 flex items-center">
+                  <DocumentTextIcon className="h-4 w-4 mr-2 text-blue-600" />
+                  JSON Data Editor
+                </h3>
+                <p className="text-xs text-gray-500 mt-1">Edit the raw JSON data for this page</p>
+              </div>
+              <div className="p-4">
+                <textarea
+                  value={jsonView}
+                  onChange={(e) => handleJsonChange(e.target.value)}
+                  rows={15}
+                  className="w-full rounded-lg border border-gray-200 bg-white/80 backdrop-blur-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm p-4 resize-none"
+                  placeholder="Enter JSON data..."
+                />
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Modern Modal Footer */}
+      <div className="bg-gradient-to-r from-gray-50/90 to-blue-50/90 backdrop-blur-sm border-t border-gray-200/50 px-6 py-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+            <span className="text-sm text-gray-600">
+              {activeTab === 'form' ? 'Form-based editing' : 'Raw JSON editing'}
+            </span>
+          </div>
+          
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={onClose}
+              disabled={loading}
+              className="px-6 py-2 bg-white/80 hover:bg-white border border-gray-200 hover:border-gray-300 text-gray-700 hover:text-gray-800 rounded-xl font-semibold text-sm transition-all duration-200 hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+            >
           Cancel
-        </Button>
-        <Button onClick={handleSave} loading={loading}>
-          {loading ? "Saving..." : "Save Changes"}
-        </Button>
-      </ModalFooter>
+            </button>
+            <button
+              onClick={handleSave}
+              disabled={loading}
+              className="group px-6 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white rounded-xl font-semibold text-sm transition-all duration-200 hover:shadow-lg hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+            >
+              {loading ? (
+                <>
+                  <ArrowPathIcon className="h-4 w-4 animate-spin" />
+                  <span>Saving...</span>
+                </>
+              ) : (
+                <>
+                  <CheckCircleIcon className="h-4 w-4 group-hover:scale-110 transition-transform duration-200" />
+                  <span>Save Changes</span>
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+      </div>
     </Modal>
   );
 };

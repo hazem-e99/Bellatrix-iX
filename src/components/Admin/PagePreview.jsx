@@ -31,13 +31,72 @@ const PagePreview = ({
     setError(null);
     
     try {
-      // For now, we'll create mock components to avoid import issues
-      const mockComponents = {};
+      const componentMap = {};
       
+      // Map componentType to actual component paths
+      const componentPaths = {
+        'HRHeroSection': () => import('../solution/hr/HeroSection'),
+        'HRModulesSection': () => import('../solution/hr/ModulesSection'),
+        'HRBenefitsSection': () => import('../solution/hr/BenefitsSection'),
+        'HRUseCasesSection': () => import('../solution/hr/UseCasesSection'),
+        'HRPricingSection': () => import('../solution/hr/PricingSection'),
+        'HRFAQSection': () => import('../solution/hr/FAQSection'),
+        'HRCTASection': () => import('../solution/hr/CTASection'),
+        'PayrollHeroSection': () => import('../solution/payroll/PayrollHero'),
+        'PayrollHowItWorksSection': () => import('../solution/payroll/PayrollHowItWorks'),
+        'PayrollWorkflowSection': () => import('../solution/payroll/PayrollWorkflow'),
+        'PayrollStepperSection': () => import('../solution/payroll/PayrollStepper'),
+        'PayrollPainPointsSection': () => import('../solution/payroll/PayrollPainPoints'),
+        'PayrollFAQSection': () => import('../solution/payroll/PayrollFAQ'),
+        'PayrollCTASection': () => import('../solution/payroll/PayrollCTA'),
+        'ServiceGrid': () => import('../Services/ServiceGrid'),
+        'ImplementationHeroSection': () => import('../Services/Implementation/HeroSection'),
+        'ImplementationProcessSection': () => import('../Services/Implementation/ProcessSection'),
+        'ImplementationWhyChooseSection': () => import('../Services/Implementation/WhyChooseSection'),
+        'ImplementationPricingSection': () => import('../Services/Implementation/PricingSection'),
+        'ImplementationCTASection': () => import('../Services/Implementation/CtaSection'),
+        'TrainingHeroSection': () => import('../Services/training/HeroSection'),
+        'TrainingProgramsSection': () => import('../Services/training/TrainingPrograms'),
+        'TrainingWhyChooseSection': () => import('../Services/training/WhyChooseSection'),
+        'AboutHeroSection': () => import('../About/AboutHero'),
+        'AboutMissionSection': () => import('../About/AboutMission'),
+        'AboutValuesSection': () => import('../About/AboutValues'),
+        'AboutTeamSection': () => import('../About/AboutTeam'),
+        'AboutJourneySection': () => import('../About/AboutJourney'),
+        'AboutMilestonesSection': () => import('../About/AboutMilestones'),
+        'AboutDifferentiatorsSection': () => import('../About/AboutDifferentiators'),
+        'AboutCTASection': () => import('../About/AboutCTA'),
+      };
+      
+      // Load all required components
       for (const component of pageData.components) {
-        mockComponents[component.componentType] = ({ ...props }) => {
-          const componentData = JSON.parse(component.contentJson);
-          return (
+        const componentImport = componentPaths[component.componentType];
+        if (componentImport) {
+          try {
+            const module = await componentImport();
+            componentMap[component.componentType] = module.default;
+          } catch (err) {
+            console.warn(`Failed to load component ${component.componentType}:`, err);
+            // Create fallback component
+            componentMap[component.componentType] = () => (
+              <div className="p-6 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800">
+                <div className="mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                    {component.componentName}
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Component Type: {component.componentType}
+                  </p>
+                  <p className="text-sm text-red-600 dark:text-red-400 mt-2">
+                    Component failed to load
+                  </p>
+                </div>
+              </div>
+            );
+          }
+        } else {
+          // Create fallback for unknown components
+          componentMap[component.componentType] = () => (
             <div className="p-6 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800">
               <div className="mb-4">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
@@ -46,26 +105,16 @@ const PagePreview = ({
                 <p className="text-sm text-gray-600 dark:text-gray-400">
                   Component Type: {component.componentType}
                 </p>
-              </div>
-              
-              <div className="space-y-3">
-                {Object.entries(componentData).map(([key, value]) => (
-                  <div key={key} className="text-sm">
-                    <span className="font-medium text-gray-700 dark:text-gray-300">
-                      {key.replace(/([A-Z])/g, ' $1').trim()}:
-                    </span>
-                    <span className="ml-2 text-gray-600 dark:text-gray-400">
-                      {typeof value === 'object' ? JSON.stringify(value) : String(value)}
-                    </span>
-                  </div>
-                ))}
+                <p className="text-sm text-yellow-600 dark:text-yellow-400 mt-2">
+                  Component path not found
+                </p>
               </div>
             </div>
           );
-        };
+        }
       }
       
-      setLoadedComponents(mockComponents);
+      setLoadedComponents(componentMap);
     } catch (error) {
       setError(error.message);
     } finally {
@@ -131,7 +180,15 @@ const PagePreview = ({
         {/* Component Content */}
         <div className="bg-white dark:bg-gray-900 border-l border-r border-b border-gray-200 dark:border-gray-700 rounded-b-lg">
           <div className="min-h-[200px]">
-            <Component />
+            {(() => {
+              try {
+                const componentProps = JSON.parse(component.contentJson || '{}');
+                return <Component {...componentProps} />;
+              } catch (err) {
+                console.warn(`Failed to parse contentJson for ${component.componentType}:`, err);
+                return <Component />;
+              }
+            })()}
           </div>
         </div>
       </motion.div>

@@ -367,6 +367,7 @@ const PageBuilder = ({ category, selectedPage, sections, onSectionsUpdate }) => 
       'HRPricingSection': 'solution/hr/PricingSection',
       'HRFAQSection': 'solution/hr/FAQSection',
       'HRCTASection': 'solution/hr/CTASection',
+      'ServiceGrid': 'Services/ServiceGrid',
       'ImplementationHeroSection': 'Services/Implementation/HeroSection',
       'ImplementationProcessSection': 'Services/Implementation/ProcessSection',
       'ImplementationWhyChooseSection': 'Services/Implementation/WhyChooseSection',
@@ -394,10 +395,12 @@ const PageBuilder = ({ category, selectedPage, sections, onSectionsUpdate }) => 
       case 'heroSection':
         return {
           data: {
-            backgroundVideo: sectionData.backgroundVideo || sectionData.bgVideo,
-            titleParts: sectionData.titleParts || [sectionData.title || 'Hero Section'],
-            description: sectionData.description || sectionData.subtitle || 'Hero description',
-            ctaButton: sectionData.ctaButton
+            hero: {
+              title: sectionData.title || 'Modern HR, Payroll & People Management',
+              subtitle: sectionData.subtitle || 'Automate HR, empower employees, and stay compliant—on one secure platform designed for the future of work.',
+              bgVideo: sectionData.bgVideo || sectionData.backgroundVideo || '/Videos/hrVideo.mp4',
+              bgColor: sectionData.bgColor || 'bg-gradient-to-br from-[#191970] via-black to-blue-700'
+            }
           }
         };
       case 'features':
@@ -495,9 +498,16 @@ const PageBuilder = ({ category, selectedPage, sections, onSectionsUpdate }) => 
         return {
           data: {
             title: sectionData.title || 'Ready for a Seamless NetSuite Implementation?',
-            subtitle: sectionData.subtitle || sectionData.description || 'Transform your business operations with our expert NetSuite implementation services. Let\'s turn your vision into reality with proven methodologies and dedicated support.',
-            ctaButton: sectionData.ctaButton || sectionData.button || 'Get Started Today',
-            features: sectionData.features || []
+            subtitle: sectionData.subtitle || sectionData.description || 'Take the next step',
+            ctaButton: sectionData.ctaButton
+          }
+        };
+      case 'serviceGrid':
+        return {
+          data: {
+            title: sectionData.title || 'Our Services',
+            subtitle: sectionData.subtitle || sectionData.description || 'Comprehensive NetSuite solutions to drive your business forward',
+            services: sectionData.services || []
           }
         };
       default:

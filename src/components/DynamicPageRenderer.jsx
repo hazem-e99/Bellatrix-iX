@@ -18,6 +18,7 @@ const getComponentPathFromId = (componentId) => {
     'HRPricingSection': 'solution/hr/PricingSection',
     'HRFAQSection': 'solution/hr/FAQSection',
     'HRCTASection': 'solution/hr/CTASection',
+    'ServiceGrid': 'Services/ServiceGrid',
     'ImplementationHeroSection': 'Services/Implementation/HeroSection',
     'ImplementationProcessSection': 'Services/Implementation/ProcessSection',
     'ImplementationWhyChooseSection': 'Services/Implementation/WhyChooseSection',
@@ -264,6 +265,14 @@ const DynamicPageRenderer = () => {
             title: props.title,
             description: props.subtitle,
             steps: props.steps
+          }
+        };
+      case 'ServiceGrid':
+        return {
+          data: {
+            title: props.title,
+            subtitle: props.subtitle || props.description,
+            services: props.services
           }
         };
       default:

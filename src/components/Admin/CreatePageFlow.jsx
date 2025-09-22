@@ -127,10 +127,25 @@ const CreatePageFlow = () => {
     try {
       setLoading(true);
       
+      // Transform sections to components format expected by server
+      const components = pageData.sections.map((section, index) => ({
+        componentType: section.componentId, // Use componentId as componentType
+        componentName: section.name || section.componentId,
+        contentJson: JSON.stringify(section.props || {}),
+        orderIndex: index
+      }));
+
       const pagePayload = {
-        ...pageData,
-        status,
-        updated_at: new Date().toISOString(),
+        name: pageData.title,
+        categoryId: 0,
+        slug: pageData.slug,
+        metaTitle: pageData.meta?.meta_title || pageData.title,
+        metaDescription: pageData.meta?.meta_description || "",
+        isHomepage: false,
+        isPublished: status === "published",
+        components: components,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
       };
 
       const response = await fetch("http://localhost:3001/api/pages", {

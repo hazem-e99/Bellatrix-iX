@@ -1,6 +1,54 @@
 import React from 'react';
 
-const PricingSection = ({ data }) => {
+const PricingSection = ({ data = {} }) => {
+  const defaultPricing = [
+    {
+      name: "Basic",
+      price: "$99",
+      period: "/month",
+      description: "Perfect for small businesses getting started",
+      features: [
+        "Up to 50 employees",
+        "Basic HR management",
+        "Payroll processing",
+        "Email support",
+        "Mobile app access"
+      ],
+      isPopular: false
+    },
+    {
+      name: "Professional",
+      price: "$199",
+      period: "/month", 
+      description: "Ideal for growing companies",
+      features: [
+        "Up to 200 employees",
+        "Advanced HR features",
+        "Time & attendance tracking",
+        "Performance management",
+        "Priority support",
+        "Custom reports"
+      ],
+      isPopular: true
+    },
+    {
+      name: "Enterprise",
+      price: "Custom",
+      period: "",
+      description: "For large organizations with complex needs",
+      features: [
+        "Unlimited employees",
+        "Full HR suite", 
+        "Advanced analytics",
+        "API access",
+        "Dedicated support",
+        "Custom integrations"
+      ],
+      isPopular: false
+    }
+  ];
+
+  const pricing = data.pricing || defaultPricing;
   return (
     <section className="py-12 relative" style={{ backgroundColor: '#001038' }}>
       <div className="absolute inset-0 bg-gradient-to-br from-blue-900/10 via-transparent to-blue-800/10 pointer-events-none"></div>
@@ -15,7 +63,7 @@ const PricingSection = ({ data }) => {
         </div>
         {/* Pricing Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {data.pricing.map((plan, index) => (
+          {pricing.map((plan, index) => (
             <div key={index} className={`bg-white/5 backdrop-blur-sm rounded-2xl p-8 border-2 ${plan.isPopular ? 'border-blue-400 hover:border-blue-600 transform scale-105' : 'border-white/10 hover:border-blue-300'} transition-all duration-300 relative`}>
               {plan.isPopular && (
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
@@ -23,15 +71,15 @@ const PricingSection = ({ data }) => {
                 </div>
               )}
               <div className="text-center">
-                <h3 className="text-2xl font-bold text-white mb-2">{plan.name}</h3>
-                <p className="text-gray-300 mb-6">{plan.description}</p>
+                <h3 className="text-2xl font-bold text-white mb-2">{plan.name || "Plan"}</h3>
+                <p className="text-gray-300 mb-6">{plan.description || "Plan description"}</p>
                 <div className="mb-6">
-                  <span className={`text-4xl font-bold ${plan.isPopular ? 'text-blue-400' : 'text-white'}`}>{plan.price}</span>
-                  <span className="text-gray-300 ml-2">{plan.priceNote}</span>
+                  <span className={`text-4xl font-bold ${plan.isPopular ? 'text-blue-400' : 'text-white'}`}>{plan.price || "$0"}</span>
+                  <span className="text-gray-300 ml-2">{plan.period || ""}</span>
                 </div>
               </div>
               <ul className="space-y-4 mb-8">
-                {plan.features.map((feature, i) => (
+                {(plan.features || []).map((feature, i) => (
                   <li key={i} className="flex items-center">
                     <svg className="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -41,7 +89,7 @@ const PricingSection = ({ data }) => {
                 ))}
               </ul>
               <button className={`w-full ${plan.isPopular ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-600 hover:bg-gray-700'} text-white py-3 rounded-lg font-semibold transition-all duration-300`}>
-                {plan.ctaText}
+                {plan.ctaText || "Get Started"}
               </button>
             </div>
           ))}

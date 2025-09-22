@@ -1,0 +1,26 @@
+{
+  "name": "nada",
+  "categoryId": 3,
+  "slug": "nada",
+  "metaTitle": "nada",
+  "metaDescription": "nada",
+  "isHomepage": true,
+  "isPublished": true,
+  "components": [
+    {
+      "componentType": "nada",
+      "componentName": "HR Hero Section",
+      "contentJson": "{\"titleParts\":[{\"0\":\"Nada\",\"1\":\"R\",\"2\":\" \",\"3\":\"M\",\"4\":\"a\",\"5\":\"n\",\"6\":\"a\",\"7\":\"g\",\"8\":\"e\",\"9\":\"m\",\"10\":\"e\",\"11\":\"n\",\"12\":\"t\",\"value\":\"HR ManagementA\"},\"Made Simple\"],\"description\":\"Streamline your human resources with our comprehensive HR solutions\",\"ctaButton\":{\"text\":\"Learn More Naddda\",\"link\":\"/hr\",\"variant\":\"primary\"},\"backgroundVideo\":\"/Videos/hrVideo.mp4\"}",
+      "orderIndex": 0
+    },
+    {
+      "componentType": "PayrollHeroSection",
+      "componentName": "Payroll Hero Section",
+      "contentJson": "{\"title\":\"Automated Payroll Solutions\",\"subtitle\":\"Simplify payroll processing with our advanced system\",\"description\":\"Reduce errors and save time with automated payroll management\",\"ctaButton\":{\"text\":\"Get Started\",\"link\":\"/payroll\",\"variant\":\"primary\"},\"backgroundImage\":\"/images/payrollHeroSection.jpg\"}",
+      "orderIndex": 1
+    }
+  ],
+  "createdAt": "2025-09-22T02:08:06.445Z",
+  "updatedAt": "2025-09-22T02:08:06.445Z",
+  "lastModified": "2025-09-22T02:10:39.323Z"
+}

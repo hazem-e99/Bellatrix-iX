@@ -1,6 +1,14 @@
 import React from 'react';
 
-const HeroSection = ({ data }) => {
+const HeroSection = ({ data = {} }) => {
+  // Default hero data in case data or data.hero is undefined
+  const heroData = data.hero || {
+    title: "Modern HR, Payroll & People Management",
+    subtitle: "Automate HR, empower employees, and stay compliant—on one secure platform designed for the future of work.",
+    bgVideo: "/Videos/hrVideo.mp4",
+    bgColor: "bg-gradient-to-br from-[#191970] via-black to-blue-700"
+  };
+
   return (
     <section className="w-full min-h-screen bg-gradient-to-br from-[#191970] via-black to-blue-700 py-24 md:py-32 text-center flex flex-col items-center justify-center relative overflow-hidden">
       {/* Background Video */}
@@ -24,7 +32,7 @@ const HeroSection = ({ data }) => {
             WebkitUserSelect: 'none'
           }}
         >
-          <source src={data.hero.bgVideo} type="video/mp4" />
+          <source src={heroData.bgVideo} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       </div>
@@ -32,8 +40,8 @@ const HeroSection = ({ data }) => {
       <div className="absolute inset-0 bg-black/40 z-0"></div>
       <div className="max-w-3xl mx-auto px-4 relative z-10 animate-fade-in-up">
         <div className="accent-bar mx-auto mb-4" aria-hidden="true"></div>
-        <h1 className="text-5xl md:text-6xl font-extrabold text-white mb-4 tracking-tight drop-shadow-2xl">{data.hero.title}</h1>
-        <p className="text-xl md:text-2xl text-white mb-8 drop-shadow-lg">{data.hero.subtitle}</p>
+        <h1 className="text-5xl md:text-6xl font-extrabold text-white mb-4 tracking-tight drop-shadow-2xl">{heroData.title}</h1>
+        <p className="text-xl md:text-2xl text-white mb-8 drop-shadow-lg">{heroData.subtitle}</p>
       </div>
     </section>
   );

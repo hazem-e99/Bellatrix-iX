@@ -1,7 +1,33 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const AboutValues = ({ values }) => (
+const AboutValues = ({ values = [] }) => {
+  const defaultValues = [
+    {
+      icon: "🎯",
+      title: "Excellence",
+      description: "We strive for excellence in everything we do, delivering high-quality solutions that exceed expectations."
+    },
+    {
+      icon: "🤝",
+      title: "Integrity",
+      description: "We conduct business with honesty, transparency, and ethical practices in all our relationships."
+    },
+    {
+      icon: "💡",
+      title: "Innovation",
+      description: "We embrace new technologies and creative approaches to solve complex business challenges."
+    },
+    {
+      icon: "⭐",
+      title: "Customer Focus",
+      description: "We put our customers at the center of everything we do, ensuring their success is our success."
+    }
+  ];
+
+  const displayValues = values.length > 0 ? values : defaultValues;
+
+  return (
   <section className="py-20 relative overflow-hidden" style={{backgroundColor: '#001038'}}>
     <div className="absolute inset-0 opacity-10">
       <div className="absolute top-0 left-0 w-full h-full">
@@ -24,7 +50,7 @@ const AboutValues = ({ values }) => (
         </p>
       </div>
       <div className="grid md:grid-cols-2 gap-8">
-        {values.map((value, index) => (
+        {displayValues.map((value, index) => (
           <motion.div
             key={index}
             initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
@@ -32,16 +58,18 @@ const AboutValues = ({ values }) => (
             transition={{ delay: index * 0.1 }}
             className="group relative p-8 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 hover:bg-white/10 transition-all duration-300"
           >
-            <div className={`absolute inset-0 bg-gradient-to-r ${value.color} opacity-0 group-hover:opacity-5 rounded-2xl transition-opacity duration-300`}></div>
+            <div className={`absolute inset-0 bg-gradient-to-r ${value.color || 'from-blue-500 to-purple-500'} opacity-0 group-hover:opacity-5 rounded-2xl transition-opacity duration-300`}></div>
             <div className="relative">
-              <h3 className="text-2xl font-bold text-white mb-4">{value.title}</h3>
-              <p className="text-gray-300 leading-relaxed text-lg">{value.description}</p>
+              <div className="text-4xl mb-4">{value.icon || "⭐"}</div>
+              <h3 className="text-2xl font-bold text-white mb-4">{value.title || "Value"}</h3>
+              <p className="text-gray-300 leading-relaxed text-lg">{value.description || "A core value that guides our work."}</p>
             </div>
           </motion.div>
         ))}
       </div>
     </div>
   </section>
-);
+  );
+};
 
 export default AboutValues; 

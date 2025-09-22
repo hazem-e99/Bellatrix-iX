@@ -1,6 +1,26 @@
 import React from 'react';
 
-const UseCasesSection = ({ data }) => {
+const UseCasesSection = ({ data = {} }) => {
+  const defaultUseCases = [
+    {
+      title: "Small Businesses",
+      desc: "Streamline HR processes for growing teams with automated workflows and compliance tracking."
+    },
+    {
+      title: "Medium Enterprises",
+      desc: "Scale your HR operations with advanced analytics and performance management tools."
+    },
+    {
+      title: "Large Corporations",
+      desc: "Enterprise-grade solutions for complex organizational structures and global operations."
+    },
+    {
+      title: "Remote Teams",
+      desc: "Manage distributed workforce with cloud-based tools and mobile accessibility."
+    }
+  ];
+
+  const useCases = data.useCases || defaultUseCases;
   return (
     <section className="py-20 bg-gray-50 animate-fade-in-up light-section">
       <div className="max-w-6xl mx-auto px-4">
@@ -9,14 +29,14 @@ const UseCasesSection = ({ data }) => {
         </h2>
         <div className="mx-auto mb-10 w-16 h-1 bg-blue-600 rounded-full"></div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-          {data.useCases.map((u, idx) => (
+          {useCases.map((u, idx) => (
             <div
               key={idx}
               className="bg-white rounded-3xl shadow p-10 flex flex-col items-center text-center border border-gray-200 animate-fade-in-up transition-transform duration-500 hover:scale-105 hover:-rotate-1 hover:shadow-blue-200/40 hover:shadow-2xl cursor-pointer"
               style={{ willChange: 'transform' }}
             >
-              <div className="font-bold text-xl text-blue-800 mb-3">{u.title}</div>
-              <div className="text-gray-600 text-base">{u.desc}</div>
+              <div className="font-bold text-xl text-blue-800 mb-3">{u.title || "Use Case"}</div>
+              <div className="text-gray-600 text-base">{u.desc || "Use case description"}</div>
             </div>
           ))}
         </div>
