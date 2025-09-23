@@ -22,23 +22,25 @@ import Modal, { ModalFooter } from "../ui/Modal";
 import Toast from "../ui/Toast";
 import SectionDataEditor from "./SectionDataEditor";
 import PagePreview from "./PagePreview";
+import MediaInputDetector from "../ui/MediaInputDetector";
+import pagesAPI from "../../lib/pagesAPI";
 
 const EnhancedPageBuilder = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState(null);
-  
+
   // Page data
   const [pageData, setPageData] = useState({
     name: "",
-    categoryId: 0,
+    categoryId: 1, // Changed default to 1 instead of 0
     slug: "",
     metaTitle: "",
     metaDescription: "",
     isHomepage: false,
     isPublished: false,
-    components: []
+    components: [],
   });
 
   // Available components library
@@ -51,7 +53,7 @@ const EnhancedPageBuilder = () => {
       icon: "🎯",
       componentType: "HeroSection",
       componentName: "Hero Section",
-      category: "layout"
+      category: "layout",
     },
     {
       id: "hr-hero-section",
@@ -60,7 +62,7 @@ const EnhancedPageBuilder = () => {
       icon: "👥",
       componentType: "HRHeroSection",
       componentName: "HR Hero Section",
-      category: "layout"
+      category: "layout",
     },
     {
       id: "payroll-hero-section",
@@ -69,7 +71,7 @@ const EnhancedPageBuilder = () => {
       icon: "💰",
       componentType: "PayrollHeroSection",
       componentName: "Payroll Hero Section",
-      category: "layout"
+      category: "layout",
     },
 
     // Content Sections
@@ -80,7 +82,7 @@ const EnhancedPageBuilder = () => {
       icon: "📦",
       componentType: "HRModulesSection",
       componentName: "HR Modules Section",
-      category: "content"
+      category: "content",
     },
     {
       id: "service-grid-section",
@@ -89,7 +91,7 @@ const EnhancedPageBuilder = () => {
       icon: "⚙️",
       componentType: "ServiceGrid",
       componentName: "Service Grid Section",
-      category: "content"
+      category: "content",
     },
     {
       id: "implementation-process-section",
@@ -98,7 +100,7 @@ const EnhancedPageBuilder = () => {
       icon: "🔄",
       componentType: "ImplementationProcessSection",
       componentName: "Implementation Process Section",
-      category: "content"
+      category: "content",
     },
 
     // Pricing Sections
@@ -109,7 +111,7 @@ const EnhancedPageBuilder = () => {
       icon: "💵",
       componentType: "HRPricingSection",
       componentName: "HR Pricing Section",
-      category: "pricing"
+      category: "pricing",
     },
 
     // FAQ Sections
@@ -120,7 +122,7 @@ const EnhancedPageBuilder = () => {
       icon: "❓",
       componentType: "PayrollFAQSection",
       componentName: "Payroll FAQ Section",
-      category: "faq"
+      category: "faq",
     },
 
     // CTA Sections
@@ -131,7 +133,7 @@ const EnhancedPageBuilder = () => {
       icon: "🚀",
       componentType: "PayrollCTASection",
       componentName: "Payroll CTA Section",
-      category: "cta"
+      category: "cta",
     },
 
     // About Sections
@@ -142,7 +144,7 @@ const EnhancedPageBuilder = () => {
       icon: "🎯",
       componentType: "AboutMissionSection",
       componentName: "About Mission Section",
-      category: "about"
+      category: "about",
     },
     {
       id: "about-team-section",
@@ -151,8 +153,8 @@ const EnhancedPageBuilder = () => {
       icon: "👥",
       componentType: "AboutTeamSection",
       componentName: "About Team Section",
-      category: "about"
-    }
+      category: "about",
+    },
   ]);
 
   // UI State
@@ -164,13 +166,82 @@ const EnhancedPageBuilder = () => {
 
   const steps = [
     { id: 1, title: "Page Details", description: "Basic page information" },
-    { id: 2, title: "Add Sections", description: "Choose and configure sections" },
-    { id: 3, title: "Review & Publish", description: "Final review and publish" }
+    {
+      id: 2,
+      title: "Add Sections",
+      description: "Choose and configure sections",
+    },
+    {
+      id: 3,
+      title: "Review & Publish",
+      description: "Final review and publish",
+    },
   ];
 
   const showToast = (message, type = "info") => {
     setToast({ message, type });
     setTimeout(() => setToast(null), 5000);
+  };
+
+  // Utility function to generate slug from name
+  const generateSlugFromName = (name) => {
+    if (!name || typeof name !== "string") return "untitled-page";
+
+    let slug = name
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
+      .trim();
+
+    // Remove leading/trailing hyphens
+    slug = slug.replace(/^-+|-+$/g, "");
+
+    return slug || "untitled-page";
+  };
+
+  // Utility function to apply default values to page data
+  const applyDefaultValues = (data, status = "draft") => {
+    const defaultName = "Untitled Page";
+    const name = data.name?.trim() || defaultName;
+    const slug = data.slug?.trim() || generateSlugFromName(name);
+
+    return {
+      name: name,
+      categoryId: data.categoryId || 1,
+      slug: slug,
+      metaTitle: data.metaTitle?.trim() || "",
+      metaDescription: data.metaDescription?.trim() || "",
+      isHomepage: data.isHomepage ?? false,
+      isPublished: status === "published",
+      components:
+        data.components?.map((component, index) => {
+          // Create the component object with proper content handling
+          const processedComponent = {
+            componentType: component.componentType || "Generic",
+            componentName: component.componentName || "New Component",
+            orderIndex: index, // Auto-generate sequentially starting from 0
+          };
+
+          // Handle contentJson string conversion for API
+          if (component.contentJson && typeof component.contentJson === 'string') {
+            try {
+              // Validate JSON before sending
+              JSON.parse(component.contentJson);
+              processedComponent.content = JSON.parse(component.contentJson);
+            } catch {
+              // If invalid JSON, create empty object
+              processedComponent.content = {};
+            }
+          } else if (component.content && typeof component.content === 'object') {
+            processedComponent.content = component.content;
+          } else {
+            processedComponent.content = {};
+          }
+
+          return processedComponent;
+        }) || [],
+    };
   };
 
   const handleNext = () => {
@@ -186,74 +257,128 @@ const EnhancedPageBuilder = () => {
   };
 
   const handlePageDataChange = (field, value) => {
-    setPageData(prev => ({
-      ...prev,
-      [field]: value
-    }));
+    // Handle slug input specially
+    if (field === "slug") {
+      // Only allow alphanumeric characters, dashes, and lowercase letters
+      if (value === "" || /^[a-z0-9-]*$/.test(value)) {
+        setPageData((prev) => ({
+          ...prev,
+          slug: value,
+        }));
+      } else {
+        showToast(
+          "Slug must only contain lowercase letters, numbers, and dashes.",
+          "error"
+        );
+      }
+    } else {
+      setPageData((prev) => ({
+        ...prev,
+        [field]: value,
+      }));
+    }
 
     // Auto-generate slug from name
     if (field === "name" && !pageData.slug) {
-      const slug = value
+      // Generate slug properly handling special cases
+      let slug = value
         .toLowerCase()
         .replace(/[^a-z0-9\s-]/g, "")
         .replace(/\s+/g, "-")
         .replace(/-+/g, "-")
         .trim();
-      setPageData(prev => ({ ...prev, slug }));
+
+      // Remove leading/trailing hyphens
+      slug = slug.replace(/^-+|-+$/g, "");
+
+      setPageData((prev) => ({ ...prev, slug }));
     }
   };
 
   const addComponent = (component) => {
+    const defaultContent = getDefaultDataForComponent(component.componentType);
     const newComponent = {
-      componentType: component.componentType,
-      componentName: component.componentName,
-      contentJson: JSON.stringify(getDefaultDataForComponent(component.componentType)),
-      orderIndex: pageData.components.length
+      componentType: component.componentType || "Generic",
+      componentName: component.componentName || "New Component",
+      contentJson: JSON.stringify(defaultContent, null, 2),
+      orderIndex: pageData.components.length,
     };
 
-    setPageData(prev => ({
+    setPageData((prev) => ({
       ...prev,
-      components: [...prev.components, newComponent]
+      components: [...prev.components, newComponent],
     }));
 
-    showToast(`${component.name} added to page`, "success");
+    showToast(`${component.componentName || component.name || "Component"} added to page`, "success");
+  };
+
+  // Function to update a specific component field
+  const updateComponent = (index, field, value) => {
+    setPageData((prev) => {
+      const updatedComponents = [...prev.components];
+      updatedComponents[index] = {
+        ...updatedComponents[index],
+        [field]: value
+      };
+      return {
+        ...prev,
+        components: updatedComponents
+      };
+    });
+  };
+
+  // Function to auto-fix orderIndex conflicts
+  const fixOrderIndexes = () => {
+    setPageData((prev) => {
+      const updatedComponents = prev.components.map((component, index) => ({
+        ...component,
+        orderIndex: index
+      }));
+      return {
+        ...prev,
+        components: updatedComponents
+      };
+    });
+    showToast("Order indexes have been auto-corrected to be sequential", "success");
   };
 
   const getDefaultDataForComponent = (componentType) => {
     const defaultData = {
-      'HeroSection': {
+      HeroSection: {
         title: "Welcome to Our Services",
         subtitle: "Professional solutions for your business",
         description: "Transform your business with our expert services",
         ctaButton: {
           text: "Get Started",
           link: "/contact",
-          variant: "primary"
+          variant: "primary",
         },
-        backgroundImage: "/images/HeroSection.png"
+        backgroundImage: "/images/HeroSection.png",
       },
-      'HRHeroSection': {
+      HRHeroSection: {
         titleParts: ["HR Management", "Made Simple"],
-        description: "Streamline your human resources with our comprehensive HR solutions",
+        description:
+          "Streamline your human resources with our comprehensive HR solutions",
         ctaButton: {
           text: "Learn More",
           link: "/hr",
-          variant: "primary"
+          variant: "primary",
         },
-        backgroundVideo: "/Videos/hrVideo.mp4"
+        backgroundVideo: "/Videos/hrVideo.mp4",
       },
-      'PayrollHeroSection': {
+      PayrollHeroSection: {
         title: "Automated Payroll Solutions",
         subtitle: "Simplify payroll processing with our advanced system",
-        description: "Reduce errors and save time with automated payroll management",
+        description:
+          "Reduce errors and save time with automated payroll management",
         ctaButton: {
           text: "Get Started",
           link: "/payroll",
-          variant: "primary"
+          variant: "primary",
         },
-        backgroundImage: "/images/payrollHeroSection.jpg"
+        backgroundImage: "/images/payrollHeroSection.jpg",
       },
-      'HRModulesSection': {
+      HRModulesSection: {
         title: "HR Modules",
         subtitle: "Comprehensive HR management tools",
         description: "Everything you need to manage your workforce effectively",
@@ -261,21 +386,21 @@ const EnhancedPageBuilder = () => {
           {
             title: "Employee Management",
             description: "Complete employee lifecycle management",
-            icon: "👥"
+            icon: "👥",
           },
           {
             title: "Time Tracking",
             description: "Accurate time and attendance tracking",
-            icon: "⏰"
+            icon: "⏰",
           },
           {
             title: "Performance Reviews",
             description: "Streamlined performance evaluation process",
-            icon: "📊"
-          }
-        ]
+            icon: "📊",
+          },
+        ],
       },
-      'ServiceGrid': {
+      ServiceGrid: {
         title: "Our Services",
         subtitle: "Professional solutions for your business",
         description: "Choose from our comprehensive range of services",
@@ -284,57 +409,59 @@ const EnhancedPageBuilder = () => {
             name: "Consulting",
             description: "Expert business consulting services",
             icon: "💼",
-            link: "/services/consulting"
+            link: "/services/consulting",
           },
           {
             name: "Implementation",
             description: "Seamless system implementation",
             icon: "⚙️",
-            link: "/services/implementation"
-          }
-        ]
+            link: "/services/implementation",
+          },
+        ],
       },
-      'ImplementationProcessSection': {
+      ImplementationProcessSection: {
         title: "Our Implementation Process",
         subtitle: "A proven methodology for seamless business transformation",
-        description: "We follow a structured approach to ensure successful implementation",
+        description:
+          "We follow a structured approach to ensure successful implementation",
         steps: [
           {
             title: "Discovery & Planning",
             description: "Understanding your business requirements",
             icon: "🔍",
-            duration: "1-2 weeks"
+            duration: "1-2 weeks",
           },
           {
             title: "Design & Configuration",
             description: "Customizing the system to your needs",
             icon: "🎨",
-            duration: "2-4 weeks"
+            duration: "2-4 weeks",
           },
           {
             title: "Testing & Training",
             description: "Ensuring everything works perfectly",
             icon: "🧪",
-            duration: "1-2 weeks"
+            duration: "1-2 weeks",
           },
           {
             title: "Go-Live & Support",
             description: "Launching and ongoing support",
             icon: "🚀",
-            duration: "Ongoing"
-          }
+            duration: "Ongoing",
+          },
         ],
         image: "/images/ProcessImplementattion.png",
         ctaButton: {
           text: "Start Your Implementation",
           link: "/contact",
-          variant: "primary"
-        }
+          variant: "primary",
+        },
       },
-      'HRPricingSection': {
+      HRPricingSection: {
         title: "HR Solution Pricing",
         subtitle: "Choose the perfect plan for your organization",
-        description: "Flexible pricing options to fit your business size and needs",
+        description:
+          "Flexible pricing options to fit your business size and needs",
         plans: [
           {
             name: "Starter",
@@ -345,10 +472,10 @@ const EnhancedPageBuilder = () => {
               "Up to 50 employees",
               "Basic HR modules",
               "Email support",
-              "Standard reporting"
+              "Standard reporting",
             ],
             cta: "Get Started",
-            popular: false
+            popular: false,
           },
           {
             name: "Professional",
@@ -360,10 +487,10 @@ const EnhancedPageBuilder = () => {
               "Advanced HR modules",
               "Priority support",
               "Advanced reporting",
-              "Custom integrations"
+              "Custom integrations",
             ],
             cta: "Get Started",
-            popular: true
+            popular: true,
           },
           {
             name: "Enterprise",
@@ -376,114 +503,132 @@ const EnhancedPageBuilder = () => {
               "24/7 support",
               "Custom reporting",
               "Full customization",
-              "Dedicated account manager"
+              "Dedicated account manager",
             ],
             cta: "Contact Sales",
-            popular: false
-          }
-        ]
+            popular: false,
+          },
+        ],
       },
-      'PayrollFAQSection': {
+      PayrollFAQSection: {
         title: "Frequently Asked Questions",
         subtitle: "Everything you need to know about our payroll solutions",
-        description: "Find answers to common questions about our payroll services",
+        description:
+          "Find answers to common questions about our payroll services",
         faqs: [
           {
             question: "How does automated payroll work?",
-            answer: "Our automated payroll system calculates salaries, taxes, and deductions automatically based on your company's policies and employee data."
+            answer:
+              "Our automated payroll system calculates salaries, taxes, and deductions automatically based on your company's policies and employee data.",
           },
           {
             question: "Can I integrate with existing HR systems?",
-            answer: "Yes, our payroll solution integrates seamlessly with most popular HR systems and accounting software."
+            answer:
+              "Yes, our payroll solution integrates seamlessly with most popular HR systems and accounting software.",
           },
           {
             question: "What kind of support do you provide?",
-            answer: "We provide comprehensive support including setup assistance, training, and ongoing technical support."
-          }
-        ]
+            answer:
+              "We provide comprehensive support including setup assistance, training, and ongoing technical support.",
+          },
+        ],
       },
-      'PayrollCTASection': {
+      PayrollCTASection: {
         title: "Ready to Streamline Your Payroll?",
-        subtitle: "Join thousands of businesses that trust our payroll solutions",
-        description: "Get started today and experience the benefits of automated payroll management",
+        subtitle:
+          "Join thousands of businesses that trust our payroll solutions",
+        description:
+          "Get started today and experience the benefits of automated payroll management",
         ctaButton: {
           text: "Start Free Trial",
           link: "/contact",
-          variant: "primary"
+          variant: "primary",
         },
         features: [
           "30-day free trial",
           "No setup fees",
           "Expert onboarding",
-          "24/7 support"
-        ]
+          "24/7 support",
+        ],
       },
-      'AboutMissionSection': {
+      AboutMissionSection: {
         title: "Our Mission",
         subtitle: "Empowering businesses through technology",
-        description: "We believe in the power of technology to transform businesses and create opportunities for growth and success.",
-        mission: "To provide innovative, reliable, and user-friendly business solutions that help organizations thrive in the digital age.",
-        vision: "To be the leading provider of business technology solutions, recognized for our excellence, innovation, and commitment to customer success.",
+        description:
+          "We believe in the power of technology to transform businesses and create opportunities for growth and success.",
+        mission:
+          "To provide innovative, reliable, and user-friendly business solutions that help organizations thrive in the digital age.",
+        vision:
+          "To be the leading provider of business technology solutions, recognized for our excellence, innovation, and commitment to customer success.",
         values: [
           {
             title: "Innovation",
-            description: "We continuously innovate to provide cutting-edge solutions"
+            description:
+              "We continuously innovate to provide cutting-edge solutions",
           },
           {
             title: "Reliability",
-            description: "We deliver dependable, high-quality services"
+            description: "We deliver dependable, high-quality services",
           },
           {
             title: "Customer Focus",
-            description: "Our customers' success is our primary goal"
-          }
-        ]
+            description: "Our customers' success is our primary goal",
+          },
+        ],
       },
-      'AboutTeamSection': {
+      AboutTeamSection: {
         title: "Meet Our Team",
         subtitle: "The experts behind your success",
-        description: "Our experienced team is dedicated to helping you achieve your business goals",
+        description:
+          "Our experienced team is dedicated to helping you achieve your business goals",
         members: [
           {
             name: "John Smith",
             position: "CEO & Founder",
-            bio: "With over 15 years of experience in business technology, John leads our vision for innovation.",
+            bio:
+              "With over 15 years of experience in business technology, John leads our vision for innovation.",
             image: "/images/ourteam/team1.jpg",
-            linkedin: "https://linkedin.com/in/johnsmith"
+            linkedin: "https://linkedin.com/in/johnsmith",
           },
           {
             name: "Sarah Johnson",
             position: "CTO",
-            bio: "Sarah oversees our technical operations and ensures our solutions meet the highest standards.",
+            bio:
+              "Sarah oversees our technical operations and ensures our solutions meet the highest standards.",
             image: "/images/ourteam/team2.jpg",
-            linkedin: "https://linkedin.com/in/sarahjohnson"
+            linkedin: "https://linkedin.com/in/sarahjohnson",
           },
           {
             name: "Mike Davis",
             position: "Head of Implementation",
-            bio: "Mike leads our implementation team, ensuring smooth project delivery for our clients.",
+            bio:
+              "Mike leads our implementation team, ensuring smooth project delivery for our clients.",
             image: "/images/ourteam/team3.jpg",
-            linkedin: "https://linkedin.com/in/mikedavis"
-          }
-        ]
-      }
+            linkedin: "https://linkedin.com/in/mikedavis",
+          },
+        ],
+      },
     };
 
-    return defaultData[componentType] || {
-      title: "Section Title",
-      description: "Section description",
-      content: "Section content"
-    };
+    return (
+      defaultData[componentType] || {
+        title: "Section Title",
+        description: "Section description",
+        content: "Section content",
+      }
+    );
   };
 
   const editComponent = (componentIndex) => {
     const component = pageData.components[componentIndex];
-    const componentInfo = availableComponents.find(c => c.componentType === component.componentType);
-    
+    const componentInfo = availableComponents.find(
+      (c) => c.componentType === component.componentType
+    );
+
     setEditingComponent({
       ...component,
       index: componentIndex,
-      componentInfo
+      componentInfo,
     });
     setShowSectionEditor(true);
   };
@@ -493,12 +638,12 @@ const EnhancedPageBuilder = () => {
     const updatedComponents = [...pageData.components];
     updatedComponents[componentIndex] = {
       ...updatedComponents[componentIndex],
-      contentJson: JSON.stringify(updatedData)
+      content: updatedData,
     };
 
-    setPageData(prev => ({
+    setPageData((prev) => ({
       ...prev,
-      components: updatedComponents
+      components: updatedComponents,
     }));
 
     setShowSectionEditor(false);
@@ -507,15 +652,20 @@ const EnhancedPageBuilder = () => {
   };
 
   const removeComponent = (componentIndex) => {
-    const updatedComponents = pageData.components.filter((_, index) => index !== componentIndex);
+    // Remove the component
+    const updatedComponents = pageData.components.filter(
+      (_, index) => index !== componentIndex
+    );
+
+    // Always re-assign all orderIndex values after removal to ensure they're sequential
     const reorderedComponents = updatedComponents.map((component, index) => ({
       ...component,
-      orderIndex: index
+      orderIndex: index, // Ensure orderIndex values are sequential and zero-based
     }));
 
-    setPageData(prev => ({
+    setPageData((prev) => ({
       ...prev,
-      components: reorderedComponents
+      components: reorderedComponents,
     }));
 
     showToast("Section removed from page", "success");
@@ -525,13 +675,22 @@ const EnhancedPageBuilder = () => {
     const componentToDuplicate = pageData.components[componentIndex];
     const newComponent = {
       ...componentToDuplicate,
-      orderIndex: pageData.components.length
+      // Don't assign orderIndex here, as it will be handled during save
     };
 
-    setPageData(prev => ({
-      ...prev,
-      components: [...prev.components, newComponent]
-    }));
+    // Add to the components array
+    setPageData((prev) => {
+      const updatedComponents = [...prev.components, newComponent];
+
+      // Re-assign all orderIndex values to ensure they're sequential
+      return {
+        ...prev,
+        components: updatedComponents.map((component, index) => ({
+          ...component,
+          orderIndex: index,
+        })),
+      };
+    });
 
     showToast("Section duplicated successfully", "success");
   };
@@ -540,57 +699,88 @@ const EnhancedPageBuilder = () => {
     const components = [...pageData.components];
     const [movedComponent] = components.splice(fromIndex, 1);
     components.splice(toIndex, 0, movedComponent);
-    
+
+    // Always re-assign all orderIndex values after reordering to ensure they're sequential
     const reorderedComponents = components.map((component, index) => ({
       ...component,
-      orderIndex: index
+      orderIndex: index, // Ensure orderIndex values are sequential and zero-based
     }));
-    
-    setPageData(prev => ({
+
+    setPageData((prev) => ({
       ...prev,
-      components: reorderedComponents
+      components: reorderedComponents,
     }));
   };
 
   const handleSave = async (status = "draft") => {
-    if (!pageData.name.trim()) {
-      showToast("Please enter a page name", "error");
-      return;
-    }
-
-    if (!pageData.slug.trim()) {
-      showToast("Please enter a page slug", "error");
-      return;
-    }
-
     try {
       setLoading(true);
-      
-      const payload = {
-        ...pageData,
-        isPublished: status === "published"
-      };
 
-      const response = await fetch("http://localhost:3001/api/pages", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: pageData.slug,
-          data: payload,
-        }),
-      });
+      // Apply default values to ensure no null, undefined, or empty values
+      const createPageDTO = applyDefaultValues(pageData, status);
 
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || "Failed to save page");
+      // Validate required fields
+      if (!createPageDTO.name || !createPageDTO.name.trim()) {
+        showToast("Page name is required", "error");
+        return;
       }
 
-      const result = await response.json();
-      
+      if (!createPageDTO.categoryId) {
+        showToast("Please select a category", "error");
+        return;
+      }
+
+      // Validate slug format after applying defaults
+      if (!/^[a-z0-9-]+$/.test(createPageDTO.slug)) {
+        showToast(
+          "Generated slug contains invalid characters. Please check the page name.",
+          "error"
+        );
+        return;
+      }
+
+      // Validate components and orderIndex uniqueness
+      if (createPageDTO.components && createPageDTO.components.length > 0) {
+        const orderIndexes = new Set();
+        for (let i = 0; i < createPageDTO.components.length; i++) {
+          const comp = createPageDTO.components[i];
+          
+          // Check component type
+          if (!comp.componentType?.trim()) {
+            showToast(`Component ${i + 1} is missing component type`, "error");
+            return;
+          }
+          
+          // Check component name
+          if (!comp.componentName?.trim()) {
+            showToast(`Component ${i + 1} is missing component name`, "error");
+            return;
+          }
+          
+          // Check content
+          if (!comp.content || typeof comp.content !== 'object') {
+            showToast(`Component ${i + 1} has invalid content`, "error");
+            return;
+          }
+
+          // Check orderIndex uniqueness
+          const orderIndex = comp.orderIndex;
+          if (orderIndexes.has(orderIndex)) {
+            showToast(`Duplicate order index found: ${orderIndex}. Each component must have a unique order index.`, "error");
+            return;
+          }
+          orderIndexes.add(orderIndex);
+        }
+      }
+
+      console.log("Final data being sent:", createPageDTO);
+
+      await pagesAPI.createPage(createPageDTO);
+
       showToast(
-        `Page "${pageData.name}" ${status === "published" ? "published" : "saved as draft"} successfully!`,
+        `Page "${createPageDTO.name}" ${
+          status === "published" ? "published" : "saved as draft"
+        } successfully!`,
         "success"
       );
 
@@ -599,7 +789,30 @@ const EnhancedPageBuilder = () => {
         navigate("/admin/pages");
       }, 1500);
     } catch (error) {
-      showToast("Error saving page: " + error.message, "error");
+      // Check for specific SQL duplicate key error
+      if (
+        error.message &&
+        error.message.includes("duplicate key") &&
+        error.message.includes("IX_PageComponents_PageId_OrderIndex")
+      ) {
+        showToast(
+          "Duplicate order index. Please reorder your components.",
+          "error"
+        );
+
+        // Try to automatically fix the issue by re-assigning orderIndex values
+        const fixedComponents = pageData.components.map((component, index) => ({
+          ...component,
+          orderIndex: index,
+        }));
+
+        setPageData((prev) => ({
+          ...prev,
+          components: fixedComponents,
+        }));
+      } else {
+        showToast("Error saving page: " + error.message, "error");
+      }
     } finally {
       setLoading(false);
     }
@@ -608,11 +821,14 @@ const EnhancedPageBuilder = () => {
   const isStepValid = (step) => {
     switch (step) {
       case 1:
-        return pageData.name.trim() !== "" && pageData.slug.trim() !== "";
+        // Step 1 is always valid - we'll use defaults if needed
+        return true;
       case 2:
-        return pageData.components.length > 0;
+        // Step 2 allows empty components - we'll create a default if needed
+        return true;
       case 3:
-        return isStepValid(1) && isStepValid(2);
+        // Step 3 allows proceeding with any state - defaults will be applied
+        return true;
       default:
         return false;
     }
@@ -621,14 +837,19 @@ const EnhancedPageBuilder = () => {
   const renderStepContent = () => {
     switch (currentStep) {
       case 1:
-        return <PageDetailsStep pageData={pageData} onDataChange={handlePageDataChange} />;
+        return (
+          <PageDetailsStep
+            pageData={pageData}
+            onDataChange={handlePageDataChange}
+          />
+        );
       case 2:
         return (
           <SectionsStep
             pageData={pageData}
             availableComponents={availableComponents}
             onAddComponent={addComponent}
-            onEditComponent={editComponent}
+            onUpdateComponent={updateComponent}
             onRemoveComponent={removeComponent}
             onDuplicateComponent={duplicateComponent}
             onMoveComponent={moveComponent}
@@ -648,165 +869,175 @@ const EnhancedPageBuilder = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#001038] via-[#191970] to-black relative overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="w-full h-full bg-gradient-to-br from-blue-500/5 to-purple-500/5"></div>
-      </div>
-      
-      <div className="relative z-10 p-6">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-white mb-4 tracking-tight">
-            Enhanced Page Builder
-          </h1>
-          <p className="text-lg text-gray-300 leading-relaxed">
-            Create dynamic pages with customizable sections and rich content
-          </p>
+    <MediaInputDetector>
+      <div className="min-h-screen bg-gradient-to-br from-[#001038] via-[#191970] to-black relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-20">
+          <div className="w-full h-full bg-gradient-to-br from-blue-500/5 to-purple-500/5"></div>
         </div>
 
-        {/* Progress Steps */}
-        <div className="flex items-center justify-center mb-8">
-          <div className="flex items-center space-x-4">
-            {steps.map((step, index) => (
-              <div key={step.id} className="flex items-center">
-                <div className={`flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-300 ${
-                  currentStep >= step.id
-                    ? "bg-blue-500 border-blue-500 text-white"
-                    : "bg-transparent border-gray-600 text-gray-400"
-                }`}>
-                  {currentStep > step.id ? (
-                    <CheckIcon className="h-6 w-6" />
-                  ) : (
-                    <span className="text-sm font-semibold">{step.id}</span>
+        <div className="relative z-10 p-6">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold text-white mb-4 tracking-tight">
+              Enhanced Page Builder
+            </h1>
+            <p className="text-lg text-gray-300 leading-relaxed">
+              Create dynamic pages with customizable sections and rich content
+            </p>
+          </div>
+
+          {/* Progress Steps */}
+          <div className="flex items-center justify-center mb-8">
+            <div className="flex items-center space-x-4">
+              {steps.map((step, index) => (
+                <div key={step.id} className="flex items-center">
+                  <div
+                    className={`flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-300 ${
+                      currentStep >= step.id
+                        ? "bg-blue-500 border-blue-500 text-white"
+                        : "bg-transparent border-gray-600 text-gray-400"
+                    }`}
+                  >
+                    {currentStep > step.id ? (
+                      <CheckIcon className="h-6 w-6" />
+                    ) : (
+                      <span className="text-sm font-semibold">{step.id}</span>
+                    )}
+                  </div>
+                  <div className="ml-3 text-left">
+                    <div
+                      className={`text-sm font-medium ${
+                        currentStep >= step.id ? "text-white" : "text-gray-400"
+                      }`}
+                    >
+                      {step.title}
+                    </div>
+                    <div
+                      className={`text-xs ${
+                        currentStep >= step.id
+                          ? "text-gray-300"
+                          : "text-gray-500"
+                      }`}
+                    >
+                      {step.description}
+                    </div>
+                  </div>
+                  {index < steps.length - 1 && (
+                    <div
+                      className={`w-16 h-0.5 mx-4 transition-all duration-300 ${
+                        currentStep > step.id ? "bg-blue-500" : "bg-gray-600"
+                      }`}
+                    />
                   )}
                 </div>
-                <div className="ml-3 text-left">
-                  <div className={`text-sm font-medium ${
-                    currentStep >= step.id ? "text-white" : "text-gray-400"
-                  }`}>
-                    {step.title}
-                  </div>
-                  <div className={`text-xs ${
-                    currentStep >= step.id ? "text-gray-300" : "text-gray-500"
-                  }`}>
-                    {step.description}
-                  </div>
-                </div>
-                {index < steps.length - 1 && (
-                  <div className={`w-16 h-0.5 mx-4 transition-all duration-300 ${
-                    currentStep > step.id ? "bg-blue-500" : "bg-gray-600"
-                  }`} />
-                )}
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
 
-        {/* Step Content */}
-        <div className="max-w-6xl mx-auto">
-          {renderStepContent()}
-        </div>
+          {/* Step Content */}
+          <div className="max-w-6xl mx-auto">{renderStepContent()}</div>
 
-        {/* Navigation */}
-        <div className="flex items-center justify-between max-w-6xl mx-auto mt-8">
-          <Button
-            variant="outline"
-            onClick={handlePrevious}
-            disabled={currentStep === 1}
-            className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20 hover:border-white/30 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            Previous
-          </Button>
-          
-          <div className="flex items-center space-x-4">
+          {/* Navigation */}
+          <div className="flex items-center justify-between max-w-6xl mx-auto mt-8">
             <Button
               variant="outline"
-              onClick={() => navigate("/admin/pages")}
-              className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20 hover:border-white/30 transition-all duration-200"
+              onClick={handlePrevious}
+              disabled={currentStep === 1}
+              className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20 hover:border-white/30 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Cancel
+              Previous
             </Button>
-            
-            {currentStep >= 2 && pageData.components.length > 0 && (
+
+            <div className="flex items-center space-x-4">
               <Button
                 variant="outline"
-                onClick={() => setShowPagePreview(true)}
-                className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-purple-500/20 hover:border-purple-400 transition-all duration-200"
+                onClick={() => navigate("/admin/pages")}
+                className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20 hover:border-white/30 transition-all duration-200"
               >
-                <EyeIcon className="h-4 w-4 mr-2" />
-                Preview Page
+                Cancel
               </Button>
-            )}
-            
-            {currentStep < steps.length ? (
-              <Button
-                onClick={handleNext}
-                disabled={!isStepValid(currentStep)}
-                className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg shadow-blue-500/25 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Next
-              </Button>
-            ) : (
-              <div className="flex space-x-3">
+
+              {currentStep >= 2 && pageData.components.length > 0 && (
                 <Button
                   variant="outline"
-                  onClick={() => handleSave("draft")}
-                  loading={loading}
-                  disabled={!isStepValid(currentStep)}
-                  className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20 hover:border-white/30 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  onClick={() => setShowPagePreview(true)}
+                  className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-purple-500/20 hover:border-purple-400 transition-all duration-200"
                 >
-                  Save as Draft
+                  <EyeIcon className="h-4 w-4 mr-2" />
+                  Preview Page
                 </Button>
+              )}
+
+              {currentStep < steps.length ? (
                 <Button
-                  onClick={() => handleSave("published")}
-                  loading={loading}
+                  onClick={handleNext}
                   disabled={!isStepValid(currentStep)}
-                  className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-lg shadow-green-500/25 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg shadow-blue-500/25 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Publish Page
+                  Next
                 </Button>
-              </div>
-            )}
+              ) : (
+                <div className="flex space-x-3">
+                  <Button
+                    variant="outline"
+                    onClick={() => handleSave("draft")}
+                    loading={loading}
+                    disabled={!isStepValid(currentStep)}
+                    className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20 hover:border-white/30 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    Save as Draft
+                  </Button>
+                  <Button
+                    onClick={() => handleSave("published")}
+                    loading={loading}
+                    disabled={!isStepValid(currentStep)}
+                    className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-lg shadow-green-500/25 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    Publish Page
+                  </Button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
+
+        {/* Section Data Editor Modal */}
+        {showSectionEditor && editingComponent && (
+          <SectionDataEditor
+            isOpen={showSectionEditor}
+            onClose={() => {
+              setShowSectionEditor(false);
+              setEditingComponent(null);
+            }}
+            section={{
+              name: editingComponent.componentName,
+              componentId: editingComponent.componentType,
+              icon: editingComponent.componentInfo?.icon || "📄",
+              data: editingComponent.content || (editingComponent.contentJson ? JSON.parse(editingComponent.contentJson) : {}),
+            }}
+            onSave={saveComponentData}
+          />
+        )}
+
+        {/* Page Preview Modal */}
+        <PagePreview
+          isOpen={showPagePreview}
+          onClose={() => setShowPagePreview(false)}
+          pageData={pageData}
+          availableComponents={availableComponents}
+        />
+
+        {/* Toast Notification */}
+        {toast && (
+          <Toast
+            message={toast.message}
+            type={toast.type}
+            onClose={() => setToast(null)}
+          />
+        )}
       </div>
-
-      {/* Section Data Editor Modal */}
-      {showSectionEditor && editingComponent && (
-        <SectionDataEditor
-          isOpen={showSectionEditor}
-          onClose={() => {
-            setShowSectionEditor(false);
-            setEditingComponent(null);
-          }}
-          section={{
-            name: editingComponent.componentName,
-            componentId: editingComponent.componentType,
-            icon: editingComponent.componentInfo?.icon || "📄",
-            data: JSON.parse(editingComponent.contentJson)
-          }}
-          onSave={saveComponentData}
-        />
-      )}
-
-      {/* Page Preview Modal */}
-      <PagePreview
-        isOpen={showPagePreview}
-        onClose={() => setShowPagePreview(false)}
-        pageData={pageData}
-        availableComponents={availableComponents}
-      />
-
-      {/* Toast Notification */}
-      {toast && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          onClose={() => setToast(null)}
-        />
-      )}
-    </div>
+    </MediaInputDetector>
   );
 };
 
@@ -838,13 +1069,19 @@ const PageDetailsStep = ({ pageData, onDataChange }) => {
               URL Slug *
             </label>
             <Input
+              type="text"
               value={pageData.slug}
               onChange={(e) => onDataChange("slug", e.target.value)}
               placeholder="page-url-slug"
+              pattern="[a-z0-9-]+"
+              title="Slug must only contain lowercase letters, numbers, and dashes."
               className="w-full bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder-white/50 focus:border-blue-400 focus:ring-blue-400/20"
             />
             <p className="text-sm text-gray-300 mt-2">
               URL: /{pageData.slug || "page-url-slug"}
+            </p>
+            <p className="text-xs text-gray-400 mt-1">
+              Slug must only contain lowercase letters, numbers, and dashes.
             </p>
           </div>
         </div>
@@ -869,7 +1106,9 @@ const PageDetailsStep = ({ pageData, onDataChange }) => {
             <Input
               type="number"
               value={pageData.categoryId}
-              onChange={(e) => onDataChange("categoryId", parseInt(e.target.value) || 0)}
+              onChange={(e) =>
+                onDataChange("categoryId", parseInt(e.target.value) || 0)
+              }
               placeholder="0"
               className="w-full bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder-white/50 focus:border-blue-400 focus:ring-blue-400/20"
             />
@@ -905,15 +1144,15 @@ const PageDetailsStep = ({ pageData, onDataChange }) => {
   );
 };
 
-// Step 2: Sections
-const SectionsStep = ({ 
-  pageData, 
-  availableComponents, 
-  onAddComponent, 
-  onEditComponent, 
-  onRemoveComponent, 
-  onDuplicateComponent, 
-  onMoveComponent 
+// Step 2: Sections with detailed component forms
+const SectionsStep = ({
+  pageData,
+  availableComponents,
+  onAddComponent,
+  onUpdateComponent,
+  onRemoveComponent,
+  onDuplicateComponent,
+  onMoveComponent,
 }) => {
   const [selectedCategory, setSelectedCategory] = useState("all");
 
@@ -924,12 +1163,39 @@ const SectionsStep = ({
     { id: "pricing", name: "Pricing", icon: "💰" },
     { id: "faq", name: "FAQ", icon: "❓" },
     { id: "cta", name: "Call to Action", icon: "🚀" },
-    { id: "about", name: "About", icon: "👥" }
+    { id: "about", name: "About", icon: "👥" },
   ];
 
-  const filteredComponents = selectedCategory === "all" 
-    ? availableComponents 
-    : availableComponents.filter(comp => comp.category === selectedCategory);
+  const filteredComponents =
+    selectedCategory === "all"
+      ? availableComponents
+      : availableComponents.filter(
+          (comp) => comp.category === selectedCategory
+        );
+
+  // Function to update a specific component field
+  const handleComponentUpdate = (index, field, value) => {
+    if (field === 'orderIndex') {
+      // Validate and parse orderIndex
+      const numValue = parseInt(value);
+      if (!isNaN(numValue) && numValue >= 0) {
+        onUpdateComponent(index, field, numValue);
+      }
+    } else {
+      onUpdateComponent(index, field, value);
+    }
+  };
+
+  // Function to validate JSON in contentJson field
+  const validateAndFormatJSON = (jsonString) => {
+    try {
+      if (!jsonString.trim()) return "{}";
+      const parsed = JSON.parse(jsonString);
+      return JSON.stringify(parsed, null, 2);
+    } catch (e) {
+      return jsonString; // Return as-is if invalid, let user fix it
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -943,7 +1209,7 @@ const SectionsStep = ({
         <CardContent>
           {/* Category Filter */}
           <div className="flex flex-wrap gap-2 mb-6">
-            {categories.map(category => (
+            {categories.map((category) => (
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
@@ -995,57 +1261,86 @@ const SectionsStep = ({
         </CardContent>
       </Card>
 
-      {/* Page Sections */}
+      {/* Component Forms */}
       <Card className="bg-white/5 backdrop-blur-sm border border-white/10 shadow-xl">
         <CardHeader>
-          <CardTitle className="text-white text-xl font-bold">
-            Page Sections ({pageData.components.length})
-          </CardTitle>
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-white text-xl font-bold">
+              Component Configuration ({pageData.components.length})
+            </CardTitle>
+            <div className="flex items-center space-x-2">
+              {pageData.components.length > 1 && (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => {
+                    // Auto-fix orderIndexes
+                    const updatedComponents = pageData.components.map((component, index) => ({
+                      ...component,
+                      orderIndex: index
+                    }));
+                    // Update all components with fixed indexes
+                    updatedComponents.forEach((comp, index) => {
+                      onUpdateComponent(index, 'orderIndex', index);
+                    });
+                  }}
+                  className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-orange-500/20 hover:border-orange-400 transition-all duration-200"
+                >
+                  <ArrowPathIcon className="h-4 w-4 mr-2" />
+                  Fix Order
+                </Button>
+              )}
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => onAddComponent({
+                  componentType: "Generic",
+                  componentName: "New Component",
+                  icon: "📄",
+                  category: "content"
+                })}
+                className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-green-500/20 hover:border-green-400 transition-all duration-200"
+              >
+                <PlusIcon className="h-4 w-4 mr-2" />
+                Add Component
+              </Button>
+            </div>
+          </div>
         </CardHeader>
         <CardContent>
           {pageData.components.length === 0 ? (
             <div className="text-center py-12">
               <DocumentTextIcon className="h-20 w-20 text-white/40 mx-auto mb-6" />
               <h3 className="text-xl font-semibold text-white mb-3">
-                No sections added yet
+                No components added yet
               </h3>
               <p className="text-gray-300 text-base leading-relaxed">
-                Click on components above to start building your page
+                Click on components above or use "Add Component" button to start building your page
               </p>
             </div>
           ) : (
-            <div className="space-y-3">
+            <div className="space-y-6">
               {pageData.components.map((component, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/20"
+                  className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20"
                 >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-4">
+                  {/* Component Header */}
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center space-x-3">
                       <div className="text-xl">
-                        {availableComponents.find(c => c.componentType === component.componentType)?.icon || "📄"}
+                        {availableComponents.find(
+                          (c) => c.componentType === component.componentType
+                        )?.icon || "📄"}
                       </div>
-                      <div>
-                        <h4 className="text-base font-semibold text-white">
-                          {component.componentName}
-                        </h4>
-                        <p className="text-sm text-gray-300">
-                          {component.componentType}
-                        </p>
-                      </div>
+                      <h4 className="text-lg font-semibold text-white">
+                        Component #{index + 1}
+                      </h4>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => onEditComponent(index)}
-                        className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-blue-500/20 hover:border-blue-400 transition-all duration-200"
-                      >
-                        <PencilIcon className="h-4 w-4" />
-                      </Button>
                       <Button
                         size="sm"
                         variant="outline"
@@ -1062,6 +1357,85 @@ const SectionsStep = ({
                       >
                         <TrashIcon className="h-4 w-4" />
                       </Button>
+                    </div>
+                  </div>
+
+                  {/* Component Form Fields */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Component Type */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Component Type
+                      </label>
+                      <input
+                        type="text"
+                        value={component.componentType || ""}
+                        onChange={(e) => handleComponentUpdate(index, 'componentType', e.target.value)}
+                        placeholder="e.g., HeroSection, CtaButton"
+                        className="block w-full rounded-lg bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder-white/50 focus:border-blue-400 focus:ring-blue-400/20 shadow-sm"
+                      />
+                    </div>
+
+                    {/* Component Name */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Component Name
+                      </label>
+                      <input
+                        type="text"
+                        value={component.componentName || ""}
+                        onChange={(e) => handleComponentUpdate(index, 'componentName', e.target.value)}
+                        placeholder="e.g., Main Hero, Footer CTA"
+                        className="block w-full rounded-lg bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder-white/50 focus:border-blue-400 focus:ring-blue-400/20 shadow-sm"
+                      />
+                    </div>
+
+                    {/* Order Index */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Order Index
+                      </label>
+                      <input
+                        type="number"
+                        min="0"
+                        value={component.orderIndex ?? ""}
+                        onChange={(e) => handleComponentUpdate(index, 'orderIndex', e.target.value)}
+                        placeholder="Auto-generated if empty"
+                        className="block w-full rounded-lg bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder-white/50 focus:border-blue-400 focus:ring-blue-400/20 shadow-sm"
+                      />
+                      <p className="text-xs text-gray-400 mt-1">
+                        Leave empty for auto-increment ({index})
+                      </p>
+                    </div>
+
+                    {/* Content JSON - Full Width */}
+                    <div className="md:col-span-2">
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Content JSON
+                      </label>
+                      <textarea
+                        rows={6}
+                        value={component.contentJson || "{}"}
+                        onChange={(e) => handleComponentUpdate(index, 'contentJson', e.target.value)}
+                        placeholder='{"title": "Example Title", "description": "Example Description"}'
+                        className="block w-full rounded-lg bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder-white/50 focus:border-blue-400 focus:ring-blue-400/20 shadow-sm font-mono text-sm resize-none"
+                      />
+                      <div className="flex items-center justify-between mt-2">
+                        <p className="text-xs text-gray-400">
+                          Enter valid JSON data for this component
+                        </p>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => {
+                            const formatted = validateAndFormatJSON(component.contentJson || "{}");
+                            handleComponentUpdate(index, 'contentJson', formatted);
+                          }}
+                          className="bg-white/5 backdrop-blur-sm border-white/20 text-white hover:bg-blue-500/20 hover:border-blue-400 transition-all duration-200 text-xs px-2 py-1"
+                        >
+                          Format JSON
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </motion.div>
@@ -1087,11 +1461,14 @@ const ReviewStep = ({ pageData, onSave, loading }) => {
     { componentType: "PayrollFAQSection", icon: "❓" },
     { componentType: "PayrollCTASection", icon: "🚀" },
     { componentType: "AboutMissionSection", icon: "🎯" },
-    { componentType: "AboutTeamSection", icon: "👥" }
+    { componentType: "AboutTeamSection", icon: "👥" },
   ]);
 
   const getComponentIcon = (componentType) => {
-    return availableComponents.find(c => c.componentType === componentType)?.icon || "📄";
+    return (
+      availableComponents.find((c) => c.componentType === componentType)
+        ?.icon || "📄"
+    );
   };
 
   return (
@@ -1106,33 +1483,47 @@ const ReviewStep = ({ pageData, onSave, loading }) => {
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-1">Page Name</label>
+              <label className="block text-sm font-medium text-gray-400 mb-1">
+                Page Name
+              </label>
               <p className="text-white font-semibold">{pageData.name}</p>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-1">URL Slug</label>
+              <label className="block text-sm font-medium text-gray-400 mb-1">
+                URL Slug
+              </label>
               <p className="text-white font-semibold">/{pageData.slug}</p>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-1">Category ID</label>
+              <label className="block text-sm font-medium text-gray-400 mb-1">
+                Category ID
+              </label>
               <p className="text-white font-semibold">{pageData.categoryId}</p>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-1">Homepage</label>
-              <p className="text-white font-semibold">{pageData.isHomepage ? "Yes" : "No"}</p>
+              <label className="block text-sm font-medium text-gray-400 mb-1">
+                Homepage
+              </label>
+              <p className="text-white font-semibold">
+                {pageData.isHomepage ? "Yes" : "No"}
+              </p>
             </div>
           </div>
-          
+
           {pageData.metaTitle && (
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-1">SEO Meta Title</label>
+              <label className="block text-sm font-medium text-gray-400 mb-1">
+                SEO Meta Title
+              </label>
               <p className="text-white">{pageData.metaTitle}</p>
             </div>
           )}
-          
+
           {pageData.metaDescription && (
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-1">SEO Meta Description</label>
+              <label className="block text-sm font-medium text-gray-400 mb-1">
+                SEO Meta Description
+              </label>
               <p className="text-white">{pageData.metaDescription}</p>
             </div>
           )}
@@ -1150,18 +1541,31 @@ const ReviewStep = ({ pageData, onSave, loading }) => {
           {pageData.components.length === 0 ? (
             <div className="text-center py-8">
               <ExclamationTriangleIcon className="h-12 w-12 text-yellow-400 mx-auto mb-4" />
-              <p className="text-yellow-300">No components added to this page</p>
+              <p className="text-yellow-300">
+                No components added to this page
+              </p>
             </div>
           ) : (
             <div className="space-y-3">
               {pageData.components.map((component, index) => (
-                <div key={index} className="flex items-center space-x-3 p-3 bg-white/5 rounded-lg border border-white/10">
-                  <div className="text-xl">{getComponentIcon(component.componentType)}</div>
-                  <div className="flex-1">
-                    <h4 className="text-white font-medium">{component.componentName}</h4>
-                    <p className="text-gray-400 text-sm">{component.componentType}</p>
+                <div
+                  key={index}
+                  className="flex items-center space-x-3 p-3 bg-white/5 rounded-lg border border-white/10"
+                >
+                  <div className="text-xl">
+                    {getComponentIcon(component.componentType)}
                   </div>
-                  <div className="text-gray-400 text-sm">Order: {component.orderIndex}</div>
+                  <div className="flex-1">
+                    <h4 className="text-white font-medium">
+                      {component.componentName}
+                    </h4>
+                    <p className="text-gray-400 text-sm">
+                      {component.componentType}
+                    </p>
+                  </div>
+                  <div className="text-gray-400 text-sm">
+                    Order: {component.orderIndex}
+                  </div>
                 </div>
               ))}
             </div>

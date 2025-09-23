@@ -14,6 +14,7 @@ import {
 import Button from "../ui/Button";
 import Card, { CardContent, CardHeader, CardTitle } from "../ui/Card";
 import Toast from "../ui/Toast";
+import pagesAPI from "../../lib/pagesAPI";
 
 // Import step components
 import CategorySelection from "./CreatePageSteps/CategorySelection";
@@ -84,7 +85,7 @@ const CreatePageFlow = () => {
   const handleCategorySelect = (category) => {
     setSelectedCategory(category);
     setSelectedPage(null); // Reset selected page when category changes
-    setPageData(prev => ({
+    setPageData((prev) => ({
       ...prev,
       category: category.id,
       subCategory: category.subCategory || "",
@@ -97,14 +98,14 @@ const CreatePageFlow = () => {
   };
 
   const handleSectionsUpdate = (sections) => {
-    setPageData(prev => ({
+    setPageData((prev) => ({
       ...prev,
       sections: sections,
     }));
   };
 
   const handlePageDataUpdate = (updates) => {
-    setPageData(prev => ({
+    setPageData((prev) => ({
       ...prev,
       ...updates,
     }));
@@ -126,17 +127,18 @@ const CreatePageFlow = () => {
   const handleSave = async (status = "draft") => {
     try {
       setLoading(true);
-      
+
       // Transform sections to components format expected by server
       const components = pageData.sections.map((section, index) => ({
         componentType: section.componentId, // Use componentId as componentType
         componentName: section.name || section.componentId,
         contentJson: JSON.stringify(section.props || {}),
-        orderIndex: index
+        orderIndex: index,
       }));
 
-      const pagePayload = {
-        name: pageData.title,
+      // Create the page DTO according to the Bellatrix API format
+      const createPageDTO = {
+        title: pageData.title,
         categoryId: 0,
         slug: pageData.slug,
         metaTitle: pageData.meta?.meta_title || pageData.title,
@@ -144,30 +146,14 @@ const CreatePageFlow = () => {
         isHomepage: false,
         isPublished: status === "published",
         components: components,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
       };
 
-      const response = await fetch("http://localhost:3001/api/pages", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: pageData.slug,
-          data: pagePayload,
-        }),
-      });
+      await pagesAPI.createPage(createPageDTO);
 
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || "Failed to save page");
-      }
-
-      const result = await response.json();
-      
       showToast(
-        `Page "${pageData.title}" ${status === "published" ? "published" : "saved as draft"} successfully!`,
+        `Page "${pageData.title}" ${
+          status === "published" ? "published" : "saved as draft"
+        } successfully!`,
         "success"
       );
 
@@ -220,8 +206,8 @@ const CreatePageFlow = () => {
     <div className="min-h-screen bg-gradient-to-br from-[#001038] via-[#191970] to-black relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-900/10 via-transparent to-blue-800/10 pointer-events-none"></div>
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.03%22%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%221%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20"></div>
-      
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.03%22%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%221%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20"></div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
         {/* Header */}
         <div className="mb-8">
@@ -293,9 +279,7 @@ const CreatePageFlow = () => {
                   {index < steps.length - 1 && (
                     <div
                       className={`flex-1 h-1 mx-6 rounded-full ${
-                        isCompleted
-                          ? "bg-green-400"
-                          : "bg-white/20"
+                        isCompleted ? "bg-green-400" : "bg-white/20"
                       }`}
                     />
                   )}

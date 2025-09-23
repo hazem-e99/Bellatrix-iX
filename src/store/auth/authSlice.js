@@ -32,7 +32,7 @@ export const createAdmin = createAsyncThunk(
   "auth/createAdmin",
   async ({ payload }, { signal, rejectWithValue }) => {
     try {
-      const response = await api.post("/api/auth/create-admin", payload, {
+      const response = await api.post("/Authentication/CreateAdmin", payload, {
         signal,
       });
       return { data: response.data, fetchedAt: Date.now() };
@@ -44,10 +44,44 @@ export const createAdmin = createAsyncThunk(
 
 export const login = createAsyncThunk(
   "auth/login",
-  async ({ payload }, { signal, rejectWithValue }) => {
+  async (payload, { signal, rejectWithValue }) => {
     try {
-      const response = await api.post("/api/auth/login", payload, { signal });
-      const { token, user } = response.data.data || response.data;
+      // Use the correct field names as defined in LoginDTO
+      const loginData = {
+        emailOrUserName:
+          payload.username || payload.email || payload.emailOrUserName,
+        password: payload.password,
+        rememberMe: payload.rememberMe || false,
+      };
+
+      console.log("Login request data:", loginData);
+      console.log("API base URL:", api.defaults.baseURL);
+
+      const response = await api.post("/Authentication/Login", loginData, {
+        signal,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      console.log("Login response:", response.data);
+
+      // The response contains the user data directly (not wrapped)
+      const userLoginData = response.data;
+
+      // Check if we have a valid response with token
+      if (!userLoginData || !userLoginData.token) {
+        throw new Error("Invalid login response - no token received");
+      }
+
+      const token = userLoginData.token;
+      const user = {
+        id: userLoginData.id,
+        userName: userLoginData.userName,
+        email: userLoginData.email,
+        fullName: userLoginData.fullName,
+        expiration: userLoginData.expiration,
+      };
 
       // Store token in localStorage
       if (token) {
@@ -56,7 +90,20 @@ export const login = createAsyncThunk(
 
       return { token, user, fetchedAt: Date.now() };
     } catch (error) {
-      return rejectWithValue(error);
+      console.error("Login error:", error.response?.data || error.message);
+
+      // Return more detailed error information
+      const errorMessage =
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        error.message ||
+        "Login failed";
+
+      return rejectWithValue({
+        message: errorMessage,
+        status: error.response?.status,
+        data: error.response?.data,
+      });
     }
   }
 );
@@ -75,7 +122,7 @@ export const getProfile = createAsyncThunk(
     }
 
     try {
-      const response = await api.get("/api/auth/profile", {
+      const response = await api.get("/Authentication/Profile", {
         headers: { Authorization: `Bearer ${auth.token}` },
         signal,
       });

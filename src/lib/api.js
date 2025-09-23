@@ -1,14 +1,33 @@
 import axios from "axios";
 
+const BASE_URL = "http://bellatrix.runasp.net/api";
+
 const api = axios.create({
-  baseURL: "http://localhost:3001",
+  baseURL: BASE_URL,
   timeout: 10000,
   headers: { "Content-Type": "application/json" },
 });
 
-// Response interceptor to normalize errors
+// Response interceptor to handle wrapped responses and normalize errors
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    // If the response has the wrapped format {data, success, message}, extract the data
+    if (
+      response.data &&
+      typeof response.data === "object" &&
+      "data" in response.data
+    ) {
+      if (response.data.success === false) {
+        // Handle API errors wrapped in success format
+        const error = new Error(response.data.message || "API request failed");
+        error.response = { status: response.status, data: response.data };
+        throw error;
+      }
+      // Return the inner data for successful requests
+      return { ...response, data: response.data.data };
+    }
+    return response;
+  },
   (error) => {
     const normalizedError = {
       message:
@@ -20,10 +39,15 @@ api.interceptors.response.use(
   }
 );
 
-// Request interceptor to add auth token if available
+// Request interceptor to add auth token for admin endpoints
 api.interceptors.request.use(
   (config) => {
-    // Token will be added by individual thunks when needed
+    // Add auth token for admin endpoints
+    const token =
+      localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
     return config;
   },
   (error) => Promise.reject(error)

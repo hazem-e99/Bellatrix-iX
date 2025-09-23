@@ -21,6 +21,7 @@ import { Button } from "../../components/UI/Button";
 import { Card } from "../../components/UI/Card";
 import { Input } from "../../components/UI/Input";
 import { usePageEditorAPI, debounce } from "../../hooks/usePageEditor";
+import pagesAPI from "../../lib/pagesAPI";
 import {
   ChevronDownIcon,
   ChevronUpIcon,
@@ -77,18 +78,40 @@ const PageEditor = () => {
     const page = searchParams.get("page") || "homeData";
     const load = async () => {
       try {
-        const res = await fetch(`http://localhost:3001/api/pages/${page}`);
-        if (!res.ok) throw new Error("Failed to load page");
-        const { data } = await res.json();
-        const comps = (data.components || []).map((c, idx) => ({
+        // Try to search for the page by slug/name first
+        const searchResults = await pagesAPI.searchPages(page);
+        const foundPage = searchResults.find(
+          (p) => p.slug === page || p.name === page
+        );
+
+        let pageData;
+        if (foundPage) {
+          pageData = await pagesAPI.getPageById(foundPage.id);
+        } else {
+          // Fallback: get all pages and find match
+          const allPages = await pagesAPI.getPages();
+          const pageMatch = allPages.find(
+            (p) => p.slug === page || p.name === page
+          );
+          if (pageMatch) {
+            pageData = await pagesAPI.getPageById(pageMatch.id);
+          } else {
+            throw new Error("Page not found");
+          }
+        }
+
+        const comps = (pageData.components || []).map((c, idx) => ({
           // Ensure each item has a stable id for DnD; fall back to name+index
           id: `${c.componentType}-${idx}`,
           ...c,
           orderIndex: typeof c.orderIndex === "number" ? c.orderIndex : idx,
         }));
         setComponents(comps);
-        setPageMeta({ name: data.name || page, slug: data.slug || page });
-      } catch (e) {
+        setPageMeta({
+          name: pageData.title || pageData.name || page,
+          slug: pageData.slug || page,
+        });
+      } catch {
         showNotification("Could not load page data", "error");
       } finally {
         setLoading(false);

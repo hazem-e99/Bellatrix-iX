@@ -1,78 +1,93 @@
-import { useEffect, useCallback } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
+import { useEffect, useCallback } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import pagesAPI from "../lib/pagesAPI";
 
 // Hook للتحديثات المباشرة للصفحات بعد تغيير Admin
 export const usePageDataSync = () => {
   const queryClient = useQueryClient();
 
   // تحديث البيانات بناءً على تغييرات Admin
-  const syncPageData = useCallback(async (endpoint) => {
-    console.log(`🔄 Syncing page data for: ${endpoint}`);
-    
-    try {
-      // Clear the cache completely for this endpoint
-      queryClient.removeQueries(['pageData', endpoint]);
-      
-      // Force a fresh fetch
-      await queryClient.prefetchQuery({
-        queryKey: ['pageData', endpoint],
-        queryFn: async () => {
-          const response = await fetch(`http://localhost:3001/${endpoint}`);
-          if (!response.ok) {
-            throw new Error(`Failed to fetch ${endpoint}`);
-          }
-          return response.json();
-        },
-        staleTime: 0,
-        cacheTime: 0, // Don't cache
-      });
-      
-      // Invalidate all related queries
-      queryClient.invalidateQueries(['pageData', endpoint]);
-      
-      console.log(`✅ Page data synced for: ${endpoint}`);
-      return true;
-    } catch (error) {
-      console.error(`❌ Failed to sync page data for ${endpoint}:`, error);
-      return false;
-    }
-  }, [queryClient]);
+  const syncPageData = useCallback(
+    async (endpoint) => {
+      console.log(`🔄 Syncing page data for: ${endpoint}`);
+
+      try {
+        // Clear the cache completely for this endpoint
+        queryClient.removeQueries(["pageData", endpoint]);
+
+        // Force a fresh fetch using the new API
+        await queryClient.prefetchQuery({
+          queryKey: ["pageData", endpoint],
+          queryFn: async () => {
+            // Try to find the page by slug/endpoint name
+            const searchResults = await pagesAPI.searchPages(endpoint);
+            const foundPage = searchResults.find(
+              (page) => page.slug === endpoint
+            );
+
+            if (!foundPage) {
+              // Fallback to getting all pages and finding by slug
+              const allPages = await pagesAPI.getPages();
+              const pageMatch = allPages.find((page) => page.slug === endpoint);
+              if (pageMatch) {
+                return await pagesAPI.getPageById(pageMatch.id);
+              }
+              throw new Error(`Page not found: ${endpoint}`);
+            }
+
+            return await pagesAPI.getPageById(foundPage.id);
+          },
+          staleTime: 0,
+          cacheTime: 0, // Don't cache
+        });
+
+        // Invalidate all related queries
+        queryClient.invalidateQueries(["pageData", endpoint]);
+
+        console.log(`✅ Page data synced for: ${endpoint}`);
+        return true;
+      } catch (error) {
+        console.error(`❌ Failed to sync page data for ${endpoint}:`, error);
+        return false;
+      }
+    },
+    [queryClient]
+  );
 
   // تحديث جميع البيانات
   const syncAllPageData = useCallback(async () => {
-    console.log('🔄 Syncing all page data...');
-    
-    const endpoints = [
-      'customization', 'home', 'hr', 'Implementation', 
-      'integration', 'manufacturing', 'netsuite-consulting', 
-      'payroll', 'retail', 'training'
-    ];
-    
+    console.log("🔄 Syncing all page data...");
+
     try {
       // Clear all page data cache
-      queryClient.removeQueries(['pageData']);
-      
+      queryClient.removeQueries(["pageData"]);
+
       // Wait a bit for cache clearing
-      await new Promise(resolve => setTimeout(resolve, 100));
-      
-      // Force refresh each endpoint
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
+      // Get all pages from the API instead of hardcoded endpoints
+      const allPages = await pagesAPI.getPages();
+
+      // Force refresh each page
       const results = await Promise.allSettled(
-        endpoints.map(endpoint => syncPageData(endpoint))
+        allPages.map((page) => syncPageData(page.slug))
       );
-      
-      const successCount = results.filter(r => r.status === 'fulfilled' && r.value).length;
-      console.log(`✅ Synced ${successCount}/${endpoints.length} endpoints`);
-      
-      return successCount === endpoints.length;
+
+      const successCount = results.filter(
+        (r) => r.status === "fulfilled" && r.value
+      ).length;
+      console.log(`✅ Synced ${successCount}/${allPages.length} pages`);
+
+      return successCount === allPages.length;
     } catch (error) {
-      console.error('❌ Failed to sync all page data:', error);
+      console.error("❌ Failed to sync all page data:", error);
       return false;
     }
   }, [queryClient, syncPageData]);
 
   return {
     syncPageData,
-    syncAllPageData
+    syncAllPageData,
   };
 };
 
@@ -87,10 +102,10 @@ export const useFileChangeWatcher = () => {
     const interval = setInterval(async () => {
       try {
         // فحص آخر تعديل على db.json
-        const response = await fetch('http://localhost:3001/db');
+        const response = await fetch("http://localhost:3001/db");
         if (response.ok) {
           // تم العثور على تغيير، قم بتحديث كل البيانات
-          console.log('📂 File change detected, syncing data...');
+          console.log("📂 File change detected, syncing data...");
           // يمكن تحسين هذا لتحديد الـ endpoint المحدد فقط
         }
       } catch (error) {
@@ -102,6 +117,6 @@ export const useFileChangeWatcher = () => {
   }, []);
 
   return {
-    watchFileChanges
+    watchFileChanges,
   };
 };

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import pagesAPI from "../lib/pagesAPI";
 
 // Custom hook for page editor API operations
 export const usePageEditorAPI = () => {
@@ -9,12 +10,7 @@ export const usePageEditorAPI = () => {
     setLoading(true);
     setError(null);
     try {
-      // Use existing server endpoint that returns full page JSON
-      const response = await fetch(`http://localhost:3001/api/pages/${pageId}`);
-      if (!response.ok) {
-        throw new Error("Failed to fetch page data");
-      }
-      const { data } = await response.json();
+      const data = await pagesAPI.getPageById(pageId);
       setLoading(false);
       return data;
     } catch (err) {
@@ -28,22 +24,7 @@ export const usePageEditorAPI = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(
-        `http://localhost:3001/api/pages/${pageId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ data: updatedPageData }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to save component");
-      }
-
-      const data = await response.json();
+      const data = await pagesAPI.updatePage(pageId, updatedPageData);
       setLoading(false);
       return data;
     } catch (err) {
@@ -57,22 +38,7 @@ export const usePageEditorAPI = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(
-        `http://localhost:3001/api/pages/${pageId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ data: { components } }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to save page");
-      }
-
-      const data = await response.json();
+      const data = await pagesAPI.updatePage(pageId, { components });
       setLoading(false);
       return data;
     } catch (err) {
@@ -86,23 +52,7 @@ export const usePageEditorAPI = () => {
     setLoading(true);
     setError(null);
     try {
-      // Persist re-ordered components by PUTting the whole page
-      const response = await fetch(
-        `http://localhost:3001/api/pages/${pageId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ data: updatedPageData }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to reorder components");
-      }
-
-      const data = await response.json();
+      const data = await pagesAPI.updatePage(pageId, updatedPageData);
       setLoading(false);
       return data;
     } catch (err) {

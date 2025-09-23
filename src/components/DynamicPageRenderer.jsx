@@ -1,63 +1,66 @@
-import React, { useState, useEffect, Suspense, lazy } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect, Suspense, lazy } from "react";
+import { useParams } from "react-router-dom";
+import pagesAPI from "../lib/pagesAPI";
 
 // Map componentId to componentPath
 const getComponentPathFromId = (componentId) => {
   const idToPathMap = {
-    'PayrollHeroSection': 'solution/payroll/PayrollHero',
-    'PayrollHowItWorksSection': 'solution/payroll/PayrollHowItWorks',
-    'PayrollWorkflowSection': 'solution/payroll/PayrollWorkflow',
-    'PayrollStepperSection': 'solution/payroll/PayrollStepper',
-    'PayrollPainPointsSection': 'solution/payroll/PayrollPainPoints',
-    'PayrollFAQSection': 'solution/payroll/PayrollFAQ',
-    'PayrollCTASection': 'solution/payroll/PayrollCTA',
-    'HRHeroSection': 'solution/hr/HeroSection',
-    'HRModulesSection': 'solution/hr/ModulesSection',
-    'HRBenefitsSection': 'solution/hr/BenefitsSection',
-    'HRUseCasesSection': 'solution/hr/UseCasesSection',
-    'HRPricingSection': 'solution/hr/PricingSection',
-    'HRFAQSection': 'solution/hr/FAQSection',
-    'HRCTASection': 'solution/hr/CTASection',
-    'ServiceGrid': 'Services/ServiceGrid',
-    'ImplementationHeroSection': 'Services/Implementation/HeroSection',
-    'ImplementationProcessSection': 'Services/Implementation/ProcessSection',
-    'ImplementationWhyChooseSection': 'Services/Implementation/WhyChooseSection',
-    'ImplementationPricingSection': 'Services/Implementation/PricingSection',
-    'ImplementationCTASection': 'Services/Implementation/CtaSection',
-    'TrainingHeroSection': 'Services/training/HeroSection',
-    'TrainingProgramsSection': 'Services/training/TrainingPrograms',
-    'TrainingWhyChooseSection': 'Services/training/WhyChooseSection',
-    'IntegrationHeroSection': 'Services/Integration/HeroSection',
-    'IntegrationTypesSection': 'Services/Integration/IntegrationTypes',
-    'IntegrationBenefitsSection': 'Services/Integration/BenefitsSection',
-    'CustomizationHeroSection': 'Services/Customization/HeroSection',
-    'CustomizationServicesSection': 'Services/Customization/ServicesSection',
-    'CustomizationProcessSection': 'Services/Customization/ProcessSection',
-    'ManufacturingHeroSection': 'industries/Manufacturing/HeroSection',
-    'ManufacturingIndustryStatsSection': 'industries/Manufacturing/IndustryStats',
-    'ManufacturingChallengesSection': 'industries/Manufacturing/ChallengesSection',
-    'ManufacturingSolutionsSection': 'industries/Manufacturing/SolutionsSection',
-    'ManufacturingCaseStudiesSection': 'industries/Manufacturing/CaseStudies',
-    'ManufacturingImplementationProcessSection': 'industries/Manufacturing/ImplementationProcess',
-    'ManufacturingCTASection': 'industries/Manufacturing/CTASection',
-    'RetailHeroSection': 'industries/retail/HeroSection',
-    'RetailIndustryStatsSection': 'industries/retail/IndustryStats',
-    'RetailChallengesSection': 'industries/retail/ChallengesSection',
-    'RetailSolutionsSection': 'industries/retail/SolutionsSection',
-    'RetailFeaturesSection': 'industries/retail/FeaturesSection',
-    'RetailCaseStudiesSection': 'industries/retail/CaseStudiesSection',
-    'RetailImplementationSection': 'industries/retail/ImplementationSection',
-    'RetailCTASection': 'industries/retail/CTASection',
-    'AboutHeroSection': 'About/AboutHero',
-    'AboutMissionSection': 'About/AboutMission',
-    'AboutValuesSection': 'About/AboutValues',
-    'AboutTeamSection': 'About/AboutTeam',
-    'AboutJourneySection': 'About/AboutJourney',
-    'AboutMilestonesSection': 'About/AboutMilestones',
-    'AboutDifferentiatorsSection': 'About/AboutDifferentiators',
-    'AboutCTASection': 'About/AboutCTA',
+    PayrollHeroSection: "solution/payroll/PayrollHero",
+    PayrollHowItWorksSection: "solution/payroll/PayrollHowItWorks",
+    PayrollWorkflowSection: "solution/payroll/PayrollWorkflow",
+    PayrollStepperSection: "solution/payroll/PayrollStepper",
+    PayrollPainPointsSection: "solution/payroll/PayrollPainPoints",
+    PayrollFAQSection: "solution/payroll/PayrollFAQ",
+    PayrollCTASection: "solution/payroll/PayrollCTA",
+    HRHeroSection: "solution/hr/HeroSection",
+    HRModulesSection: "solution/hr/ModulesSection",
+    HRBenefitsSection: "solution/hr/BenefitsSection",
+    HRUseCasesSection: "solution/hr/UseCasesSection",
+    HRPricingSection: "solution/hr/PricingSection",
+    HRFAQSection: "solution/hr/FAQSection",
+    HRCTASection: "solution/hr/CTASection",
+    ServiceGrid: "Services/ServiceGrid",
+    ImplementationHeroSection: "Services/Implementation/HeroSection",
+    ImplementationProcessSection: "Services/Implementation/ProcessSection",
+    ImplementationWhyChooseSection: "Services/Implementation/WhyChooseSection",
+    ImplementationPricingSection: "Services/Implementation/PricingSection",
+    ImplementationCTASection: "Services/Implementation/CtaSection",
+    TrainingHeroSection: "Services/training/HeroSection",
+    TrainingProgramsSection: "Services/training/TrainingPrograms",
+    TrainingWhyChooseSection: "Services/training/WhyChooseSection",
+    IntegrationHeroSection: "Services/Integration/HeroSection",
+    IntegrationTypesSection: "Services/Integration/IntegrationTypes",
+    IntegrationBenefitsSection: "Services/Integration/BenefitsSection",
+    CustomizationHeroSection: "Services/Customization/HeroSection",
+    CustomizationServicesSection: "Services/Customization/ServicesSection",
+    CustomizationProcessSection: "Services/Customization/ProcessSection",
+    ManufacturingHeroSection: "industries/Manufacturing/HeroSection",
+    ManufacturingIndustryStatsSection: "industries/Manufacturing/IndustryStats",
+    ManufacturingChallengesSection:
+      "industries/Manufacturing/ChallengesSection",
+    ManufacturingSolutionsSection: "industries/Manufacturing/SolutionsSection",
+    ManufacturingCaseStudiesSection: "industries/Manufacturing/CaseStudies",
+    ManufacturingImplementationProcessSection:
+      "industries/Manufacturing/ImplementationProcess",
+    ManufacturingCTASection: "industries/Manufacturing/CTASection",
+    RetailHeroSection: "industries/retail/HeroSection",
+    RetailIndustryStatsSection: "industries/retail/IndustryStats",
+    RetailChallengesSection: "industries/retail/ChallengesSection",
+    RetailSolutionsSection: "industries/retail/SolutionsSection",
+    RetailFeaturesSection: "industries/retail/FeaturesSection",
+    RetailCaseStudiesSection: "industries/retail/CaseStudiesSection",
+    RetailImplementationSection: "industries/retail/ImplementationSection",
+    RetailCTASection: "industries/retail/CTASection",
+    AboutHeroSection: "About/AboutHero",
+    AboutMissionSection: "About/AboutMission",
+    AboutValuesSection: "About/AboutValues",
+    AboutTeamSection: "About/AboutTeam",
+    AboutJourneySection: "About/AboutJourney",
+    AboutMilestonesSection: "About/AboutMilestones",
+    AboutDifferentiatorsSection: "About/AboutDifferentiators",
+    AboutCTASection: "About/AboutCTA",
   };
-  
+
   return idToPathMap[componentId] || null;
 };
 
@@ -66,57 +69,98 @@ const loadComponent = async (componentPath) => {
   try {
     // Map component paths to actual components
     const componentMap = {
-      'solution/payroll/PayrollHero': () => import('./solution/payroll/PayrollHero'),
-      'solution/payroll/PayrollHowItWorks': () => import('./solution/payroll/PayrollHowItWorks'),
-      'solution/payroll/PayrollWorkflow': () => import('./solution/payroll/PayrollWorkflow'),
-      'solution/payroll/PayrollStepper': () => import('./solution/payroll/PayrollStepper'),
-      'solution/payroll/PayrollPainPoints': () => import('./solution/payroll/PayrollPainPoints'),
-      'solution/payroll/PayrollFAQ': () => import('./solution/payroll/PayrollFAQ'),
-      'solution/payroll/PayrollCTA': () => import('./solution/payroll/PayrollCTA'),
-      'solution/hr/HeroSection': () => import('./solution/hr/HeroSection'),
-      'solution/hr/ModulesSection': () => import('./solution/hr/ModulesSection'),
-      'solution/hr/BenefitsSection': () => import('./solution/hr/BenefitsSection'),
-      'solution/hr/UseCasesSection': () => import('./solution/hr/UseCasesSection'),
-      'solution/hr/PricingSection': () => import('./solution/hr/PricingSection'),
-      'solution/hr/FAQSection': () => import('./solution/hr/FAQSection'),
-      'solution/hr/CTASection': () => import('./solution/hr/CTASection'),
-      'Services/Implementation/HeroSection': () => import('./Services/Implementation/HeroSection'),
-      'Services/Implementation/ProcessSection': () => import('./Services/Implementation/ProcessSection'),
-      'Services/Implementation/WhyChooseSection': () => import('./Services/Implementation/WhyChooseSection'),
-      'Services/Implementation/PricingSection': () => import('./Services/Implementation/PricingSection'),
-      'Services/Implementation/CtaSection': () => import('./Services/Implementation/CtaSection'),
-      'Services/training/HeroSection': () => import('./Services/training/HeroSection'),
-      'Services/training/TrainingPrograms': () => import('./Services/training/TrainingPrograms'),
-      'Services/training/WhyChooseSection': () => import('./Services/training/WhyChooseSection'),
-      'Services/Integration/HeroSection': () => import('./Services/Integration/HeroSection'),
-      'Services/Integration/IntegrationTypes': () => import('./Services/Integration/IntegrationTypes'),
-      'Services/Integration/BenefitsSection': () => import('./Services/Integration/BenefitsSection'),
-      'Services/Customization/HeroSection': () => import('./Services/Customization/HeroSection'),
-      'Services/Customization/ServicesSection': () => import('./Services/Customization/ServicesSection'),
-      'Services/Customization/ProcessSection': () => import('./Services/Customization/ProcessSection'),
-      'industries/Manufacturing/HeroSection': () => import('./industries/Manufacturing/HeroSection'),
-      'industries/Manufacturing/IndustryStats': () => import('./industries/Manufacturing/IndustryStats'),
-      'industries/Manufacturing/ChallengesSection': () => import('./industries/Manufacturing/ChallengesSection'),
-      'industries/Manufacturing/SolutionsSection': () => import('./industries/Manufacturing/SolutionsSection'),
-      'industries/Manufacturing/CaseStudies': () => import('./industries/Manufacturing/CaseStudies'),
-      'industries/Manufacturing/ImplementationProcess': () => import('./industries/Manufacturing/ImplementationProcess'),
-      'industries/Manufacturing/CTASection': () => import('./industries/Manufacturing/CTASection'),
-      'industries/retail/HeroSection': () => import('./industries/retail/HeroSection'),
-      'industries/retail/IndustryStats': () => import('./industries/retail/IndustryStats'),
-      'industries/retail/ChallengesSection': () => import('./industries/retail/ChallengesSection'),
-      'industries/retail/SolutionsSection': () => import('./industries/retail/SolutionsSection'),
-      'industries/retail/FeaturesSection': () => import('./industries/retail/FeaturesSection'),
-      'industries/retail/CaseStudiesSection': () => import('./industries/retail/CaseStudiesSection'),
-      'industries/retail/ImplementationSection': () => import('./industries/retail/ImplementationSection'),
-      'industries/retail/CTASection': () => import('./industries/retail/CTASection'),
-      'About/AboutHero': () => import('./About/AboutHero'),
-      'About/AboutMission': () => import('./About/AboutMission'),
-      'About/AboutValues': () => import('./About/AboutValues'),
-      'About/AboutTeam': () => import('./About/AboutTeam'),
-      'About/AboutJourney': () => import('./About/AboutJourney'),
-      'About/AboutMilestones': () => import('./About/AboutMilestones'),
-      'About/AboutDifferentiators': () => import('./About/AboutDifferentiators'),
-      'About/AboutCTA': () => import('./About/AboutCTA'),
+      "solution/payroll/PayrollHero": () =>
+        import("./solution/payroll/PayrollHero"),
+      "solution/payroll/PayrollHowItWorks": () =>
+        import("./solution/payroll/PayrollHowItWorks"),
+      "solution/payroll/PayrollWorkflow": () =>
+        import("./solution/payroll/PayrollWorkflow"),
+      "solution/payroll/PayrollStepper": () =>
+        import("./solution/payroll/PayrollStepper"),
+      "solution/payroll/PayrollPainPoints": () =>
+        import("./solution/payroll/PayrollPainPoints"),
+      "solution/payroll/PayrollFAQ": () =>
+        import("./solution/payroll/PayrollFAQ"),
+      "solution/payroll/PayrollCTA": () =>
+        import("./solution/payroll/PayrollCTA"),
+      "solution/hr/HeroSection": () => import("./solution/hr/HeroSection"),
+      "solution/hr/ModulesSection": () =>
+        import("./solution/hr/ModulesSection"),
+      "solution/hr/BenefitsSection": () =>
+        import("./solution/hr/BenefitsSection"),
+      "solution/hr/UseCasesSection": () =>
+        import("./solution/hr/UseCasesSection"),
+      "solution/hr/PricingSection": () =>
+        import("./solution/hr/PricingSection"),
+      "solution/hr/FAQSection": () => import("./solution/hr/FAQSection"),
+      "solution/hr/CTASection": () => import("./solution/hr/CTASection"),
+      "Services/Implementation/HeroSection": () =>
+        import("./Services/Implementation/HeroSection"),
+      "Services/Implementation/ProcessSection": () =>
+        import("./Services/Implementation/ProcessSection"),
+      "Services/Implementation/WhyChooseSection": () =>
+        import("./Services/Implementation/WhyChooseSection"),
+      "Services/Implementation/PricingSection": () =>
+        import("./Services/Implementation/PricingSection"),
+      "Services/Implementation/CtaSection": () =>
+        import("./Services/Implementation/CtaSection"),
+      "Services/training/HeroSection": () =>
+        import("./Services/training/HeroSection"),
+      "Services/training/TrainingPrograms": () =>
+        import("./Services/training/TrainingPrograms"),
+      "Services/training/WhyChooseSection": () =>
+        import("./Services/training/WhyChooseSection"),
+      "Services/Integration/HeroSection": () =>
+        import("./Services/Integration/HeroSection"),
+      "Services/Integration/IntegrationTypes": () =>
+        import("./Services/Integration/IntegrationTypes"),
+      "Services/Integration/BenefitsSection": () =>
+        import("./Services/Integration/BenefitsSection"),
+      "Services/Customization/HeroSection": () =>
+        import("./Services/Customization/HeroSection"),
+      "Services/Customization/ServicesSection": () =>
+        import("./Services/Customization/ServicesSection"),
+      "Services/Customization/ProcessSection": () =>
+        import("./Services/Customization/ProcessSection"),
+      "industries/Manufacturing/HeroSection": () =>
+        import("./industries/Manufacturing/HeroSection"),
+      "industries/Manufacturing/IndustryStats": () =>
+        import("./industries/Manufacturing/IndustryStats"),
+      "industries/Manufacturing/ChallengesSection": () =>
+        import("./industries/Manufacturing/ChallengesSection"),
+      "industries/Manufacturing/SolutionsSection": () =>
+        import("./industries/Manufacturing/SolutionsSection"),
+      "industries/Manufacturing/CaseStudies": () =>
+        import("./industries/Manufacturing/CaseStudies"),
+      "industries/Manufacturing/ImplementationProcess": () =>
+        import("./industries/Manufacturing/ImplementationProcess"),
+      "industries/Manufacturing/CTASection": () =>
+        import("./industries/Manufacturing/CTASection"),
+      "industries/retail/HeroSection": () =>
+        import("./industries/retail/HeroSection"),
+      "industries/retail/IndustryStats": () =>
+        import("./industries/retail/IndustryStats"),
+      "industries/retail/ChallengesSection": () =>
+        import("./industries/retail/ChallengesSection"),
+      "industries/retail/SolutionsSection": () =>
+        import("./industries/retail/SolutionsSection"),
+      "industries/retail/FeaturesSection": () =>
+        import("./industries/retail/FeaturesSection"),
+      "industries/retail/CaseStudiesSection": () =>
+        import("./industries/retail/CaseStudiesSection"),
+      "industries/retail/ImplementationSection": () =>
+        import("./industries/retail/ImplementationSection"),
+      "industries/retail/CTASection": () =>
+        import("./industries/retail/CTASection"),
+      "About/AboutHero": () => import("./About/AboutHero"),
+      "About/AboutMission": () => import("./About/AboutMission"),
+      "About/AboutValues": () => import("./About/AboutValues"),
+      "About/AboutTeam": () => import("./About/AboutTeam"),
+      "About/AboutJourney": () => import("./About/AboutJourney"),
+      "About/AboutMilestones": () => import("./About/AboutMilestones"),
+      "About/AboutDifferentiators": () =>
+        import("./About/AboutDifferentiators"),
+      "About/AboutCTA": () => import("./About/AboutCTA"),
     };
 
     const loader = componentMap[componentPath];
@@ -145,54 +189,65 @@ const DynamicPageRenderer = () => {
         setLoading(true);
         setError(null);
 
-        // Add cache-busting to ensure fresh data
-        const timestamp = Date.now();
-        const response = await fetch(`http://localhost:3001/api/pages/${slug}?_t=${timestamp}`, {
-          cache: 'no-store',
-          headers: {
-            'Cache-Control': 'no-cache, no-store, must-revalidate',
-            'Pragma': 'no-cache',
-            'Expires': '0'
-          }
-        });
-        
-        if (!response.ok) {
-          if (response.status === 404) {
-            setError('Page not found');
-          } else {
-            throw new Error('Failed to fetch page');
-          }
+        // Use the pagesAPI to fetch page by slug
+        // First try to search pages by slug, then get the specific page
+        const searchResults = await pagesAPI.searchPages(slug);
+        const foundPage = searchResults.find((page) => page.slug === slug);
+
+        if (!foundPage) {
+          setError("Page not found");
           return;
         }
 
-        const data = await response.json();
-        const pageData = data.data;
-        setPageData(pageData); // Extract the actual page data from the response
-        
+        const pageData = await pagesAPI.getPageById(foundPage.id);
+        setPageData(pageData);
+
         // Load components for each section (support both old sections format and new components format)
         const sectionsToRender = pageData.sections || pageData.components || [];
-        
+
         if (sectionsToRender.length > 0) {
-          const componentPromises = sectionsToRender.map(async (section, index) => {
-            // Handle new components format
-            if (pageData.components) {
-              const componentPath = getComponentPathFromId(section.componentType);
+          const componentPromises = sectionsToRender.map(
+            async (section, index) => {
+              // Handle new components format
+              if (pageData.components) {
+                const componentPath = getComponentPathFromId(
+                  section.componentType
+                );
+                if (componentPath) {
+                  const Component = await loadComponent(componentPath);
+                  return {
+                    sectionId: `component-${index}`,
+                    Component,
+                    sectionData: section,
+                  };
+                }
+                return {
+                  sectionId: `component-${index}`,
+                  Component: null,
+                  sectionData: section,
+                };
+              }
+
+              // Handle old sections format
+              const componentPath =
+                section.componentPath ||
+                getComponentPathFromId(section.componentId);
               if (componentPath) {
                 const Component = await loadComponent(componentPath);
-                return { sectionId: `component-${index}`, Component, sectionData: section };
+                return {
+                  sectionId: section.uid,
+                  Component,
+                  sectionData: section,
+                };
               }
-              return { sectionId: `component-${index}`, Component: null, sectionData: section };
+              return {
+                sectionId: section.uid,
+                Component: null,
+                sectionData: section,
+              };
             }
-            
-            // Handle old sections format
-            const componentPath = section.componentPath || getComponentPathFromId(section.componentId);
-            if (componentPath) {
-              const Component = await loadComponent(componentPath);
-              return { sectionId: section.uid, Component, sectionData: section };
-            }
-            return { sectionId: section.uid, Component: null, sectionData: section };
-          });
-          
+          );
+
           const loadedComponents = await Promise.all(componentPromises);
           const componentMap = {};
           loadedComponents.forEach(({ sectionId, Component, sectionData }) => {
@@ -222,11 +277,11 @@ const DynamicPageRenderer = () => {
       }
     };
 
-    window.addEventListener('pageDataUpdated', handlePageDataUpdate);
+    window.addEventListener("pageDataUpdated", handlePageDataUpdate);
 
     // Cleanup event listener
     return () => {
-      window.removeEventListener('pageDataUpdated', handlePageDataUpdate);
+      window.removeEventListener("pageDataUpdated", handlePageDataUpdate);
     };
   }, [slug]);
 
@@ -246,10 +301,14 @@ const DynamicPageRenderer = () => {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="text-red-600 text-6xl mb-4">404</div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Page Not Found</h1>
-          <p className="text-gray-600 mb-4">The page "{slug}" could not be found.</p>
-          <a 
-            href="/" 
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+            Page Not Found
+          </h1>
+          <p className="text-gray-600 mb-4">
+            The page "{slug}" could not be found.
+          </p>
+          <a
+            href="/"
             className="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
           >
             Go Home
@@ -273,438 +332,438 @@ const DynamicPageRenderer = () => {
   const transformProps = (componentId, props) => {
     switch (componentId) {
       // ========== PAYROLL COMPONENTS ==========
-      case 'PayrollHeroSection':
+      case "PayrollHeroSection":
         return {
           title: props.title,
           subtitle: props.subtitle,
           bgColor: props.bgColor,
           bgVideo: props.bgVideo,
-          onCtaClick: props.onCtaClick
+          onCtaClick: props.onCtaClick,
         };
-      case 'PayrollWorkflowSection':
+      case "PayrollWorkflowSection":
         return {
           workflowData: {
             title: props.title,
             description: props.subtitle,
-            steps: props.workflow || props.steps
-          }
+            steps: props.workflow || props.steps,
+          },
         };
-      case 'PayrollStepperSection':
+      case "PayrollStepperSection":
         return {
-          steps: props.steps || []
+          steps: props.steps || [],
         };
-      case 'PayrollHowItWorksSection':
+      case "PayrollHowItWorksSection":
         return {
           data: {
             title: props.title,
             description: props.subtitle,
-            steps: props.steps || []
-          }
+            steps: props.steps || [],
+          },
         };
-      case 'PayrollPainPointsSection':
+      case "PayrollPainPointsSection":
         return {
-          painPoints: props.painPoints || []
+          painPoints: props.painPoints || [],
         };
-      case 'PayrollFAQSection':
+      case "PayrollFAQSection":
         return {
           faqData: {
             title: props.title,
-            items: props.faqs || props.items || []
-          }
+            items: props.faqs || props.items || [],
+          },
         };
-      case 'PayrollCTASection':
+      case "PayrollCTASection":
         return {
           ctaData: props.cta || {
             title: props.title,
             description: props.subtitle,
-            buttonText: props.buttonText
-          }
+            buttonText: props.buttonText,
+          },
         };
 
       // ========== HR COMPONENTS ==========
-      case 'HRHeroSection':
+      case "HRHeroSection":
         return {
           data: {
             hero: {
               title: props.title,
               subtitle: props.subtitle,
               bgVideo: props.bgVideo,
-              bgColor: props.bgColor
-            }
-          }
+              bgColor: props.bgColor,
+            },
+          },
         };
-      case 'HRModulesSection':
+      case "HRModulesSection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            modules: props.modules || props.features || []
-          }
+            modules: props.modules || props.features || [],
+          },
         };
-      case 'HRBenefitsSection':
+      case "HRBenefitsSection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            benefits: props.benefits || []
-          }
+            benefits: props.benefits || [],
+          },
         };
-      case 'HRUseCasesSection':
+      case "HRUseCasesSection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            useCases: props.useCases || []
-          }
+            useCases: props.useCases || [],
+          },
         };
-      case 'HRPricingSection':
+      case "HRPricingSection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
             description: props.description,
-            pricing: props.plans || [] // Transform 'plans' to 'pricing'
-          }
+            pricing: props.plans || [], // Transform 'plans' to 'pricing'
+          },
         };
-      case 'HRFAQSection':
+      case "HRFAQSection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            faqs: props.faqs || []
-          }
+            faqs: props.faqs || [],
+          },
         };
-      case 'HRCTASection':
+      case "HRCTASection":
         return {
           data: {
             cta: {
               title: props.title,
               description: props.subtitle,
-              buttonText: props.buttonText
-            }
-          }
+              buttonText: props.buttonText,
+            },
+          },
         };
 
       // ========== SERVICE COMPONENTS ==========
-      case 'ServiceGrid':
+      case "ServiceGrid":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle || props.description,
-            services: props.services || []
-          }
+            services: props.services || [],
+          },
         };
 
       // ========== IMPLEMENTATION COMPONENTS ==========
-      case 'ImplementationHeroSection':
+      case "ImplementationHeroSection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
             bgVideo: props.bgVideo,
-            ctaButton: props.ctaButton
-          }
+            ctaButton: props.ctaButton,
+          },
         };
-      case 'ImplementationProcessSection':
+      case "ImplementationProcessSection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            steps: props.steps || []
-          }
+            steps: props.steps || [],
+          },
         };
-      case 'ImplementationWhyChooseSection':
+      case "ImplementationWhyChooseSection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            features: props.features || []
-          }
+            features: props.features || [],
+          },
         };
-      case 'ImplementationPricingSection':
+      case "ImplementationPricingSection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
             description: props.description,
-            plans: props.plans || []
-          }
+            plans: props.plans || [],
+          },
         };
-      case 'ImplementationCTASection':
+      case "ImplementationCTASection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            ctaButton: props.ctaButton
-          }
+            ctaButton: props.ctaButton,
+          },
         };
 
       // ========== TRAINING COMPONENTS ==========
-      case 'TrainingHeroSection':
+      case "TrainingHeroSection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            ctaButton: props.ctaButton
-          }
+            ctaButton: props.ctaButton,
+          },
         };
-      case 'TrainingProgramsSection':
+      case "TrainingProgramsSection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            programs: props.programs || []
-          }
+            programs: props.programs || [],
+          },
         };
-      case 'TrainingWhyChooseSection':
+      case "TrainingWhyChooseSection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            features: props.features || []
-          }
+            features: props.features || [],
+          },
         };
 
       // ========== INTEGRATION COMPONENTS ==========
-      case 'IntegrationHeroSection':
+      case "IntegrationHeroSection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            ctaButton: props.ctaButton
-          }
+            ctaButton: props.ctaButton,
+          },
         };
-      case 'IntegrationTypesSection':
+      case "IntegrationTypesSection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            types: props.types || []
-          }
+            types: props.types || [],
+          },
         };
-      case 'IntegrationBenefitsSection':
+      case "IntegrationBenefitsSection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            benefits: props.benefits || []
-          }
+            benefits: props.benefits || [],
+          },
         };
 
       // ========== CUSTOMIZATION COMPONENTS ==========
-      case 'CustomizationHeroSection':
+      case "CustomizationHeroSection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            ctaButton: props.ctaButton
-          }
+            ctaButton: props.ctaButton,
+          },
         };
-      case 'CustomizationServicesSection':
+      case "CustomizationServicesSection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            services: props.services || []
-          }
+            services: props.services || [],
+          },
         };
-      case 'CustomizationProcessSection':
+      case "CustomizationProcessSection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            steps: props.steps || []
-          }
+            steps: props.steps || [],
+          },
         };
 
       // ========== MANUFACTURING COMPONENTS ==========
-      case 'ManufacturingHeroSection':
+      case "ManufacturingHeroSection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            ctaButton: props.ctaButton
-          }
+            ctaButton: props.ctaButton,
+          },
         };
-      case 'ManufacturingIndustryStatsSection':
+      case "ManufacturingIndustryStatsSection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            stats: props.stats || []
-          }
+            stats: props.stats || [],
+          },
         };
-      case 'ManufacturingChallengesSection':
+      case "ManufacturingChallengesSection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            challenges: props.challenges || []
-          }
+            challenges: props.challenges || [],
+          },
         };
-      case 'ManufacturingSolutionsSection':
+      case "ManufacturingSolutionsSection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            solutions: props.solutions || []
-          }
+            solutions: props.solutions || [],
+          },
         };
-      case 'ManufacturingCaseStudiesSection':
+      case "ManufacturingCaseStudiesSection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            caseStudies: props.caseStudies || []
-          }
+            caseStudies: props.caseStudies || [],
+          },
         };
-      case 'ManufacturingImplementationProcessSection':
+      case "ManufacturingImplementationProcessSection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            steps: props.steps || []
-          }
+            steps: props.steps || [],
+          },
         };
-      case 'ManufacturingCTASection':
+      case "ManufacturingCTASection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            ctaButton: props.ctaButton
-          }
+            ctaButton: props.ctaButton,
+          },
         };
 
       // ========== RETAIL COMPONENTS ==========
-      case 'RetailHeroSection':
+      case "RetailHeroSection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            ctaButton: props.ctaButton
-          }
+            ctaButton: props.ctaButton,
+          },
         };
-      case 'RetailIndustryStatsSection':
+      case "RetailIndustryStatsSection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            stats: props.stats || []
-          }
+            stats: props.stats || [],
+          },
         };
-      case 'RetailChallengesSection':
+      case "RetailChallengesSection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            challenges: props.challenges || []
-          }
+            challenges: props.challenges || [],
+          },
         };
-      case 'RetailSolutionsSection':
+      case "RetailSolutionsSection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            solutions: props.solutions || []
-          }
+            solutions: props.solutions || [],
+          },
         };
-      case 'RetailFeaturesSection':
+      case "RetailFeaturesSection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            features: props.features || []
-          }
+            features: props.features || [],
+          },
         };
-      case 'RetailCaseStudiesSection':
+      case "RetailCaseStudiesSection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            caseStudies: props.caseStudies || []
-          }
+            caseStudies: props.caseStudies || [],
+          },
         };
-      case 'RetailImplementationSection':
+      case "RetailImplementationSection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            steps: props.steps || []
-          }
+            steps: props.steps || [],
+          },
         };
-      case 'RetailCTASection':
+      case "RetailCTASection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            ctaButton: props.ctaButton
-          }
+            ctaButton: props.ctaButton,
+          },
         };
 
       // ========== ABOUT COMPONENTS ==========
-      case 'AboutHeroSection':
+      case "AboutHeroSection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            ctaButton: props.ctaButton
-          }
+            ctaButton: props.ctaButton,
+          },
         };
-      case 'AboutMissionSection':
+      case "AboutMissionSection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            description: props.description
-          }
+            description: props.description,
+          },
         };
-      case 'AboutValuesSection':
+      case "AboutValuesSection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            values: props.values || []
-          }
+            values: props.values || [],
+          },
         };
-      case 'AboutTeamSection':
+      case "AboutTeamSection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            team: props.team || []
-          }
+            team: props.team || [],
+          },
         };
-      case 'AboutJourneySection':
+      case "AboutJourneySection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            timeline: props.timeline || []
-          }
+            timeline: props.timeline || [],
+          },
         };
-      case 'AboutMilestonesSection':
+      case "AboutMilestonesSection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            milestones: props.milestones || []
-          }
+            milestones: props.milestones || [],
+          },
         };
-      case 'AboutDifferentiatorsSection':
+      case "AboutDifferentiatorsSection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            differentiators: props.differentiators || []
-          }
+            differentiators: props.differentiators || [],
+          },
         };
-      case 'AboutCTASection':
+      case "AboutCTASection":
         return {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            ctaButton: props.ctaButton
-          }
+            ctaButton: props.ctaButton,
+          },
         };
 
       // ========== DEFAULT CASE ==========
@@ -712,7 +771,7 @@ const DynamicPageRenderer = () => {
         // For unknown components, try to pass props in a generic data structure
         return {
           data: props,
-          ...props
+          ...props,
         };
     }
   };
@@ -721,22 +780,28 @@ const DynamicPageRenderer = () => {
   const renderSection = (section, index) => {
     const sectionId = pageData.components ? `component-${index}` : section.uid;
     const componentData = loadedComponents[sectionId];
-    
+
     if (componentData && componentData.Component) {
       const { Component, sectionData } = componentData;
-      
+
       // Handle new components format
       if (pageData.components) {
         const componentProps = JSON.parse(section.contentJson);
-        const transformedProps = transformProps(section.componentType, componentProps);
+        const transformedProps = transformProps(
+          section.componentType,
+          componentProps
+        );
         return <Component key={sectionId} {...transformedProps} />;
       }
-      
+
       // Handle old sections format
-      const transformedProps = transformProps(section.componentId, section.props);
+      const transformedProps = transformProps(
+        section.componentId,
+        section.props
+      );
       return <Component key={sectionId} {...transformedProps} />;
     }
-    
+
     // Fallback: render a placeholder if component couldn't be loaded
     return (
       <div key={sectionId} className="mb-8">
@@ -748,11 +813,14 @@ const DynamicPageRenderer = () => {
                 {pageData.components ? section.componentName : section.name}
               </h2>
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                {pageData.components ? section.componentType : section.componentId} (Component not found)
+                {pageData.components
+                  ? section.componentType
+                  : section.componentId}{" "}
+                (Component not found)
               </p>
             </div>
           </div>
-          
+
           {/* Render section content based on props */}
           <div className="space-y-4">
             {pageData.components ? (
@@ -773,94 +841,99 @@ const DynamicPageRenderer = () => {
                     {section.props.title}
                   </h3>
                 )}
-                
+
                 {section.props?.subtitle && (
                   <p className="text-gray-600 dark:text-gray-300">
                     {section.props.subtitle}
                   </p>
                 )}
-                
+
                 {section.props?.description && (
                   <p className="text-gray-600 dark:text-gray-300">
                     {section.props.description}
                   </p>
                 )}
-            
-            {/* Render arrays like features, steps, etc. */}
-            {section.props?.features && Array.isArray(section.props.features) && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {section.props.features.map((feature, idx) => (
-                  <div key={idx} className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-                    <h4 className="font-medium text-gray-900 dark:text-white mb-2">
-                      {feature.title || feature.name}
-                    </h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-300">
-                      {feature.description}
-                    </p>
+
+                {/* Render arrays like features, steps, etc. */}
+                {section.props?.features &&
+                  Array.isArray(section.props.features) && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {section.props.features.map((feature, idx) => (
+                        <div
+                          key={idx}
+                          className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg"
+                        >
+                          <h4 className="font-medium text-gray-900 dark:text-white mb-2">
+                            {feature.title || feature.name}
+                          </h4>
+                          <p className="text-sm text-gray-600 dark:text-gray-300">
+                            {feature.description}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                {/* Render workflow arrays */}
+                {section.props?.workflow &&
+                  Array.isArray(section.props.workflow) && (
+                    <div className="space-y-3">
+                      {section.props.workflow.map((item, idx) => (
+                        <div key={idx} className="flex items-start space-x-3">
+                          <div className="flex-shrink-0 w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center text-sm font-medium">
+                            {item.step || idx + 1}
+                          </div>
+                          <div>
+                            <h4 className="font-medium text-gray-900 dark:text-white">
+                              {item.title}
+                            </h4>
+                            <p className="text-sm text-gray-600 dark:text-gray-300">
+                              {item.description}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                {section.props?.steps && Array.isArray(section.props.steps) && (
+                  <div className="space-y-3">
+                    {section.props.steps.map((step, idx) => (
+                      <div key={idx} className="flex items-start space-x-3">
+                        <div className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-medium">
+                          {step.number || step.step || idx + 1}
+                        </div>
+                        <div>
+                          <h4 className="font-medium text-gray-900 dark:text-white">
+                            {step.title}
+                          </h4>
+                          <p className="text-sm text-gray-600 dark:text-gray-300">
+                            {step.description}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            )}
-            
-            {/* Render workflow arrays */}
-            {section.props?.workflow && Array.isArray(section.props.workflow) && (
-              <div className="space-y-3">
-                {section.props.workflow.map((item, idx) => (
-                  <div key={idx} className="flex items-start space-x-3">
-                    <div className="flex-shrink-0 w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center text-sm font-medium">
-                      {item.step || idx + 1}
-                    </div>
-                    <div>
-                      <h4 className="font-medium text-gray-900 dark:text-white">
-                        {item.title}
-                      </h4>
-                      <p className="text-sm text-gray-600 dark:text-gray-300">
-                        {item.description}
-                      </p>
-                    </div>
+                )}
+
+                {section.props?.ctaText && (
+                  <div className="pt-4">
+                    <button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                      {section.props.ctaText}
+                    </button>
                   </div>
-                ))}
-              </div>
-            )}
-            
-            {section.props?.steps && Array.isArray(section.props.steps) && (
-              <div className="space-y-3">
-                {section.props.steps.map((step, idx) => (
-                  <div key={idx} className="flex items-start space-x-3">
-                    <div className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-medium">
-                      {step.number || step.step || idx + 1}
-                    </div>
-                    <div>
-                      <h4 className="font-medium text-gray-900 dark:text-white">
-                        {step.title}
-                      </h4>
-                      <p className="text-sm text-gray-600 dark:text-gray-300">
-                        {step.description}
-                      </p>
-                    </div>
+                )}
+
+                {/* Background Image */}
+                {section.props?.backgroundImage && (
+                  <div className="mt-4">
+                    <img
+                      src={section.props.backgroundImage}
+                      alt={section.props.title || section.name}
+                      className="w-full h-64 object-cover rounded-lg"
+                    />
                   </div>
-                ))}
-              </div>
-            )}
-            
-            {section.props?.ctaText && (
-              <div className="pt-4">
-                <button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-                  {section.props.ctaText}
-                </button>
-              </div>
-            )}
-            
-            {/* Background Image */}
-            {section.props?.backgroundImage && (
-              <div className="mt-4">
-                <img 
-                  src={section.props.backgroundImage} 
-                  alt={section.props.title || section.name}
-                  className="w-full h-64 object-cover rounded-lg"
-                />
-              </div>
-            )}
+                )}
               </>
             )}
           </div>
@@ -872,8 +945,11 @@ const DynamicPageRenderer = () => {
   return (
     <div>
       {/* Render sections directly without any wrapper - let each component handle its own styling */}
-      {(pageData.sections && pageData.sections.length > 0) || (pageData.components && pageData.components.length > 0) ? (
-        (pageData.components || pageData.sections).map((section, index) => renderSection(section, index))
+      {(pageData.sections && pageData.sections.length > 0) ||
+      (pageData.components && pageData.components.length > 0) ? (
+        (pageData.components || pageData.sections).map((section, index) =>
+          renderSection(section, index)
+        )
       ) : (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
           <div className="text-center py-12">

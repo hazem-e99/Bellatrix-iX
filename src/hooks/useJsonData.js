@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from "react";
 
-const API_BASE_URL = 'http://localhost:3001/api';
+const API_BASE_URL = "http://bellatrix.runasp.net/api";
 
 // Custom hook for fetching and managing JSON data
 export const useJsonData = (filename = null) => {
@@ -9,65 +9,75 @@ export const useJsonData = (filename = null) => {
   const [error, setError] = useState(null);
   const [lastModified, setLastModified] = useState(null);
 
-  const fetchData = useCallback(async (targetFilename = filename) => {
-    if (!targetFilename) return;
+  const fetchData = useCallback(
+    async (targetFilename = filename) => {
+      if (!targetFilename) return;
 
-    setLoading(true);
-    setError(null);
+      setLoading(true);
+      setError(null);
 
-    try {
-      const response = await fetch(`${API_BASE_URL}/data/${targetFilename}`);
-      
-      if (!response.ok) {
-        throw new Error(`Failed to fetch ${targetFilename}: ${response.statusText}`);
+      try {
+        const response = await fetch(`${API_BASE_URL}/data/${targetFilename}`);
+
+        if (!response.ok) {
+          throw new Error(
+            `Failed to fetch ${targetFilename}: ${response.statusText}`
+          );
+        }
+
+        const result = await response.json();
+        setData(result.data);
+        setLastModified(result.lastModified);
+      } catch (err) {
+        console.error("Error fetching data:", err);
+        setError(err.message);
+        setData(null);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [filename]
+  );
+
+  const updateData = useCallback(
+    async (newData, targetFilename = filename) => {
+      if (!targetFilename) {
+        setError("No filename specified for update");
+        return false;
       }
 
-      const result = await response.json();
-      setData(result.data);
-      setLastModified(result.lastModified);
-    } catch (err) {
-      console.error('Error fetching data:', err);
-      setError(err.message);
-      setData(null);
-    } finally {
-      setLoading(false);
-    }
-  }, [filename]);
+      setLoading(true);
+      setError(null);
 
-  const updateData = useCallback(async (newData, targetFilename = filename) => {
-    if (!targetFilename) {
-      setError('No filename specified for update');
-      return false;
-    }
+      try {
+        const response = await fetch(`${API_BASE_URL}/data/${targetFilename}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ data: newData }),
+        });
 
-    setLoading(true);
-    setError(null);
+        if (!response.ok) {
+          throw new Error(
+            `Failed to update ${targetFilename}: ${response.statusText}`
+          );
+        }
 
-    try {
-      const response = await fetch(`${API_BASE_URL}/data/${targetFilename}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ data: newData }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`Failed to update ${targetFilename}: ${response.statusText}`);
+        const result = await response.json();
+        setData(newData);
+        setLastModified(result.timestamp);
+        return true;
+      } catch (err) {
+        console.error("Error updating data:", err);
+        setError(err.message);
+        return false;
+      } finally {
+        setLoading(false);
       }
-
-      const result = await response.json();
-      setData(newData);
-      setLastModified(result.timestamp);
-      return true;
-    } catch (err) {
-      console.error('Error updating data:', err);
-      setError(err.message);
-      return false;
-    } finally {
-      setLoading(false);
-    }
-  }, [filename]);
+    },
+    [filename]
+  );
 
   useEffect(() => {
     if (filename) {
@@ -82,7 +92,7 @@ export const useJsonData = (filename = null) => {
     lastModified,
     refetch: fetchData,
     updateData,
-    setData // For optimistic updates
+    setData, // For optimistic updates
   };
 };
 
@@ -98,7 +108,7 @@ export const useDataFileList = () => {
 
     try {
       const response = await fetch(`${API_BASE_URL}/data`);
-      
+
       if (!response.ok) {
         throw new Error(`Failed to fetch file list: ${response.statusText}`);
       }
@@ -106,7 +116,7 @@ export const useDataFileList = () => {
       const result = await response.json();
       setFiles(result);
     } catch (err) {
-      console.error('Error fetching file list:', err);
+      console.error("Error fetching file list:", err);
       setError(err.message);
       setFiles([]);
     } finally {
@@ -122,7 +132,7 @@ export const useDataFileList = () => {
     files,
     loading,
     error,
-    refetch: fetchFiles
+    refetch: fetchFiles,
   };
 };
 
@@ -133,34 +143,36 @@ export const useRealTimeUpdates = (onDataUpdated) => {
 
   useEffect(() => {
     // Only import socket.io client in the browser
-    import('socket.io-client').then(({ io }) => {
-      const newSocket = io('http://localhost:3001');
-      
-      newSocket.on('connect', () => {
-        console.log('Connected to real-time updates');
-        setConnected(true);
+    import("socket.io-client")
+      .then(({ io }) => {
+        const newSocket = io("http://localhost:3001");
+
+        newSocket.on("connect", () => {
+          console.log("Connected to real-time updates");
+          setConnected(true);
+        });
+
+        newSocket.on("disconnect", () => {
+          console.log("Disconnected from real-time updates");
+          setConnected(false);
+        });
+
+        newSocket.on("dataUpdated", (update) => {
+          console.log("Data updated:", update);
+          if (onDataUpdated) {
+            onDataUpdated(update);
+          }
+        });
+
+        setSocket(newSocket);
+
+        return () => {
+          newSocket.disconnect();
+        };
+      })
+      .catch((err) => {
+        console.warn("Socket.IO not available:", err);
       });
-
-      newSocket.on('disconnect', () => {
-        console.log('Disconnected from real-time updates');
-        setConnected(false);
-      });
-
-      newSocket.on('dataUpdated', (update) => {
-        console.log('Data updated:', update);
-        if (onDataUpdated) {
-          onDataUpdated(update);
-        }
-      });
-
-      setSocket(newSocket);
-
-      return () => {
-        newSocket.disconnect();
-      };
-    }).catch(err => {
-      console.warn('Socket.IO not available:', err);
-    });
   }, [onDataUpdated]);
 
   useEffect(() => {
@@ -173,7 +185,7 @@ export const useRealTimeUpdates = (onDataUpdated) => {
 
   return {
     connected,
-    socket
+    socket,
   };
 };
 
