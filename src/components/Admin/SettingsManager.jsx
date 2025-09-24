@@ -527,9 +527,9 @@ const SettingsManager = () => {
             </Card>
 
             {/* Quick Actions */}
-            <Card className="mt-4">
+            <Card className="mt-4 bg-gray-800 border border-gray-600">
               <CardContent>
-                <Typography variant="h6" gutterBottom>
+                <Typography variant="h6" gutterBottom className="text-white">
                   Quick Actions
                 </Typography>
                 <div className="space-y-2">
@@ -537,6 +537,7 @@ const SettingsManager = () => {
                     fullWidth
                     variant="outlined"
                     onClick={() => window.location.reload()}
+                    className="border-gray-600 text-gray-300 hover:border-white/60 hover:text-white hover:bg-gray-700 rounded-xl"
                   >
                     Refresh Dashboard
                   </Button>
@@ -544,6 +545,7 @@ const SettingsManager = () => {
                     fullWidth
                     variant="outlined"
                     onClick={() => localStorage.clear()}
+                    className="border-gray-600 text-gray-300 hover:border-white/60 hover:text-white hover:bg-gray-700 rounded-xl"
                   >
                     Clear Cache
                   </Button>
@@ -556,6 +558,7 @@ const SettingsManager = () => {
                         // Reset logic here
                       }
                     }}
+                    className="border-red-600 text-red-400 hover:border-red-500 hover:text-white hover:bg-red-600/10 rounded-xl"
                   >
                     Reset to Defaults
                   </Button>

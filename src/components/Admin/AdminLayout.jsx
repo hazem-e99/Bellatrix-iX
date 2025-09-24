@@ -86,13 +86,7 @@ const AdminLayout = () => {
       active: location.pathname.startsWith("/admin/pages"),
       description: "Content Management",
     },
-    {
-      text: "Templates",
-      icon: <TemplatesIcon />,
-      path: "/admin/templates",
-      active: location.pathname.startsWith("/admin/templates"),
-      description: "Design Templates",
-    },
+    
     {
       text: "Settings",
       icon: <SettingsIcon />,
@@ -108,21 +102,21 @@ const AdminLayout = () => {
   };
 
   const drawer = (
-    <div className="h-full bg-gradient-to-b from-gray-800 to-gray-850 border-r border-gray-700/50 backdrop-blur-sm">
+    <div className="h-full border-r border-gray-800" style={{ backgroundColor: '#001038' }}>
       {/* Logo Section */}
-      <div className="px-6 py-8 border-b border-gray-700/50 bg-gradient-to-r from-gray-800 to-gray-750">
+      <div className="px-6 py-8 border-b border-gray-800" style={{ backgroundColor: '#001038' }}>
         <div className="flex items-center space-x-3">
-          <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+          <div className="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center shadow">
             <span className="text-white font-bold text-xl">B</span>
           </div>
           <div>
             <Typography
               variant="h6"
-              className="text-white font-bold text-xl bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent"
+              className="text-white font-bold text-xl"
             >
               Bellatrix
             </Typography>
-            <Typography variant="caption" className="text-gray-400 font-medium">
+            <Typography variant="caption" className="text-gray-300 font-medium">
               Admin Panel
             </Typography>
           </div>
@@ -143,10 +137,10 @@ const AdminLayout = () => {
             <ListItem key={item.text} disablePadding>
               <ListItemButton
                 onClick={() => navigate(item.path)}
-                className={`rounded-2xl mx-2 transition-all duration-300 transform hover:scale-105 ${
+              className={`rounded-2xl mx-2 transition-all duration-200 ${
                   item.active
-                    ? "bg-gradient-to-r from-blue-500/20 to-purple-600/20 text-blue-300 shadow-lg border border-blue-500/30 backdrop-blur-sm"
-                    : "text-gray-300 hover:bg-gray-700/50 hover:text-white"
+                  ? "bg-[#0b163a] text-blue-300 shadow border border-gray-700"
+                  : "text-gray-300 hover:bg-white/10 hover:text-white"
                 }`}
                 sx={{
                   minHeight: 64,
@@ -195,17 +189,17 @@ const AdminLayout = () => {
 
       {/* Quick Actions */}
       <div className="absolute bottom-6 left-4 right-4">
-        <div className="bg-gradient-to-br from-gray-700/50 to-gray-600/50 rounded-2xl p-5 border border-gray-600/50 backdrop-blur-sm">
+        <div className="rounded-2xl p-5 border border-gray-700" style={{ backgroundColor: '#0b163a' }}>
           <Typography
             variant="caption"
-            className="text-gray-300 font-semibold block mb-4 uppercase tracking-wider"
+            className="text-gray-200 font-semibold block mb-4 uppercase tracking-wider"
           >
             Quick Actions
           </Typography>
           <div className="space-y-3">
             <button
               onClick={() => navigate("/")}
-              className="flex items-center space-x-3 text-gray-300 hover:text-blue-400 transition-all duration-300 w-full text-left p-3 rounded-xl hover:bg-gray-600/50 transform hover:scale-105"
+              className="flex items-center space-x-3 text-gray-300 hover:text-white transition-all duration-200 w-full text-left p-3 rounded-xl hover:bg-white/10"
             >
               <HomeIcon fontSize="small" />
               <span className="text-sm font-medium">View Live Site</span>

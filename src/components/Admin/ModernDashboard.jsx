@@ -2,7 +2,6 @@ import React from "react";
 import { motion } from "framer-motion";
 import {
   DocumentTextIcon,
-  ViewColumnsIcon,
   EyeIcon,
   ClockIcon,
   ArrowTrendingUpIcon,
@@ -27,15 +26,7 @@ const ModernDashboard = () => {
       icon: DocumentTextIcon,
       color: "blue",
     },
-    {
-      id: 2,
-      name: "Templates",
-      value: "8",
-      change: "+2",
-      changeType: "increase",
-      icon: ViewColumnsIcon,
-      color: "purple",
-    },
+    
     {
       id: 3,
       name: "Page Views",
@@ -65,14 +56,7 @@ const ModernDashboard = () => {
       time: "2 minutes ago",
       type: "create",
     },
-    {
-      id: 2,
-      action: "Template updated",
-      item: "Hero Section",
-      user: "Admin",
-      time: "1 hour ago",
-      type: "update",
-    },
+    
     {
       id: 3,
       action: "Page published",
@@ -100,14 +84,7 @@ const ModernDashboard = () => {
       action: "/admin/pages/new",
       color: "blue",
     },
-    {
-      id: 2,
-      name: "Upload Template",
-      description: "Add a new template design",
-      icon: ViewColumnsIcon,
-      action: "/admin/templates/new",
-      color: "purple",
-    },
+    
     {
       id: 3,
       name: "View Site",
@@ -129,28 +106,28 @@ const ModernDashboard = () => {
   const getColorClasses = (color) => {
     const colors = {
       blue: {
-        bg: "bg-gradient-to-br from-blue-50 to-blue-100",
+        bg: "bg-blue-100",
         text: "text-blue-600",
         border: "border-blue-200",
-        icon: "bg-gradient-to-r from-blue-500 to-blue-600",
+        icon: "bg-blue-600",
       },
       purple: {
-        bg: "bg-gradient-to-br from-blue-100 to-purple-100",
-        text: "text-blue-700",
-        border: "border-blue-300",
-        icon: "bg-gradient-to-r from-blue-600 to-purple-600",
+        bg: "bg-purple-100",
+        text: "text-purple-700",
+        border: "border-purple-300",
+        icon: "bg-purple-600",
       },
       green: {
-        bg: "bg-gradient-to-br from-blue-50 to-green-50",
-        text: "text-blue-600",
-        border: "border-blue-200",
-        icon: "bg-gradient-to-r from-blue-500 to-green-500",
+        bg: "bg-green-100",
+        text: "text-green-600",
+        border: "border-green-200",
+        icon: "bg-green-600",
       },
       orange: {
-        bg: "bg-gradient-to-br from-blue-50 to-orange-50",
-        text: "text-blue-600",
-        border: "border-blue-200",
-        icon: "bg-gradient-to-r from-blue-500 to-orange-500",
+        bg: "bg-orange-100",
+        text: "text-orange-600",
+        border: "border-orange-200",
+        icon: "bg-orange-600",
       },
     };
     return colors[color] || colors.blue;
@@ -174,7 +151,7 @@ const ModernDashboard = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 text-white">
       {/* Welcome Section */}
       <div className="mb-8">
         <motion.div
@@ -182,10 +159,10 @@ const ModernDashboard = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-3xl font-bold text-gray-800 mb-2">
+          <h2 className="text-3xl font-bold text-white mb-2">
             Welcome back! 👋
           </h2>
-          <p className="text-gray-600 text-lg">
+          <p className="text-gray-300 text-lg">
             Here's what's happening with your website today.
           </p>
         </motion.div>
@@ -208,14 +185,14 @@ const ModernDashboard = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <Card className="bg-white border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+              <Card className="bg-white/10 border border-white/20 shadow transition-transform duration-200 hover:-translate-y-0.5">
                 <CardContent>
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm font-medium text-gray-600">
+                      <p className="text-sm font-medium text-gray-300">
                         {stat.name}
                       </p>
-                      <p className="text-3xl font-bold text-gray-800 mt-2">
+                      <p className="text-3xl font-bold text-white mt-2">
                         {stat.value}
                       </p>
                       <div className="flex items-center mt-2">
@@ -229,20 +206,20 @@ const ModernDashboard = () => {
                         <span
                           className={`text-sm font-medium ${
                             stat.changeType === "increase"
-                              ? "text-green-600"
-                              : "text-red-600"
+                              ? "text-green-400"
+                              : "text-red-400"
                           }`}
                         >
                           {stat.change}
                         </span>
-                        <span className="text-sm text-gray-500 ml-2">
+                        <span className="text-sm text-gray-400 ml-2">
                           vs last month
                         </span>
                       </div>
                     </div>
-                    <div className={`p-3 rounded-lg ${colorClasses.bg} shadow-lg`}>
+                    <div className={`p-3 rounded-lg bg-white/10 border border-white/20`}>
                       <IconComponent
-                        className={`h-6 w-6 ${colorClasses.text}`}
+                        className={`h-6 w-6 text-white/90`}
                       />
                     </div>
                   </div>
@@ -262,9 +239,9 @@ const ModernDashboard = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
-          <Card className="bg-white border border-gray-200 shadow-lg">
+          <Card className="bg-white/10 border border-white/20 shadow">
             <CardHeader>
-              <CardTitle className="text-gray-800">Quick Actions</CardTitle>
+              <CardTitle className="text-white">Quick Actions</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -280,18 +257,18 @@ const ModernDashboard = () => {
                     >
                       <Button
                         variant="outline"
-                        className="h-auto p-4 flex-col items-start space-y-2 w-full hover:border-blue-300 hover:bg-blue-50 border-gray-200"
+                        className="h-auto p-4 flex-col items-start space-y-2 w-full bg-white/10 hover:bg-white/10 border-white/20 text-white"
                       >
-                        <div className={`p-2 rounded-lg ${colorClasses.bg} shadow-md`}>
+                        <div className={`p-2 rounded-lg bg-white/10 border border-white/20`}>
                           <IconComponent
-                            className={`h-5 w-5 ${colorClasses.text}`}
+                            className={`h-5 w-5 text-white/90`}
                           />
                         </div>
                         <div className="text-left">
-                          <div className="font-medium text-gray-800">
+                          <div className="font-medium text-white">
                             {action.name}
                           </div>
-                          <div className="text-sm text-gray-600">
+                          <div className="text-sm text-gray-300">
                             {action.description}
                           </div>
                         </div>
@@ -310,37 +287,37 @@ const ModernDashboard = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.6 }}
         >
-          <Card className="bg-white border border-gray-200 shadow-lg">
+          <Card className="bg-white/10 border border-white/20 shadow">
             <CardHeader>
-              <CardTitle className="text-gray-800">Recent Activity</CardTitle>
+              <CardTitle className="text-white">Recent Activity</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 {recentActivity.map((activity) => (
                   <motion.div
                     key={activity.id}
-                    className="flex items-start space-x-3 p-3 rounded-lg hover:bg-blue-50 transition-colors"
+                    className="flex items-start space-x-3 p-3 rounded-lg hover:bg-white/10 transition-colors"
                     whileHover={{ scale: 1.01 }}
                   >
                     <div className="flex-shrink-0 mt-1">
                       {getActivityIcon(activity.type)}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-800">
+                      <p className="text-sm font-medium text-white">
                         {activity.action}
                       </p>
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm text-gray-300">
                         {activity.item}
                       </p>
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-gray-400 mt-1">
                         {activity.time} • by {activity.user}
                       </p>
                     </div>
                   </motion.div>
                 ))}
               </div>
-              <div className="mt-4 pt-4 border-t border-gray-200">
-                <Button variant="ghost" className="w-full text-sm text-blue-600 hover:text-blue-700 hover:bg-blue-50">
+              <div className="mt-4 pt-4 border-t border-white/10">
+                <Button variant="ghost" className="w-full text-sm text-white hover:bg-white/10">
                   View all activity
                 </Button>
               </div>
@@ -355,19 +332,19 @@ const ModernDashboard = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.8 }}
       >
-        <Card className="bg-white border border-gray-200 shadow-lg">
+        <Card className="bg-white/10 border border-white/20 shadow">
           <CardHeader>
-            <CardTitle className="text-gray-800">System Status</CardTitle>
+            <CardTitle className="text-white">System Status</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="flex items-center space-x-3">
                 <div className="h-3 w-3 bg-green-500 rounded-full animate-pulse"></div>
                 <div>
-                  <p className="text-sm font-medium text-gray-800">
+                  <p className="text-sm font-medium text-white">
                     Website
                   </p>
-                  <p className="text-xs text-gray-600">
+                  <p className="text-xs text-gray-300">
                     Online & Operational
                   </p>
                 </div>
@@ -375,10 +352,10 @@ const ModernDashboard = () => {
               <div className="flex items-center space-x-3">
                 <div className="h-3 w-3 bg-green-500 rounded-full animate-pulse"></div>
                 <div>
-                  <p className="text-sm font-medium text-gray-800">
+                  <p className="text-sm font-medium text-white">
                     Database
                   </p>
-                  <p className="text-xs text-gray-600">
+                  <p className="text-xs text-gray-300">
                     Connected
                   </p>
                 </div>
@@ -386,10 +363,10 @@ const ModernDashboard = () => {
               <div className="flex items-center space-x-3">
                 <div className="h-3 w-3 bg-yellow-500 rounded-full animate-pulse"></div>
                 <div>
-                  <p className="text-sm font-medium text-gray-800">
+                  <p className="text-sm font-medium text-white">
                     Backup
                   </p>
-                  <p className="text-xs text-gray-600">
+                  <p className="text-xs text-gray-300">
                     Last: 2 hours ago
                   </p>
                 </div>

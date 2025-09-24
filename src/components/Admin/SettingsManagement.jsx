@@ -700,19 +700,19 @@ const SettingsManagement = () => {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 text-white">
       {/* Header */}
       <div>
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <h2 className="text-2xl font-bold text-white">
           Settings
         </h2>
-        <p className="text-gray-600 dark:text-gray-400">
+        <p className="text-gray-300">
           Configure your application settings and preferences
         </p>
       </div>
 
       {/* Tabs */}
-      <div className="border-b border-gray-200 dark:border-gray-700">
+      <div className="border-b border-white/10">
         <nav className="-mb-px flex space-x-8">
           {tabs.map((tab) => {
             const IconComponent = tab.icon;
@@ -724,20 +724,20 @@ const SettingsManagement = () => {
                 onClick={() => setActiveTab(tab.id)}
                 className={`group relative py-4 px-1 font-medium text-sm whitespace-nowrap transition-colors ${
                   isActive
-                    ? "text-blue-600 dark:text-blue-400"
-                    : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                    ? "text-white"
+                    : "text-gray-400 hover:text-white"
                 }`}
               >
                 <div className="flex items-center space-x-2">
                   <IconComponent className="h-5 w-5" />
                   <span>{tab.name}</span>
                 </div>
-                <div className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+                <div className="text-xs text-gray-400 mt-1">
                   {tab.description}
                 </div>
                 {isActive && (
                   <motion.div
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 dark:bg-blue-400"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-500"
                     layoutId="activeTab"
                   />
                 )}
@@ -754,9 +754,11 @@ const SettingsManagement = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
       >
-        {activeTab === "general" && renderGeneralSettings()}
-        {activeTab === "permissions" && renderPermissionSettings()}
-        {activeTab === "integrations" && renderIntegrationSettings()}
+        <div className="[&_input]:bg-white/5 [&_input]:border-white/20 [&_input]:text-white [&_textarea]:bg-white/5 [&_textarea]:border-white/20 [&_textarea]:text-white">
+          {activeTab === "general" && renderGeneralSettings()}
+          {activeTab === "permissions" && renderPermissionSettings()}
+          {activeTab === "integrations" && renderIntegrationSettings()}
+        </div>
       </motion.div>
 
       {/* Toast Notification */}
