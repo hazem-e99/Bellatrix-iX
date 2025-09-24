@@ -32,7 +32,7 @@ const PagesManagement = () => {
   const [selectedPage, setSelectedPage] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [showCreateModal, setShowCreateModal] = useState(false);
+  
   const [showViewModal, setShowViewModal] = useState(false);
   const [operationLoading, setOperationLoading] = useState(false);
   const [toast, setToast] = useState(null);
@@ -237,11 +237,11 @@ const PagesManagement = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 text-white">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-gray-800">Pages Management</h2>
-          <p className="text-gray-600">Manage your website pages and content</p>
+          <h2 className="text-2xl font-bold text-white">Pages Management</h2>
+          <p className="text-gray-300">Manage your website pages and content</p>
         </div>
         <div className="mt-4 sm:mt-0 flex space-x-2">
           <Button
@@ -251,33 +251,20 @@ const PagesManagement = () => {
           >
             Enhanced Page Builder
           </Button>
-          <Button
-            variant="outline"
-            onClick={() => navigate("/admin/pages/create")}
-            className="hover:bg-blue-50 hover:border-blue-300"
-          >
-            Classic Create
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() => setShowCreateModal(true)}
-            className="hover:bg-blue-50 hover:border-blue-300"
-          >
-            Quick Create
-          </Button>
+          
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="bg-white border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300">
+        <Card className="bg-white/10 border border-white/20 shadow transition-all duration-200">
           <CardContent className="p-6">
             <div className="flex items-center">
-              <div className="p-2 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg shadow-lg">
-                <DocumentTextIcon className="h-6 w-6 text-white" />
+              <div className="p-2 bg-white/10 border border-white/20 rounded-lg">
+                <DocumentTextIcon className="h-6 w-6 text-white/90" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Pages</p>
-                <p className="text-2xl font-bold text-gray-800">
+                <p className="text-sm font-medium text-gray-300">Total Pages</p>
+                <p className="text-2xl font-bold text-white">
                   {pages.length}
                 </p>
               </div>
@@ -285,15 +272,15 @@ const PagesManagement = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-white border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300">
+        <Card className="bg-white/10 border border-white/20 shadow transition-all duration-200">
           <CardContent className="p-6">
             <div className="flex items-center">
-              <div className="p-2 bg-gradient-to-r from-green-500 to-blue-500 rounded-lg shadow-lg">
-                <CheckCircleIcon className="h-6 w-6 text-white" />
+              <div className="p-2 bg-white/10 border border-white/20 rounded-lg">
+                <CheckCircleIcon className="h-6 w-6 text-white/90" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Published</p>
-                <p className="text-2xl font-bold text-gray-800">
+                <p className="text-sm font-medium text-gray-300">Published</p>
+                <p className="text-2xl font-bold text-white">
                   {pages.filter((p) => p.isPublished).length}
                 </p>
               </div>
@@ -301,17 +288,17 @@ const PagesManagement = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-white border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300">
+        <Card className="bg-white/10 border border-white/20 shadow transition-all duration-200">
           <CardContent className="p-6">
             <div className="flex items-center">
-              <div className="p-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg shadow-lg">
-                <CalendarIcon className="h-6 w-6 text-white" />
+              <div className="p-2 bg-white/10 border border-white/20 rounded-lg">
+                <CalendarIcon className="h-6 w-6 text-white/90" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">
+                <p className="text-sm font-medium text-gray-300">
                   Last Created
                 </p>
-                <p className="text-sm font-bold text-gray-800">
+                <p className="text-sm font-bold text-white">
                   {pages.length > 0
                     ? formatDate(
                         Math.max(
@@ -326,15 +313,15 @@ const PagesManagement = () => {
         </Card>
       </div>
 
-      <Card className="border border-gray-200 shadow">
+      <Card className="bg-white/10 border border-white/20 shadow">
         <CardHeader className="pb-2">
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-lg bg-blue-600 flex items-center justify-center">
-                <DocumentTextIcon className="h-4 w-4 text-white" />
+              <div className="w-9 h-9 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center">
+                <DocumentTextIcon className="h-4 w-4 text-white/90" />
               </div>
-              <CardTitle className="text-lg font-semibold text-gray-800">All Pages</CardTitle>
-              <span className="text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-700">{filteredPages.length}</span>
+              <CardTitle className="text-lg font-semibold text-white">All Pages</CardTitle>
+              <span className="text-xs px-2 py-1 rounded-full bg-white/10 text-white/90 border border-white/20">{filteredPages.length}</span>
               </div>
             <div className="flex items-center gap-2">
               <div className="relative">
@@ -347,15 +334,15 @@ const PagesManagement = () => {
                     setSearchTerm(e.target.value);
                     setCurrentPage(1);
                   }}
-                  className="pl-9 pr-3 py-2 text-sm border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="pl-9 pr-3 py-2 text-sm border border-white/20 bg-white/5 text-white placeholder:text-gray-400 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
-              <Button variant="outline" onClick={fetchPages}>
+              <Button variant="outline" onClick={fetchPages} className="bg-white/10 border-white/20 text-white hover:bg-white/20">
                 <ArrowPathIcon className="h-4 w-4 mr-1" />
                 Refresh
               </Button>
               {selectedIds.length > 0 && (
-                <Button variant="destructive" onClick={handleBulkDelete} loading={operationLoading}>
+                <Button variant="destructive" onClick={handleBulkDelete} loading={operationLoading} className="bg-red-600 hover:bg-red-700">
                   <TrashIcon className="h-4 w-4 mr-1" />
                   Delete Selected ({selectedIds.length})
                 </Button>
@@ -365,88 +352,88 @@ const PagesManagement = () => {
         </CardHeader>
         <CardContent>
           {sortedPages.length === 0 ? (
-            <div className="text-center py-16 text-gray-600">No pages found</div>
+            <div className="text-center py-16 text-gray-300">No pages found</div>
           ) : (
             <div className="overflow-x-auto">
               <table className="min-w-full text-sm">
-                <thead className="bg-gray-50 text-gray-600 border-b">
+                <thead className="bg-white/5 text-gray-300 border-b border-white/10">
                   <tr>
                     <th className="px-4 py-3 text-left w-10">
                       <input
                         type="checkbox"
                         onChange={handleToggleSelectAll}
                         checked={paginatedPages.length > 0 && paginatedPages.every((p) => selectedIds.includes(p.id))}
-                        className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        className="rounded border-white/30 bg-white/10 text-blue-400 focus:ring-blue-500"
                       />
                     </th>
                     <th className="px-4 py-3 text-left cursor-pointer select-none" onClick={() => handleToggleSort("title")}>
                       <div className="inline-flex items-center gap-1">
-                          Title
+                          <span className="text-white">Title</span>
                         {sortBy === "title" && <span className="text-xs text-gray-400">{sortDir === "asc" ? "▲" : "▼"}</span>}
                       </div>
                     </th>
-                    <th className="px-4 py-3 text-left cursor-pointer select-none" onClick={() => handleToggleSort("slug")}>Slug {sortBy === "slug" && <span className="text-xs text-gray-400">{sortDir === "asc" ? "▲" : "▼"}</span>}</th>
-                    <th className="px-4 py-3 text-left cursor-pointer select-none" onClick={() => handleToggleSort("categoryName")}>Category {sortBy === "categoryName" && <span className="text-xs text-gray-400">{sortDir === "asc" ? "▲" : "▼"}</span>}</th>
-                    <th className="px-4 py-3 text-left">Published</th>
-                    <th className="px-4 py-3 text-left">Homepage</th>
-                    <th className="px-4 py-3 text-left cursor-pointer select-none" onClick={() => handleToggleSort("componentCount")}>Components {sortBy === "componentCount" && <span className="text-xs text-gray-400">{sortDir === "asc" ? "▲" : "▼"}</span>}</th>
-                    <th className="px-4 py-3 text-left cursor-pointer select-none" onClick={() => handleToggleSort("createdAt")}>Created {sortBy === "createdAt" && <span className="text-xs text-gray-400">{sortDir === "asc" ? "▲" : "▼"}</span>}</th>
-                    <th className="px-4 py-3 text-right">Actions</th>
+                    <th className="px-4 py-3 text-left cursor-pointer select-none" onClick={() => handleToggleSort("slug")}> <span className="text-white">Slug</span> {sortBy === "slug" && <span className="text-xs text-gray-400">{sortDir === "asc" ? "▲" : "▼"}</span>}</th>
+                    <th className="px-4 py-3 text-left cursor-pointer select-none" onClick={() => handleToggleSort("categoryName")}> <span className="text-white">Category</span> {sortBy === "categoryName" && <span className="text-xs text-gray-400">{sortDir === "asc" ? "▲" : "▼"}</span>}</th>
+                    <th className="px-4 py-3 text-left text-white">Published</th>
+                    <th className="px-4 py-3 text-left text-white">Homepage</th>
+                    <th className="px-4 py-3 text-left cursor-pointer select-none" onClick={() => handleToggleSort("componentCount")}><span className="text-white">Components</span> {sortBy === "componentCount" && <span className="text-xs text-gray-400">{sortDir === "asc" ? "▲" : "▼"}</span>}</th>
+                    <th className="px-4 py-3 text-left cursor-pointer select-none" onClick={() => handleToggleSort("createdAt")}><span className="text-white">Created</span> {sortBy === "createdAt" && <span className="text-xs text-gray-400">{sortDir === "asc" ? "▲" : "▼"}</span>}</th>
+                    <th className="px-4 py-3 text-right text-white">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y">
+                <tbody className="divide-y divide-white/10">
                   {paginatedPages.map((page) => (
-                    <tr key={page.id || page.slug} className="hover:bg-gray-50">
+                    <tr key={page.id || page.slug} className="hover:bg-white/5">
                       <td className="px-4 py-2">
                         <input
                           type="checkbox"
                           checked={selectedIds.includes(page.id)}
                           onChange={() => handleToggleSelect(page.id)}
-                          className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                          className="rounded border-white/30 bg-white/10 text-blue-400 focus:ring-blue-500"
                         />
                       </td>
                       <td className="px-4 py-2">
                         <div className="flex items-center gap-2 min-w-[12rem]">
-                          <div className="w-7 h-7 rounded-md bg-blue-600 flex items-center justify-center">
-                                <DocumentTextIcon className="h-4 w-4 text-white" />
+                          <div className="w-7 h-7 rounded-md bg-white/10 border border-white/20 flex items-center justify-center">
+                                <DocumentTextIcon className="h-4 w-4 text-white/90" />
                               </div>
                           <div className="truncate">
-                            <div className="font-medium text-gray-900 truncate">{page.title || page.slug}</div>
-                            <div className="text-xs text-gray-500 truncate">ID: {page.id}</div>
+                            <div className="font-medium text-white truncate">{page.title || page.slug}</div>
+                            <div className="text-xs text-gray-400 truncate">ID: {page.id}</div>
                               </div>
                             </div>
                       </td>
-                      <td className="px-4 py-2 text-gray-700 font-mono">/{page.slug}</td>
-                      <td className="px-4 py-2 text-gray-700">{page.categoryName || "Uncategorized"}</td>
+                      <td className="px-4 py-2 text-gray-300 font-mono">/{page.slug}</td>
+                      <td className="px-4 py-2 text-gray-300">{page.categoryName || "Uncategorized"}</td>
                       <td className="px-4 py-2">
                             {page.isPublished ? (
-                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">Yes</span>
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-white/10 text-white border border-white/20">Yes</span>
                         ) : (
-                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700">No</span>
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-white/5 text-gray-300 border border-white/10">No</span>
                         )}
                       </td>
                       <td className="px-4 py-2">
                             {page.isHomepage ? (
-                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">Yes</span>
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-white/10 text-white border border-white/20">Yes</span>
                         ) : (
-                          <span className="text-xs text-gray-500">No</span>
+                          <span className="text-xs text-gray-400">No</span>
                         )}
                       </td>
                       <td className="px-4 py-2">
-                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">{page.componentCount || 0}</span>
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-white/10 text-white border border-white/20">{page.componentCount || 0}</span>
                       </td>
-                      <td className="px-4 py-2 text-gray-700">
+                      <td className="px-4 py-2 text-gray-300">
                                 {formatDate(page.createdAt)}
                       </td>
                       <td className="px-4 py-2">
                         <div className="flex items-center justify-end gap-2">
-                          <button onClick={() => handleView(page)} className="p-2 rounded-md border border-gray-200 hover:bg-gray-100 text-gray-700" title="View">
+                          <button onClick={() => handleView(page)} className="p-2 rounded-md border border-white/20 hover:bg-white/10 text-white" title="View">
                                 <EyeIcon className="h-4 w-4" />
                               </button>
-                          <button onClick={() => handleEdit(page)} className="p-2 rounded-md border border-gray-200 hover:bg-gray-100 text-gray-700" title="Edit">
+                          <button onClick={() => handleEdit(page)} className="p-2 rounded-md border border-white/20 hover:bg-white/10 text-white" title="Edit">
                                 <PencilIcon className="h-4 w-4" />
                               </button>
-                          <button onClick={() => handleDelete(page)} className="p-2 rounded-md border border-gray-200 hover:bg-red-50 text-red-600" title="Delete">
+                          <button onClick={() => handleDelete(page)} className="p-2 rounded-md border border-white/20 hover:bg-white/10 text-red-400" title="Delete">
                                 <TrashIcon className="h-4 w-4" />
                               </button>
                             </div>
@@ -460,14 +447,14 @@ const PagesManagement = () => {
 
           {totalPages > 1 && (
             <div className="mt-4 flex items-center justify-between text-sm">
-              <div className="text-gray-600">
+              <div className="text-gray-300">
                 Showing <span className="font-medium">{startIndex + 1}</span> to <span className="font-medium">{Math.min(startIndex + ITEMS_PER_PAGE, sortedPages.length)}</span> of <span className="font-medium">{sortedPages.length}</span>
                 </div>
               <div className="flex items-center gap-2">
                   <button
                   onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                     disabled={currentPage === 1}
-                  className="p-2 rounded-md border border-gray-200 disabled:opacity-50"
+                  className="p-2 rounded-md border border-white/20 text-white disabled:opacity-50 disabled:text-gray-400"
                   >
                   <ChevronLeftIcon className="h-4 w-4" />
                   </button>
@@ -481,7 +468,7 @@ const PagesManagement = () => {
                         <button
                           key={pageNum}
                           onClick={() => setCurrentPage(pageNum)}
-                      className={`px-3 py-1 rounded-md border ${currentPage === pageNum ? "bg-blue-600 text-white border-blue-600" : "border-gray-200"}`}
+                      className={`px-3 py-1 rounded-md border ${currentPage === pageNum ? "bg-white/20 text-white border-white/30" : "border-white/20 text-white/80"}`}
                         >
                           {pageNum}
                         </button>
@@ -490,7 +477,7 @@ const PagesManagement = () => {
                   <button
                   onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                     disabled={currentPage === totalPages}
-                  className="p-2 rounded-md border border-gray-200 disabled:opacity-50"
+                  className="p-2 rounded-md border border-white/20 text-white disabled:opacity-50 disabled:text-gray-400"
                   >
                   <ChevronRightIcon className="h-4 w-4" />
                   </button>
@@ -516,13 +503,7 @@ const PagesManagement = () => {
         showToast={showToast}
       />
 
-      {/* Create Modal */}
-      <CreatePageModal
-        isOpen={showCreateModal}
-        onClose={() => setShowCreateModal(false)}
-        onSave={fetchPages}
-        showToast={showToast}
-      />
+      
 
       {/* Delete Confirmation Modal */}
       <Modal
@@ -580,10 +561,10 @@ const ViewPageModal = ({ isOpen, onClose, page }) => {
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="" size="xl">
-      <div className="relative bg-gradient-to-r from-blue-50/90 to-indigo-50/90 backdrop-blur-sm border-b border-gray-200/50 px-6 py-4">
+      <div className="relative bg-gray-50 border-b border-gray-200 px-6 py-4">
         <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg">
+          <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center shadow">
             <EyeIcon className="h-6 w-6 text-white" />
           </div>
           <div>
@@ -671,9 +652,9 @@ const EditPageModal = ({ isOpen, onClose, page, onSave, showToast }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="" size="xl">
       {/* Modern Modal Header */}
-      <div className="relative bg-gradient-to-r from-blue-50/90 to-indigo-50/90 backdrop-blur-sm border-b border-gray-200/50 px-6 py-4">
+      <div className="relative bg-gray-50 border-b border-gray-200 px-6 py-4">
         <div className="flex items-center space-x-4">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg">
+          <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center shadow">
             <PencilIcon className="h-6 w-6 text-white" />
           </div>
           <div>
@@ -688,7 +669,7 @@ const EditPageModal = ({ isOpen, onClose, page, onSave, showToast }) => {
             onClick={() => setActiveTab("form")}
             className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
               activeTab === "form"
-                ? "bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg"
+                ? "bg-blue-600 text-white shadow"
                 : "text-gray-600 hover:text-blue-600 hover:bg-white/80"
             }`}
           >
@@ -699,7 +680,7 @@ const EditPageModal = ({ isOpen, onClose, page, onSave, showToast }) => {
             onClick={() => setActiveTab("json")}
             className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
               activeTab === "json"
-                ? "bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg"
+                ? "bg-blue-600 text-white shadow"
                 : "text-gray-600 hover:text-blue-600 hover:bg-white/80"
             }`}
           >
@@ -710,7 +691,7 @@ const EditPageModal = ({ isOpen, onClose, page, onSave, showToast }) => {
       </div>
 
       {/* Modal Content */}
-      <div className="p-6 bg-gradient-to-br from-white/80 to-blue-50/30 backdrop-blur-sm">
+      <div className="p-6 bg-white">
         {activeTab === "form" ? (
           <div className="h-[600px]">
             <ModernPageEditor
@@ -750,7 +731,7 @@ const EditPageModal = ({ isOpen, onClose, page, onSave, showToast }) => {
       </div>
 
       {/* Modern Modal Footer */}
-      <div className="bg-gradient-to-r from-gray-50/90 to-blue-50/90 backdrop-blur-sm border-t border-gray-200/50 px-6 py-4">
+      <div className="bg-gray-50 border-t border-gray-200 px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
@@ -770,7 +751,7 @@ const EditPageModal = ({ isOpen, onClose, page, onSave, showToast }) => {
             <button
               onClick={handleSave}
               disabled={loading}
-              className="group px-6 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white rounded-xl font-semibold text-sm transition-all duration-200 hover:shadow-lg hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+              className="group px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold text-sm transition-all duration-200 hover:shadow disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
             >
               {loading ? (
                 <>
@@ -791,99 +772,7 @@ const EditPageModal = ({ isOpen, onClose, page, onSave, showToast }) => {
   );
 };
 
-// Create Page Modal Component
-const CreatePageModal = ({ isOpen, onClose, onSave, showToast }) => {
-  const [pageName, setPageName] = useState("");
-  const [pageData, setPageData] = useState(
-    '{\n  "title": "",\n  "content": "",\n  "description": ""\n}'
-  );
-  const [loading, setLoading] = useState(false);
-
-  const handleCreate = async () => {
-    if (!pageName.trim()) {
-      showToast("Please enter a page name", "error");
-      return;
-    }
-
-    try {
-      const parsedData = JSON.parse(pageData);
-      setLoading(true);
-
-      // Create the page DTO according to the Bellatrix API format
-      const createPageDTO = {
-        title: parsedData.title || pageName,
-        categoryId: 0,
-        slug: pageName,
-        metaTitle: parsedData.meta_title || parsedData.title || pageName,
-        metaDescription:
-          parsedData.meta_description || parsedData.description || "",
-        isHomepage: false,
-        isPublished: false,
-        components: parsedData.components || [],
-      };
-
-      await pagesAPI.createPage(createPageDTO);
-
-      showToast(`Page "${pageName}" created successfully`, "success");
-      await onSave(); // Refresh the pages list
-      onClose();
-      setPageName("");
-      setPageData(
-        '{\n  "title": "",\n  "content": "",\n  "description": ""\n}'
-      );
-    } catch (err) {
-      if (err instanceof SyntaxError) {
-        showToast("Invalid JSON format", "error");
-      } else {
-        showToast("Error creating page: " + err.message, "error");
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Create New Page" size="lg">
-      <div className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Page Name
-          </label>
-          <Input
-            value={pageName}
-            onChange={(e) => setPageName(e.target.value)}
-            placeholder="e.g., about, contact, services"
-          />
-          <p className="mt-1 text-xs text-gray-500">
-            Use lowercase letters, numbers, and hyphens only. Will be saved as{" "}
-            {pageName || "page-name"}.json
-          </p>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Initial Data (JSON)
-          </label>
-          <textarea
-            value={pageData}
-            onChange={(e) => setPageData(e.target.value)}
-            rows={10}
-            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white font-mono text-sm"
-            placeholder="Enter JSON data for the page"
-          />
-        </div>
-      </div>
-      <ModalFooter>
-        <Button variant="outline" onClick={onClose} disabled={loading}>
-          Cancel
-        </Button>
-        <Button onClick={handleCreate} loading={loading}>
-          {loading ? "Creating..." : "Create Page"}
-        </Button>
-      </ModalFooter>
-    </Modal>
-  );
-};
+// Quick Create modal removed
 
 export default PagesManagement;
 

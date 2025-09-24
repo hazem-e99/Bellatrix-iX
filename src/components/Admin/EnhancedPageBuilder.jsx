@@ -1093,12 +1093,7 @@ const EnhancedPageBuilder = () => {
 
   return (
     <MediaInputDetector>
-      <div className="min-h-screen bg-gradient-to-br from-[#001038] via-[#191970] to-black relative overflow-hidden">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="w-full h-full bg-gradient-to-br from-blue-500/5 to-purple-500/5"></div>
-        </div>
-
+      <div className="min-h-screen bg-[#001038] relative overflow-hidden">
         <div className="relative z-10 p-6">
           {/* Header */}
           <div className="text-center mb-8">
@@ -1110,59 +1105,38 @@ const EnhancedPageBuilder = () => {
             </p>
           </div>
 
-          {/* Progress Steps */}
-          <div className="flex items-center justify-center mb-8">
-            <div className="flex items-center space-x-4">
-              {steps.map((step, index) => (
-                <div key={step.id} className="flex items-center">
+          {/* Creative full-width process bar */}
+          <div className="mb-10">
+            <div className="w-full h-2 bg-gray-700 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-blue-500 transition-all duration-500"
+                style={{ width: `${(currentStep - 1) / (steps.length - 1) * 100 || 0}%` }}
+              />
+            </div>
+            <div className="mt-4 grid" style={{ gridTemplateColumns: `repeat(${steps.length}, minmax(0, 1fr))` }}>
+              {steps.map((step) => (
+                <div key={step.id} className="flex items-start space-x-3">
                   <div
-                    className={`flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-300 ${
-                      currentStep >= step.id
-                        ? "bg-blue-500 border-blue-500 text-white"
-                        : "bg-transparent border-gray-600 text-gray-400"
+                    className={`flex items-center justify-center w-9 h-9 rounded-full border-2 ${
+                      currentStep >= step.id ? "bg-blue-500 border-blue-500 text-white" : "bg-transparent border-gray-600 text-gray-400"
                     }`}
                   >
-                    {currentStep > step.id ? (
-                      <CheckIcon className="h-6 w-6" />
-                    ) : (
-                      <span className="text-sm font-semibold">{step.id}</span>
-                    )}
+                    {currentStep > step.id ? <CheckIcon className="h-5 w-5" /> : <span className="text-xs font-semibold">{step.id}</span>}
                   </div>
-                  <div className="ml-3 text-left">
-                    <div
-                      className={`text-sm font-medium ${
-                        currentStep >= step.id ? "text-white" : "text-gray-400"
-                      }`}
-                    >
-                      {step.title}
-                    </div>
-                    <div
-                      className={`text-xs ${
-                        currentStep >= step.id
-                          ? "text-gray-300"
-                          : "text-gray-500"
-                      }`}
-                    >
-                      {step.description}
-                    </div>
+                  <div>
+                    <div className={`text-sm font-semibold ${currentStep >= step.id ? "text-white" : "text-gray-400"}`}>{step.title}</div>
+                    <div className={`text-xs ${currentStep >= step.id ? "text-gray-300" : "text-gray-500"}`}>{step.description}</div>
                   </div>
-                  {index < steps.length - 1 && (
-                    <div
-                      className={`w-16 h-0.5 mx-4 transition-all duration-300 ${
-                        currentStep > step.id ? "bg-blue-500" : "bg-gray-600"
-                      }`}
-                    />
-                  )}
                 </div>
               ))}
             </div>
           </div>
 
           {/* Step Content */}
-          <div className="max-w-6xl mx-auto">{renderStepContent()}</div>
+          <div className="w-full">{renderStepContent()}</div>
 
           {/* Navigation */}
-          <div className="flex items-center justify-between max-w-6xl mx-auto mt-8">
+          <div className="flex items-center justify-between w-full mt-8">
             <Button
               variant="outline"
               onClick={handlePrevious}
