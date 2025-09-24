@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import Button from "../ui/Button";
-import { PhotoIcon, VideoCameraIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  PhotoIcon,
+  VideoCameraIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 import api from "../../lib/api";
 
 // Media Picker Modal Component
 const MediaPickerModal = ({ isOpen, onClose, onSelect }) => {
   const [media, setMedia] = useState([]);
   const [loading, setLoading] = useState(false);
-    const [selectedMedia, setSelectedMedia] = useState(null);
-    const [uploading, setUploading] = useState(false);
-    const fileInputRef = React.useRef();
+  const [selectedMedia, setSelectedMedia] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = React.useRef();
 
   useEffect(() => {
     if (isOpen) {
@@ -24,7 +28,7 @@ const MediaPickerModal = ({ isOpen, onClose, onSelect }) => {
       console.log("🔍 Fetching media from API...");
       const response = await api.get("/Media?page=1&pageSize=20");
       console.log("📥 Media API response:", response);
-      
+
       // Handle different response structures
       let mediaItems = [];
       if (response.data?.data?.items) {
@@ -36,23 +40,23 @@ const MediaPickerModal = ({ isOpen, onClose, onSelect }) => {
       } else if (response.data) {
         mediaItems = [response.data];
       }
-      
+
       console.log("🖼️ Processed media items:", mediaItems);
-      
+
       // Log individual items for debugging
       mediaItems.forEach((item, index) => {
         console.log(`📄 Media item ${index}:`, {
           id: item.id,
           fileName: item.fileName,
           fileUrl: item.fileUrl,
-          filePath: item.filePath, 
+          filePath: item.filePath,
           mediaType: item.mediaType,
-          fullUrl: (item.fileUrl || item.filePath)?.startsWith('http') 
-            ? (item.fileUrl || item.filePath) 
-            : `http://bellatrix.runasp.net${item.fileUrl || item.filePath}`
+          fullUrl: (item.fileUrl || item.filePath)?.startsWith("http")
+            ? item.fileUrl || item.filePath
+            : `http://bellatrix.runasp.net${item.fileUrl || item.filePath}`,
         });
       });
-      
+
       setMedia(mediaItems);
     } catch (error) {
       console.error("❌ Error fetching media:", error);
@@ -62,46 +66,49 @@ const MediaPickerModal = ({ isOpen, onClose, onSelect }) => {
     }
   };
 
-    // Handle file upload
-    const handleUploadClick = () => {
-      if (fileInputRef.current) fileInputRef.current.value = null;
-      fileInputRef.current?.click();
-    };
+  // Handle file upload
+  const handleUploadClick = () => {
+    if (fileInputRef.current) fileInputRef.current.value = null;
+    fileInputRef.current?.click();
+  };
 
-    const handleFileChange = async (e) => {
-      const selectedFile = e.target.files[0];
-      if (!selectedFile) return;
-      setUploading(true);
-      try {
-        const formData = new FormData();
-        formData.append("file", selectedFile);
-        formData.append(
-          "Role",
-          selectedFile.type.startsWith("video") ? "Video" : "Image"
-        );
-        formData.append("AlternateText", "Uploaded media");
-        formData.append("Caption", "Default caption");
-        formData.append("SortOrder", 1);
+  const handleFileChange = async (e) => {
+    const selectedFile = e.target.files[0];
+    if (!selectedFile) return;
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+      formData.append(
+        "Role",
+        selectedFile.type.startsWith("video") ? "Video" : "Image"
+      );
+      formData.append("AlternateText", "Uploaded media");
+      formData.append("Caption", "Default caption");
+      formData.append("SortOrder", 1);
 
-        await api.post("/Media/upload", formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-        // Refresh media list after upload
-        await fetchMedia();
-      } catch (err) {
-        console.error("❌ Error uploading media:", err);
-        alert("Upload failed. Please try again.");
-      } finally {
-        setUploading(false);
-      }
-    };
+      await api.post("/Media/upload", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      // Refresh media list after upload
+      await fetchMedia();
+    } catch (err) {
+      console.error("❌ Error uploading media:", err);
+      alert("Upload failed. Please try again.");
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const handleSelect = () => {
     if (selectedMedia) {
       console.log("✅ Selected media:", selectedMedia);
       // Add base URL if the path is relative
-      const mediaUrl = selectedMedia.fileUrl || selectedMedia.filePath || selectedMedia.url;
-      const fullUrl = mediaUrl?.startsWith('http') ? mediaUrl : `http://bellatrix.runasp.net${mediaUrl}`;
+      const mediaUrl =
+        selectedMedia.fileUrl || selectedMedia.filePath || selectedMedia.url;
+      const fullUrl = mediaUrl?.startsWith("http")
+        ? mediaUrl
+        : `http://bellatrix.runasp.net${mediaUrl}`;
       console.log("🔗 Full media URL:", fullUrl);
       onSelect(fullUrl);
       onClose();
@@ -125,22 +132,22 @@ const MediaPickerModal = ({ isOpen, onClose, onSelect }) => {
             >
               <XMarkIcon className="h-6 w-6" />
             </button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleUploadClick}
-                disabled={uploading}
-                className="ml-2"
-              >
-                {uploading ? "Uploading..." : "Upload Media"}
-              </Button>
-              <input
-                type="file"
-                ref={fileInputRef}
-                style={{ display: "none" }}
-                accept="image/*,video/*"
-                onChange={handleFileChange}
-              />
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleUploadClick}
+              disabled={uploading}
+              className="ml-2"
+            >
+              {uploading ? "Uploading..." : "Upload Media"}
+            </Button>
+            <input
+              type="file"
+              ref={fileInputRef}
+              style={{ display: "none" }}
+              accept="image/*,video/*"
+              onChange={handleFileChange}
+            />
           </div>
         </div>
 
@@ -164,57 +171,84 @@ const MediaPickerModal = ({ isOpen, onClose, onSelect }) => {
                   <div className="aspect-square bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
                     {(() => {
                       // More flexible image detection
-                      const isImage = item.mediaType === 0 || 
-                                    item.mediaType?.startsWith('image/') ||
-                                    item.fileName?.match(/\.(jpg|jpeg|png|gif|bmp|webp|svg)$/i);
-                      
-                      const isVideo = item.mediaType === 1 || 
-                                    item.mediaType?.startsWith('video/') ||
-                                    item.fileName?.match(/\.(mp4|avi|mov|wmv|flv|webm|mkv)$/i);
-                      
+                      const isImage =
+                        item.mediaType === 0 ||
+                        item.mediaType?.startsWith("image/") ||
+                        item.fileName?.match(
+                          /\.(jpg|jpeg|png|gif|bmp|webp|svg)$/i
+                        );
+
+                      const isVideo =
+                        item.mediaType === 1 ||
+                        item.mediaType?.startsWith("video/") ||
+                        item.fileName?.match(
+                          /\.(mp4|avi|mov|wmv|flv|webm|mkv)$/i
+                        );
+
                       console.log(`🔍 Media type check for ${item.fileName}:`, {
                         mediaType: item.mediaType,
                         isImage,
                         isVideo,
-                        fileName: item.fileName
+                        fileName: item.fileName,
                       });
-                      
+
                       if (isImage) {
                         return (
                           <img
                             src={(() => {
                               const mediaUrl = item.fileUrl || item.filePath;
-                              const fullUrl = mediaUrl?.startsWith('http') ? mediaUrl : `http://bellatrix.runasp.net${mediaUrl}`;
-                              console.log('🖼️ Loading image:', fullUrl, 'from original:', mediaUrl);
+                              const fullUrl = mediaUrl?.startsWith("http")
+                                ? mediaUrl
+                                : `http://bellatrix.runasp.net${mediaUrl}`;
+                              console.log(
+                                "🖼️ Loading image:",
+                                fullUrl,
+                                "from original:",
+                                mediaUrl
+                              );
                               return fullUrl;
                             })()}
                             alt={item.fileName || "Media"}
                             className="w-full h-full object-cover"
                             onError={(e) => {
-                              console.error('❌ Image failed to load:', e.target.src);
-                              e.target.style.display = 'none';
-                              e.target.nextSibling.style.display = 'flex';
+                              console.error(
+                                "❌ Image failed to load:",
+                                e.target.src
+                              );
+                              e.target.style.display = "none";
+                              e.target.nextSibling.style.display = "flex";
                             }}
                           />
                         );
                       } else if (isVideo) {
                         return (
                           <div className="relative w-full h-full bg-gray-800 flex items-center justify-center">
-                            <video 
+                            <video
                               className="w-full h-full object-cover"
                               muted
                               preload="metadata"
                               onError={(e) => {
-                                console.error('❌ Video failed to load:', e.target.src);
+                                console.error(
+                                  "❌ Video failed to load:",
+                                  e.target.src
+                                );
                               }}
                             >
-                              <source 
+                              <source
                                 src={(() => {
-                                  const mediaUrl = item.fileUrl || item.filePath;
-                                  const fullUrl = mediaUrl?.startsWith('http') ? mediaUrl : `http://bellatrix.runasp.net${mediaUrl}`;
-                                  console.log('🎥 Loading video:', fullUrl, 'from original:', mediaUrl);
+                                  const mediaUrl =
+                                    item.fileUrl || item.filePath;
+                                  const fullUrl = mediaUrl?.startsWith("http")
+                                    ? mediaUrl
+                                    : `http://bellatrix.runasp.net${mediaUrl}`;
+                                  console.log(
+                                    "🎥 Loading video:",
+                                    fullUrl,
+                                    "from original:",
+                                    mediaUrl
+                                  );
                                   return fullUrl;
-                                })()} 
+                                })()}
                                 type={item.mediaType}
                               />
                             </video>
@@ -296,7 +330,7 @@ const DynamicContentForm = ({ contentJson, onChange, className = "" }) => {
   // Fields that should use media picker instead of text input
   const mediaFields = [
     "backgroundimage",
-    "backgroundvideo", 
+    "backgroundvideo",
     "image",
     "video",
     "icon",
@@ -309,11 +343,11 @@ const DynamicContentForm = ({ contentJson, onChange, className = "" }) => {
     "heroimage",
     "herovideo",
     "img",
-    "pic", 
+    "pic",
     "media",
     "file",
     "asset",
-    "poster"
+    "poster",
   ];
 
   // Check if a field name suggests it's a media field
@@ -369,7 +403,12 @@ const DynamicContentForm = ({ contentJson, onChange, className = "" }) => {
   // Handle media selection
   const handleMediaSelect = (mediaUrl) => {
     if (currentMediaField) {
-      console.log("📎 Setting media URL:", mediaUrl, "for field:", currentMediaField);
+      console.log(
+        "📎 Setting media URL:",
+        mediaUrl,
+        "for field:",
+        currentMediaField
+      );
       updateField(currentMediaField, mediaUrl);
     }
     setCurrentMediaField(null);
@@ -396,9 +435,16 @@ const DynamicContentForm = ({ contentJson, onChange, className = "" }) => {
                 if (item && typeof item === "object") {
                   // Render nested object fields for each array item
                   return (
-                    <div key={itemPath} className="border border-gray-200 dark:border-gray-600 rounded-lg p-2">
-                      <div className="text-xs text-gray-500 mb-1">Item {idx + 1}</div>
-                      <div className="space-y-2">{renderFields(item, itemPath)}</div>
+                    <div
+                      key={itemPath}
+                      className="border border-gray-200 dark:border-gray-600 rounded-lg p-2"
+                    >
+                      <div className="text-xs text-gray-500 mb-1">
+                        Item {idx + 1}
+                      </div>
+                      <div className="space-y-2">
+                        {renderFields(item, itemPath)}
+                      </div>
                     </div>
                   );
                 } else {
@@ -471,10 +517,14 @@ const DynamicContentForm = ({ contentJson, onChange, className = "" }) => {
                 {value && (
                   <div className="flex items-center space-x-2 p-2 bg-gray-50 dark:bg-gray-800 rounded border">
                     {(() => {
-                      const fullUrl = value?.startsWith('http') ? value : `http://bellatrix.runasp.net${value}`;
-                      const fileName = value.split('/').pop() || value;
-                      const isVideo = fileName.match(/\.(mp4|avi|mov|wmv|flv|webm|mkv)$/i);
-                      
+                      const fullUrl = value?.startsWith("http")
+                        ? value
+                        : `http://bellatrix.runasp.net${value}`;
+                      const fileName = value.split("/").pop() || value;
+                      const isVideo = fileName.match(
+                        /\.(mp4|avi|mov|wmv|flv|webm|mkv)$/i
+                      );
+
                       if (isVideo) {
                         return (
                           <div className="w-8 h-8 bg-gray-800 rounded border flex items-center justify-center">
@@ -489,8 +539,8 @@ const DynamicContentForm = ({ contentJson, onChange, className = "" }) => {
                               alt="Preview"
                               className="w-8 h-8 object-cover rounded border"
                               onError={(e) => {
-                                e.target.style.display = 'none';
-                                e.target.nextSibling.style.display = 'flex';
+                                e.target.style.display = "none";
+                                e.target.nextSibling.style.display = "flex";
                               }}
                             />
                             <div className="hidden w-8 h-8 bg-gray-100 rounded border flex items-center justify-center">
@@ -501,7 +551,7 @@ const DynamicContentForm = ({ contentJson, onChange, className = "" }) => {
                       }
                     })()}
                     <span className="text-xs text-gray-600 dark:text-gray-400 truncate">
-                      Selected: {value.split('/').pop() || value}
+                      Selected: {value.split("/").pop() || value}
                     </span>
                   </div>
                 )}

@@ -233,25 +233,63 @@ const EnhancedPageBuilder = () => {
   };
 
   const addComponent = (component) => {
-    const defaultContent = getDefaultDataForComponent(component.componentType);
-    const newComponent = {
-      componentType: component.componentType || "Generic",
-      componentName: component.componentName || "New Component",
-      contentJson: JSON.stringify(defaultContent, null, 2),
-      orderIndex: pageData.components.length + 1,
-    };
-
-    setPageData((prev) => ({
-      ...prev,
-      components: [...prev.components, newComponent],
-    }));
-
-    showToast(
-      `${
-        component.componentName || component.name || "Component"
-      } added to page`,
-      "success"
-    );
+    // Special logic for AboutJourneySection: fetch default data from about.json if contentJson is missing/empty
+    if (component.componentType === "AboutJourneySection") {
+      fetch("/data/about.json")
+        .then((res) => res.json())
+        .then((defaultData) => {
+          console.log("Applied default content for AboutJourneySection from /public/data/about.json", defaultData);
+          const newComponent = {
+            componentType: component.componentType || "Generic",
+            componentName: component.componentName || "New Component",
+            contentJson: JSON.stringify(defaultData, null, 2),
+            orderIndex: pageData.components.length + 1,
+          };
+          setPageData((prev) => ({
+            ...prev,
+            components: [...prev.components, newComponent],
+          }));
+          showToast(
+            `${component.componentName || component.name || "Component"} added to page with default content`,
+            "success"
+          );
+        })
+        .catch((err) => {
+          console.error("Failed to load default about.json for AboutJourneySection", err);
+          // Fallback to generic default
+          const defaultContent = getDefaultDataForComponent(component.componentType);
+          const newComponent = {
+            componentType: component.componentType || "Generic",
+            componentName: component.componentName || "New Component",
+            contentJson: JSON.stringify(defaultContent, null, 2),
+            orderIndex: pageData.components.length + 1,
+          };
+          setPageData((prev) => ({
+            ...prev,
+            components: [...prev.components, newComponent],
+          }));
+          showToast(
+            `${component.componentName || component.name || "Component"} added to page (fallback)",
+            "success"`
+          );
+        });
+    } else {
+      const defaultContent = getDefaultDataForComponent(component.componentType);
+      const newComponent = {
+        componentType: component.componentType || "Generic",
+        componentName: component.componentName || "New Component",
+        contentJson: JSON.stringify(defaultContent, null, 2),
+        orderIndex: pageData.components.length + 1,
+      };
+      setPageData((prev) => ({
+        ...prev,
+        components: [...prev.components, newComponent],
+      }));
+      showToast(
+        (component.componentName || component.name || "Component") + " added to page",
+        "success"
+      );
+    }
   };
 
   // Function to update a specific component field
@@ -893,23 +931,23 @@ const EnhancedPageBuilder = () => {
 
           // Check component type
           if (!comp.componentType?.trim()) {
-            return validateAndReturn(`Component ${i + 1} is missing component type`);
+            return validateAndReturn('Component ' + (i + 1) + ' is missing component type');
           }
 
           // Check component name
           if (!comp.componentName?.trim()) {
-            return validateAndReturn(`Component ${i + 1} is missing component name`);
+            return validateAndReturn('Component ' + (i + 1) + ' is missing component name');
           }
 
           // Check content
           if (!comp.content || typeof comp.content !== "object") {
-            return validateAndReturn(`Component ${i + 1} has invalid content`);
+            return validateAndReturn('Component ' + (i + 1) + ' has invalid content');
           }
 
           // Check orderIndex uniqueness
           const orderIndex = comp.orderIndex;
           if (orderIndexes.has(orderIndex)) {
-            return validateAndReturn(`Duplicate order index found: ${orderIndex}. Each component must have a unique order index.`);
+            return validateAndReturn('Duplicate order index found: ' + orderIndex + '. Each component must have a unique order index.');
           }
           orderIndexes.add(orderIndex);
         }
@@ -930,7 +968,7 @@ const EnhancedPageBuilder = () => {
       if (status === "published") {
         showToast("Page published successfully", "success");
       } else {
-        showToast(`Page "${createPageDTO.name}" saved as draft successfully!`, "success");
+        showToast('Page "' + createPageDTO.name + '" saved as draft successfully!', "success");
       }
 
       // Navigate to pages management after a brief delay
@@ -967,12 +1005,12 @@ const EnhancedPageBuilder = () => {
       } else if (error.response?.status >= 500) {
         errorMessage = "Server error. Please try again later.";
       } else if (error.message) {
-        errorMessage = `Save failed: ${error.message}`;
+  errorMessage = 'Save failed: ' + error.message;
       }
       
       // Show specific error message based on operation type
-      const operation = status === "published" ? "publishing" : "saving";
-      showToast(`Error ${operation} page: ${errorMessage}`, "error");
+  const operation = status === "published" ? "publishing" : "saving";
+  showToast('Error ' + operation + ' page: ' + errorMessage, "error");
     } finally {
       // Reset loading states
       setLoading(false);
