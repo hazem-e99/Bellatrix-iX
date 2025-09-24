@@ -88,14 +88,12 @@ const MediaInputDetector = ({ children, containerRef }) => {
         input[placeholder*="image" i],
         input[placeholder*="video" i],
         input[placeholder*="media" i],
-        input[placeholder*="url" i],
         textarea[name*="image"],
         textarea[name*="video"],
         textarea[name*="media"],
         textarea[placeholder*="image" i],
         textarea[placeholder*="video" i],
-        textarea[placeholder*="media" i],
-        textarea[placeholder*="url" i]
+        textarea[placeholder*="media" i]
       `);
 
       // Combine both sets

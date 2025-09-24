@@ -98,7 +98,7 @@ const pagesAPI = {
           const formattedComponent = {
             componentType: cleanComponent.componentType || "Generic",
             componentName: cleanComponent.componentName || `Component ${index + 1}`,
-            orderIndex: index, // Always use sequential index to avoid duplicates
+            orderIndex: index + 1, // Always use sequential 1-based index to avoid duplicates
             contentJson: "",
           };
 

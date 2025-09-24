@@ -224,7 +224,7 @@ const EnhancedPageBuilder = () => {
           const processedComponent = {
             componentType: component.componentType || "Generic",
             componentName: component.componentName || "New Component",
-            orderIndex: index, // Auto-generate sequentially starting from 0
+            orderIndex: index + 1, // Auto-generate sequentially starting from 1
           };
 
           // Handle contentJson string conversion for API
@@ -311,7 +311,7 @@ const EnhancedPageBuilder = () => {
       componentType: component.componentType || "Generic",
       componentName: component.componentName || "New Component",
       contentJson: JSON.stringify(defaultContent, null, 2),
-      orderIndex: pageData.components.length,
+      orderIndex: pageData.components.length + 1,
     };
 
     setPageData((prev) => ({
@@ -347,7 +347,7 @@ const EnhancedPageBuilder = () => {
     setPageData((prev) => {
       const updatedComponents = prev.components.map((component, index) => ({
         ...component,
-        orderIndex: index,
+        orderIndex: index + 1,
       }));
       return {
         ...prev,
@@ -678,7 +678,7 @@ const EnhancedPageBuilder = () => {
     // Always re-assign all orderIndex values after removal to ensure they're sequential
     const reorderedComponents = updatedComponents.map((component, index) => ({
       ...component,
-      orderIndex: index, // Ensure orderIndex values are sequential and zero-based
+      orderIndex: index + 1, // Ensure orderIndex values are sequential and 1-based
     }));
 
     setPageData((prev) => ({
@@ -705,7 +705,7 @@ const EnhancedPageBuilder = () => {
         ...prev,
         components: updatedComponents.map((component, index) => ({
           ...component,
-          orderIndex: index,
+          orderIndex: index + 1,
         })),
       };
     });
@@ -721,7 +721,7 @@ const EnhancedPageBuilder = () => {
     // Always re-assign all orderIndex values after reordering to ensure they're sequential
     const reorderedComponents = components.map((component, index) => ({
       ...component,
-      orderIndex: index, // Ensure orderIndex values are sequential and zero-based
+      orderIndex: index + 1, // Ensure orderIndex values are sequential and 1-based
     }));
 
     setPageData((prev) => ({
@@ -1330,12 +1330,12 @@ const SectionsStep = ({
                     const updatedComponents = pageData.components.map(
                       (component, index) => ({
                         ...component,
-                        orderIndex: index,
+                        orderIndex: index + 1,
                       })
                     );
                     // Update all components with fixed indexes
                     updatedComponents.forEach((comp, index) => {
-                      onUpdateComponent(index, "orderIndex", index);
+                      onUpdateComponent(index, "orderIndex", index + 1);
                     });
                   }}
                   className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-orange-500/20 hover:border-orange-400 transition-all duration-200"

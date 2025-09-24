@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import {
   MagnifyingGlassIcon,
@@ -37,8 +36,11 @@ const PagesManagement = () => {
   const [showViewModal, setShowViewModal] = useState(false);
   const [operationLoading, setOperationLoading] = useState(false);
   const [toast, setToast] = useState(null);
+  const [selectedIds, setSelectedIds] = useState([]);
+  const [sortBy, setSortBy] = useState("createdAt");
+  const [sortDir, setSortDir] = useState("desc");
 
-  const ITEMS_PER_PAGE = 6;
+  const ITEMS_PER_PAGE = 10;
 
   // Show toast notification
   const showToast = useCallback((message, type = "info") => {
@@ -91,9 +93,26 @@ const PagesManagement = () => {
         page.categoryName.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
-  const totalPages = Math.ceil(filteredPages.length / ITEMS_PER_PAGE);
+  const sortedPages = [...filteredPages].sort((a, b) => {
+    const dir = sortDir === "asc" ? 1 : -1;
+    const getVal = (p, key) => {
+      if (key === "createdAt") return new Date(p.createdAt || 0).getTime();
+      if (key === "title") return (p.title || "").toLowerCase();
+      if (key === "slug") return (p.slug || "").toLowerCase();
+      if (key === "categoryName") return (p.categoryName || "").toLowerCase();
+      if (key === "componentCount") return Number(p.componentCount || 0);
+      return p[key];
+    };
+    const av = getVal(a, sortBy);
+    const bv = getVal(b, sortBy);
+    if (av < bv) return -1 * dir;
+    if (av > bv) return 1 * dir;
+    return 0;
+  });
+
+  const totalPages = Math.ceil(sortedPages.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const paginatedPages = filteredPages.slice(
+  const paginatedPages = sortedPages.slice(
     startIndex,
     startIndex + ITEMS_PER_PAGE
   );
@@ -118,6 +137,44 @@ const PagesManagement = () => {
   const handleDelete = (page) => {
     setSelectedPage(page);
     setShowDeleteModal(true);
+  };
+
+  const handleToggleSort = (key) => {
+    if (sortBy === key) {
+      setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+    } else {
+      setSortBy(key);
+      setSortDir("asc");
+    }
+  };
+
+  const handleToggleSelect = (id) => {
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+    );
+  };
+
+  const handleToggleSelectAll = () => {
+    const pageIds = paginatedPages.map((p) => p.id);
+    const allSelected = pageIds.every((id) => selectedIds.includes(id));
+    setSelectedIds(allSelected ? selectedIds.filter((id) => !pageIds.includes(id)) : Array.from(new Set([...selectedIds, ...pageIds])));
+  };
+
+  const handleBulkDelete = async () => {
+    if (selectedIds.length === 0) return;
+    try {
+      setOperationLoading(true);
+      for (const id of selectedIds) {
+        await pagesAPI.deletePage(id);
+      }
+      showToast(`Deleted ${selectedIds.length} page(s)`, "success");
+      setSelectedIds([]);
+      await fetchPages();
+    } catch (err) {
+      showToast("Error deleting selected pages: " + err.message, "error");
+    } finally {
+      setOperationLoading(false);
+    }
   };
 
   const confirmDelete = async () => {
@@ -181,7 +238,6 @@ const PagesManagement = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-2xl font-bold text-gray-800">Pages Management</h2>
@@ -212,7 +268,6 @@ const PagesManagement = () => {
         </div>
       </div>
 
-      {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card className="bg-white border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300">
           <CardContent className="p-6">
@@ -271,32 +326,19 @@ const PagesManagement = () => {
         </Card>
       </div>
 
-      {/* Modern Search and Filter */}
-      <Card className="bg-gradient-to-r from-white/90 to-blue-50/90 backdrop-blur-sm border border-white/20 shadow-xl">
-        <CardHeader className="pb-4">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg">
-                <DocumentTextIcon className="h-5 w-5 text-white" />
+      <Card className="border border-gray-200 shadow">
+        <CardHeader className="pb-2">
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-lg bg-blue-600 flex items-center justify-center">
+                <DocumentTextIcon className="h-4 w-4 text-white" />
               </div>
-              <div>
-                <CardTitle className="text-xl font-bold text-gray-800 flex items-center">
-                  All Pages
-                  <span className="ml-2 px-3 py-1 bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 text-sm font-semibold rounded-full">
-                    {filteredPages.length}
-                  </span>
-                </CardTitle>
-                <p className="text-sm text-gray-600 mt-1">
-                  Manage and organize your website pages
-                </p>
+              <CardTitle className="text-lg font-semibold text-gray-800">All Pages</CardTitle>
+              <span className="text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-700">{filteredPages.length}</span>
               </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
+            <div className="flex items-center gap-2">
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
-                </div>
+                <MagnifyingGlassIcon className="h-4 w-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   placeholder="Search pages..."
@@ -305,445 +347,153 @@ const PagesManagement = () => {
                     setSearchTerm(e.target.value);
                     setCurrentPage(1);
                   }}
-                  className="block w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl bg-white/80 backdrop-blur-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 placeholder-gray-500 text-sm font-medium"
+                  className="pl-9 pr-3 py-2 text-sm border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
-
-              <button
-                onClick={fetchPages}
-                className="group px-4 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white rounded-xl font-semibold text-sm transition-all duration-200 hover:shadow-lg hover:scale-105 flex items-center justify-center space-x-2"
-                title="Refresh Pages"
-              >
-                <ArrowPathIcon className="h-4 w-4 group-hover:rotate-180 transition-transform duration-500" />
-                <span>Refresh</span>
-              </button>
+              <Button variant="outline" onClick={fetchPages}>
+                <ArrowPathIcon className="h-4 w-4 mr-1" />
+                Refresh
+              </Button>
+              {selectedIds.length > 0 && (
+                <Button variant="destructive" onClick={handleBulkDelete} loading={operationLoading}>
+                  <TrashIcon className="h-4 w-4 mr-1" />
+                  Delete Selected ({selectedIds.length})
+                </Button>
+              )}
             </div>
           </div>
         </CardHeader>
-
         <CardContent>
-          {paginatedPages.length === 0 ? (
-            <div className="text-center py-16">
-              <div className="relative mx-auto w-24 h-24 mb-6">
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-2xl transform rotate-6"></div>
-                <div className="relative w-full h-full bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-xl">
-                  <DocumentTextIcon className="h-12 w-12 text-white" />
-                </div>
-              </div>
-
-              <h3 className="text-2xl font-bold text-gray-800 mb-3">
-                {searchTerm ? "No pages found" : "No pages yet"}
-              </h3>
-              <p className="text-gray-600 mb-8 max-w-md mx-auto">
-                {searchTerm
-                  ? "Try adjusting your search criteria or create a new page with different content"
-                  : "Get started by creating your first page to manage your website content"}
-              </p>
-
-              {!searchTerm && (
-                <div className="flex flex-col sm:flex-row items-center justify-center space-y-3 sm:space-y-0 sm:space-x-4">
-                  <button
-                    onClick={() => setShowCreateModal(true)}
-                    className="group px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white rounded-xl font-semibold transition-all duration-200 hover:shadow-lg hover:scale-105 flex items-center space-x-2"
-                  >
-                    <PlusIcon className="h-5 w-5 group-hover:rotate-90 transition-transform duration-300" />
-                    <span>Create First Page</span>
-                  </button>
-
-                  <button
-                    onClick={() => navigate("/admin/pages/enhanced-create")}
-                    className="px-6 py-3 bg-white/80 hover:bg-white border border-gray-200 hover:border-blue-300 text-gray-700 hover:text-blue-600 rounded-xl font-semibold transition-all duration-200 hover:shadow-md flex items-center space-x-2"
-                  >
-                    <DocumentTextIcon className="h-5 w-5" />
-                    <span>Enhanced Builder</span>
-                  </button>
-                </div>
-              )}
-            </div>
+          {sortedPages.length === 0 ? (
+            <div className="text-center py-16 text-gray-600">No pages found</div>
           ) : (
-            <div className="relative">
-              {/* Modern Table Container with Glassmorphism */}
-              <div className="relative overflow-hidden rounded-2xl bg-white/80 backdrop-blur-xl border border-white/20 shadow-2xl">
-                {/* Sticky Header */}
-                <div className="sticky top-0 z-10 bg-gradient-to-r from-slate-50/95 to-blue-50/95 backdrop-blur-md border-b border-gray-200/50">
-                  <div className="px-6 py-4">
-                    {/* Desktop Header */}
-                    <div className="hidden lg:grid grid-cols-18 gap-2 items-center text-xs">
-                      <div className="col-span-1">
-                        <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wider">
-                          ID
-                        </h3>
-                      </div>
-                      <div className="col-span-3">
-                        <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wider flex items-center">
-                          <DocumentTextIcon className="h-4 w-4 mr-2 text-blue-600" />
+            <div className="overflow-x-auto">
+              <table className="min-w-full text-sm">
+                <thead className="bg-gray-50 text-gray-600 border-b">
+                  <tr>
+                    <th className="px-4 py-3 text-left w-10">
+                      <input
+                        type="checkbox"
+                        onChange={handleToggleSelectAll}
+                        checked={paginatedPages.length > 0 && paginatedPages.every((p) => selectedIds.includes(p.id))}
+                        className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                      />
+                    </th>
+                    <th className="px-4 py-3 text-left cursor-pointer select-none" onClick={() => handleToggleSort("title")}>
+                      <div className="inline-flex items-center gap-1">
                           Title
-                        </h3>
+                        {sortBy === "title" && <span className="text-xs text-gray-400">{sortDir === "asc" ? "▲" : "▼"}</span>}
                       </div>
-                      <div className="col-span-2">
-                        <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wider">
-                          Slug
-                        </h3>
-                      </div>
-                      <div className="col-span-2">
-                        <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wider flex items-center">
-                          <CheckCircleIcon className="h-4 w-4 mr-2 text-green-600" />
-                          Category
-                        </h3>
-                      </div>
-                      <div className="col-span-2">
-                        <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wider">
-                          Published
-                        </h3>
-                      </div>
-                      <div className="col-span-2">
-                        <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wider">
-                          Homepage
-                        </h3>
-                      </div>
-                      <div className="col-span-2">
-                        <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wider">
-                          Components
-                        </h3>
-                      </div>
-                      <div className="col-span-2">
-                        <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wider flex items-center">
-                          <CalendarIcon className="h-4 w-4 mr-2 text-orange-600" />
-                          Created At
-                        </h3>
-                      </div>
-                      <div className="col-span-2">
-                        <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wider">
-                          Actions
-                        </h3>
-                      </div>
-                      <div className="col-span-2 text-right">
-                        <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wider flex items-center justify-end">
-                          <PencilIcon className="h-4 w-4 mr-2 text-indigo-600" />
-                          Actions
-                        </h3>
-                      </div>
-                    </div>
-
-                    {/* Mobile Header */}
-                    <div className="lg:hidden">
-                      <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wider flex items-center">
-                        <DocumentTextIcon className="h-4 w-4 mr-2 text-blue-600" />
-                        Pages ({filteredPages.length})
-                      </h3>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Table Body */}
-                <div className="divide-y divide-gray-100/50">
-                  <AnimatePresence>
-                    {paginatedPages.map((page, index) => (
-                      <motion.div
-                        key={page.id || page.slug}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        transition={{ delay: index * 0.05 }}
-                        className={`group px-6 py-5 transition-all duration-300 hover:bg-gradient-to-r hover:from-blue-50/50 hover:to-indigo-50/50 ${
-                          index % 2 === 0 ? "bg-white/40" : "bg-gray-50/30"
-                        }`}
-                      >
-                        {/* Desktop Layout */}
-                        <div className="hidden lg:grid grid-cols-18 gap-2 items-center text-xs">
-                          {/* ID */}
-                          <div className="col-span-1">
-                            <span className="text-sm font-medium text-gray-700">
-                              {page.id}
-                            </span>
-                          </div>
-
-                          {/* Title */}
-                          <div className="col-span-3">
-                            <div className="flex items-center space-x-2">
-                              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-sm">
+                    </th>
+                    <th className="px-4 py-3 text-left cursor-pointer select-none" onClick={() => handleToggleSort("slug")}>Slug {sortBy === "slug" && <span className="text-xs text-gray-400">{sortDir === "asc" ? "▲" : "▼"}</span>}</th>
+                    <th className="px-4 py-3 text-left cursor-pointer select-none" onClick={() => handleToggleSort("categoryName")}>Category {sortBy === "categoryName" && <span className="text-xs text-gray-400">{sortDir === "asc" ? "▲" : "▼"}</span>}</th>
+                    <th className="px-4 py-3 text-left">Published</th>
+                    <th className="px-4 py-3 text-left">Homepage</th>
+                    <th className="px-4 py-3 text-left cursor-pointer select-none" onClick={() => handleToggleSort("componentCount")}>Components {sortBy === "componentCount" && <span className="text-xs text-gray-400">{sortDir === "asc" ? "▲" : "▼"}</span>}</th>
+                    <th className="px-4 py-3 text-left cursor-pointer select-none" onClick={() => handleToggleSort("createdAt")}>Created {sortBy === "createdAt" && <span className="text-xs text-gray-400">{sortDir === "asc" ? "▲" : "▼"}</span>}</th>
+                    <th className="px-4 py-3 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y">
+                  {paginatedPages.map((page) => (
+                    <tr key={page.id || page.slug} className="hover:bg-gray-50">
+                      <td className="px-4 py-2">
+                        <input
+                          type="checkbox"
+                          checked={selectedIds.includes(page.id)}
+                          onChange={() => handleToggleSelect(page.id)}
+                          className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        />
+                      </td>
+                      <td className="px-4 py-2">
+                        <div className="flex items-center gap-2 min-w-[12rem]">
+                          <div className="w-7 h-7 rounded-md bg-blue-600 flex items-center justify-center">
                                 <DocumentTextIcon className="h-4 w-4 text-white" />
                               </div>
-                              <div className="min-w-0 flex-1">
-                                <h4 className="text-sm font-semibold text-gray-900 truncate group-hover:text-blue-700 transition-colors">
-                                  {page.title}
-                                </h4>
+                          <div className="truncate">
+                            <div className="font-medium text-gray-900 truncate">{page.title || page.slug}</div>
+                            <div className="text-xs text-gray-500 truncate">ID: {page.id}</div>
                               </div>
                             </div>
-                          </div>
-
-                          {/* Slug */}
-                          <div className="col-span-2">
-                            <span className="text-sm text-gray-600 font-mono bg-gray-100 px-2 py-1 rounded">
-                              /{page.slug}
-                            </span>
-                          </div>
-
-                          {/* Category */}
-                          <div className="col-span-2">
-                            <span className="text-sm font-medium text-gray-700">
-                              {page.categoryName || "Uncategorized"}
-                            </span>
-                          </div>
-
-                          {/* Published */}
-                          <div className="col-span-2">
+                      </td>
+                      <td className="px-4 py-2 text-gray-700 font-mono">/{page.slug}</td>
+                      <td className="px-4 py-2 text-gray-700">{page.categoryName || "Uncategorized"}</td>
+                      <td className="px-4 py-2">
                             {page.isPublished ? (
-                              <div className="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800">
-                                <div className="w-2 h-2 bg-green-500 rounded-full mr-1"></div>
-                                Yes
-                              </div>
-                            ) : (
-                              <div className="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700">
-                                <div className="w-2 h-2 bg-gray-400 rounded-full mr-1"></div>
-                                No
-                              </div>
-                            )}
-                          </div>
-
-                          {/* Homepage */}
-                          <div className="col-span-2">
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">Yes</span>
+                        ) : (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700">No</span>
+                        )}
+                      </td>
+                      <td className="px-4 py-2">
                             {page.isHomepage ? (
-                              <div className="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800">
-                                <div className="w-2 h-2 bg-yellow-500 rounded-full mr-1"></div>
-                                Yes
-                              </div>
-                            ) : (
-                              <span className="text-sm text-gray-500">No</span>
-                            )}
-                          </div>
-
-                          {/* Components */}
-                          <div className="col-span-2">
-                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                              {page.componentCount || 0}
-                            </span>
-                          </div>
-
-                          {/* Created At */}
-                          <div className="col-span-2">
-                            <div className="flex items-center space-x-1">
-                              <CalendarIcon className="h-3 w-3 text-orange-600" />
-                              <span className="text-xs font-medium text-gray-700">
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">Yes</span>
+                        ) : (
+                          <span className="text-xs text-gray-500">No</span>
+                        )}
+                      </td>
+                      <td className="px-4 py-2">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">{page.componentCount || 0}</span>
+                      </td>
+                      <td className="px-4 py-2 text-gray-700">
                                 {formatDate(page.createdAt)}
-                              </span>
-                            </div>
-                          </div>
-
-                          {/* Actions */}
-                          <div className="col-span-2">
-                            <div className="flex items-center justify-end space-x-2">
-                              <button
-                                onClick={() => handleView(page)}
-                                className="group/btn p-2 rounded-lg bg-gradient-to-br from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 text-blue-600 hover:text-blue-700 border border-blue-200 hover:border-blue-300 transition-all duration-200 hover:shadow-md hover:scale-105"
-                                title="View Page"
-                              >
+                      </td>
+                      <td className="px-4 py-2">
+                        <div className="flex items-center justify-end gap-2">
+                          <button onClick={() => handleView(page)} className="p-2 rounded-md border border-gray-200 hover:bg-gray-100 text-gray-700" title="View">
                                 <EyeIcon className="h-4 w-4" />
                               </button>
-                              <button
-                                onClick={() => handleEdit(page)}
-                                className="group/btn p-2 rounded-lg bg-gradient-to-br from-indigo-50 to-indigo-100 hover:from-indigo-100 hover:to-indigo-200 text-indigo-600 hover:text-indigo-700 border border-indigo-200 hover:border-indigo-300 transition-all duration-200 hover:shadow-md hover:scale-105"
-                                title="Edit Page"
-                              >
+                          <button onClick={() => handleEdit(page)} className="p-2 rounded-md border border-gray-200 hover:bg-gray-100 text-gray-700" title="Edit">
                                 <PencilIcon className="h-4 w-4" />
                               </button>
-                              <button
-                                onClick={() => handleDelete(page)}
-                                className="group/btn p-2 rounded-lg bg-gradient-to-br from-red-50 to-red-100 hover:from-red-100 hover:to-red-200 text-red-600 hover:text-red-700 border border-red-200 hover:border-red-300 transition-all duration-200 hover:shadow-md hover:scale-105"
-                                title="Delete Page"
-                              >
+                          <button onClick={() => handleDelete(page)} className="p-2 rounded-md border border-gray-200 hover:bg-red-50 text-red-600" title="Delete">
                                 <TrashIcon className="h-4 w-4" />
                               </button>
                             </div>
-                          </div>
-                        </div>
-
-                        {/* Mobile Layout */}
-                        <div className="lg:hidden space-y-4">
-                          {/* Header with Icon and Actions */}
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center space-x-3">
-                              <div className="relative">
-                                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg">
-                                  <DocumentTextIcon className="h-6 w-6 text-white" />
-                                </div>
-                                {page.isHomepage && (
-                                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-yellow-500 rounded-full border-2 border-white shadow-sm"></div>
-                                )}
-                              </div>
-                              <div>
-                                <h4 className="text-base font-semibold text-gray-900">
-                                  {page.title}
-                                </h4>
-                                <p className="text-sm text-gray-500">
-                                  /{page.slug}
-                                </p>
-                              </div>
-                            </div>
-
-                            <div className="flex items-center space-x-2">
-                              <button
-                                onClick={() => handleView(page)}
-                                className="p-2 rounded-lg bg-gradient-to-br from-blue-50 to-blue-100 text-blue-600 border border-blue-200 transition-all duration-200 hover:shadow-md"
-                                title="View Page"
-                              >
-                                <EyeIcon className="h-4 w-4" />
-                              </button>
-                              <button
-                                onClick={() => handleEdit(page)}
-                                className="p-2 rounded-lg bg-gradient-to-br from-indigo-50 to-indigo-100 text-indigo-600 border border-indigo-200 transition-all duration-200 hover:shadow-md"
-                                title="Edit Page"
-                              >
-                                <PencilIcon className="h-4 w-4" />
-                              </button>
-                              <button
-                                onClick={() => handleDelete(page)}
-                                className="p-2 rounded-lg bg-gradient-to-br from-red-50 to-red-100 text-red-600 border border-red-200 transition-all duration-200 hover:shadow-md"
-                                title="Delete Page"
-                              >
-                                <TrashIcon className="h-4 w-4" />
-                              </button>
-                            </div>
-                          </div>
-
-                          {/* Status and Metadata */}
-                          <div className="grid grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                              <div className="flex items-center">
-                                {page.isPublished ? (
-                                  <div className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 border border-green-200 shadow-sm">
-                                    <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
-                                    Published
-                                  </div>
-                                ) : (
-                                  <div className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r from-gray-100 to-slate-100 text-gray-700 border border-gray-200 shadow-sm">
-                                    <div className="w-2 h-2 bg-gray-400 rounded-full mr-2"></div>
-                                    Draft
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-
-                            <div className="space-y-2">
-                              <div className="flex items-center space-x-2">
-                                <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center">
-                                  <DocumentTextIcon className="h-3 w-3 text-purple-600" />
-                                </div>
-                                <span className="text-sm font-medium text-gray-700">
-                                  {page.categoryName || "Uncategorized"}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* Components Info */}
-                          <div className="space-y-2">
-                            <h5 className="text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                              Components
-                            </h5>
-                            <div className="flex flex-wrap gap-1">
-                              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                {page.componentCount} components
-                              </span>
-                              {page.isHomepage && (
-                                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                  Homepage
-                                </span>
-                              )}
-                            </div>
-                          </div>
-
-                          {/* Created At */}
-                          <div className="flex items-center space-x-2 pt-2 border-t border-gray-100">
-                            <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center">
-                              <CalendarIcon className="h-3 w-3 text-orange-600" />
-                            </div>
-                            <span className="text-sm text-gray-600">
-                              Created: {formatDate(page.createdAt)}
-                            </span>
-                          </div>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </AnimatePresence>
-                </div>
-              </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           )}
 
-          {/* Modern Pagination */}
           {totalPages > 1 && (
-            <div className="mt-8">
-              <div className="flex items-center justify-between p-6 bg-gradient-to-r from-white/80 to-blue-50/80 backdrop-blur-sm rounded-2xl border border-white/20 shadow-lg">
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-                  <span className="text-sm font-medium text-gray-700">
-                    Showing{" "}
-                    <span className="font-semibold text-blue-600">
-                      {startIndex + 1}
-                    </span>{" "}
-                    to{" "}
-                    <span className="font-semibold text-blue-600">
-                      {Math.min(
-                        startIndex + ITEMS_PER_PAGE,
-                        filteredPages.length
-                      )}
-                    </span>{" "}
-                    of{" "}
-                    <span className="font-semibold text-gray-800">
-                      {filteredPages.length}
-                    </span>{" "}
-                    results
-                  </span>
+            <div className="mt-4 flex items-center justify-between text-sm">
+              <div className="text-gray-600">
+                Showing <span className="font-medium">{startIndex + 1}</span> to <span className="font-medium">{Math.min(startIndex + ITEMS_PER_PAGE, sortedPages.length)}</span> of <span className="font-medium">{sortedPages.length}</span>
                 </div>
-                <div className="flex items-center space-x-3">
+              <div className="flex items-center gap-2">
                   <button
-                    onClick={() => setCurrentPage(currentPage - 1)}
+                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                     disabled={currentPage === 1}
-                    className="group p-2 rounded-xl bg-white/60 hover:bg-white/80 border border-gray-200 hover:border-blue-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 hover:shadow-md hover:scale-105"
-                    title="Previous Page"
+                  className="p-2 rounded-md border border-gray-200 disabled:opacity-50"
                   >
-                    <ChevronLeftIcon className="h-4 w-4 text-gray-600 group-hover:text-blue-600" />
+                  <ChevronLeftIcon className="h-4 w-4" />
                   </button>
-
-                  <div className="flex items-center space-x-1">
                     {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                       let pageNum;
-                      if (totalPages <= 5) {
-                        pageNum = i + 1;
-                      } else if (currentPage <= 3) {
-                        pageNum = i + 1;
-                      } else if (currentPage >= totalPages - 2) {
-                        pageNum = totalPages - 4 + i;
-                      } else {
-                        pageNum = currentPage - 2 + i;
-                      }
-
+                  if (totalPages <= 5) pageNum = i + 1;
+                  else if (currentPage <= 3) pageNum = i + 1;
+                  else if (currentPage >= totalPages - 2) pageNum = totalPages - 4 + i;
+                  else pageNum = currentPage - 2 + i;
                       return (
                         <button
                           key={pageNum}
                           onClick={() => setCurrentPage(pageNum)}
-                          className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
-                            currentPage === pageNum
-                              ? "bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg"
-                              : "bg-white/60 hover:bg-white/80 text-gray-700 hover:text-blue-600 border border-gray-200 hover:border-blue-300"
-                          }`}
+                      className={`px-3 py-1 rounded-md border ${currentPage === pageNum ? "bg-blue-600 text-white border-blue-600" : "border-gray-200"}`}
                         >
                           {pageNum}
                         </button>
                       );
                     })}
-                  </div>
-
                   <button
-                    onClick={() => setCurrentPage(currentPage + 1)}
+                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                     disabled={currentPage === totalPages}
-                    className="group p-2 rounded-xl bg-white/60 hover:bg-white/80 border border-gray-200 hover:border-blue-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 hover:shadow-md hover:scale-105"
-                    title="Next Page"
+                  className="p-2 rounded-md border border-gray-200 disabled:opacity-50"
                   >
-                    <ChevronRightIcon className="h-4 w-4 text-gray-600 group-hover:text-blue-600" />
+                  <ChevronRightIcon className="h-4 w-4" />
                   </button>
-                </div>
               </div>
             </div>
           )}
