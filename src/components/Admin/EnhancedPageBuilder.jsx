@@ -23,6 +23,7 @@ import Toast from "../ui/Toast";
 import SectionDataEditor from "./SectionDataEditor";
 import PagePreview from "./PagePreview";
 import MediaInputDetector from "../ui/MediaInputDetector";
+import DynamicContentForm from "../ui/DynamicContentForm";
 import pagesAPI from "../../lib/pagesAPI";
 import api from "../../lib/api";
 
@@ -222,15 +223,23 @@ const EnhancedPageBuilder = () => {
           };
 
           // Handle contentJson string conversion for API
+          console.log(`🔍 Processing component ${index + 1}:`, {
+            componentType: component.componentType,
+            originalContentJson: component.contentJson,
+            contentJsonType: typeof component.contentJson
+          });
+
           if (
             component.contentJson &&
             typeof component.contentJson === "string"
           ) {
             try {
-              // Validate JSON before sending
-              JSON.parse(component.contentJson);
-              processedComponent.content = JSON.parse(component.contentJson);
-            } catch {
+              // Parse and validate JSON before sending
+              const parsedContent = JSON.parse(component.contentJson);
+              processedComponent.content = parsedContent;
+              console.log(`✅ Successfully parsed contentJson for component ${index + 1}:`, parsedContent);
+            } catch (error) {
+              console.error(`❌ Invalid JSON in component ${index + 1}:`, error.message);
               // If invalid JSON, create empty object
               processedComponent.content = {};
             }
@@ -239,9 +248,13 @@ const EnhancedPageBuilder = () => {
             typeof component.content === "object"
           ) {
             processedComponent.content = component.content;
+            console.log(`📋 Using existing content object for component ${index + 1}:`, component.content);
           } else {
             processedComponent.content = {};
+            console.log(`🆕 Creating empty content for component ${index + 1}`);
           }
+
+          console.log(`💾 Final processed component ${index + 1}:`, processedComponent);
 
           return processedComponent;
         }) || [],
@@ -798,10 +811,16 @@ const EnhancedPageBuilder = () => {
         }
       }
 
-      console.log("Final data being sent:", createPageDTO);
+      console.log("🚀 Final data being sent to API:", createPageDTO);
+      console.log("📊 Component summary:", {
+        totalComponents: createPageDTO.components?.length || 0,
+        componentTypes: createPageDTO.components?.map(c => c.componentType) || [],
+        orderIndexes: createPageDTO.components?.map(c => c.orderIndex) || []
+      });
 
       // Make the API call to create page with components
       await pagesAPI.createPage(createPageDTO);
+      console.log("✅ Page created successfully!");
       
       // Show appropriate success message based on status
       if (status === "published") {
@@ -1535,46 +1554,97 @@ const SectionsStep = ({
                       </p>
                     </div>
 
-                    {/* Content JSON - Full Width */}
+                    {/* Content Configuration - Full Width */}
                     <div className="md:col-span-2">
-                      <label className="block text-sm font-medium text-gray-300 mb-2">
-                        Content JSON
-                      </label>
-                      <textarea
-                        rows={6}
-                        value={component.contentJson || "{}"}
-                        onChange={(e) =>
-                          handleComponentUpdate(
-                            index,
-                            "contentJson",
-                            e.target.value
-                          )
-                        }
-                        placeholder='{"title": "Example Title", "description": "Example Description"}'
-                        className="block w-full rounded-lg bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder-white/50 focus:border-blue-400 focus:ring-blue-400/20 shadow-sm font-mono text-sm resize-none"
-                      />
-                      <div className="flex items-center justify-between mt-2">
-                        <p className="text-xs text-gray-400">
-                          Enter valid JSON data for this component
-                        </p>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => {
-                            const formatted = validateAndFormatJSON(
-                              component.contentJson || "{}"
-                            );
-                            handleComponentUpdate(
-                              index,
-                              "contentJson",
-                              formatted
-                            );
-                          }}
-                          className="bg-white/5 backdrop-blur-sm border-white/20 text-white hover:bg-blue-500/20 hover:border-blue-400 transition-all duration-200 text-xs px-2 py-1"
-                        >
-                          Format JSON
-                        </Button>
+                      <div className="flex items-center justify-between mb-3">
+                        <label className="block text-sm font-medium text-gray-300">
+                          Content Configuration
+                        </label>
+                        <div className="flex bg-white/10 rounded-lg p-1">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (!component.viewMode) {
+                                handleComponentUpdate(index, "viewMode", "form");
+                              } else if (component.viewMode === "json") {
+                                handleComponentUpdate(index, "viewMode", "form");
+                              }
+                            }}
+                            className={`px-3 py-1 text-xs rounded-md transition-all ${
+                              (!component.viewMode || component.viewMode === "form")
+                                ? "bg-blue-500 text-white"
+                                : "text-gray-400 hover:text-white"
+                            }`}
+                          >
+                            Form View
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleComponentUpdate(index, "viewMode", "json")}
+                            className={`px-3 py-1 text-xs rounded-md transition-all ${
+                              component.viewMode === "json"
+                                ? "bg-blue-500 text-white"
+                                : "text-gray-400 hover:text-white"
+                            }`}
+                          >
+                            JSON View
+                          </button>
+                        </div>
                       </div>
+
+                      {/* Dynamic Form View */}
+                      {(!component.viewMode || component.viewMode === "form") && (
+                        <div className="bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 p-4">
+                          <DynamicContentForm
+                            contentJson={component.contentJson || "{}"}
+                            onChange={(jsonString) =>
+                              handleComponentUpdate(index, "contentJson", jsonString)
+                            }
+                            className="text-white [&_label]:text-gray-300 [&_input]:bg-white/10 [&_input]:border-white/20 [&_input]:text-white [&_input::placeholder]:text-white/50 [&_input:focus]:border-blue-400 [&_button]:bg-white/10 [&_button]:border-white/20 [&_button]:text-white [&_button:hover]:bg-white/20"
+                          />
+                        </div>
+                      )}
+
+                      {/* Raw JSON View */}
+                      {component.viewMode === "json" && (
+                        <>
+                          <textarea
+                            rows={6}
+                            value={component.contentJson || "{}"}
+                            onChange={(e) =>
+                              handleComponentUpdate(
+                                index,
+                                "contentJson",
+                                e.target.value
+                              )
+                            }
+                            placeholder='{"title": "Example Title", "description": "Example Description"}'
+                            className="block w-full rounded-lg bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder-white/50 focus:border-blue-400 focus:ring-blue-400/20 shadow-sm font-mono text-sm resize-none"
+                          />
+                          <div className="flex items-center justify-between mt-2">
+                            <p className="text-xs text-gray-400">
+                              Enter valid JSON data for this component
+                            </p>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => {
+                                const formatted = validateAndFormatJSON(
+                                  component.contentJson || "{}"
+                                );
+                                handleComponentUpdate(
+                                  index,
+                                  "contentJson",
+                                  formatted
+                                );
+                              }}
+                              className="bg-white/5 backdrop-blur-sm border-white/20 text-white hover:bg-blue-500/20 hover:border-blue-400 transition-all duration-200 text-xs px-2 py-1"
+                            >
+                              Format JSON
+                            </Button>
+                          </div>
+                        </>
+                      )}
                     </div>
                   </div>
                 </motion.div>
