@@ -9,6 +9,7 @@ import {
 } from "@heroicons/react/24/outline";
 import Button from "../ui/Button";
 import Card, { CardContent, CardHeader, CardTitle } from "../ui/Card";
+import { getComponentPathFromId, loadComponent } from "../componentMap";
 
 const PagePreview = ({ 
   isOpen, 
@@ -26,94 +27,89 @@ const PagePreview = ({
     }
   }, [isOpen, pageData.components]);
 
+  // Simple error boundary to isolate section render errors
+  class ErrorBoundary extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = { hasError: false, error: null };
+    }
+    static getDerivedStateFromError(error) {
+      return { hasError: true, error };
+    }
+    componentDidCatch(error, info) {
+      // eslint-disable-next-line no-console
+      console.error("Preview component render error:", error, info);
+    }
+    render() {
+      if (this.state.hasError) {
+        return this.props.fallback || null;
+      }
+      return this.props.children;
+    }
+  }
+
+  // Normalize common props so sections don't crash on undefined
+  const buildSafeProps = (props) => {
+    const commonArrayKeys = [
+      "items",
+      "list",
+      "milestones",
+      "services",
+      "steps",
+      "faqs",
+      "features",
+      "plans",
+      "members",
+      "values",
+      "sections",
+      "cases",
+      "caseStudies",
+      "benefits",
+      "types",
+    ];
+    const safe = { ...(props || {}) };
+    commonArrayKeys.forEach((key) => {
+      if (safe[key] === undefined || safe[key] === null) safe[key] = [];
+    });
+    return safe;
+  };
+
   const loadComponents = async () => {
     setLoading(true);
     setError(null);
     
     try {
       const componentMap = {};
-      
-      // Map componentType to actual component paths
-      const componentPaths = {
-        'HRHeroSection': () => import('../solution/hr/HeroSection'),
-        'HRModulesSection': () => import('../solution/hr/ModulesSection'),
-        'HRBenefitsSection': () => import('../solution/hr/BenefitsSection'),
-        'HRUseCasesSection': () => import('../solution/hr/UseCasesSection'),
-        'HRPricingSection': () => import('../solution/hr/PricingSection'),
-        'HRFAQSection': () => import('../solution/hr/FAQSection'),
-        'HRCTASection': () => import('../solution/hr/CTASection'),
-        'PayrollHeroSection': () => import('../solution/payroll/PayrollHero'),
-        'PayrollHowItWorksSection': () => import('../solution/payroll/PayrollHowItWorks'),
-        'PayrollWorkflowSection': () => import('../solution/payroll/PayrollWorkflow'),
-        'PayrollStepperSection': () => import('../solution/payroll/PayrollStepper'),
-        'PayrollPainPointsSection': () => import('../solution/payroll/PayrollPainPoints'),
-        'PayrollFAQSection': () => import('../solution/payroll/PayrollFAQ'),
-        'PayrollCTASection': () => import('../solution/payroll/PayrollCTA'),
-        'ServiceGrid': () => import('../Services/ServiceGrid'),
-        'ImplementationHeroSection': () => import('../Services/Implementation/HeroSection'),
-        'ImplementationProcessSection': () => import('../Services/Implementation/ProcessSection'),
-        'ImplementationWhyChooseSection': () => import('../Services/Implementation/WhyChooseSection'),
-        'ImplementationPricingSection': () => import('../Services/Implementation/PricingSection'),
-        'ImplementationCTASection': () => import('../Services/Implementation/CtaSection'),
-        'TrainingHeroSection': () => import('../Services/training/HeroSection'),
-        'TrainingProgramsSection': () => import('../Services/training/TrainingPrograms'),
-        'TrainingWhyChooseSection': () => import('../Services/training/WhyChooseSection'),
-        'AboutHeroSection': () => import('../About/AboutHero'),
-        'AboutMissionSection': () => import('../About/AboutMission'),
-        'AboutValuesSection': () => import('../About/AboutValues'),
-        'AboutTeamSection': () => import('../About/AboutTeam'),
-        'AboutJourneySection': () => import('../About/AboutJourney'),
-        'AboutMilestonesSection': () => import('../About/AboutMilestones'),
-        'AboutDifferentiatorsSection': () => import('../About/AboutDifferentiators'),
-        'AboutCTASection': () => import('../About/AboutCTA'),
-      };
-      
-      // Load all required components
       for (const component of pageData.components) {
-        const componentImport = componentPaths[component.componentType];
-        if (componentImport) {
-          try {
-            const module = await componentImport();
-            componentMap[component.componentType] = module.default;
-          } catch (err) {
-            console.warn(`Failed to load component ${component.componentType}:`, err);
-            // Create fallback component
+        try {
+          const path = getComponentPathFromId(component.componentType);
+          if (path) {
+            const Comp = await loadComponent(path);
+            componentMap[component.componentType] = Comp || (() => null);
+          } else {
             componentMap[component.componentType] = () => (
               <div className="p-6 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800">
                 <div className="mb-4">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                    {component.componentName}
-                  </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Component Type: {component.componentType}
-                  </p>
-                  <p className="text-sm text-red-600 dark:text-red-400 mt-2">
-                    Component failed to load
-                  </p>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{component.componentName}</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Component Type: {component.componentType}</p>
+                  <p className="text-sm text-yellow-600 dark:text-yellow-400 mt-2">Component path not found</p>
                 </div>
               </div>
             );
           }
-        } else {
-          // Create fallback for unknown components
+        } catch (err) {
+          console.warn(`Failed to load component ${component.componentType}:`, err);
           componentMap[component.componentType] = () => (
             <div className="p-6 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800">
               <div className="mb-4">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                  {component.componentName}
-                </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Component Type: {component.componentType}
-                </p>
-                <p className="text-sm text-yellow-600 dark:text-yellow-400 mt-2">
-                  Component path not found
-                </p>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{component.componentName}</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Component Type: {component.componentType}</p>
+                <p className="text-sm text-red-600 dark:text-red-400 mt-2">Component failed to load</p>
               </div>
             </div>
           );
         }
       }
-      
       setLoadedComponents(componentMap);
     } catch (error) {
       setError(error.message);
@@ -183,10 +179,31 @@ const PagePreview = ({
             {(() => {
               try {
                 const componentProps = JSON.parse(component.contentJson || '{}');
-                return <Component {...componentProps} />;
+            const safeProps = buildSafeProps(componentProps);
+            return (
+              <ErrorBoundary
+                fallback={
+                  <div className="p-4 text-sm text-red-700 bg-red-50 border-t border-r border-b border-red-200 rounded-b-lg">
+                    Failed to render {component.componentType}. Please check its data.
+                  </div>
+                }
+              >
+                <Component {...safeProps} />
+              </ErrorBoundary>
+            );
               } catch (err) {
                 console.warn(`Failed to parse contentJson for ${component.componentType}:`, err);
-                return <Component />;
+            return (
+              <ErrorBoundary
+                fallback={
+                  <div className="p-4 text-sm text-red-700 bg-red-50 border-t border-r border-b border-red-200 rounded-b-lg">
+                    Failed to render {component.componentType}. Invalid JSON.
+                  </div>
+                }
+              >
+                <Component />
+              </ErrorBoundary>
+            );
               }
             })()}
           </div>

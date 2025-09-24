@@ -48,119 +48,39 @@ const EnhancedPageBuilder = () => {
     components: [],
   });
 
-  // Available components library
-  const [availableComponents] = useState([
-    // Hero Sections
-    {
-      id: "hero-section",
-      name: "Hero Section",
-      description: "Main banner with title and call-to-action",
-      icon: "🎯",
-      componentType: "HeroSection",
-      componentName: "Hero Section",
-      category: "layout",
-    },
-    {
-      id: "hr-hero-section",
-      name: "HR Hero Section",
-      description: "Hero section for HR solutions",
-      icon: "👥",
-      componentType: "HRHeroSection",
-      componentName: "HR Hero Section",
-      category: "layout",
-    },
-    {
-      id: "payroll-hero-section",
-      name: "Payroll Hero Section",
-      description: "Hero section for payroll solutions",
-      icon: "💰",
-      componentType: "PayrollHeroSection",
-      componentName: "Payroll Hero Section",
-      category: "layout",
-    },
+  // Available components derived dynamically from component registry
+  const [availableComponents, setAvailableComponents] = useState([]);
 
-    // Content Sections
-    {
-      id: "hr-modules-section",
-      name: "HR Modules Section",
-      description: "Display HR modules and features",
-      icon: "📦",
-      componentType: "HRModulesSection",
-      componentName: "HR Modules Section",
-      category: "content",
-    },
-    {
-      id: "service-grid-section",
-      name: "Service Grid Section",
-      description: "Grid layout for service offerings",
-      icon: "⚙️",
-      componentType: "ServiceGrid",
-      componentName: "Service Grid Section",
-      category: "content",
-    },
-    {
-      id: "implementation-process-section",
-      name: "Implementation Process",
-      description: "Step-by-step implementation process",
-      icon: "🔄",
-      componentType: "ImplementationProcessSection",
-      componentName: "Implementation Process Section",
-      category: "content",
-    },
-
-    // Pricing Sections
-    {
-      id: "hr-pricing-section",
-      name: "HR Pricing Section",
-      description: "Pricing plans for HR solutions",
-      icon: "💵",
-      componentType: "HRPricingSection",
-      componentName: "HR Pricing Section",
-      category: "pricing",
-    },
-
-    // FAQ Sections
-    {
-      id: "payroll-faq-section",
-      name: "Payroll FAQ Section",
-      description: "Frequently asked questions about payroll",
-      icon: "❓",
-      componentType: "PayrollFAQSection",
-      componentName: "Payroll FAQ Section",
-      category: "faq",
-    },
-
-    // CTA Sections
-    {
-      id: "payroll-cta-section",
-      name: "Payroll CTA Section",
-      description: "Call-to-action for payroll solutions",
-      icon: "🚀",
-      componentType: "PayrollCTASection",
-      componentName: "Payroll CTA Section",
-      category: "cta",
-    },
-
-    // About Sections
-    {
-      id: "about-mission-section",
-      name: "About Mission Section",
-      description: "Company mission and vision",
-      icon: "🎯",
-      componentType: "AboutMissionSection",
-      componentName: "About Mission Section",
-      category: "about",
-    },
-    {
-      id: "about-team-section",
-      name: "About Team Section",
-      description: "Team members showcase",
-      icon: "👥",
-      componentType: "AboutTeamSection",
-      componentName: "About Team Section",
-      category: "about",
-    },
-  ]);
+  useEffect(() => {
+    // Lazy import to prevent circular deps when builder imports registry that imports components directory
+    const loadRegistry = async () => {
+      try {
+        const { idToPathMap } = await import("../componentMap");
+        // Build a generic list using keys; categorize by simple heuristics from path
+        const items = Object.keys(idToPathMap).map((componentType) => {
+          const path = idToPathMap[componentType];
+          let category = "content";
+          if (path.startsWith("solution/")) category = "solution";
+          else if (path.startsWith("Services/")) category = "services";
+          else if (path.startsWith("industries/")) category = "industry";
+          else if (path.startsWith("About/")) category = "about";
+          return {
+            id: componentType,
+            name: componentType,
+            description: path,
+            icon: "📄",
+            componentType,
+            componentName: componentType,
+            category,
+          };
+        });
+        setAvailableComponents(items);
+      } catch (e) {
+        console.error("Failed to load component registry", e);
+      }
+    };
+    loadRegistry();
+  }, []);
 
   // UI State
   const [selectedComponent, setSelectedComponent] = useState(null);
@@ -431,6 +351,162 @@ const EnhancedPageBuilder = () => {
           },
         ],
       },
+      ImplementationHeroSection: {
+        title: "Implementation Services",
+        subtitle: "Seamless deployments by experts",
+        description: "We plan, configure, and launch with zero downtime.",
+        backgroundImage: "/images/impleHeroSection.png",
+        ctaButton: { text: "Talk to an expert", link: "/contact", variant: "primary" },
+      },
+      ImplementationWhyChooseSection: {
+        title: "Why Choose Our Implementation",
+        points: [
+          { title: "Certified Team", description: "Experienced consultants and PMs" },
+          { title: "Proven Methodology", description: "Repeatable, predictable delivery" },
+          { title: "Post Go‑Live Support", description: "We stay with you after launch" },
+        ],
+      },
+      ImplementationPricingSection: {
+        title: "Implementation Pricing",
+        plans: [
+          { name: "Starter", price: "$4,900", duration: "2 weeks", includes: ["Discovery", "Basic config", "Training"] },
+          { name: "Pro", price: "$12,900", duration: "6 weeks", includes: ["Workshops", "Advanced config", "Data migration"] },
+        ],
+      },
+      ImplementationCTASection: {
+        title: "Ready to implement?",
+        subtitle: "Kick off your project now",
+        button: { text: "Get a quote", link: "/contact" },
+      },
+      TrainingHeroSection: {
+        title: "Training Programs",
+        subtitle: "Upskill your team quickly",
+        video: "/trainingHeroSection.mp4",
+        ctaButton: { text: "View Programs", link: "/training" },
+      },
+      TrainingProgramsSection: {
+        title: "Popular Programs",
+        programs: [
+          { name: "Admin Essentials", duration: "2 days", level: "Beginner" },
+          { name: "Advanced Reporting", duration: "1 day", level: "Intermediate" },
+        ],
+      },
+      TrainingWhyChooseSection: {
+        title: "Why Our Training",
+        reasons: [
+          { title: "Hands‑on Labs", description: "Practice on real scenarios" },
+          { title: "Expert Trainers", description: "Certified practitioners" },
+        ],
+      },
+      IntegrationHeroSection: {
+        title: "Integration Services",
+        subtitle: "Connect your ecosystem",
+        description: "APIs, middleware, and data pipelines",
+      },
+      IntegrationTypesSection: {
+        title: "Integration Types",
+        types: ["REST APIs", "iPaaS", "File‑based", "Webhooks"],
+      },
+      IntegrationBenefitsSection: {
+        title: "Benefits",
+        benefits: ["Fewer manual tasks", "Real‑time data", "Higher accuracy"],
+      },
+      CustomizationHeroSection: {
+        title: "Customization Services",
+        subtitle: "Tailor the system to your business",
+        description: "Workflows, scripts, and UI personalization",
+      },
+      CustomizationServicesSection: {
+        title: "What We Customize",
+        services: [
+          { name: "Workflows", description: "Automate approvals and processes" },
+          { name: "Scripts", description: "Server and client logic" },
+          { name: "UI", description: "Forms, fields, and dashboards" },
+        ],
+      },
+      CustomizationProcessSection: {
+        title: "Customization Process",
+        steps: [
+          { title: "Requirements", description: "Gather and analyze" },
+          { title: "Design", description: "Solution blueprint" },
+          { title: "Build", description: "Develop and unit test" },
+          { title: "Deploy", description: "Migrate and verify" },
+        ],
+      },
+      ManufacturingHeroSection: {
+        title: "Manufacturing Industry",
+        subtitle: "Optimize production and supply chain",
+        description: "End‑to‑end visibility and control",
+      },
+      ManufacturingIndustryStatsSection: {
+        title: "Industry Stats",
+        stats: [
+          { label: "Downtime reduced", value: "-25%" },
+          { label: "OTD improved", value: "+18%" },
+        ],
+      },
+      ManufacturingChallengesSection: {
+        title: "Top Challenges",
+        challenges: ["Planning accuracy", "Inventory variance", "Production bottlenecks"],
+      },
+      ManufacturingSolutionsSection: {
+        title: "Our Solutions",
+        solutions: ["MRP", "Shop floor", "WMS", "Quality"],
+      },
+      ManufacturingCaseStudiesSection: {
+        title: "Case Studies",
+        caseStudies: [
+          { client: "Acme Co.", result: "Cut lead time 30%" },
+          { client: "Beta Ltd.", result: "Reduced scrap 15%" },
+        ],
+      },
+      ManufacturingImplementationProcessSection: {
+        title: "Implementation Roadmap",
+        steps: ["Discovery", "Configuration", "Pilot", "Go‑Live"],
+      },
+      ManufacturingCTASection: {
+        title: "Transform Your Operations",
+        button: { text: "Schedule a demo", link: "/contact" },
+      },
+      RetailHeroSection: {
+        title: "Retail Industry",
+        subtitle: "Unify online and in‑store",
+        description: "Inventory, POS, and analytics",
+      },
+      RetailIndustryStatsSection: {
+        title: "Retail KPIs",
+        stats: [
+          { label: "Basket size", value: "+12%" },
+          { label: "Stockouts", value: "-20%" },
+        ],
+      },
+      RetailChallengesSection: {
+        title: "Retail Challenges",
+        challenges: ["Omnichannel", "Returns", "Forecasting"],
+      },
+      RetailSolutionsSection: {
+        title: "Solutions",
+        solutions: ["OMS", "CRM", "Promotions"],
+      },
+      RetailFeaturesSection: {
+        title: "Key Features",
+        features: ["Click & collect", "Endless aisle", "Clienteling"],
+      },
+      RetailCaseStudiesSection: {
+        title: "Case Studies",
+        caseStudies: [
+          { client: "ShopX", result: "+25% online sales" },
+          { client: "Trendly", result: "-10% returns" },
+        ],
+      },
+      RetailImplementationSection: {
+        title: "Implementation Plan",
+        steps: ["Discovery", "Rollout", "Training"],
+      },
+      RetailCTASection: {
+        title: "Boost Your Retail",
+        button: { text: "Start now", link: "/contact" },
+      },
       ImplementationProcessSection: {
         title: "Our Implementation Process",
         subtitle: "A proven methodology for seamless business transformation",
@@ -561,6 +637,34 @@ const EnhancedPageBuilder = () => {
           "No setup fees",
           "Expert onboarding",
           "24/7 support",
+        ],
+      },
+      PayrollHowItWorksSection: {
+        title: "How Payroll Works",
+        subtitle: "Simple, automated, compliant",
+        steps: [
+          { title: "Collect Data", description: "Employees, contracts, timesheets" },
+          { title: "Calculate", description: "Gross, tax, deductions, benefits" },
+          { title: "Approve", description: "Role-based approval workflow" },
+          { title: "Pay & Report", description: "Bank files and payslips/reports" },
+        ],
+      },
+      PayrollWorkflowSection: {
+        title: "End-to-End Payroll Workflow",
+        subtitle: "From onboarding to disbursement",
+        steps: [
+          { name: "Onboard", description: "Create employee & contract" },
+          { name: "Timesheets", description: "Attendance & overtime" },
+          { name: "Run", description: "Automated payroll engine" },
+          { name: "Approve", description: "Manager & finance sign-off" },
+          { name: "Disburse", description: "Bank export & payslips" },
+        ],
+      },
+      PayrollStepperSection: {
+        steps: [
+          { title: "Step 1", description: "Prepare data" },
+          { title: "Step 2", description: "Review calculation" },
+          { title: "Step 3", description: "Approve & pay" },
         ],
       },
       AboutMissionSection: {

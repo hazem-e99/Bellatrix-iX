@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const AboutMilestones = ({ milestones }) => (
+const AboutMilestones = ({ milestones = [] }) => (
   <section className="py-20 relative overflow-hidden" style={{backgroundColor: '#001038'}}>
     <div className="absolute inset-0 opacity-10">
       <div className="absolute top-0 left-0 w-full h-full">
@@ -25,7 +25,7 @@ const AboutMilestones = ({ milestones }) => (
       </div>
       <div className="max-w-4xl mx-auto">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {milestones.map((milestone, index) => (
+          {Array.isArray(milestones) && milestones.map((milestone, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const AboutDifferentiators = ({ differentiators }) => (
+const AboutDifferentiators = ({ differentiators = [] }) => (
   <section className="bg-gray-50 py-20 light-section">
     <div className="container mx-auto px-6">
       <div className="text-center mb-16">
@@ -14,7 +14,7 @@ const AboutDifferentiators = ({ differentiators }) => (
         </p>
       </div>
       <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-        {differentiators.map((item, index) => (
+        {Array.isArray(differentiators) && differentiators.map((item, index) => (
           <motion.div
             key={index}
             initial={{ opacity: 0, y: 20 }}
