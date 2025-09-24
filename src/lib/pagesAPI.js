@@ -70,51 +70,78 @@ const pagesAPI = {
     try {
       console.log("Original pageData received:", pageData);
 
-      // Use the /api/Pages/with-components endpoint if components are included
-      const endpoint =
-        pageData.components && pageData.components.length > 0
-          ? "/Pages/with-components"
-          : "/Pages";
+      // CRITICAL: Always use /Pages/with-components when components exist
+      // This prevents duplicate DB key errors (IX_PageComponents_PageId_OrderIndex)
+      const hasComponents = pageData.components && Array.isArray(pageData.components) && pageData.components.length > 0;
+      const endpoint = hasComponents ? "/Pages/with-components" : "/Pages";
+      
+      console.log(`Endpoint selection: ${endpoint} (hasComponents: ${hasComponents}, components count: ${pageData.components?.length || 0})`);
 
-      // Prepare the data to send
+      // Prepare the data to send - remove any id/pageId for new page creation
       let dataToSend = { ...pageData };
+      
+      // Remove id fields for new page creation to avoid backend treating it as update
+      delete dataToSend.id;
+      delete dataToSend.pageId;
 
-      // Make sure each component has its data properly serialized in contentJson
-      // AND ensure that orderIndex values are unique and sequential
+      // Ensure proper component data formatting for API
       if (dataToSend.components && dataToSend.components.length > 0) {
+        console.log("Processing components for API payload...");
+        
         dataToSend.components = dataToSend.components.map((component, index) => {
-          // Create a new component object
-          const updatedComponent = {
-            componentType: component.componentType || "Generic",
-            componentName: component.componentName || `Component ${index + 1}`,
-            orderIndex: index,
-            contentJson: ""
+          // Remove any existing id or pageId from components for new creation
+          const cleanComponent = { ...component };
+          delete cleanComponent.id;
+          delete cleanComponent.pageId;
+
+          // Create properly formatted component object
+          const formattedComponent = {
+            componentType: cleanComponent.componentType || "Generic",
+            componentName: cleanComponent.componentName || `Component ${index + 1}`,
+            orderIndex: index, // Always use sequential index to avoid duplicates
+            contentJson: "",
           };
 
-          // Handle contentJson properly
-          if (component.content && typeof component.content === 'object') {
-            // If we have a content object, stringify it
-            updatedComponent.contentJson = JSON.stringify(component.content);
-          } else if (component.contentJson) {
-            // If contentJson already exists
-            if (typeof component.contentJson === 'string') {
-              updatedComponent.contentJson = component.contentJson;
+          // Handle contentJson serialization properly
+          if (cleanComponent.content && typeof cleanComponent.content === "object") {
+            // Convert content object to JSON string
+            formattedComponent.contentJson = JSON.stringify(cleanComponent.content);
+            console.log(`Component ${index}: converted content object to JSON string`);
+          } else if (cleanComponent.contentJson) {
+            // Use existing contentJson (ensure it's a string)
+            if (typeof cleanComponent.contentJson === "string") {
+              formattedComponent.contentJson = cleanComponent.contentJson;
             } else {
-              updatedComponent.contentJson = JSON.stringify(component.contentJson);
+              formattedComponent.contentJson = JSON.stringify(cleanComponent.contentJson);
             }
+            console.log(`Component ${index}: used existing contentJson`);
           } else {
             // Default empty content
-            updatedComponent.contentJson = JSON.stringify({});
+            formattedComponent.contentJson = JSON.stringify({});
+            console.log(`Component ${index}: set default empty content`);
           }
 
-          return updatedComponent;
+          return formattedComponent;
         });
+        
+        console.log(`Processed ${dataToSend.components.length} components for API`);
       }
 
-      console.log("Prepared data to send:", dataToSend);
-      console.log("Components to send:", dataToSend.components);
+      // Final logging before API call (for debugging, no side effects)
+      console.log("=== API CALL SUMMARY ===");
+      console.log("Endpoint:", endpoint);
+      console.log("Method: POST");
+      console.log("Has Components:", hasComponents);
+      console.log("Components Count:", dataToSend.components?.length || 0);
+      console.log("Payload Size (chars):", JSON.stringify(dataToSend).length);
+      console.log("Final payload:", dataToSend);
+      console.log("========================");
 
       const response = await api.post(endpoint, dataToSend);
+      
+      console.log("API Response Status:", response.status);
+      console.log("API Response Data:", response.data);
+      
       return response.data;
     } catch (error) {
       if (

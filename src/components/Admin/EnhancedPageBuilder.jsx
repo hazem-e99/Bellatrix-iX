@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import {
@@ -29,7 +29,11 @@ const EnhancedPageBuilder = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [isPublishing, setIsPublishing] = useState(false);
   const [toast, setToast] = useState(null);
+  
+  // Ref to prevent multiple simultaneous API calls
+  const isSavingRef = useRef(false);
 
   // Page data
   const [pageData, setPageData] = useState({
@@ -224,7 +228,10 @@ const EnhancedPageBuilder = () => {
           };
 
           // Handle contentJson string conversion for API
-          if (component.contentJson && typeof component.contentJson === 'string') {
+          if (
+            component.contentJson &&
+            typeof component.contentJson === "string"
+          ) {
             try {
               // Validate JSON before sending
               JSON.parse(component.contentJson);
@@ -233,7 +240,10 @@ const EnhancedPageBuilder = () => {
               // If invalid JSON, create empty object
               processedComponent.content = {};
             }
-          } else if (component.content && typeof component.content === 'object') {
+          } else if (
+            component.content &&
+            typeof component.content === "object"
+          ) {
             processedComponent.content = component.content;
           } else {
             processedComponent.content = {};
@@ -309,7 +319,12 @@ const EnhancedPageBuilder = () => {
       components: [...prev.components, newComponent],
     }));
 
-    showToast(`${component.componentName || component.name || "Component"} added to page`, "success");
+    showToast(
+      `${
+        component.componentName || component.name || "Component"
+      } added to page`,
+      "success"
+    );
   };
 
   // Function to update a specific component field
@@ -318,11 +333,11 @@ const EnhancedPageBuilder = () => {
       const updatedComponents = [...prev.components];
       updatedComponents[index] = {
         ...updatedComponents[index],
-        [field]: value
+        [field]: value,
       };
       return {
         ...prev,
-        components: updatedComponents
+        components: updatedComponents,
       };
     });
   };
@@ -332,14 +347,17 @@ const EnhancedPageBuilder = () => {
     setPageData((prev) => {
       const updatedComponents = prev.components.map((component, index) => ({
         ...component,
-        orderIndex: index
+        orderIndex: index,
       }));
       return {
         ...prev,
-        components: updatedComponents
+        components: updatedComponents,
       };
     });
-    showToast("Order indexes have been auto-corrected to be sequential", "success");
+    showToast(
+      "Order indexes have been auto-corrected to be sequential",
+      "success"
+    );
   };
 
   const getDefaultDataForComponent = (componentType) => {
@@ -713,30 +731,47 @@ const EnhancedPageBuilder = () => {
   };
 
   const handleSave = async (status = "draft") => {
+    // Prevent multiple simultaneous API calls
+    if (isSavingRef.current) {
+      console.log("Save operation already in progress, ignoring duplicate call");
+      return;
+    }
+
     try {
-      setLoading(true);
+      // Mark that we're currently saving
+      isSavingRef.current = true;
+      
+      // Set appropriate loading state
+      if (status === "published") {
+        setIsPublishing(true);
+      } else {
+        setLoading(true);
+      }
 
       // Apply default values to ensure no null, undefined, or empty values
       const createPageDTO = applyDefaultValues(pageData, status);
 
-      // Validate required fields
-      if (!createPageDTO.name || !createPageDTO.name.trim()) {
-        showToast("Page name is required", "error");
+      // Validate required fields - use helper function to ensure lock is reset on validation errors
+      const validateAndReturn = (message) => {
+        showToast(message, "error");
+        // Reset states before returning from validation error
+        setLoading(false);
+        setIsPublishing(false);
+        isSavingRef.current = false;
         return;
+      };
+
+      if (!createPageDTO.name || !createPageDTO.name.trim()) {
+        return validateAndReturn("Page name is required");
       }
 
       if (!createPageDTO.categoryId) {
-        showToast("Please select a category", "error");
-        return;
+        return validateAndReturn("Please select a category");
       }
 
       // Validate slug format after applying defaults
       if (!/^[a-z0-9-]+$/.test(createPageDTO.slug)) {
-        showToast(
-          "Generated slug contains invalid characters. Please check the page name.",
-          "error"
-        );
-        return;
+        return validateAndReturn("Generated slug contains invalid characters. Please check the page name.");
       }
 
       // Validate components and orderIndex uniqueness
@@ -744,30 +779,26 @@ const EnhancedPageBuilder = () => {
         const orderIndexes = new Set();
         for (let i = 0; i < createPageDTO.components.length; i++) {
           const comp = createPageDTO.components[i];
-          
+
           // Check component type
           if (!comp.componentType?.trim()) {
-            showToast(`Component ${i + 1} is missing component type`, "error");
-            return;
+            return validateAndReturn(`Component ${i + 1} is missing component type`);
           }
-          
+
           // Check component name
           if (!comp.componentName?.trim()) {
-            showToast(`Component ${i + 1} is missing component name`, "error");
-            return;
+            return validateAndReturn(`Component ${i + 1} is missing component name`);
           }
-          
+
           // Check content
-          if (!comp.content || typeof comp.content !== 'object') {
-            showToast(`Component ${i + 1} has invalid content`, "error");
-            return;
+          if (!comp.content || typeof comp.content !== "object") {
+            return validateAndReturn(`Component ${i + 1} has invalid content`);
           }
 
           // Check orderIndex uniqueness
           const orderIndex = comp.orderIndex;
           if (orderIndexes.has(orderIndex)) {
-            showToast(`Duplicate order index found: ${orderIndex}. Each component must have a unique order index.`, "error");
-            return;
+            return validateAndReturn(`Duplicate order index found: ${orderIndex}. Each component must have a unique order index.`);
           }
           orderIndexes.add(orderIndex);
         }
@@ -775,46 +806,63 @@ const EnhancedPageBuilder = () => {
 
       console.log("Final data being sent:", createPageDTO);
 
+      // Make the API call to create page with components
       await pagesAPI.createPage(createPageDTO);
+      
+      // Show appropriate success message based on status
+      if (status === "published") {
+        showToast("Page published successfully", "success");
+      } else {
+        showToast(`Page "${createPageDTO.name}" saved as draft successfully!`, "success");
+      }
 
-      showToast(
-        `Page "${createPageDTO.name}" ${
-          status === "published" ? "published" : "saved as draft"
-        } successfully!`,
-        "success"
-      );
-
-      // Navigate to pages management
+      // Navigate to pages management after a brief delay
       setTimeout(() => {
         navigate("/admin/pages");
       }, 1500);
     } catch (error) {
-      // Check for specific SQL duplicate key error
-      if (
-        error.message &&
-        error.message.includes("duplicate key") &&
-        error.message.includes("IX_PageComponents_PageId_OrderIndex")
-      ) {
-        showToast(
-          "Duplicate order index. Please reorder your components.",
-          "error"
-        );
-
-        // Try to automatically fix the issue by re-assigning orderIndex values
-        const fixedComponents = pageData.components.map((component, index) => ({
-          ...component,
-          orderIndex: index,
-        }));
-
-        setPageData((prev) => ({
-          ...prev,
-          components: fixedComponents,
-        }));
-      } else {
-        showToast("Error saving page: " + error.message, "error");
+      console.error("Error in handleSave:", error);
+      
+      // Check for specific error types and provide meaningful messages
+      let errorMessage = "An unexpected error occurred";
+      
+      if (error.response?.status === 400) {
+        // Handle 400 Bad Request errors
+        if (error.response.data?.message?.includes("duplicate key") && 
+            error.response.data?.message?.includes("IX_PageComponents_PageId_OrderIndex")) {
+          errorMessage = "Duplicate component order detected. This has been automatically fixed. Please try again.";
+          
+          // Auto-fix duplicate order indexes
+          const fixedComponents = pageData.components.map((component, index) => ({
+            ...component,
+            orderIndex: index,
+          }));
+          
+          setPageData((prev) => ({
+            ...prev,
+            components: fixedComponents,
+          }));
+        } else {
+          errorMessage = error.response.data?.message || "Invalid page data provided";
+        }
+      } else if (error.response?.status === 409) {
+        errorMessage = "A page with this slug already exists. Please choose a different name.";
+      } else if (error.response?.status >= 500) {
+        errorMessage = "Server error. Please try again later.";
+      } else if (error.message) {
+        errorMessage = `Save failed: ${error.message}`;
       }
+      
+      // Show specific error message based on operation type
+      const operation = status === "published" ? "publishing" : "saving";
+      showToast(`Error ${operation} page: ${errorMessage}`, "error");
     } finally {
+      // Reset loading states
       setLoading(false);
+      setIsPublishing(false);
+      
+      // Reset the saving ref to allow future saves
+      isSavingRef.current = false;
     }
   };
 
@@ -982,19 +1030,19 @@ const EnhancedPageBuilder = () => {
                   <Button
                     variant="outline"
                     onClick={() => handleSave("draft")}
-                    loading={loading}
-                    disabled={!isStepValid(currentStep)}
+                    loading={loading && !isPublishing}
+                    disabled={!isStepValid(currentStep) || isPublishing || loading}
                     className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20 hover:border-white/30 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Save as Draft
+                    {loading && !isPublishing ? "Saving..." : "Save as Draft"}
                   </Button>
                   <Button
                     onClick={() => handleSave("published")}
-                    loading={loading}
-                    disabled={!isStepValid(currentStep)}
+                    loading={isPublishing}
+                    disabled={!isStepValid(currentStep) || isPublishing || loading}
                     className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-lg shadow-green-500/25 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Publish Page
+                    {isPublishing ? "Publishing..." : "Publish Page"}
                   </Button>
                 </div>
               )}
@@ -1014,7 +1062,11 @@ const EnhancedPageBuilder = () => {
               name: editingComponent.componentName,
               componentId: editingComponent.componentType,
               icon: editingComponent.componentInfo?.icon || "📄",
-              data: editingComponent.content || (editingComponent.contentJson ? JSON.parse(editingComponent.contentJson) : {}),
+              data:
+                editingComponent.content ||
+                (editingComponent.contentJson
+                  ? JSON.parse(editingComponent.contentJson)
+                  : {}),
             }}
             onSave={saveComponentData}
           />
@@ -1175,7 +1227,7 @@ const SectionsStep = ({
 
   // Function to update a specific component field
   const handleComponentUpdate = (index, field, value) => {
-    if (field === 'orderIndex') {
+    if (field === "orderIndex") {
       // Validate and parse orderIndex
       const numValue = parseInt(value);
       if (!isNaN(numValue) && numValue >= 0) {
@@ -1275,13 +1327,15 @@ const SectionsStep = ({
                   variant="outline"
                   onClick={() => {
                     // Auto-fix orderIndexes
-                    const updatedComponents = pageData.components.map((component, index) => ({
-                      ...component,
-                      orderIndex: index
-                    }));
+                    const updatedComponents = pageData.components.map(
+                      (component, index) => ({
+                        ...component,
+                        orderIndex: index,
+                      })
+                    );
                     // Update all components with fixed indexes
                     updatedComponents.forEach((comp, index) => {
-                      onUpdateComponent(index, 'orderIndex', index);
+                      onUpdateComponent(index, "orderIndex", index);
                     });
                   }}
                   className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-orange-500/20 hover:border-orange-400 transition-all duration-200"
@@ -1293,12 +1347,14 @@ const SectionsStep = ({
               <Button
                 size="sm"
                 variant="outline"
-                onClick={() => onAddComponent({
-                  componentType: "Generic",
-                  componentName: "New Component",
-                  icon: "📄",
-                  category: "content"
-                })}
+                onClick={() =>
+                  onAddComponent({
+                    componentType: "Generic",
+                    componentName: "New Component",
+                    icon: "📄",
+                    category: "content",
+                  })
+                }
                 className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-green-500/20 hover:border-green-400 transition-all duration-200"
               >
                 <PlusIcon className="h-4 w-4 mr-2" />
@@ -1315,7 +1371,8 @@ const SectionsStep = ({
                 No components added yet
               </h3>
               <p className="text-gray-300 text-base leading-relaxed">
-                Click on components above or use "Add Component" button to start building your page
+                Click on components above or use "Add Component" button to start
+                building your page
               </p>
             </div>
           ) : (
@@ -1370,7 +1427,13 @@ const SectionsStep = ({
                       <input
                         type="text"
                         value={component.componentType || ""}
-                        onChange={(e) => handleComponentUpdate(index, 'componentType', e.target.value)}
+                        onChange={(e) =>
+                          handleComponentUpdate(
+                            index,
+                            "componentType",
+                            e.target.value
+                          )
+                        }
                         placeholder="e.g., HeroSection, CtaButton"
                         className="block w-full rounded-lg bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder-white/50 focus:border-blue-400 focus:ring-blue-400/20 shadow-sm"
                       />
@@ -1384,7 +1447,13 @@ const SectionsStep = ({
                       <input
                         type="text"
                         value={component.componentName || ""}
-                        onChange={(e) => handleComponentUpdate(index, 'componentName', e.target.value)}
+                        onChange={(e) =>
+                          handleComponentUpdate(
+                            index,
+                            "componentName",
+                            e.target.value
+                          )
+                        }
                         placeholder="e.g., Main Hero, Footer CTA"
                         className="block w-full rounded-lg bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder-white/50 focus:border-blue-400 focus:ring-blue-400/20 shadow-sm"
                       />
@@ -1399,7 +1468,13 @@ const SectionsStep = ({
                         type="number"
                         min="0"
                         value={component.orderIndex ?? ""}
-                        onChange={(e) => handleComponentUpdate(index, 'orderIndex', e.target.value)}
+                        onChange={(e) =>
+                          handleComponentUpdate(
+                            index,
+                            "orderIndex",
+                            e.target.value
+                          )
+                        }
                         placeholder="Auto-generated if empty"
                         className="block w-full rounded-lg bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder-white/50 focus:border-blue-400 focus:ring-blue-400/20 shadow-sm"
                       />
@@ -1416,7 +1491,13 @@ const SectionsStep = ({
                       <textarea
                         rows={6}
                         value={component.contentJson || "{}"}
-                        onChange={(e) => handleComponentUpdate(index, 'contentJson', e.target.value)}
+                        onChange={(e) =>
+                          handleComponentUpdate(
+                            index,
+                            "contentJson",
+                            e.target.value
+                          )
+                        }
                         placeholder='{"title": "Example Title", "description": "Example Description"}'
                         className="block w-full rounded-lg bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder-white/50 focus:border-blue-400 focus:ring-blue-400/20 shadow-sm font-mono text-sm resize-none"
                       />
@@ -1428,8 +1509,14 @@ const SectionsStep = ({
                           size="sm"
                           variant="outline"
                           onClick={() => {
-                            const formatted = validateAndFormatJSON(component.contentJson || "{}");
-                            handleComponentUpdate(index, 'contentJson', formatted);
+                            const formatted = validateAndFormatJSON(
+                              component.contentJson || "{}"
+                            );
+                            handleComponentUpdate(
+                              index,
+                              "contentJson",
+                              formatted
+                            );
                           }}
                           className="bg-white/5 backdrop-blur-sm border-white/20 text-white hover:bg-blue-500/20 hover:border-blue-400 transition-all duration-200 text-xs px-2 py-1"
                         >
