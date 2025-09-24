@@ -74,7 +74,7 @@ const MediaPickerModal = ({ isOpen, onClose, onSelect }) => {
       setUploading(true);
       try {
         const formData = new FormData();
-        formData.append("File", selectedFile);
+        formData.append("file", selectedFile);
         formData.append(
           "Role",
           selectedFile.type.startsWith("video") ? "Video" : "Image"
@@ -383,7 +383,45 @@ const DynamicContentForm = ({ contentJson, onChange, className = "" }) => {
       const value = obj[key];
       const fieldPath = parentPath ? `${parentPath}.${key}` : key;
 
-      if (value && typeof value === "object" && !Array.isArray(value)) {
+      if (Array.isArray(value)) {
+        // Render array items as individual inputs or nested objects
+        fields.push(
+          <div key={fieldPath} className="space-y-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 capitalize">
+              {key.replace(/([A-Z])/g, " $1").trim()}
+            </label>
+            <div className="space-y-2">
+              {value.map((item, idx) => {
+                const itemPath = `${fieldPath}[${idx}]`;
+                if (item && typeof item === "object") {
+                  // Render nested object fields for each array item
+                  return (
+                    <div key={itemPath} className="border border-gray-200 dark:border-gray-600 rounded-lg p-2">
+                      <div className="text-xs text-gray-500 mb-1">Item {idx + 1}</div>
+                      <div className="space-y-2">{renderFields(item, itemPath)}</div>
+                    </div>
+                  );
+                } else {
+                  // Render simple input for primitive array item
+                  return (
+                    <Input
+                      key={itemPath}
+                      value={item || ""}
+                      onChange={(e) => {
+                        const newArr = [...value];
+                        newArr[idx] = e.target.value;
+                        updateField(fieldPath, newArr);
+                      }}
+                      placeholder={`Item ${idx + 1}`}
+                      className="w-full"
+                    />
+                  );
+                }
+              })}
+            </div>
+          </div>
+        );
+      } else if (value && typeof value === "object" && !Array.isArray(value)) {
         // Nested object - render as a group
         fields.push(
           <div
