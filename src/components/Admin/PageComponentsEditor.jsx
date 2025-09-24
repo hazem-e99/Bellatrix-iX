@@ -3,18 +3,35 @@ import {
   PlusIcon,
   PencilIcon,
   TrashIcon,
-  ArrowUpIcon,
-  ArrowDownIcon,
   DocumentTextIcon,
   CheckCircleIcon,
   ArrowPathIcon,
   ExclamationTriangleIcon,
+  Bars3Icon,
 } from "@heroicons/react/24/outline";
 import Button from "../ui/Button";
 import Input from "../ui/Input";
 import Modal, { ModalFooter } from "../ui/Modal";
 import DynamicFormField from "../ui/DynamicFormField";
 import pagesAPI from "../../lib/pagesAPI";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import {
+  useSortable,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import { 
   parseJsonToFormFields, 
   generateFormFieldsFromJson, 
@@ -25,6 +42,13 @@ const PageComponentsEditor = ({ pageId, pageName, onClose, onSave, showToast }) 
   const [components, setComponents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingComponent, setEditingComponent] = useState(null);
   const [errors, setErrors] = useState({});
@@ -103,48 +127,48 @@ const PageComponentsEditor = ({ pageId, pageName, onClose, onSave, showToast }) 
     }
   };
 
-  const handleReorder = async (fromIndex, toIndex) => {
-    // Show loading state
-    setSaving(true);
-    
-    const newComponents = [...components];
-    const [movedComponent] = newComponents.splice(fromIndex, 1);
-    newComponents.splice(toIndex, 0, movedComponent);
+  const handleDragEnd = async (event) => {
+    const { active, over } = event;
 
-    // Update orderIndex for all components
-    const reorderedComponents = newComponents.map((comp, index) => ({
-      ...comp,
-      orderIndex: index + 1
-    }));
+    if (active.id !== over?.id) {
+      const oldIndex = components.findIndex((item) => item.id === active.id);
+      const newIndex = components.findIndex((item) => item.id === over.id);
 
-    // Optimistically update UI first
-    setComponents(reorderedComponents);
-
-    try {
-      console.log(`Reordering components: ${reorderedComponents.map(comp => comp.id).join(', ')}`);
+      const newComponents = arrayMove(components, oldIndex, newIndex);
       
-      await pagesAPI.reorderPageComponents(pageId, reorderedComponents);
-      showToast("Components reordered successfully", "success");
-    } catch (error) {
-      console.error("Error reordering components:", error);
-      
-      // Show specific error message
-      let errorMessage = "Error reordering components";
-      if (error.message.includes("circular dependency")) {
-        errorMessage = "Unable to reorder components due to a conflict. Please try again.";
-      } else if (error.message.includes("not found")) {
-        errorMessage = "One or more components could not be found. Please refresh and try again.";
-      } else {
-        errorMessage = `Error reordering components: ${error.message}`;
+      // Update orderIndex for all components
+      const reorderedComponents = newComponents.map((comp, index) => ({
+        ...comp,
+        orderIndex: index + 1
+      }));
+
+      // Optimistically update UI first
+      setComponents(reorderedComponents);
+
+      try {
+        console.log(`Reordering components: ${reorderedComponents.map(comp => comp.id).join(', ')}`);
+        
+        await pagesAPI.reorderPageComponents(pageId, reorderedComponents);
+        showToast("Components reordered successfully", "success");
+      } catch (error) {
+        console.error("Error reordering components:", error);
+        
+        // Show specific error message
+        let errorMessage = "Error reordering components";
+        if (error.message.includes("circular dependency")) {
+          errorMessage = "Unable to reorder components due to a conflict. Please try again.";
+        } else if (error.message.includes("not found")) {
+          errorMessage = "One or more components could not be found. Please refresh and try again.";
+        } else {
+          errorMessage = `Error reordering components: ${error.message}`;
+        }
+        
+        showToast(errorMessage, "error");
+        
+        // Revert on error by reloading components
+        console.log("Reverting component order due to error...");
+        await loadComponents();
       }
-      
-      showToast(errorMessage, "error");
-      
-      // Revert on error by reloading components
-      console.log("Reverting component order due to error...");
-      await loadComponents();
-    } finally {
-      setSaving(false);
     }
   };
 
@@ -201,18 +225,27 @@ const PageComponentsEditor = ({ pageId, pageName, onClose, onSave, showToast }) 
             </Button>
           </div>
         ) : (
-          components.map((component, index) => (
-            <ComponentCard
-              key={component.id}
-              component={component}
-              index={index}
-              onEdit={() => setEditingComponent(component)}
-              onDelete={() => handleDeleteComponent(component.id)}
-              onMoveUp={index > 0 ? () => handleReorder(index, index - 1) : null}
-              onMoveDown={index < components.length - 1 ? () => handleReorder(index, index + 1) : null}
-              isReordering={saving}
-            />
-          ))
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext
+              items={components.map(comp => comp.id)}
+              strategy={verticalListSortingStrategy}
+            >
+              {components.map((component, index) => (
+                <ComponentCard
+                  key={component.id}
+                  component={component}
+                  index={index}
+                  onEdit={() => setEditingComponent(component)}
+                  onDelete={() => handleDeleteComponent(component.id)}
+                  isReordering={saving}
+                />
+              ))}
+            </SortableContext>
+          </DndContext>
         )}
       </div>
 
@@ -237,8 +270,23 @@ const PageComponentsEditor = ({ pageId, pageName, onClose, onSave, showToast }) 
 };
 
 // Component Card
-const ComponentCard = ({ component, index, onEdit, onDelete, onMoveUp, onMoveDown, isReordering = false }) => {
+const ComponentCard = ({ component, index, onEdit, onDelete, isReordering = false }) => {
   const [contentPreview, setContentPreview] = useState("");
+  
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: component.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
 
   useEffect(() => {
     try {
@@ -250,9 +298,13 @@ const ComponentCard = ({ component, index, onEdit, onDelete, onMoveUp, onMoveDow
   }, [component.contentJson]);
 
   return (
-    <div className={`bg-white/10 border border-white/20 rounded-lg p-3 hover:bg-white/15 transition-colors ${
-      isReordering ? 'opacity-50 pointer-events-none' : ''
-    }`}>
+    <div 
+      ref={setNodeRef}
+      style={style}
+      className={`bg-white/10 border border-white/20 rounded-lg p-3 hover:bg-white/15 transition-colors ${
+        isReordering ? 'opacity-50 pointer-events-none' : ''
+      } ${isDragging ? 'shadow-lg border-blue-400' : ''}`}
+    >
       <div className="flex items-center justify-between">
         <div className="flex-1">
           <div className="flex items-center space-x-2">
@@ -279,25 +331,15 @@ const ComponentCard = ({ component, index, onEdit, onDelete, onMoveUp, onMoveDow
         </div>
         
         <div className="flex items-center space-x-1">
-          {/* Reorder buttons */}
-          {onMoveUp && !isReordering && (
-            <button
-              onClick={onMoveUp}
-              className="p-1 text-gray-300 hover:text-white hover:bg-white/10 rounded"
-              title="Move up"
-            >
-              <ArrowUpIcon className="h-3 w-3" />
-            </button>
-          )}
-          {onMoveDown && !isReordering && (
-            <button
-              onClick={onMoveDown}
-              className="p-1 text-gray-300 hover:text-white hover:bg-white/10 rounded"
-              title="Move down"
-            >
-              <ArrowDownIcon className="h-3 w-3" />
-            </button>
-          )}
+          {/* Drag Handle */}
+          <div
+            {...attributes}
+            {...listeners}
+            className="p-1 text-gray-400 hover:text-white hover:bg-white/10 rounded cursor-grab active:cursor-grabbing"
+            title="Drag to reorder"
+          >
+            <Bars3Icon className="h-4 w-4" />
+          </div>
           
           {/* Action buttons */}
           <button
