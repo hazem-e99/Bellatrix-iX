@@ -11,11 +11,11 @@ import Button from "../ui/Button";
 import Card, { CardContent, CardHeader, CardTitle } from "../ui/Card";
 import { getComponentPathFromId, loadComponent } from "../componentMap";
 
-const PagePreview = ({ 
-  isOpen, 
-  onClose, 
-  pageData, 
-  availableComponents = [] 
+const PagePreview = ({
+  isOpen,
+  onClose,
+  pageData,
+  availableComponents = [],
 }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -77,7 +77,7 @@ const PagePreview = ({
   const loadComponents = async () => {
     setLoading(true);
     setError(null);
-    
+
     try {
       const componentMap = {};
       for (const component of pageData.components) {
@@ -90,21 +90,36 @@ const PagePreview = ({
             componentMap[component.componentType] = () => (
               <div className="p-6 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800">
                 <div className="mb-4">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{component.componentName}</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Component Type: {component.componentType}</p>
-                  <p className="text-sm text-yellow-600 dark:text-yellow-400 mt-2">Component path not found</p>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                    {component.componentName}
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Component Type: {component.componentType}
+                  </p>
+                  <p className="text-sm text-yellow-600 dark:text-yellow-400 mt-2">
+                    Component path not found
+                  </p>
                 </div>
               </div>
             );
           }
         } catch (err) {
-          console.warn(`Failed to load component ${component.componentType}:`, err);
+          console.warn(
+            `Failed to load component ${component.componentType}:`,
+            err
+          );
           componentMap[component.componentType] = () => (
             <div className="p-6 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800">
               <div className="mb-4">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{component.componentName}</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Component Type: {component.componentType}</p>
-                <p className="text-sm text-red-600 dark:text-red-400 mt-2">Component failed to load</p>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                  {component.componentName}
+                </h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Component Type: {component.componentType}
+                </p>
+                <p className="text-sm text-red-600 dark:text-red-400 mt-2">
+                  Component failed to load
+                </p>
               </div>
             </div>
           );
@@ -119,7 +134,9 @@ const PagePreview = ({
   };
 
   const getComponentIcon = (componentType) => {
-    const component = availableComponents.find(c => c.componentType === componentType);
+    const component = availableComponents.find(
+      (c) => c.componentType === componentType
+    );
     return component?.icon || "📄";
   };
 
@@ -128,7 +145,10 @@ const PagePreview = ({
 
     if (!Component) {
       return (
-        <div key={index} className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-6">
+        <div
+          key={index}
+          className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-6"
+        >
           <div className="flex items-center space-x-3">
             <ExclamationTriangleIcon className="h-6 w-6 text-yellow-600 dark:text-yellow-400" />
             <div>
@@ -136,13 +156,37 @@ const PagePreview = ({
                 Component Not Found
               </h3>
               <p className="text-yellow-700 dark:text-yellow-300">
-                The component "{component.componentType}" could not be loaded for preview.
+                The component "{component.componentType}" could not be loaded
+                for preview.
               </p>
             </div>
           </div>
         </div>
       );
     }
+
+    // Parse props
+    let componentProps = {};
+    try {
+      componentProps = JSON.parse(component.contentJson || "{}");
+    } catch (err) {
+      console.warn(
+        `Failed to parse contentJson for ${component.componentType}:`,
+        err
+      );
+      componentProps = {};
+    }
+    const safeProps = buildSafeProps(componentProps);
+
+    // Special prop mapping for payroll components
+    let propsToPass = safeProps;
+    if (component.componentType === "PayrollWorkflow") {
+      propsToPass = { workflowData: safeProps };
+    } else if (component.componentType === "PayrollCTA") {
+      propsToPass = { ctaData: safeProps };
+    } else if (component.componentType === "PayrollHero") {
+      propsToPass = { ...safeProps };
+    } // add more mappings as needed
 
     return (
       <motion.div
@@ -156,19 +200,24 @@ const PagePreview = ({
         <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-t-lg p-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="text-xl">{getComponentIcon(component.componentType)}</div>
+              <div className="text-xl">
+                {getComponentIcon(component.componentType)}
+              </div>
               <div>
                 <h4 className="text-sm font-semibold text-blue-900 dark:text-blue-100">
                   {component.componentName}
                 </h4>
                 <p className="text-xs text-blue-700 dark:text-blue-300">
-                  Order: {component.orderIndex} | Type: {component.componentType}
+                  Order: {component.orderIndex} | Type:{" "}
+                  {component.componentType}
                 </p>
               </div>
             </div>
             <div className="flex items-center space-x-2">
               <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-              <span className="text-xs text-green-700 dark:text-green-300">Preview</span>
+              <span className="text-xs text-green-700 dark:text-green-300">
+                Preview
+              </span>
             </div>
           </div>
         </div>
@@ -176,36 +225,16 @@ const PagePreview = ({
         {/* Component Content */}
         <div className="bg-white dark:bg-gray-900 border-l border-r border-b border-gray-200 dark:border-gray-700 rounded-b-lg">
           <div className="min-h-[200px]">
-            {(() => {
-              try {
-                const componentProps = JSON.parse(component.contentJson || '{}');
-            const safeProps = buildSafeProps(componentProps);
-            return (
-              <ErrorBoundary
-                fallback={
-                  <div className="p-4 text-sm text-red-700 bg-red-50 border-t border-r border-b border-red-200 rounded-b-lg">
-                    Failed to render {component.componentType}. Please check its data.
-                  </div>
-                }
-              >
-                <Component {...safeProps} />
-              </ErrorBoundary>
-            );
-              } catch (err) {
-                console.warn(`Failed to parse contentJson for ${component.componentType}:`, err);
-            return (
-              <ErrorBoundary
-                fallback={
-                  <div className="p-4 text-sm text-red-700 bg-red-50 border-t border-r border-b border-red-200 rounded-b-lg">
-                    Failed to render {component.componentType}. Invalid JSON.
-                  </div>
-                }
-              >
-                <Component />
-              </ErrorBoundary>
-            );
+            <ErrorBoundary
+              fallback={
+                <div className="p-4 text-sm text-red-700 bg-red-50 border-t border-r border-b border-red-200 rounded-b-lg">
+                  Failed to render {component.componentType}. Please check its
+                  data.
+                </div>
               }
-            })()}
+            >
+              <Component {...propsToPass} />
+            </ErrorBoundary>
           </div>
         </div>
       </motion.div>
@@ -216,7 +245,7 @@ const PagePreview = ({
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.9 }}
@@ -229,7 +258,8 @@ const PagePreview = ({
               Page Preview
             </h2>
             <p className="text-gray-600 dark:text-gray-400 mt-1">
-              Preview of "{pageData.name}" with {pageData.components?.length || 0} components
+              Preview of "{pageData.name}" with{" "}
+              {pageData.components?.length || 0} components
             </p>
           </div>
           <div className="flex items-center space-x-3">
@@ -299,15 +329,25 @@ const PagePreview = ({
                 <CardContent className="p-4">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                     <div>
-                      <span className="font-medium text-gray-700 dark:text-gray-300">Page Name:</span>
-                      <p className="text-gray-900 dark:text-white">{pageData.name}</p>
+                      <span className="font-medium text-gray-700 dark:text-gray-300">
+                        Page Name:
+                      </span>
+                      <p className="text-gray-900 dark:text-white">
+                        {pageData.name}
+                      </p>
                     </div>
                     <div>
-                      <span className="font-medium text-gray-700 dark:text-gray-300">URL Slug:</span>
-                      <p className="text-gray-900 dark:text-white">/{pageData.slug}</p>
+                      <span className="font-medium text-gray-700 dark:text-gray-300">
+                        URL Slug:
+                      </span>
+                      <p className="text-gray-900 dark:text-white">
+                        /{pageData.slug}
+                      </p>
                     </div>
                     <div>
-                      <span className="font-medium text-gray-700 dark:text-gray-300">Status:</span>
+                      <span className="font-medium text-gray-700 dark:text-gray-300">
+                        Status:
+                      </span>
                       <p className="text-gray-900 dark:text-white">
                         {pageData.isPublished ? "Published" : "Draft"}
                       </p>
@@ -321,7 +361,9 @@ const PagePreview = ({
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                   Components ({pageData.components.length})
                 </h3>
-                {pageData.components.map((component, index) => renderComponent(component, index))}
+                {pageData.components.map((component, index) =>
+                  renderComponent(component, index)
+                )}
               </div>
             </div>
           )}
@@ -339,7 +381,10 @@ const PagePreview = ({
               <span>Preview ready</span>
             </div>
           </div>
-          <Button onClick={onClose} className="bg-blue-600 hover:bg-blue-700 text-white">
+          <Button
+            onClick={onClose}
+            className="bg-blue-600 hover:bg-blue-700 text-white"
+          >
             Close Preview
           </Button>
         </div>

@@ -972,52 +972,61 @@ const EnhancedPageBuilder = () => {
       }
 
       // Navigate to pages management after a brief delay
-      setTimeout(() => {
-        navigate("/admin/pages");
-      }, 1500);
-    } catch (error) {
-      console.error("Error in handleSave:", error);
-      
-      // Check for specific error types and provide meaningful messages
-      let errorMessage = "An unexpected error occurred";
-      
-      if (error.response?.status === 400) {
-        // Handle 400 Bad Request errors
-        if (error.response.data?.message?.includes("duplicate key") && 
-            error.response.data?.message?.includes("IX_PageComponents_PageId_OrderIndex")) {
-          errorMessage = "Duplicate component order detected. This has been automatically fixed. Please try again.";
-          
-          // Auto-fix duplicate order indexes
-          const fixedComponents = pageData.components.map((component, index) => ({
-            ...component,
-            orderIndex: index,
-          }));
-          
-          setPageData((prev) => ({
-            ...prev,
-            components: fixedComponents,
-          }));
-        } else {
-          errorMessage = error.response.data?.message || "Invalid page data provided";
-        }
-      } else if (error.response?.status === 409) {
-        errorMessage = "A page with this slug already exists. Please choose a different name.";
-      } else if (error.response?.status >= 500) {
-        errorMessage = "Server error. Please try again later.";
-      } else if (error.message) {
-  errorMessage = 'Save failed: ' + error.message;
+      // List of all JSON files to load
+      const dataFiles = [
+        '/data/payroll.json',
+        '/data/hr.json',
+        '/data/about.json',
+        '/data/retail-data.json',
+        '/data/manufacturing-data.json',
+      ];
+
+      // Cache for loaded data
+      if (!window._defaultComponentData) {
+        window._defaultComponentData = {};
+        window._defaultComponentDataSources = {};
+        window._defaultComponentDataLoaded = false;
       }
-      
-      // Show specific error message based on operation type
-  const operation = status === "published" ? "publishing" : "saving";
-  showToast('Error ' + operation + ' page: ' + errorMessage, "error");
-    } finally {
-      // Reset loading states
-      setLoading(false);
-      setIsPublishing(false);
-      
-      // Reset the saving ref to allow future saves
-      isSavingRef.current = false;
+
+      // Helper to load and merge all JSON files
+      const loadAllDefaultData = async () => {
+        if (window._defaultComponentDataLoaded) return;
+        for (const file of dataFiles) {
+          try {
+            const res = await fetch(file);
+            if (!res.ok) continue;
+            const json = await res.json();
+            Object.keys(json).forEach((key) => {
+              window._defaultComponentData[key] = json[key];
+              window._defaultComponentDataSources[key] = file;
+            });
+          } catch (err) {
+            // Ignore file errors
+          }
+        }
+        window._defaultComponentDataLoaded = true;
+      };
+
+      // Synchronous fallback for SSR or first render
+      if (!window._defaultComponentDataLoaded) {
+        // This will not block, but will trigger async load for next render
+        loadAllDefaultData();
+      }
+
+      // Get the default data for the component
+      const data = window._defaultComponentData[componentType];
+      const source = window._defaultComponentDataSources[componentType];
+      if (data) {
+        console.log(`Loaded default data for [${componentType}] from [${source}]`);
+        return data;
+      }
+      // Fallback
+      return {
+        title: "Section Title",
+        description: "Section description",
+        content: "Section content",
+      };
+    };
     }
   };
 
