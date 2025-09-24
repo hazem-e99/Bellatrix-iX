@@ -972,61 +972,18 @@ const EnhancedPageBuilder = () => {
       }
 
       // Navigate to pages management after a brief delay
-      // List of all JSON files to load
-      const dataFiles = [
-        '/data/payroll.json',
-        '/data/hr.json',
-        '/data/about.json',
-        '/data/retail-data.json',
-        '/data/manufacturing-data.json',
-      ];
+      setTimeout(() => {
+        navigate("/admin/pages");
+      }, 1500);
 
-      // Cache for loaded data
-      if (!window._defaultComponentData) {
-        window._defaultComponentData = {};
-        window._defaultComponentDataSources = {};
-        window._defaultComponentDataLoaded = false;
-      }
-
-      // Helper to load and merge all JSON files
-      const loadAllDefaultData = async () => {
-        if (window._defaultComponentDataLoaded) return;
-        for (const file of dataFiles) {
-          try {
-            const res = await fetch(file);
-            if (!res.ok) continue;
-            const json = await res.json();
-            Object.keys(json).forEach((key) => {
-              window._defaultComponentData[key] = json[key];
-              window._defaultComponentDataSources[key] = file;
-            });
-          } catch (err) {
-            // Ignore file errors
-          }
-        }
-        window._defaultComponentDataLoaded = true;
-      };
-
-      // Synchronous fallback for SSR or first render
-      if (!window._defaultComponentDataLoaded) {
-        // This will not block, but will trigger async load for next render
-        loadAllDefaultData();
-      }
-
-      // Get the default data for the component
-      const data = window._defaultComponentData[componentType];
-      const source = window._defaultComponentDataSources[componentType];
-      if (data) {
-        console.log(`Loaded default data for [${componentType}] from [${source}]`);
-        return data;
-      }
-      // Fallback
-      return {
-        title: "Section Title",
-        description: "Section description",
-        content: "Section content",
-      };
-    };
+    } catch (error) {
+      console.error("❌ Failed to save page:", error);
+      showToast(error.message || "Failed to save page", "error");
+    } finally {
+      // Reset loading states and save lock
+      setLoading(false);
+      setIsPublishing(false);
+      isSavingRef.current = false;
     }
   };
 
