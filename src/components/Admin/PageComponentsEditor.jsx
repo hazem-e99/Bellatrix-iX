@@ -104,6 +104,9 @@ const PageComponentsEditor = ({ pageId, pageName, onClose, onSave, showToast }) 
   };
 
   const handleReorder = async (fromIndex, toIndex) => {
+    // Show loading state
+    setSaving(true);
+    
     const newComponents = [...components];
     const [movedComponent] = newComponents.splice(fromIndex, 1);
     newComponents.splice(toIndex, 0, movedComponent);
@@ -114,17 +117,34 @@ const PageComponentsEditor = ({ pageId, pageName, onClose, onSave, showToast }) 
       orderIndex: index + 1
     }));
 
+    // Optimistically update UI first
     setComponents(reorderedComponents);
 
     try {
-      const componentIds = reorderedComponents.map(comp => comp.id);
-      await pagesAPI.reorderPageComponents(pageId, componentIds);
+      console.log(`Reordering components: ${reorderedComponents.map(comp => comp.id).join(', ')}`);
+      
+      await pagesAPI.reorderPageComponents(pageId, reorderedComponents);
       showToast("Components reordered successfully", "success");
     } catch (error) {
       console.error("Error reordering components:", error);
-      showToast("Error reordering components: " + error.message, "error");
-      // Revert on error
-      loadComponents();
+      
+      // Show specific error message
+      let errorMessage = "Error reordering components";
+      if (error.message.includes("circular dependency")) {
+        errorMessage = "Unable to reorder components due to a conflict. Please try again.";
+      } else if (error.message.includes("not found")) {
+        errorMessage = "One or more components could not be found. Please refresh and try again.";
+      } else {
+        errorMessage = `Error reordering components: ${error.message}`;
+      }
+      
+      showToast(errorMessage, "error");
+      
+      // Revert on error by reloading components
+      console.log("Reverting component order due to error...");
+      await loadComponents();
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -190,6 +210,7 @@ const PageComponentsEditor = ({ pageId, pageName, onClose, onSave, showToast }) 
               onDelete={() => handleDeleteComponent(component.id)}
               onMoveUp={index > 0 ? () => handleReorder(index, index - 1) : null}
               onMoveDown={index < components.length - 1 ? () => handleReorder(index, index + 1) : null}
+              isReordering={saving}
             />
           ))
         )}
@@ -216,7 +237,7 @@ const PageComponentsEditor = ({ pageId, pageName, onClose, onSave, showToast }) 
 };
 
 // Component Card
-const ComponentCard = ({ component, index, onEdit, onDelete, onMoveUp, onMoveDown }) => {
+const ComponentCard = ({ component, index, onEdit, onDelete, onMoveUp, onMoveDown, isReordering = false }) => {
   const [contentPreview, setContentPreview] = useState("");
 
   useEffect(() => {
@@ -229,7 +250,9 @@ const ComponentCard = ({ component, index, onEdit, onDelete, onMoveUp, onMoveDow
   }, [component.contentJson]);
 
   return (
-    <div className="bg-white/10 border border-white/20 rounded-lg p-3 hover:bg-white/15 transition-colors">
+    <div className={`bg-white/10 border border-white/20 rounded-lg p-3 hover:bg-white/15 transition-colors ${
+      isReordering ? 'opacity-50 pointer-events-none' : ''
+    }`}>
       <div className="flex items-center justify-between">
         <div className="flex-1">
           <div className="flex items-center space-x-2">
@@ -242,6 +265,11 @@ const ComponentCard = ({ component, index, onEdit, onDelete, onMoveUp, onMoveDow
             <span className="text-xs text-gray-400 bg-blue-500/20 px-2 py-1 rounded">
               {component.componentType}
             </span>
+            {isReordering && (
+              <span className="text-xs text-yellow-400 bg-yellow-500/20 px-2 py-1 rounded animate-pulse">
+                Reordering...
+              </span>
+            )}
           </div>
           <p className="text-xs text-gray-300 mt-1">
             <span className="font-mono text-xs bg-white/5 px-2 py-1 rounded">
@@ -252,7 +280,7 @@ const ComponentCard = ({ component, index, onEdit, onDelete, onMoveUp, onMoveDow
         
         <div className="flex items-center space-x-1">
           {/* Reorder buttons */}
-          {onMoveUp && (
+          {onMoveUp && !isReordering && (
             <button
               onClick={onMoveUp}
               className="p-1 text-gray-300 hover:text-white hover:bg-white/10 rounded"
@@ -261,7 +289,7 @@ const ComponentCard = ({ component, index, onEdit, onDelete, onMoveUp, onMoveDow
               <ArrowUpIcon className="h-3 w-3" />
             </button>
           )}
-          {onMoveDown && (
+          {onMoveDown && !isReordering && (
             <button
               onClick={onMoveDown}
               className="p-1 text-gray-300 hover:text-white hover:bg-white/10 rounded"
@@ -274,14 +302,24 @@ const ComponentCard = ({ component, index, onEdit, onDelete, onMoveUp, onMoveDow
           {/* Action buttons */}
           <button
             onClick={onEdit}
-            className="p-1 text-blue-400 hover:text-blue-300 hover:bg-blue-500/10 rounded"
+            disabled={isReordering}
+            className={`p-1 rounded ${
+              isReordering 
+                ? 'text-gray-500 cursor-not-allowed' 
+                : 'text-blue-400 hover:text-blue-300 hover:bg-blue-500/10'
+            }`}
             title="Edit component"
           >
             <PencilIcon className="h-3 w-3" />
           </button>
           <button
             onClick={onDelete}
-            className="p-1 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded"
+            disabled={isReordering}
+            className={`p-1 rounded ${
+              isReordering 
+                ? 'text-gray-500 cursor-not-allowed' 
+                : 'text-red-400 hover:text-red-300 hover:bg-red-500/10'
+            }`}
             title="Delete component"
           >
             <TrashIcon className="h-3 w-3" />

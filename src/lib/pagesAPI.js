@@ -327,16 +327,49 @@ const pagesAPI = {
   },
 
   /**
-   * Reorder page components
+   * Reorder page components by updating each component individually
    * @param {number} pageId - The page ID
-   * @param {Array} componentIds - Array of component IDs in new order
+   * @param {Array} components - Array of component objects with their data
    * @returns {Promise<void>}
    */
-  async reorderPageComponents(pageId, componentIds) {
+  async reorderPageComponents(pageId, components) {
     try {
-      const response = await api.post(`/Pages/${pageId}/components/reorder`, componentIds);
-      console.log("Reorder components response:", response.data);
-      return response.data;
+      // First, set all components to temporary high orderIndex to avoid conflicts
+      console.log("Setting temporary orderIndex to avoid conflicts...");
+      const tempOrderPromises = components.map(async (component) => {
+        const tempOrderIndex = 1000 + component.id; // Use high temporary values
+        const updateData = {
+          id: component.id,
+          componentType: component.componentType,
+          componentName: component.componentName,
+          contentJson: component.contentJson,
+          orderIndex: tempOrderIndex
+        };
+        return await this.updatePageComponent(component.id, updateData);
+      });
+      
+      await Promise.all(tempOrderPromises);
+      console.log("Temporary orderIndex set successfully");
+      
+      // Now update each component to its final orderIndex sequentially
+      console.log("Setting final orderIndex...");
+      for (let i = 0; i < components.length; i++) {
+        const component = components[i];
+        const finalOrderIndex = i + 1; // Start from 1
+        console.log(`Updating component ${component.id} to final order ${finalOrderIndex}`);
+        
+        const updateData = {
+          id: component.id,
+          componentType: component.componentType,
+          componentName: component.componentName,
+          contentJson: component.contentJson,
+          orderIndex: finalOrderIndex
+        };
+        
+        await this.updatePageComponent(component.id, updateData);
+      }
+      
+      console.log(`Successfully reordered ${components.length} components for page ${pageId}`);
     } catch (error) {
       console.error(`Error reordering components for page ${pageId}:`, error);
       throw error;
