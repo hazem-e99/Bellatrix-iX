@@ -24,6 +24,7 @@ import SectionDataEditor from "./SectionDataEditor";
 import PagePreview from "./PagePreview";
 import MediaInputDetector from "../ui/MediaInputDetector";
 import pagesAPI from "../../lib/pagesAPI";
+import api from "../../lib/api";
 
 const EnhancedPageBuilder = () => {
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ const EnhancedPageBuilder = () => {
   // Page data
   const [pageData, setPageData] = useState({
     name: "",
-    categoryId: 1, // Changed default to 1 instead of 0
+    categoryId: null,
     slug: "",
     metaTitle: "",
     metaDescription: "",
@@ -169,17 +170,10 @@ const EnhancedPageBuilder = () => {
   const [showPagePreview, setShowPagePreview] = useState(false);
 
   const steps = [
-    { id: 1, title: "Page Details", description: "Basic page information" },
-    {
-      id: 2,
-      title: "Add Sections",
-      description: "Choose and configure sections",
-    },
-    {
-      id: 3,
-      title: "Review & Publish",
-      description: "Final review and publish",
-    },
+    { id: 1, title: "Category", description: "Choose a category for the page" },
+    { id: 2, title: "Page Details", description: "Basic page information" },
+    { id: 3, title: "Add Sections", description: "Choose and configure sections" },
+    { id: 4, title: "Review & Publish", description: "Final review and publish" },
   ];
 
   const showToast = (message, type = "info") => {
@@ -212,7 +206,7 @@ const EnhancedPageBuilder = () => {
 
     return {
       name: name,
-      categoryId: data.categoryId || 1,
+      categoryId: data.categoryId ?? 1,
       slug: slug,
       metaTitle: data.metaTitle?.trim() || "",
       metaDescription: data.metaDescription?.trim() || "",
@@ -869,13 +863,16 @@ const EnhancedPageBuilder = () => {
   const isStepValid = (step) => {
     switch (step) {
       case 1:
-        // Step 1 is always valid - we'll use defaults if needed
-        return true;
+        // Require category selection
+        return pageData.categoryId !== null && pageData.categoryId !== undefined;
       case 2:
-        // Step 2 allows empty components - we'll create a default if needed
+        // Page details can be empty; defaults will be applied
         return true;
       case 3:
-        // Step 3 allows proceeding with any state - defaults will be applied
+        // Sections optional
+        return true;
+      case 4:
+        // Review step always valid
         return true;
       default:
         return false;
@@ -886,12 +883,29 @@ const EnhancedPageBuilder = () => {
     switch (currentStep) {
       case 1:
         return (
+          <Card className="bg-white/5 backdrop-blur-sm border border-white/10 shadow-xl">
+            <CardHeader>
+              <CardTitle className="text-white text-xl font-bold">Category</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CategorySelector
+                value={pageData.categoryId}
+                onChange={(id) => handlePageDataChange("categoryId", id)}
+              />
+              {!pageData.categoryId && (
+                <div className="mt-3 text-xs text-red-300">Please select a category to continue.</div>
+              )}
+            </CardContent>
+          </Card>
+        );
+      case 2:
+        return (
           <PageDetailsStep
             pageData={pageData}
             onDataChange={handlePageDataChange}
           />
         );
-      case 2:
+      case 3:
         return (
           <SectionsStep
             pageData={pageData}
@@ -903,7 +917,7 @@ const EnhancedPageBuilder = () => {
             onMoveComponent={moveComponent}
           />
         );
-      case 3:
+      case 4:
         return (
           <ReviewStep
             pageData={pageData}
@@ -1093,6 +1107,58 @@ const EnhancedPageBuilder = () => {
   );
 };
 
+// Category selector that fetches from backend swagger endpoints
+const CategorySelector = ({ value, onChange }) => {
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const res = await api.get("/Categories");
+        const list = Array.isArray(res.data) ? res.data : [];
+        setCategories(list);
+      } catch (e) {
+        setError(e.message || "Failed to load categories");
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
+  }, []);
+
+  if (loading) {
+    return <div className="text-white/80 text-sm">Loading categories...</div>;
+  }
+  if (error) {
+    return <div className="text-red-300 text-sm">{error}</div>;
+  }
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      {categories.map((c) => (
+        <button
+          key={c.id}
+          onClick={() => onChange(c.id)}
+          className={`text-left p-4 rounded-lg border transition ${
+            value === c.id
+              ? "border-blue-400 bg-blue-500/10"
+              : "border-white/10 hover:border-white/20 bg-white/5"
+          }`}
+        >
+          <div className="text-white font-semibold">{c.name}</div>
+          {c.description && (
+            <div className="text-white/70 text-sm mt-1">{c.description}</div>
+          )}
+        </button>
+      ))}
+    </div>
+  );
+};
+
 // Step 1: Page Details
 const PageDetailsStep = ({ pageData, onDataChange }) => {
   return (
@@ -1150,21 +1216,7 @@ const PageDetailsStep = ({ pageData, onDataChange }) => {
               className="w-full bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder-white/50 focus:border-blue-400 focus:ring-blue-400/20"
             />
           </div>
-
-          <div>
-            <label className="block text-sm font-semibold text-white mb-2">
-              Category ID
-            </label>
-            <Input
-              type="number"
-              value={pageData.categoryId}
-              onChange={(e) =>
-                onDataChange("categoryId", parseInt(e.target.value) || 0)
-              }
-              placeholder="0"
-              className="w-full bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder-white/50 focus:border-blue-400 focus:ring-blue-400/20"
-            />
-          </div>
+          <div></div>
         </div>
 
         <div>

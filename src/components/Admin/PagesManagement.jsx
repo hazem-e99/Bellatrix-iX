@@ -574,94 +574,49 @@ const PagesManagement = () => {
   );
 };
 
-// Enhanced View Page Modal Component
+// Enhanced View Page Modal Component (Live demo preview)
 const ViewPageModal = ({ isOpen, onClose, page }) => {
   if (!page) return null;
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="" size="xl">
-      {/* Modern Modal Header */}
       <div className="relative bg-gradient-to-r from-blue-50/90 to-indigo-50/90 backdrop-blur-sm border-b border-gray-200/50 px-6 py-4">
+        <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
           <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg">
             <EyeIcon className="h-6 w-6 text-white" />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-gray-800">View Page</h2>
-            <p className="text-sm text-gray-600">{page.name}</p>
+              <h2 className="text-xl font-bold text-gray-800">Page Preview</h2>
+              <p className="text-sm text-gray-600">/{page.slug}</p>
           </div>
         </div>
-      </div>
-
-      {/* Modal Content */}
-      <div className="p-6 bg-gradient-to-br from-white/80 to-blue-50/30 backdrop-blur-sm">
-        <div className="space-y-6">
-          {/* Page Info Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-white/60 backdrop-blur-sm rounded-xl border border-white/20 shadow-lg p-6">
-              <div className="flex items-center space-x-3 mb-3">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
-                  <DocumentTextIcon className="h-4 w-4 text-blue-600" />
-                </div>
-                <h3 className="text-sm font-semibold text-gray-700">
-                  Page Name
-                </h3>
-              </div>
-              <p className="text-lg font-medium text-gray-800">{page.name}</p>
-            </div>
-
-            <div className="bg-white/60 backdrop-blur-sm rounded-xl border border-white/20 shadow-lg p-6">
-              <div className="flex items-center space-x-3 mb-3">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center">
-                  <DocumentTextIcon className="h-4 w-4 text-green-600" />
-                </div>
-                <h3 className="text-sm font-semibold text-gray-700">
-                  Filename
-                </h3>
-              </div>
-              <p className="text-lg font-medium text-gray-800">
-                {page.filename}
-              </p>
-            </div>
-          </div>
-
-          {/* JSON Data Viewer */}
-          <div className="bg-white/60 backdrop-blur-sm rounded-xl border border-white/20 shadow-lg">
-            <div className="p-4 border-b border-gray-200/50">
-              <h3 className="text-sm font-semibold text-gray-700 flex items-center">
-                <DocumentTextIcon className="h-4 w-4 mr-2 text-blue-600" />
-                JSON Data Structure
-              </h3>
-              <p className="text-xs text-gray-500 mt-1">
-                Complete data structure for this page
-              </p>
-            </div>
-            <div className="p-4">
-              <div className="bg-gradient-to-r from-gray-50/80 to-blue-50/80 backdrop-blur-sm rounded-lg border border-gray-200/50 p-4 max-h-96 overflow-auto">
-                <pre className="text-sm text-gray-800 font-mono leading-relaxed">
-                  {JSON.stringify(page.data, null, 2)}
-                </pre>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Modern Modal Footer */}
-      <div className="bg-gradient-to-r from-gray-50/90 to-blue-50/90 backdrop-blur-sm border-t border-gray-200/50 px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-            <span className="text-sm text-gray-600">Read-only view</span>
-          </div>
-
+          <div className="flex items-center gap-2">
+            <a
+              href={`/${page.slug}`}
+              target="_blank"
+              rel="noreferrer"
+              className="px-4 py-2 bg-white/80 hover:bg-white border border-gray-200 hover:border-gray-300 text-gray-700 hover:text-gray-800 rounded-xl font-semibold text-sm transition-all duration-200"
+            >
+              Open in new tab
+            </a>
           <button
             onClick={onClose}
-            className="px-6 py-2 bg-white/80 hover:bg-white border border-gray-200 hover:border-gray-300 text-gray-700 hover:text-gray-800 rounded-xl font-semibold text-sm transition-all duration-200 hover:shadow-md flex items-center space-x-2"
+              className="px-4 py-2 bg-white/80 hover:bg-white border border-gray-200 hover:border-gray-300 text-gray-700 hover:text-gray-800 rounded-xl font-semibold text-sm transition-all duration-200"
           >
-            <EyeIcon className="h-4 w-4" />
-            <span>Close</span>
+              Close
           </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="p-0 bg-white">
+        <div className="h-[80vh]">
+          <iframe
+            title="page-preview"
+            src={`/${page.slug}`}
+            className="w-full h-full border-0 bg-white"
+          />
         </div>
       </div>
     </Modal>
@@ -931,3 +886,453 @@ const CreatePageModal = ({ isOpen, onClose, onSave, showToast }) => {
 };
 
 export default PagesManagement;
+
+      setLoading(false);
+
+    }
+
+  };
+
+
+
+  if (!page) return null;
+
+
+
+  return (
+
+    <Modal isOpen={isOpen} onClose={onClose} title="" size="xl">
+
+      {/* Modern Modal Header */}
+
+      <div className="relative bg-gradient-to-r from-blue-50/90 to-indigo-50/90 backdrop-blur-sm border-b border-gray-200/50 px-6 py-4">
+
+        <div className="flex items-center space-x-4">
+
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg">
+
+            <PencilIcon className="h-6 w-6 text-white" />
+
+          </div>
+
+          <div>
+
+            <h2 className="text-xl font-bold text-gray-800">Edit Page</h2>
+
+            <p className="text-sm text-gray-600">{page.name}</p>
+
+          </div>
+
+        </div>
+
+
+
+        {/* Tab Navigation */}
+
+        <div className="mt-4 flex space-x-1 bg-white/60 backdrop-blur-sm rounded-lg p-1 border border-gray-200/50">
+
+          <button
+
+            onClick={() => setActiveTab("form")}
+
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
+
+              activeTab === "form"
+
+                ? "bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg"
+
+                : "text-gray-600 hover:text-blue-600 hover:bg-white/80"
+
+            }`}
+
+          >
+
+            <DocumentTextIcon className="h-4 w-4 inline mr-2" />
+
+            Form Editor
+
+          </button>
+
+          <button
+
+            onClick={() => setActiveTab("json")}
+
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
+
+              activeTab === "json"
+
+                ? "bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg"
+
+                : "text-gray-600 hover:text-blue-600 hover:bg-white/80"
+
+            }`}
+
+          >
+
+            <DocumentTextIcon className="h-4 w-4 inline mr-2" />
+
+            JSON Editor
+
+          </button>
+
+        </div>
+
+      </div>
+
+
+
+      {/* Modal Content */}
+
+      <div className="p-6 bg-gradient-to-br from-white/80 to-blue-50/30 backdrop-blur-sm">
+
+        {activeTab === "form" ? (
+
+          <div className="h-[600px]">
+
+            <ModernPageEditor
+
+              pageData={formData}
+
+              onSave={async (updatedData) => {
+
+                setFormData(updatedData);
+
+                setJsonView(JSON.stringify(updatedData, null, 2));
+
+                await handleSave(updatedData);
+
+              }}
+
+              isLoading={loading}
+
+            />
+
+          </div>
+
+        ) : (
+
+          <div className="space-y-4">
+
+            <div className="bg-white/60 backdrop-blur-sm rounded-xl border border-white/20 shadow-lg">
+
+              <div className="p-4 border-b border-gray-200/50">
+
+                <h3 className="text-sm font-semibold text-gray-700 flex items-center">
+
+                  <DocumentTextIcon className="h-4 w-4 mr-2 text-blue-600" />
+
+                  JSON Data Editor
+
+                </h3>
+
+                <p className="text-xs text-gray-500 mt-1">
+
+                  Edit the raw JSON data for this page
+
+                </p>
+
+              </div>
+
+              <div className="p-4">
+
+                <textarea
+
+                  value={jsonView}
+
+                  onChange={(e) => handleJsonChange(e.target.value)}
+
+                  rows={15}
+
+                  className="w-full rounded-lg border border-gray-200 bg-white/80 backdrop-blur-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm p-4 resize-none"
+
+                  placeholder="Enter JSON data..."
+
+                />
+
+              </div>
+
+            </div>
+
+          </div>
+
+        )}
+
+      </div>
+
+
+
+      {/* Modern Modal Footer */}
+
+      <div className="bg-gradient-to-r from-gray-50/90 to-blue-50/90 backdrop-blur-sm border-t border-gray-200/50 px-6 py-4">
+
+        <div className="flex items-center justify-between">
+
+          <div className="flex items-center space-x-2">
+
+            <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+
+            <span className="text-sm text-gray-600">
+
+              {activeTab === "form" ? "Form-based editing" : "Raw JSON editing"}
+
+            </span>
+
+          </div>
+
+
+
+          <div className="flex items-center space-x-3">
+
+            <button
+
+              onClick={onClose}
+
+              disabled={loading}
+
+              className="px-6 py-2 bg-white/80 hover:bg-white border border-gray-200 hover:border-gray-300 text-gray-700 hover:text-gray-800 rounded-xl font-semibold text-sm transition-all duration-200 hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+
+            >
+
+              Cancel
+
+            </button>
+
+            <button
+
+              onClick={handleSave}
+
+              disabled={loading}
+
+              className="group px-6 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white rounded-xl font-semibold text-sm transition-all duration-200 hover:shadow-lg hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+
+            >
+
+              {loading ? (
+
+                <>
+
+                  <ArrowPathIcon className="h-4 w-4 animate-spin" />
+
+                  <span>Saving...</span>
+
+                </>
+
+              ) : (
+
+                <>
+
+                  <CheckCircleIcon className="h-4 w-4 group-hover:scale-110 transition-transform duration-200" />
+
+                  <span>Save Changes</span>
+
+                </>
+
+              )}
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </Modal>
+
+  );
+
+};
+
+
+
+// Create Page Modal Component
+
+const CreatePageModal = ({ isOpen, onClose, onSave, showToast }) => {
+
+  const [pageName, setPageName] = useState("");
+
+  const [pageData, setPageData] = useState(
+
+    '{\n  "title": "",\n  "content": "",\n  "description": ""\n}'
+
+  );
+
+  const [loading, setLoading] = useState(false);
+
+
+
+  const handleCreate = async () => {
+
+    if (!pageName.trim()) {
+
+      showToast("Please enter a page name", "error");
+
+      return;
+
+    }
+
+
+
+    try {
+
+      const parsedData = JSON.parse(pageData);
+
+      setLoading(true);
+
+
+
+      // Create the page DTO according to the Bellatrix API format
+
+      const createPageDTO = {
+
+        title: parsedData.title || pageName,
+
+        categoryId: 0,
+
+        slug: pageName,
+
+        metaTitle: parsedData.meta_title || parsedData.title || pageName,
+
+        metaDescription:
+
+          parsedData.meta_description || parsedData.description || "",
+
+        isHomepage: false,
+
+        isPublished: false,
+
+        components: parsedData.components || [],
+
+      };
+
+
+
+      await pagesAPI.createPage(createPageDTO);
+
+
+
+      showToast(`Page "${pageName}" created successfully`, "success");
+
+      await onSave(); // Refresh the pages list
+
+      onClose();
+
+      setPageName("");
+
+      setPageData(
+
+        '{\n  "title": "",\n  "content": "",\n  "description": ""\n}'
+
+      );
+
+    } catch (err) {
+
+      if (err instanceof SyntaxError) {
+
+        showToast("Invalid JSON format", "error");
+
+      } else {
+
+        showToast("Error creating page: " + err.message, "error");
+
+      }
+
+    } finally {
+
+      setLoading(false);
+
+    }
+
+  };
+
+
+
+  return (
+
+    <Modal isOpen={isOpen} onClose={onClose} title="Create New Page" size="lg">
+
+      <div className="space-y-4">
+
+        <div>
+
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+
+            Page Name
+
+          </label>
+
+          <Input
+
+            value={pageName}
+
+            onChange={(e) => setPageName(e.target.value)}
+
+            placeholder="e.g., about, contact, services"
+
+          />
+
+          <p className="mt-1 text-xs text-gray-500">
+
+            Use lowercase letters, numbers, and hyphens only. Will be saved as{" "}
+
+            {pageName || "page-name"}.json
+
+          </p>
+
+        </div>
+
+
+
+        <div>
+
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+
+            Initial Data (JSON)
+
+          </label>
+
+          <textarea
+
+            value={pageData}
+
+            onChange={(e) => setPageData(e.target.value)}
+
+            rows={10}
+
+            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white font-mono text-sm"
+
+            placeholder="Enter JSON data for the page"
+
+          />
+
+        </div>
+
+      </div>
+
+      <ModalFooter>
+
+        <Button variant="outline" onClick={onClose} disabled={loading}>
+
+          Cancel
+
+        </Button>
+
+        <Button onClick={handleCreate} loading={loading}>
+
+          {loading ? "Creating..." : "Create Page"}
+
+        </Button>
+
+      </ModalFooter>
+
+    </Modal>
+
+  );
+
+};
+
+
+
+export default PagesManagement;
+
+
