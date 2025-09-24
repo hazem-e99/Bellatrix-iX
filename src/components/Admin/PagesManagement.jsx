@@ -20,6 +20,7 @@ import Card, { CardContent, CardHeader, CardTitle } from "../ui/Card";
 import ModernPageEditor from "./ModernPageEditor";
 import Modal, { ModalFooter } from "../ui/Modal";
 import Toast from "../ui/Toast";
+import EditPageModal from "./EditPageModal";
 import pagesAPI from "../../lib/pagesAPI";
 
 const PagesManagement = () => {
@@ -561,15 +562,15 @@ const ViewPageModal = ({ isOpen, onClose, page }) => {
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="" size="xl">
-      <div className="relative bg-gray-50 border-b border-gray-200 px-6 py-4">
+      <div className="relative bg-white/10 border-b border-white/10 px-6 py-4">
         <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
           <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center shadow">
             <EyeIcon className="h-6 w-6 text-white" />
           </div>
           <div>
-              <h2 className="text-xl font-bold text-gray-800">Page Preview</h2>
-              <p className="text-sm text-gray-600">/{page.slug}</p>
+              <h2 className="text-xl font-bold text-white">Page Preview</h2>
+              <p className="text-sm text-gray-300">/{page.slug}</p>
           </div>
         </div>
           <div className="flex items-center gap-2">
@@ -577,13 +578,13 @@ const ViewPageModal = ({ isOpen, onClose, page }) => {
               href={`/${page.slug}`}
               target="_blank"
               rel="noreferrer"
-              className="px-4 py-2 bg-white/80 hover:bg-white border border-gray-200 hover:border-gray-300 text-gray-700 hover:text-gray-800 rounded-xl font-semibold text-sm transition-all duration-200"
+              className="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 text-white hover:text-white rounded-xl font-semibold text-sm transition-all duration-200"
             >
               Open in new tab
             </a>
           <button
             onClick={onClose}
-              className="px-4 py-2 bg-white/80 hover:bg-white border border-gray-200 hover:border-gray-300 text-gray-700 hover:text-gray-800 rounded-xl font-semibold text-sm transition-all duration-200"
+              className="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 text-white hover:text-white rounded-xl font-semibold text-sm transition-all duration-200"
           >
               Close
           </button>
@@ -591,181 +592,13 @@ const ViewPageModal = ({ isOpen, onClose, page }) => {
         </div>
       </div>
 
-      <div className="p-0 bg-white">
+      <div className="p-0 bg-white/5">
         <div className="h-[80vh]">
           <iframe
             title="page-preview"
             src={`/${page.slug}`}
             className="w-full h-full border-0 bg-white"
           />
-        </div>
-      </div>
-    </Modal>
-  );
-};
-
-// Enhanced Edit Page Modal Component
-const EditPageModal = ({ isOpen, onClose, page, onSave, showToast }) => {
-  const [formData, setFormData] = useState({});
-  const [loading, setLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState("form");
-  const [jsonView, setJsonView] = useState("");
-
-  useEffect(() => {
-    if (page?.data) {
-      setFormData(JSON.parse(JSON.stringify(page.data))); // Deep clone
-      setJsonView(JSON.stringify(page.data, null, 2));
-    }
-  }, [page]);
-
-  const handleJsonChange = (value) => {
-    setJsonView(value);
-    try {
-      const parsed = JSON.parse(value);
-      setFormData(parsed);
-    } catch {
-      // Invalid JSON, don't update formData
-    }
-  };
-
-  const handleSave = async (dataToSave = formData) => {
-    if (!page) return;
-
-    try {
-      setLoading(true);
-      await pagesAPI.updatePage(page.id, dataToSave);
-      showToast(
-        `Page "${page.title || page.slug}" updated successfully`,
-        "success"
-      );
-      await onSave(); // Refresh the pages list
-      onClose();
-    } catch (err) {
-      showToast("Error updating page: " + err.message, "error");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  if (!page) return null;
-
-  return (
-    <Modal isOpen={isOpen} onClose={onClose} title="" size="xl">
-      {/* Modern Modal Header */}
-      <div className="relative bg-gray-50 border-b border-gray-200 px-6 py-4">
-        <div className="flex items-center space-x-4">
-          <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center shadow">
-            <PencilIcon className="h-6 w-6 text-white" />
-          </div>
-          <div>
-            <h2 className="text-xl font-bold text-gray-800">Edit Page</h2>
-            <p className="text-sm text-gray-600">{page.name}</p>
-          </div>
-        </div>
-
-        {/* Tab Navigation */}
-        <div className="mt-4 flex space-x-1 bg-white/60 backdrop-blur-sm rounded-lg p-1 border border-gray-200/50">
-          <button
-            onClick={() => setActiveTab("form")}
-            className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
-              activeTab === "form"
-                ? "bg-blue-600 text-white shadow"
-                : "text-gray-600 hover:text-blue-600 hover:bg-white/80"
-            }`}
-          >
-            <DocumentTextIcon className="h-4 w-4 inline mr-2" />
-            Form Editor
-          </button>
-          <button
-            onClick={() => setActiveTab("json")}
-            className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
-              activeTab === "json"
-                ? "bg-blue-600 text-white shadow"
-                : "text-gray-600 hover:text-blue-600 hover:bg-white/80"
-            }`}
-          >
-            <DocumentTextIcon className="h-4 w-4 inline mr-2" />
-            JSON Editor
-          </button>
-        </div>
-      </div>
-
-      {/* Modal Content */}
-      <div className="p-6 bg-white">
-        {activeTab === "form" ? (
-          <div className="h-[600px]">
-            <ModernPageEditor
-              pageData={formData}
-              onSave={async (updatedData) => {
-                setFormData(updatedData);
-                setJsonView(JSON.stringify(updatedData, null, 2));
-                await handleSave(updatedData);
-              }}
-              isLoading={loading}
-            />
-          </div>
-        ) : (
-          <div className="space-y-4">
-            <div className="bg-white/60 backdrop-blur-sm rounded-xl border border-white/20 shadow-lg">
-              <div className="p-4 border-b border-gray-200/50">
-                <h3 className="text-sm font-semibold text-gray-700 flex items-center">
-                  <DocumentTextIcon className="h-4 w-4 mr-2 text-blue-600" />
-                  JSON Data Editor
-                </h3>
-                <p className="text-xs text-gray-500 mt-1">
-                  Edit the raw JSON data for this page
-                </p>
-              </div>
-              <div className="p-4">
-                <textarea
-                  value={jsonView}
-                  onChange={(e) => handleJsonChange(e.target.value)}
-                  rows={15}
-                  className="w-full rounded-lg border border-gray-200 bg-white/80 backdrop-blur-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm p-4 resize-none"
-                  placeholder="Enter JSON data..."
-                />
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Modern Modal Footer */}
-      <div className="bg-gray-50 border-t border-gray-200 px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-            <span className="text-sm text-gray-600">
-              {activeTab === "form" ? "Form-based editing" : "Raw JSON editing"}
-            </span>
-          </div>
-
-          <div className="flex items-center space-x-3">
-            <button
-              onClick={onClose}
-              disabled={loading}
-              className="px-6 py-2 bg-white/80 hover:bg-white border border-gray-200 hover:border-gray-300 text-gray-700 hover:text-gray-800 rounded-xl font-semibold text-sm transition-all duration-200 hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={handleSave}
-              disabled={loading}
-              className="group px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold text-sm transition-all duration-200 hover:shadow disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
-            >
-              {loading ? (
-                <>
-                  <ArrowPathIcon className="h-4 w-4 animate-spin" />
-                  <span>Saving...</span>
-                </>
-              ) : (
-                <>
-                  <CheckCircleIcon className="h-4 w-4 group-hover:scale-110 transition-transform duration-200" />
-                  <span>Save Changes</span>
-                </>
-              )}
-            </button>
-          </div>
         </div>
       </div>
     </Modal>

@@ -168,7 +168,45 @@ const pagesAPI = {
    */
   async updatePage(pageId, pageData) {
     try {
-      const response = await api.put(`/Pages/${pageId}`, pageData);
+      console.log("Original updatePageData received:", pageData);
+      
+      // Prepare UpdatePageDTO according to swagger schema
+      const updateData = {
+        id: pageId,
+        name: pageData.name || pageData.title || "",
+        categoryId: pageData.categoryId || 1, // Default category if not provided
+        slug: pageData.slug || null,
+        metaTitle: pageData.metaTitle || null,
+        metaDescription: pageData.metaDescription || null,
+        isHomepage: pageData.isHomepage || false,
+        isPublished: pageData.isPublished || false
+      };
+
+      // Validate required fields
+      if (!updateData.name || updateData.name.length < 2) {
+        throw new Error("Page name must be at least 2 characters long");
+      }
+      
+      if (updateData.name.length > 100) {
+        throw new Error("Page name must not exceed 100 characters");
+      }
+
+      if (updateData.slug && updateData.slug.length > 200) {
+        throw new Error("Page slug must not exceed 200 characters");
+      }
+
+      if (updateData.metaTitle && updateData.metaTitle.length > 60) {
+        throw new Error("Meta title must not exceed 60 characters");
+      }
+
+      if (updateData.metaDescription && updateData.metaDescription.length > 160) {
+        throw new Error("Meta description must not exceed 160 characters");
+      }
+
+      console.log("UpdatePageDTO prepared:", updateData);
+
+      const response = await api.put("/Pages", updateData);
+      console.log("Update page response:", response.data);
       return response.data;
     } catch (error) {
       console.error(`Error updating page ${pageId}:`, error);
@@ -186,6 +224,121 @@ const pagesAPI = {
       await api.delete(`/Pages/${pageId}`);
     } catch (error) {
       console.error(`Error deleting page ${pageId}:`, error);
+      throw error;
+    }
+  },
+
+  /**
+   * Get all categories for dropdown selection
+   * @returns {Promise<Array>} Array of categories
+   */
+  async getCategories() {
+    try {
+      const response = await api.get("/Categories");
+      console.log("Categories API response:", response.data);
+      return Array.isArray(response.data) ? response.data : [];
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+      throw error;
+    }
+  },
+
+  /**
+   * Get page components by page ID
+   * @param {number} pageId - The page ID
+   * @returns {Promise<Array>} Array of page components
+   */
+  async getPageComponents(pageId) {
+    try {
+      const response = await api.get(`/Pages/${pageId}/components`);
+      console.log("Page components response:", response.data);
+      return Array.isArray(response.data) ? response.data : [];
+    } catch (error) {
+      console.error(`Error fetching components for page ${pageId}:`, error);
+      throw error;
+    }
+  },
+
+  /**
+   * Create a new page component
+   * @param {number} pageId - The page ID
+   * @param {Object} componentData - Component creation data
+   * @returns {Promise<Object>} Created component data
+   */
+  async createPageComponent(pageId, componentData) {
+    try {
+      const createData = {
+        pageId: pageId,
+        componentType: componentData.componentType || "Generic",
+        componentName: componentData.componentName || "",
+        contentJson: componentData.contentJson || JSON.stringify({}),
+        orderIndex: componentData.orderIndex || 1
+      };
+
+      console.log("Creating page component:", createData);
+      const response = await api.post(`/Pages/${pageId}/components`, createData);
+      console.log("Create component response:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error(`Error creating component for page ${pageId}:`, error);
+      throw error;
+    }
+  },
+
+  /**
+   * Update an existing page component
+   * @param {number} componentId - The component ID
+   * @param {Object} componentData - Updated component data
+   * @returns {Promise<Object>} Updated component data
+   */
+  async updatePageComponent(componentId, componentData) {
+    try {
+      const updateData = {
+        id: componentId,
+        componentType: componentData.componentType || "Generic",
+        componentName: componentData.componentName || "",
+        contentJson: componentData.contentJson || JSON.stringify({}),
+        orderIndex: componentData.orderIndex || 1
+      };
+
+      console.log("Updating page component:", updateData);
+      const response = await api.put(`/Pages/components/${componentId}`, updateData);
+      console.log("Update component response:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error(`Error updating component ${componentId}:`, error);
+      throw error;
+    }
+  },
+
+  /**
+   * Delete a page component
+   * @param {number} componentId - The component ID
+   * @returns {Promise<void>}
+   */
+  async deletePageComponent(componentId) {
+    try {
+      await api.delete(`/Pages/components/${componentId}`);
+      console.log(`Component ${componentId} deleted successfully`);
+    } catch (error) {
+      console.error(`Error deleting component ${componentId}:`, error);
+      throw error;
+    }
+  },
+
+  /**
+   * Reorder page components
+   * @param {number} pageId - The page ID
+   * @param {Array} componentIds - Array of component IDs in new order
+   * @returns {Promise<void>}
+   */
+  async reorderPageComponents(pageId, componentIds) {
+    try {
+      const response = await api.post(`/Pages/${pageId}/components/reorder`, componentIds);
+      console.log("Reorder components response:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error(`Error reordering components for page ${pageId}:`, error);
       throw error;
     }
   },

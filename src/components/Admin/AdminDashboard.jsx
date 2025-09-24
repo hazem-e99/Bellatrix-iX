@@ -9,7 +9,6 @@ import {
   ExclamationTriangleIcon
 } from '@heroicons/react/24/outline';
 import { useDataFileList, useAdminJsonData, useRealTimeUpdates, useAdminSaveData } from '../../hooks/useAdminJsonServer.jsx';
-import { ObjectEditor } from './DynamicForm';
 import { getCacheManager } from '../../utils/cacheManager.js';
 import { usePageDataSync } from '../../hooks/usePageDataSync.js';
 
@@ -19,21 +18,21 @@ const FileList = ({ files, selectedFile, onFileSelect, loading, error, onRefresh
     return (
       <div className="flex items-center justify-center p-8">
         <ArrowPathIcon className="w-6 h-6 animate-spin text-blue-500" />
-        <span className="ml-2 text-gray-600">Loading files...</span>
+        <span className="ml-2 text-gray-300">Loading files...</span>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="p-4 bg-red-50 border border-red-200 rounded-md">
+      <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-md">
         <div className="flex items-center">
-          <ExclamationTriangleIcon className="w-5 h-5 text-red-500" />
-          <span className="ml-2 text-red-800">Error: {error}</span>
+          <ExclamationTriangleIcon className="w-5 h-5 text-red-400" />
+          <span className="ml-2 text-red-300">Error: {error}</span>
         </div>
         <button
           onClick={onRefresh}
-          className="mt-2 text-sm text-red-600 hover:text-red-800 underline"
+          className="mt-2 text-sm text-red-400 hover:text-red-300 underline"
         >
           Try again
         </button>
@@ -44,10 +43,10 @@ const FileList = ({ files, selectedFile, onFileSelect, loading, error, onRefresh
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-gray-900">Data Files</h2>
+        <h2 className="text-lg font-semibold text-white">Data Files</h2>
         <button
           onClick={onRefresh}
-          className="p-1 text-gray-500 hover:text-gray-700"
+          className="p-1 text-gray-300 hover:text-white"
           title="Refresh file list"
         >
           <ArrowPathIcon className="w-4 h-4" />
@@ -55,7 +54,7 @@ const FileList = ({ files, selectedFile, onFileSelect, loading, error, onRefresh
       </div>
       
       {files.length === 0 ? (
-        <p className="text-gray-500 text-center py-8">No JSON files found</p>
+        <p className="text-gray-300 text-center py-8">No JSON files found</p>
       ) : (
         <div className="grid gap-2">
           {files.map((filename) => (
@@ -64,17 +63,17 @@ const FileList = ({ files, selectedFile, onFileSelect, loading, error, onRefresh
               onClick={() => onFileSelect(filename)}
               className={`flex items-center space-x-3 p-3 rounded-lg border transition-colors text-left w-full ${
                 selectedFile === filename
-                  ? 'border-blue-500 bg-blue-50 text-blue-900'
-                  : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                  ? 'border-blue-500 bg-blue-500/20 text-blue-300'
+                  : 'border-white/20 hover:border-white/30 hover:bg-white/5'
               }`}
             >
-              <DocumentTextIcon className="w-5 h-5 flex-shrink-0" />
+              <DocumentTextIcon className="w-5 h-5 flex-shrink-0 text-white/90" />
               <div className="flex-1 min-w-0">
-                <p className="font-medium truncate">{filename.replace('.json', '').replace(/([A-Z])/g, ' $1').trim()}</p>
-                <p className="text-sm text-gray-500 truncate">{filename}</p>
+                <p className="font-medium truncate text-white">{filename.replace('.json', '').replace(/([A-Z])/g, ' $1').trim()}</p>
+                <p className="text-sm text-gray-400 truncate">{filename}</p>
               </div>
               {selectedFile === filename && (
-                <PencilIcon className="w-4 h-4 text-blue-500" />
+                <PencilIcon className="w-4 h-4 text-blue-400" />
               )}
             </button>
           ))}
@@ -90,8 +89,8 @@ const DataPreview = ({ data, filename }) => {
 
   if (!data) {
     return (
-      <div className="p-4 bg-gray-50 rounded-md">
-        <p className="text-gray-500">No data to preview</p>
+      <div className="p-4 bg-white/5 rounded-md">
+        <p className="text-gray-300">No data to preview</p>
       </div>
     );
   }
@@ -102,10 +101,10 @@ const DataPreview = ({ data, filename }) => {
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
-        <h3 className="text-md font-medium text-gray-900">Preview: {filename}</h3>
+        <h3 className="text-md font-medium text-white">Preview: {filename}</h3>
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="text-sm text-blue-600 hover:text-blue-800"
+          className="text-sm text-blue-400 hover:text-blue-300"
         >
           {isExpanded ? 'Show Less' : 'Show More'}
         </button>
@@ -160,17 +159,17 @@ const DataEditor = ({ filename, data, onSave, loading, error }) => {
     return (
       <div className="flex items-center justify-center p-8">
         <ArrowPathIcon className="w-6 h-6 animate-spin text-blue-500" />
-        <span className="ml-2 text-gray-600">Loading data...</span>
+        <span className="ml-2 text-gray-300">Loading data...</span>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="p-4 bg-red-50 border border-red-200 rounded-md">
+      <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-md">
         <div className="flex items-center">
-          <ExclamationTriangleIcon className="w-5 h-5 text-red-500" />
-          <span className="ml-2 text-red-800">Error: {error}</span>
+          <ExclamationTriangleIcon className="w-5 h-5 text-red-400" />
+          <span className="ml-2 text-red-300">Error: {error}</span>
         </div>
       </div>
     );
@@ -178,7 +177,7 @@ const DataEditor = ({ filename, data, onSave, loading, error }) => {
 
   if (!editedData) {
     return (
-      <div className="p-8 text-center text-gray-500">
+      <div className="p-8 text-center text-gray-300">
         <DocumentTextIcon className="w-12 h-12 mx-auto mb-4 text-gray-400" />
         <p>Select a file to start editing</p>
       </div>
@@ -189,13 +188,13 @@ const DataEditor = ({ filename, data, onSave, loading, error }) => {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold text-gray-900">
+        <h2 className="text-xl font-semibold text-white">
           Editing: {filename}
         </h2>
         
         <div className="flex items-center space-x-2">
           {hasChanges && (
-            <span className="px-2 py-1 text-xs bg-yellow-100 text-yellow-800 rounded-full">
+            <span className="px-2 py-1 text-xs bg-yellow-500/20 text-yellow-300 rounded-full border border-yellow-500/30">
               Unsaved changes
             </span>
           )}
@@ -203,7 +202,7 @@ const DataEditor = ({ filename, data, onSave, loading, error }) => {
           <button
             onClick={handleReset}
             disabled={!hasChanges || saving}
-            className="flex items-center space-x-1 px-3 py-1 text-sm text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center space-x-1 px-3 py-1 text-sm text-gray-300 border border-white/20 rounded-md hover:bg-white/5 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <XMarkIcon className="w-4 h-4" />
             <span>Reset</span>
@@ -225,12 +224,21 @@ const DataEditor = ({ filename, data, onSave, loading, error }) => {
       </div>
 
       {/* Editor */}
-      <div className="bg-white rounded-lg shadow">
-        <ObjectEditor
-          data={editedData}
-          onChange={handleDataChange}
-          title={`${filename} Configuration`}
-          collapsible={false}
+      <div className="bg-white/10 border border-white/20 rounded-lg shadow p-6">
+        <h3 className="text-lg font-semibold text-white mb-4">{filename} Configuration</h3>
+        <textarea
+          value={JSON.stringify(editedData, null, 2)}
+          onChange={(e) => {
+            try {
+              const parsed = JSON.parse(e.target.value);
+              handleDataChange(parsed);
+            } catch (error) {
+              // Invalid JSON, don't update
+            }
+          }}
+          rows={20}
+          className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm resize-none"
+          placeholder="Enter JSON configuration..."
         />
       </div>
     </div>
@@ -347,12 +355,12 @@ export const AdminDashboard = () => {
   }, [selectedFile, refetchData, syncAllPageData]);
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen" style={{ backgroundColor: '#001038' }}>
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
+      <div className="border-b border-white/10" style={{ backgroundColor: '#001038' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
+            <h1 className="text-2xl font-bold text-white">Admin Dashboard</h1>
             <div className="flex items-center space-x-4">
               <button
                 onClick={handleForceRefresh}
@@ -362,7 +370,7 @@ export const AdminDashboard = () => {
                 <ArrowPathIcon className="w-4 h-4" />
                 <span>Force Refresh</span>
               </button>
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-gray-300">
                 Data Management System
               </span>
             </div>
@@ -375,7 +383,7 @@ export const AdminDashboard = () => {
         <div className="grid grid-cols-12 gap-6">
           {/* Sidebar - File List */}
           <div className="col-span-12 lg:col-span-3">
-            <div className="bg-white rounded-lg shadow p-6">
+            <div className="bg-white/10 border border-white/20 rounded-lg shadow p-6">
               <FileList
                 files={files}
                 selectedFile={selectedFile}
@@ -392,15 +400,15 @@ export const AdminDashboard = () => {
             {selectedFile && (
               <div className="space-y-6">
                 {/* Tab Navigation */}
-                <div className="bg-white rounded-lg shadow">
-                  <div className="border-b border-gray-200">
+                <div className="bg-white/10 border border-white/20 rounded-lg shadow">
+                  <div className="border-b border-white/10">
                     <nav className="-mb-px flex space-x-8 px-6">
                       <button
                         onClick={() => setActiveTab('editor')}
                         className={`py-4 px-1 border-b-2 font-medium text-sm ${
                           activeTab === 'editor'
-                            ? 'border-blue-500 text-blue-600'
-                            : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                            ? 'border-blue-500 text-blue-400'
+                            : 'border-transparent text-gray-300 hover:text-white hover:border-white/30'
                         }`}
                       >
                         <PencilIcon className="w-4 h-4 inline mr-2" />
@@ -410,8 +418,8 @@ export const AdminDashboard = () => {
                         onClick={() => setActiveTab('preview')}
                         className={`py-4 px-1 border-b-2 font-medium text-sm ${
                           activeTab === 'preview'
-                            ? 'border-blue-500 text-blue-600'
-                            : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                            ? 'border-blue-500 text-blue-400'
+                            : 'border-transparent text-gray-300 hover:text-white hover:border-white/30'
                         }`}
                       >
                         <EyeIcon className="w-4 h-4 inline mr-2" />
@@ -441,12 +449,12 @@ export const AdminDashboard = () => {
             )}
 
             {!selectedFile && (
-              <div className="bg-white rounded-lg shadow p-12 text-center">
+              <div className="bg-white/10 border border-white/20 rounded-lg shadow p-12 text-center">
                 <DocumentTextIcon className="w-16 h-16 mx-auto mb-4 text-gray-400" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                <h3 className="text-lg font-medium text-white mb-2">
                   Welcome to Admin Dashboard
                 </h3>
-                <p className="text-gray-500">
+                <p className="text-gray-300">
                   Select a JSON file from the sidebar to start editing your content.
                 </p>
               </div>

@@ -10,7 +10,7 @@ const Card = ({
   ...props
 }) => {
   const baseClasses =
-    "bg-white rounded-xl border border-gray-200 transition-all duration-200";
+    "bg-white/10 rounded-xl border border-white/20 transition-all duration-200";
 
   const paddingClasses = {
     none: "",
@@ -55,19 +55,19 @@ const Card = ({
 };
 
 const CardHeader = ({ children, className = "" }) => (
-  <div className={`border-b border-gray-100 pb-4 mb-4 ${className}`}>
+  <div className={`border-b border-white/10 pb-4 mb-4 ${className}`}>
     {children}
   </div>
 );
 
 const CardTitle = ({ children, className = "" }) => (
-  <h3 className={`text-lg font-semibold text-gray-900 ${className}`}>
+  <h3 className={`text-lg font-semibold text-white ${className}`}>
     {children}
   </h3>
 );
 
 const CardDescription = ({ children, className = "" }) => (
-  <p className={`text-sm text-gray-600 mt-1 ${className}`}>{children}</p>
+  <p className={`text-sm text-gray-300 mt-1 ${className}`}>{children}</p>
 );
 
 const CardContent = ({ children, className = "" }) => (
@@ -75,7 +75,7 @@ const CardContent = ({ children, className = "" }) => (
 );
 
 const CardFooter = ({ children, className = "" }) => (
-  <div className={`border-t border-gray-100 pt-4 mt-4 ${className}`}>
+  <div className={`border-t border-white/10 pt-4 mt-4 ${className}`}>
     {children}
   </div>
 );
