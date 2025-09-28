@@ -297,9 +297,13 @@ const pagesAPI = {
         id: componentId,
         componentType: componentData.componentType || "Generic",
         componentName: componentData.componentName || "",
-        contentJson: componentData.contentJson || JSON.stringify({}),
-        orderIndex: componentData.orderIndex || 1
+        contentJson: componentData.contentJson || JSON.stringify({})
       };
+
+      // Only include orderIndex if it's explicitly provided
+      if (componentData.orderIndex !== undefined) {
+        updateData.orderIndex = componentData.orderIndex;
+      }
 
       console.log("Updating page component:", updateData);
       const response = await api.put(`/Pages/components/${componentId}`, updateData);
@@ -372,6 +376,22 @@ const pagesAPI = {
       console.log(`Successfully reordered ${components.length} components for page ${pageId}`);
     } catch (error) {
       console.error(`Error reordering components for page ${pageId}:`, error);
+      throw error;
+    }
+  },
+
+  /**
+   * Get a public page by slug (for frontend display)
+   * @param {string} slug - The page slug
+   * @returns {Promise<Object>} Public page data with components
+   */
+  async getPublicPageBySlug(slug) {
+    try {
+      const response = await api.get(`/Pages/public/${slug}`);
+      console.log("Get public page by slug response:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching public page by slug ${slug}:`, error);
       throw error;
     }
   },

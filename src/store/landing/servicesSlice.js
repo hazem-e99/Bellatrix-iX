@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import api, { getAuthToken } from "../../lib/api";
+import api, { getAuthTokenFromState } from "../../lib/api";
 
 /**
  * @typedef {'idle' | 'loading' | 'succeeded' | 'failed'} LoadStatus
@@ -53,7 +53,7 @@ export const fetchServices = createAsyncThunk(
 export const createService = createAsyncThunk(
   "services/createService",
   async ({ payload }, { getState, signal, rejectWithValue }) => {
-    const token = getAuthToken(getState());
+    const token = getAuthTokenFromState(getState());
 
     if (!token) {
       return rejectWithValue({ message: "Authentication required" });
@@ -75,7 +75,7 @@ export const createService = createAsyncThunk(
 export const updateService = createAsyncThunk(
   "services/updateService",
   async ({ payload }, { getState, signal, rejectWithValue }) => {
-    const token = getAuthToken(getState());
+    const token = getAuthTokenFromState(getState());
 
     if (!token) {
       return rejectWithValue({ message: "Authentication required" });
@@ -97,7 +97,7 @@ export const updateService = createAsyncThunk(
 export const deleteService = createAsyncThunk(
   "services/deleteService",
   async ({ serviceId }, { getState, signal, rejectWithValue }) => {
-    const token = getAuthToken(getState());
+    const token = getAuthTokenFromState(getState());
 
     if (!token) {
       return rejectWithValue({ message: "Authentication required" });

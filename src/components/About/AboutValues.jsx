@@ -1,7 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 const AboutValues = ({ values = [] }) => {
+  const [defaultData, setDefaultData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/data/about.json');
+        const jsonData = await response.json();
+        setDefaultData(jsonData.values);
+      } catch (error) {
+        console.error('Failed to load About data:', error);
+        // Fallback data
+        setDefaultData({
+          title: "Our Values",
+          description: "These core values guide everything we do and shape how we interact with our clients, partners, and each other.",
+          items: []
+        });
+      }
+    };
+    fetchData();
+  }, []);
+
+  // Use default data from JSON
+  const displayData = defaultData || {
+    title: "Our Values",
+    description: "These core values guide everything we do and shape how we interact with our clients, partners, and each other.",
+    items: []
+  };
+
   const defaultValues = [
     {
       icon: "🎯",
@@ -25,7 +53,7 @@ const AboutValues = ({ values = [] }) => {
     }
   ];
 
-  const displayValues = values.length > 0 ? values : defaultValues;
+  const displayValues = values.length > 0 ? values : (displayData.items.length > 0 ? displayData.items : defaultValues);
 
   return (
   <section className="py-20 relative overflow-hidden" style={{backgroundColor: '#001038'}}>
@@ -42,11 +70,10 @@ const AboutValues = ({ values = [] }) => {
     <div className="container mx-auto px-6 relative z-10">
       <div className="text-center mb-16">
         <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-          Our <span className="text-cyan-400">Values</span>
+          {displayData.title}
         </h2>
         <p className="text-lg text-gray-300 leading-relaxed max-w-3xl mx-auto">
-          These core values guide everything we do and shape how we interact with our clients, 
-          partners, and each other.
+          {displayData.description}
         </p>
       </div>
       <div className="grid md:grid-cols-2 gap-8">

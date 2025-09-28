@@ -170,4 +170,23 @@ export const componentTypeConfigs = {
       },
     },
   },
+  TrainingWhyChooseSection: {
+    displayName: "Training Why Choose Section",
+    fields: {
+      title: { type: "text", required: true, label: "Section Title" },
+      subtitle: { type: "text", required: true, label: "Section Description" },
+      image: { type: "url", label: "Image URL" },
+      badge: { type: "text", label: "Professional Badge Text" },
+      features: {
+        type: "array",
+        itemType: "object",
+        fields: {
+          id: { type: "text", required: true },
+          title: { type: "text", required: true },
+          shortDescription: { type: "textarea", required: true },
+          icon: { type: "text", label: "Icon (SVG path or emoji)" },
+        },
+      },
+    },
+  },
 };

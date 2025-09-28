@@ -16,17 +16,11 @@ const DynamicPageRenderer = () => {
         setLoading(true);
         setError(null);
 
-        // Use the pagesAPI to fetch page by slug
-        // First try to search pages by slug, then get the specific page
-        const searchResults = await pagesAPI.searchPages(slug);
-        const foundPage = searchResults.find((page) => page.slug === slug);
-
-        if (!foundPage) {
-          setError("Page not found");
-          return;
-        }
-
-        const pageData = await pagesAPI.getPageById(foundPage.id);
+        // Use the new public API endpoint to fetch page by slug directly
+        const response = await pagesAPI.getPublicPageBySlug(slug);
+        
+        // The API response is wrapped in an ApiResponse object with a 'data' property
+        const pageData = response.data || response;
         setPageData(pageData);
 
         // Load components for each section (support both old sections format and new components format)
@@ -328,27 +322,33 @@ const DynamicPageRenderer = () => {
       // ========== TRAINING COMPONENTS ==========
       case "TrainingHeroSection":
         return {
-          data: {
-            title: props.title,
-            subtitle: props.subtitle,
-            ctaButton: props.ctaButton,
-          },
+          title: props.title,
+          subtitle: props.subtitle,
+          ctaButton: props.ctaButton,
         };
       case "TrainingProgramsSection":
         return {
-          data: {
-            title: props.title,
-            subtitle: props.subtitle,
-            programs: props.programs || [],
+          programsSection: {
+            title: props.title || "Training Programs",
+            description: props.subtitle || "Comprehensive training programs designed to enhance your skills and knowledge."
           },
+          trainingPrograms: {
+            programs: props.programs || []
+          },
+          renderIcon: props.renderIcon || (() => null),
+          openProgramModal: props.openProgramModal || (() => {})
         };
       case "TrainingWhyChooseSection":
         return {
-          data: {
-            title: props.title,
-            subtitle: props.subtitle,
-            features: props.features || [],
+          whyChooseSection: {
+            title: props.title || "Why Choose Our Training",
+            description: props.subtitle || "Professional development excellence",
+            image: props.image || "/images/training-why-choose.jpg",
+            Professional_Badge: props.badge || "Professional Excellence"
           },
+          trainingFeatures: props.features || [],
+          renderIcon: props.renderIcon || (() => null),
+          openFeatureModal: props.openFeatureModal || (() => {})
         };
 
       // ========== INTEGRATION COMPONENTS ==========

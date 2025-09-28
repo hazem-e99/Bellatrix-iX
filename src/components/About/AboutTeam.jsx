@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const AboutTeam = ({ 
   teamMembers = [], 
@@ -7,6 +7,34 @@ const AboutTeam = ({
   isHovering = false, 
   setIsHovering = () => {} 
 }) => {
+  const [defaultData, setDefaultData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/data/about.json');
+        const jsonData = await response.json();
+        setDefaultData(jsonData.team);
+      } catch (error) {
+        console.error('Failed to load About data:', error);
+        // Fallback data
+        setDefaultData({
+          title: "Meet Our Team",
+          description: "Our diverse team of experts brings together decades of experience in enterprise software, business consulting, and digital transformation.",
+          members: []
+        });
+      }
+    };
+    fetchData();
+  }, []);
+
+  // Use default data from JSON
+  const displayData = defaultData || {
+    title: "Meet Our Team",
+    description: "Our diverse team of experts brings together decades of experience in enterprise software, business consulting, and digital transformation.",
+    members: []
+  };
+
   // Default team members if none provided
   const defaultTeamMembers = [
     {
@@ -33,7 +61,7 @@ const AboutTeam = ({
   ];
 
   // Use provided team members or default ones
-  const displayTeamMembers = (teamMembers && teamMembers.length > 0) ? teamMembers : defaultTeamMembers;
+  const displayTeamMembers = (teamMembers && teamMembers.length > 0) ? teamMembers : (displayData.members.length > 0 ? displayData.members : defaultTeamMembers);
   
   // Check if carousel navigation is needed
   const needsCarousel = displayTeamMembers.length > cardsPerScreen;
@@ -43,11 +71,10 @@ const AboutTeam = ({
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
-            Meet Our <span className="text-blue-600">Team</span>
+            {displayData.title}
           </h2>
           <p className="text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto">
-            Our diverse team of experts brings together decades of experience in enterprise 
-            software, business consulting, and digital transformation.
+            {displayData.description}
           </p>
         </div>
         <div className="relative overflow-hidden">

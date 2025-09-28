@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import api, { getAuthToken } from "../../lib/api";
+import api, { getAuthTokenFromState } from "../../lib/api";
 
 /**
  * Content slice handles multiple single-object endpoints:
@@ -49,7 +49,7 @@ const createContentThunks = (sectionName, endpoint) => {
   const create = createAsyncThunk(
     `content/create${sectionName}`,
     async ({ payload }, { getState, signal, rejectWithValue }) => {
-      const token = getAuthToken(getState());
+      const token = getAuthTokenFromState(getState());
       if (!token)
         return rejectWithValue({ message: "Authentication required" });
       try {
@@ -68,7 +68,7 @@ const createContentThunks = (sectionName, endpoint) => {
   const update = createAsyncThunk(
     `content/update${sectionName}`,
     async ({ payload }, { getState, signal, rejectWithValue }) => {
-      const token = getAuthToken(getState());
+      const token = getAuthTokenFromState(getState());
       if (!token)
         return rejectWithValue({ message: "Authentication required" });
       try {
@@ -87,7 +87,7 @@ const createContentThunks = (sectionName, endpoint) => {
   const remove = createAsyncThunk(
     `content/delete${sectionName}`,
     async (_, { getState, signal, rejectWithValue }) => {
-      const token = getAuthToken(getState());
+      const token = getAuthTokenFromState(getState());
       if (!token)
         return rejectWithValue({ message: "Authentication required" });
       try {

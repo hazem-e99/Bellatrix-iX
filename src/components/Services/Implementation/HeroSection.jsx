@@ -1,7 +1,42 @@
 // components/Implementation/HeroSection.jsx
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const HeroSection = ({ data = {}, openModal }) => {
+    const [defaultData, setDefaultData] = useState(null);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('/data/Implementation.json');
+                const jsonData = await response.json();
+                setDefaultData(jsonData.heroSection);
+            } catch (error) {
+                console.error('Failed to load Implementation data:', error);
+                // Fallback data
+                setDefaultData({
+                    backgroundVideo: "/Videos/HomeHeroSectionV.mp4",
+                    titleParts: ["Where", "Vision", "Meets", "Reality"],
+                    description: "We don't just implement solutions—we craft digital experiences that transform the way you do business",
+                    ctaButton: {
+                        text: "Start Implementation",
+                        icon: "M13 7l5 5m0 0l-5 5m5-5H6"
+                    }
+                });
+            }
+        };
+        fetchData();
+    }, []);
+
+    // Use props if provided, otherwise fall back to default data
+    const displayData = data && Object.keys(data).length > 0 ? data : (defaultData || {
+        backgroundVideo: "/Videos/HomeHeroSectionV.mp4",
+        titleParts: ["Where", "Vision", "Meets", "Reality"],
+        description: "We don't just implement solutions—we craft digital experiences that transform the way you do business",
+        ctaButton: {
+            text: "Start Implementation",
+            icon: "M13 7l5 5m0 0l-5 5m5-5H6"
+        }
+    });
     return (
         <div className="min-h-screen relative overflow-hidden pt-20">
             {/* Background Video */}
@@ -12,7 +47,7 @@ const HeroSection = ({ data = {}, openModal }) => {
                 playsInline
                 className="absolute inset-0 w-full h-full object-cover"
             >
-                <source src={data.backgroundVideo || '/Videos/HomeHeroSectionV.mp4'} type="video/mp4" />
+                <source src={displayData.backgroundVideo} type="video/mp4" />
                 Your browser does not support the video tag.
             </video>
             
@@ -38,14 +73,14 @@ const HeroSection = ({ data = {}, openModal }) => {
                     {/* Main Heading with Text Animation */}
                     <div className="text-center mb-8">
                         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight text-white animate-slide-up">
-                            <span className="inline-block animate-text-glow">{data.titleParts[0]}</span>{' '}
+                            <span className="inline-block animate-text-glow">{displayData.titleParts[0]}</span>{' '}
                             <span className="inline-block bg-gradient-to-r from-white via-white to-white bg-clip-text text-transparent animate-gradient-text">
-                                {data.titleParts[1]}
+                                {displayData.titleParts[1]}
                             </span>{' '}
-                            <span className="inline-block animate-text-glow delay-300">{data.titleParts[2]}</span>
+                            <span className="inline-block animate-text-glow delay-300">{displayData.titleParts[2]}</span>
                             <br />
                             <span className="inline-block bg-gradient-to-r from-white via-white to-white bg-clip-text text-transparent animate-gradient-text-reverse">
-                                {data.titleParts[3]}
+                                {displayData.titleParts[3]}
                             </span>
                         </h1>
                     </div>
@@ -53,14 +88,14 @@ const HeroSection = ({ data = {}, openModal }) => {
                     {/* Creative Description with Typewriter Effect */}
                     <div className="text-center mb-12">
                         <p className="text-lg md:text-xl lg:text-2xl text-gray-200 leading-relaxed max-w-4xl mx-auto animate-fade-in">
-                            {data.description.split('digital experiences')[0]}
+                            {displayData.description.split('digital experiences')[0]}
                             <span className="relative inline-block">
                                 <span className="bg-gradient-to-r from-white to-white bg-clip-text text-transparent font-semibold">
                                     digital experiences
                                 </span>
                                 <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-white to-white animate-underline-expand"></span>
                             </span>
-                            {data.description.split('digital experiences')[1]}
+                            {displayData.description.split('digital experiences')[1]}
                         </p>
                     </div>
 
@@ -72,9 +107,9 @@ const HeroSection = ({ data = {}, openModal }) => {
                         >
                             <span className="relative z-10 flex items-center justify-center">
                                 <svg className="w-5 h-5 mr-2 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={data.ctaButton.icon} />
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={displayData.ctaButton.icon} />
                                 </svg>
-                                {data.ctaButton.text}
+                                {displayData.ctaButton.text}
                             </span>
                             <div className="absolute inset-0 bg-gray-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         </button>

@@ -1,18 +1,45 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-const PayrollPainPoints = ({ painPoints }) => (
+const PayrollPainPoints = ({ painPoints }) => {
+  const [defaultData, setDefaultData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/data/payroll.json');
+        const data = await response.json();
+        setDefaultData(data.painPoints);
+      } catch (error) {
+        console.error('Failed to load payroll data:', error);
+        setDefaultData({
+          title: "The Payroll <span class=\"text-blue-600\">Challenges</span> We Solve",
+          description: "Our system addresses the most common payroll challenges faced by consultancy firms:",
+          items: []
+        });
+      }
+    };
+    fetchData();
+  }, []);
+
+  // Use provided data or default data
+  const displayData = {
+    title: defaultData?.title || "The Payroll <span class=\"text-blue-600\">Challenges</span> We Solve",
+    description: defaultData?.description || "Our system addresses the most common payroll challenges faced by businesses:",
+    items: painPoints || defaultData?.items || []
+  };
+
+  return (
   <section className="bg-gray-50 py-20 light-section">
     <div className="container mx-auto px-6 max-w-6xl">
-      <h2 className="text-3xl md:text-4xl font-bold mb-12 text-gray-800 text-center">
-        The Payroll <span className="text-blue-600">Challenges</span> We Solve
+      <h2 className="text-3xl md:text-4xl font-bold mb-12 text-gray-800 text-center" dangerouslySetInnerHTML={{ __html: displayData.title }}>
       </h2>
       <div className="flex flex-col md:flex-row gap-12 items-center">
         <div className="md:w-1/2">
           <strong className="text-xl text-gray-800 block mb-6">
-            Our system addresses the most common payroll challenges faced by businesses:
+            {displayData.description}
           </strong>
           <ul className="space-y-5">
-            {painPoints?.map((item, idx) => (
+            {displayData.items?.map((item, idx) => (
               <li key={idx} className="flex items-start">
                 <span className="text-lg text-gray-700">• {item.text}</span>
               </li>
@@ -41,6 +68,7 @@ const PayrollPainPoints = ({ painPoints }) => (
       </div>
     </div>
   </section>
-);
+  );
+};
 
 export default PayrollPainPoints;

@@ -1,8 +1,27 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 const PayrollHowItWorks = ({ data }) => {
-  // Defensive: always use an object
-  const sectionData = data && typeof data === "object" ? data : {};
+  const [defaultData, setDefaultData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/data/payroll.json');
+        const jsonData = await response.json();
+        setDefaultData(jsonData.howItWorks);
+      } catch (error) {
+        console.error('Failed to load payroll data:', error);
+        setDefaultData({
+          title: "How Our Payroll System Works",
+          description: "Our payroll process is simple and automated."
+        });
+      }
+    };
+    fetchData();
+  }, []);
+
+  // Use props if provided, otherwise fall back to default data
+  const sectionData = data && typeof data === "object" ? data : (defaultData || {});
   const steps = Array.isArray(sectionData.steps) ? sectionData.steps : [];
 
   return (

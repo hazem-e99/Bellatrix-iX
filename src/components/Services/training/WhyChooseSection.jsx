@@ -3,15 +3,59 @@ import React from 'react';
 import FeatureCard from './FeatureCard';
 
 const WhyChooseSection = ({ whyChooseSection, trainingFeatures, renderIcon, openFeatureModal }) => {
+    // Data validation and error handling
+    if (!whyChooseSection) {
+        console.error('TrainingWhyChooseSection: whyChooseSection data is missing');
+        return (
+            <div className="bg-gray-50 py-12 light-section">
+                <div className="container mx-auto px-6 text-center">
+                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
+                        Why Choose Our Training
+                    </h2>
+                    <p className="text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto">
+                        Professional development excellence
+                    </p>
+                    <div className="mt-8 text-red-600">
+                        <p>⚠️ Component data is missing. Please check the data configuration.</p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    if (!trainingFeatures || !Array.isArray(trainingFeatures)) {
+        console.error('TrainingWhyChooseSection: trainingFeatures data is missing or invalid');
+        return (
+            <div className="bg-gray-50 py-12 light-section">
+                <div className="container mx-auto px-6 text-center">
+                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
+                        {whyChooseSection.title || "Why Choose Our Training"}
+                    </h2>
+                    <p className="text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto">
+                        {whyChooseSection.description || "Professional development excellence"}
+                    </p>
+                    <div className="mt-8 text-red-600">
+                        <p>⚠️ Training features data is missing. Please check the data configuration.</p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    // Safe title splitting with fallback
+    const titleParts = (whyChooseSection.title || "Why Choose Our Training").split(' ');
+    const firstWord = titleParts[0] || "Why";
+    const remainingWords = titleParts.slice(1).join(' ') || "Choose Our Training";
+
     return (
         <div className="bg-gray-50 py-12 light-section">
             <div className="container mx-auto px-6">
                 <div className="text-center mb-10">
                     <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
-                        {whyChooseSection.title.split(' ')[0]} <span className="text-blue-600">{whyChooseSection.title.split(' ').slice(1).join(' ')}</span>
+                        {firstWord} <span className="text-blue-600">{remainingWords}</span>
                     </h2>
                     <p className="text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto">
-                        {whyChooseSection.description}
+                        {whyChooseSection.description || "Professional development excellence"}
                     </p>
                 </div>
 
@@ -47,9 +91,12 @@ const WhyChooseSection = ({ whyChooseSection, trainingFeatures, renderIcon, open
                                         {/* Inner glow container */}
                                         <div className="relative bg-gradient-to-br from-white/5 via-transparent to-blue-500/5 rounded-2xl p-4 border border-white/20">
                                             <img 
-                                                src={whyChooseSection.image}
+                                                src={whyChooseSection.image || "/images/training-why-choose.jpg"}
                                                 alt="Why Choose Our Training - Professional Development Excellence" 
                                                 className="w-full h-auto rounded-xl shadow-2xl brightness-105 contrast-110 saturate-105 group-hover:brightness-110 group-hover:contrast-115 group-hover:saturate-110 transition-all duration-500 filter drop-shadow-xl"
+                                                onError={(e) => {
+                                                    e.target.src = "/images/placeholder-training.jpg";
+                                                }}
                                             />
                                             
                                             {/* Professional overlay effects */}
@@ -102,8 +149,8 @@ const WhyChooseSection = ({ whyChooseSection, trainingFeatures, renderIcon, open
                                     {/* Professional Badge */}
                                     <div className="absolute -bottom-3 -right-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-4 py-2 rounded-xl shadow-lg text-sm font-bold opacity-90 group-hover:opacity-100 transition-opacity duration-300">
                                         <div className="flex items-center space-x-2">
-                                            {renderIcon("M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z", "w-4 h-4")}
-                                            <span>{whyChooseSection.Professional_Badge}</span>
+                                            {renderIcon && renderIcon("M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z", "w-4 h-4")}
+                                            <span>{whyChooseSection?.Professional_Badge || whyChooseSection?.badge || "Professional Excellence"}</span>
                                         </div>
                                     </div>
                                 </div>

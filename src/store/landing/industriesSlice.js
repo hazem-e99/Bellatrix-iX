@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import api, { getAuthToken } from "../../lib/api";
+import api, { getAuthTokenFromState } from "../../lib/api";
 
 const initialState = {
   items: [],
@@ -38,7 +38,7 @@ export const fetchIndustries = createAsyncThunk(
 export const createIndustry = createAsyncThunk(
   "industries/createIndustry",
   async ({ payload }, { getState, signal, rejectWithValue }) => {
-    const token = getAuthToken(getState());
+    const token = getAuthTokenFromState(getState());
     if (!token) return rejectWithValue({ message: "Authentication required" });
     try {
       const response = await api.post("/api/landing/industries", payload, {
@@ -58,7 +58,7 @@ export const createIndustry = createAsyncThunk(
 export const updateIndustry = createAsyncThunk(
   "industries/updateIndustry",
   async ({ payload }, { getState, signal, rejectWithValue }) => {
-    const token = getAuthToken(getState());
+    const token = getAuthTokenFromState(getState());
     if (!token) return rejectWithValue({ message: "Authentication required" });
     try {
       const response = await api.patch("/api/landing/industries", payload, {
@@ -78,7 +78,7 @@ export const updateIndustry = createAsyncThunk(
 export const deleteIndustry = createAsyncThunk(
   "industries/deleteIndustry",
   async ({ industryId }, { getState, signal, rejectWithValue }) => {
-    const token = getAuthToken(getState());
+    const token = getAuthTokenFromState(getState());
     if (!token) return rejectWithValue({ message: "Authentication required" });
     try {
       await api.delete(`/api/landing/industries/${industryId}`, {

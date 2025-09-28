@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getAuthToken } from "../utils/tokenManager.js";
 
 const BASE_URL = "http://bellatrix.runasp.net/api";
 
@@ -42,9 +43,8 @@ api.interceptors.response.use(
 // Request interceptor to add auth token for admin endpoints
 api.interceptors.request.use(
   (config) => {
-    // Add auth token for admin endpoints
-    const token =
-      localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
+    // Add auth token for admin endpoints using centralized token manager
+    const token = getAuthToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -72,11 +72,11 @@ export const uploadForm = async (formData, url, options = {}) => {
 };
 
 /**
- * Helper to get auth token from state - to be used in thunks
+ * Helper to get auth token from Redux state - to be used in thunks
  * @param {Object} state - Redux root state
  * @returns {string|null} JWT token or null
  */
-export const getAuthToken = (state) => {
+export const getAuthTokenFromState = (state) => {
   return state.auth?.token || null;
 };
 

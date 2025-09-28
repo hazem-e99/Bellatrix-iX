@@ -1,26 +1,34 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const UseCasesSection = ({ data = {} }) => {
-  const defaultUseCases = [
-    {
-      title: "Small Businesses",
-      desc: "Streamline HR processes for growing teams with automated workflows and compliance tracking."
-    },
-    {
-      title: "Medium Enterprises",
-      desc: "Scale your HR operations with advanced analytics and performance management tools."
-    },
-    {
-      title: "Large Corporations",
-      desc: "Enterprise-grade solutions for complex organizational structures and global operations."
-    },
-    {
-      title: "Remote Teams",
-      desc: "Manage distributed workforce with cloud-based tools and mobile accessibility."
-    }
-  ];
+  const [defaultData, setDefaultData] = useState(null);
 
-  const useCases = data.useCases || defaultUseCases;
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/data/hr.json');
+        const jsonData = await response.json();
+        setDefaultData(jsonData.useCases);
+      } catch (error) {
+        console.error('Failed to load HR data:', error);
+        // Fallback data
+        setDefaultData([
+          {
+            title: "Small Businesses",
+            desc: "Streamline HR processes for growing teams with automated workflows and compliance tracking."
+          },
+          {
+            title: "Medium Enterprises",
+            desc: "Scale your HR operations with advanced analytics and performance management tools."
+          }
+        ]);
+      }
+    };
+    fetchData();
+  }, []);
+
+  // Use props if provided, otherwise fall back to default data
+  const useCases = data.useCases || defaultData || [];
   return (
     <section className="py-20 bg-gray-50 animate-fade-in-up light-section">
       <div className="max-w-6xl mx-auto px-4">

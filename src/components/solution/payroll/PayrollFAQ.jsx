@@ -1,33 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const PayrollFAQ = ({ faqData = {} }) => {
   const [openIndex, setOpenIndex] = useState(null);
+  const [defaultData, setDefaultData] = useState(null);
 
-  const defaultFaqData = {
-    title: "Frequently Asked Questions",
-    items: [
-      {
-        q: "How secure is my payroll data?",
-        a: "We use enterprise-grade security measures including 256-bit encryption, secure data centers, and compliance with SOC 2 standards to protect your sensitive payroll information."
-      },
-      {
-        q: "Can I integrate with my existing systems?",
-        a: "Yes, our payroll solution integrates with popular HR systems, accounting software, and time tracking tools through our robust API and pre-built connectors."
-      },
-      {
-        q: "How long does implementation take?",
-        a: "Implementation typically takes 2-4 weeks depending on your company size and complexity. Our team provides full support throughout the process."
-      },
-      {
-        q: "Do you handle tax compliance?",
-        a: "Absolutely. Our system automatically calculates taxes, generates tax forms, and ensures compliance with federal, state, and local tax regulations."
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/data/payroll.json');
+        const data = await response.json();
+        setDefaultData(data.faqs);
+      } catch (error) {
+        console.error('Failed to load payroll data:', error);
+        // Fallback data
+        setDefaultData({
+          title: "Frequently Asked Questions",
+          items: [
+            {
+              question: "How secure is my payroll data?",
+              answer: "We use enterprise-grade security measures including 256-bit encryption, secure data centers, and compliance with SOC 2 standards to protect your sensitive payroll information."
+            },
+            {
+              question: "Can I integrate with my existing systems?",
+              answer: "Yes, our payroll solution integrates with popular HR systems, accounting software, and time tracking tools through our robust API and pre-built connectors."
+            }
+          ]
+        });
       }
-    ]
-  };
+    };
+    fetchData();
+  }, []);
 
+  // Use provided data or default data
   const displayFaqData = {
-    title: faqData.title || defaultFaqData.title,
-    items: faqData.items || defaultFaqData.items
+    title: faqData.title || defaultData?.title || "Frequently Asked Questions",
+    items: faqData.items || defaultData?.items || []
   };
 
   const toggleFAQ = (index) => {
@@ -48,7 +55,7 @@ const PayrollFAQ = ({ faqData = {} }) => {
                 onClick={() => toggleFAQ(index)}
                 className="w-full px-6 py-4 text-left flex items-center justify-between focus:outline-none"
               >
-                <span className="text-lg font-medium text-gray-800">{item.q || "Question"}</span>
+                <span className="text-lg font-medium text-gray-800">{item.question || item.q || "Question"}</span>
                 <span className="ml-4 transform transition-transform duration-200">
                   {openIndex === index ? '−' : '+'}
                 </span>
@@ -56,7 +63,7 @@ const PayrollFAQ = ({ faqData = {} }) => {
               
               {openIndex === index && (
                 <div className="px-6 pb-4">
-                  <p className="text-gray-600 leading-relaxed">{item.a || "Answer"}</p>
+                  <p className="text-gray-600 leading-relaxed">{item.answer || item.a || "Answer"}</p>
                 </div>
               )}
             </div>

@@ -10,6 +10,89 @@ import {
 import Button from "../ui/Button";
 import Card, { CardContent, CardHeader, CardTitle } from "../ui/Card";
 import { getComponentPathFromId, loadComponent } from "../componentMap";
+import { normalizeProps, validateProps } from "../../utils/normalizeProps";
+
+// Default mock data for training components
+const trainingDefaultData = {
+  TrainingHeroSection: {
+    title: "Professional Training Programs",
+    subtitle: "Empower your team with comprehensive training solutions designed to enhance skills and drive success",
+    backgroundVideo: "/Videos/trainingHeroSection.mp4",
+    ctaButton: {
+      text: "Start Learning Today",
+      link: "/training",
+      variant: "primary"
+    }
+  },
+  TrainingProgramsSection: {
+    programsSection: {
+      title: "Our Training Programs",
+      description: "Comprehensive training solutions designed to empower your team with the skills they need to excel",
+      image: "/images/traning.jpg",
+      Professional_Badge: "Certified Training"
+    },
+    trainingPrograms: [
+      {
+        id: 1,
+        name: "NetSuite Fundamentals",
+        duration: "40 hours",
+        level: "Beginner"
+      },
+      {
+        id: 2,
+        name: "Advanced Modules",
+        duration: "60 hours",
+        level: "Intermediate"
+      },
+      {
+        id: 3,
+        name: "Customization Training",
+        duration: "80 hours",
+        level: "Advanced"
+      },
+      {
+        id: 4,
+        name: "Admin & Security",
+        duration: "50 hours",
+        level: "Expert"
+      }
+    ]
+  },
+  TrainingWhyChooseSection: {
+    whyChooseSection: {
+      title: "Why Choose Our Training?",
+      subtitle: "We provide world-class training solutions that combine expertise, innovation, and practical application to ensure your team's success",
+      image: "/images/chooese.png",
+      Professional_Badge: "Excellence Training"
+    },
+    trainingFeatures: [
+      {
+        id: 1,
+        title: "Expert Instructors",
+        shortDescription: "Certified professionals with years of experience",
+        icon: "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+      },
+      {
+        id: 2,
+        title: "Hands-on Learning",
+        shortDescription: "Practical exercises with real-world scenarios",
+        icon: "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+      },
+      {
+        id: 3,
+        title: "Flexible Scheduling",
+        shortDescription: "Multiple training formats to fit your needs",
+        icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+      },
+      {
+        id: 4,
+        title: "Ongoing Support",
+        shortDescription: "Continuous assistance beyond training completion",
+        icon: "M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 2.25a9.75 9.75 0 109.75 9.75A9.75 9.75 0 0012 2.25z"
+      }
+    ]
+  }
+};
 
 const PagePreview = ({
   isOpen,
@@ -20,12 +103,27 @@ const PagePreview = ({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [loadedComponents, setLoadedComponents] = useState({});
+  const [trainingData, setTrainingData] = useState(null);
 
   useEffect(() => {
     if (isOpen && pageData.components) {
       loadComponents();
+      loadTrainingData();
     }
   }, [isOpen, pageData.components]);
+
+  // Load training data as fallback
+  const loadTrainingData = async () => {
+    try {
+      const response = await fetch('/data/training.json');
+      if (response.ok) {
+        const data = await response.json();
+        setTrainingData(data);
+      }
+    } catch (err) {
+      console.warn('Failed to load training.json:', err);
+    }
+  };
 
   // Simple error boundary to isolate section render errors
   class ErrorBoundary extends React.Component {
@@ -66,12 +164,92 @@ const PagePreview = ({
       "caseStudies",
       "benefits",
       "types",
+      "programs",
     ];
     const safe = { ...(props || {}) };
     commonArrayKeys.forEach((key) => {
       if (safe[key] === undefined || safe[key] === null) safe[key] = [];
     });
     return safe;
+  };
+
+  // Helper function to extract and normalize data from various formats
+  const extractComponentData = (component) => {
+    let rawData = {};
+    
+    // Always try to parse contentJson first - this is the primary data source
+    if (component.contentJson) {
+      try {
+        // Ensure contentJson is parsed from string to object
+        rawData = typeof component.contentJson === 'string' 
+          ? JSON.parse(component.contentJson) 
+          : component.contentJson;
+        
+        // Log parsed data for debugging
+        console.log(`Parsed contentJson for ${component.componentType}:`, rawData);
+        
+      } catch (err) {
+        console.warn(`Failed to parse contentJson for ${component.componentType}:`, err);
+        console.warn('Raw contentJson:', component.contentJson);
+      }
+    }
+    
+    // If no data or empty data, try to use component properties directly
+    if (!rawData || Object.keys(rawData).length === 0) {
+      // Check if component has direct properties
+      const directProps = ['title', 'subtitle', 'description', 'image', 'programs', 'features'];
+      directProps.forEach(prop => {
+        if (component[prop] !== undefined) {
+          rawData[prop] = component[prop];
+        }
+      });
+    }
+    
+    // If still no data and it's a training component, try to use training.json data
+    if ((!rawData || Object.keys(rawData).length === 0) && component.componentType.includes('Training') && trainingData) {
+      console.log(`Using training.json fallback for ${component.componentType}`);
+      
+      switch (component.componentType) {
+        case 'TrainingHeroSection':
+          rawData = {
+            title: trainingData.heroContent?.title,
+            subtitle: trainingData.heroContent?.description,
+            backgroundVideo: '/Videos/trainingHeroSection.mp4',
+            ctaButton: {
+              text: 'Start Learning Today',
+              link: '/training',
+              variant: 'primary'
+            }
+          };
+          break;
+        case 'TrainingProgramsSection':
+          rawData = {
+            programsSection: trainingData.programsSection,
+            programs: trainingData.trainingPrograms?.programs || []
+          };
+          break;
+        case 'TrainingWhyChooseSection':
+          rawData = {
+            whyChooseSection: trainingData.whyChooseSection,
+            features: trainingData.trainingFeatures || []
+          };
+          break;
+      }
+    }
+    
+    // Use normalizeProps to map the raw data to the correct component props
+    const normalizedData = normalizeProps(component.componentType, rawData);
+    
+    // Validate the normalized props
+    const validation = validateProps(component.componentType, normalizedData);
+    if (!validation.isValid) {
+      console.warn(`Missing required props for ${component.componentType}:`, validation.missingProps);
+    }
+    
+    // Final log to verify complete data
+    console.log(`Final normalized props for ${component.componentType}:`, normalizedData);
+    
+    return normalizedData;
   };
 
   const loadComponents = async () => {
@@ -165,28 +343,28 @@ const PagePreview = ({
       );
     }
 
-    // Parse props
-    let componentProps = {};
-    try {
-      componentProps = JSON.parse(component.contentJson || "{}");
-    } catch (err) {
-      console.warn(
-        `Failed to parse contentJson for ${component.componentType}:`,
-        err
-      );
-      componentProps = {};
-    }
-    const safeProps = buildSafeProps(componentProps);
+    // Extract and normalize component data using the new normalizeProps function
+    const normalizedProps = extractComponentData(component);
+    const safeProps = buildSafeProps(normalizedProps);
 
-    // Special prop mapping for payroll components
-    let propsToPass = safeProps;
-    if (component.componentType === "PayrollWorkflow") {
-      propsToPass = { workflowData: safeProps };
-    } else if (component.componentType === "PayrollCTA") {
-      propsToPass = { ctaData: safeProps };
-    } else if (component.componentType === "PayrollHero") {
-      propsToPass = { ...safeProps };
-    } // add more mappings as needed
+    // Get default data for the component (fallback for training components)
+    const defaultData = trainingDefaultData[component.componentType] || {};
+    
+    // Merge normalized props with defaults - prioritize normalized data over defaults
+    const mergedProps = { ...defaultData, ...safeProps };
+    
+    // Add any missing function props that components might expect
+    const propsToPass = {
+      ...mergedProps,
+      // Add common function props that components might need
+      renderIcon: mergedProps.renderIcon || (() => null),
+      openProgramModal: mergedProps.openProgramModal || (() => {}),
+      openFeatureModal: mergedProps.openFeatureModal || (() => {}),
+      onCtaClick: mergedProps.onCtaClick || (() => {})
+    };
+    
+    // Debug logging for all components to verify data is complete
+    console.log(`Component ${component.componentType} - Final propsToPass:`, propsToPass);
 
     return (
       <motion.div
@@ -235,6 +413,12 @@ const PagePreview = ({
             >
               <Component {...propsToPass} />
             </ErrorBoundary>
+            
+            {/* Debug info for all components */}
+            <div className="p-2 text-xs text-gray-500 bg-gray-50 border-t">
+              <strong>Debug:</strong> {component.contentJson ? 'Data from backend (JSON parsed)' : 'Using fallback data'}
+              {!component.contentJson && ' (defaults/training.json)'}
+            </div>
           </div>
         </div>
       </motion.div>

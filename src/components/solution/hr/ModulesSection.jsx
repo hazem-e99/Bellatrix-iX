@@ -1,40 +1,36 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const ModulesSection = ({ data = {} }) => {
-  const defaultModules = [
-    {
-      icon: "👥",
-      title: "Employee Management",
-      desc: "Comprehensive employee records, profiles, and lifecycle management from onboarding to offboarding."
-    },
-    {
-      icon: "💰",
-      title: "Payroll Processing",
-      desc: "Automated payroll calculations, tax deductions, and salary disbursements with compliance features."
-    },
-    {
-      icon: "📅",
-      title: "Time & Attendance",
-      desc: "Track work hours, manage schedules, and monitor attendance with advanced reporting capabilities."
-    },
-    {
-      icon: "📋",
-      title: "Performance Management",
-      desc: "Set goals, conduct reviews, and track performance metrics to drive employee development."
-    },
-    {
-      icon: "🏖️",
-      title: "Leave Management",
-      desc: "Streamlined leave requests, approvals, and balance tracking with policy enforcement."
-    },
-    {
-      icon: "📊",
-      title: "HR Analytics",
-      desc: "Detailed insights and reports on HR metrics, trends, and workforce analytics."
-    }
-  ];
+  const [defaultData, setDefaultData] = useState(null);
 
-  const modules = data.modules || defaultModules;
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/data/hr.json');
+        const jsonData = await response.json();
+        setDefaultData(jsonData.modules);
+      } catch (error) {
+        console.error('Failed to load HR data:', error);
+        // Fallback data
+        setDefaultData([
+          {
+            icon: "👥",
+            title: "Employee Management",
+            desc: "Comprehensive employee records, profiles, and lifecycle management from onboarding to offboarding."
+          },
+          {
+            icon: "💰",
+            title: "Payroll Processing",
+            desc: "Automated payroll calculations, tax deductions, and salary disbursements with compliance features."
+          }
+        ]);
+      }
+    };
+    fetchData();
+  }, []);
+
+  // Use props if provided, otherwise fall back to default data
+  const modules = data.modules || defaultData || [];
   return (
     <section className="py-20 animate-fade-in-up relative" style={{ backgroundColor: '#001038' }}>
       <div className="absolute inset-0 bg-gradient-to-br from-blue-900/10 via-transparent to-blue-800/10 pointer-events-none"></div>

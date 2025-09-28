@@ -10,7 +10,7 @@
  */
 
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import api, { getAuthToken } from "../../lib/api";
+import api, { getAuthTokenFromState } from "../../lib/api";
 
 // REPLACE: RESOURCE_NAME (e.g., 'integration', 'consulting', 'payroll')
 const RESOURCE_NAME = "CHANGEME";
@@ -54,7 +54,7 @@ export const fetchRESOURCE_NAME = createAsyncThunk(
 export const createRESOURCE_NAME = createAsyncThunk(
   `${RESOURCE_NAME}/create${RESOURCE_NAME}`,
   async ({ payload }, { getState, signal, rejectWithValue }) => {
-    const token = getAuthToken(getState());
+    const token = getAuthTokenFromState(getState());
     if (!token) return rejectWithValue({ message: "Authentication required" });
     try {
       const response = await api.post(API_ENDPOINT, payload, {
@@ -74,7 +74,7 @@ export const createRESOURCE_NAME = createAsyncThunk(
 export const updateRESOURCE_NAME = createAsyncThunk(
   `${RESOURCE_NAME}/update${RESOURCE_NAME}`,
   async ({ payload }, { getState, signal, rejectWithValue }) => {
-    const token = getAuthToken(getState());
+    const token = getAuthTokenFromState(getState());
     if (!token) return rejectWithValue({ message: "Authentication required" });
     try {
       const response = await api.patch(API_ENDPOINT, payload, {
@@ -94,7 +94,7 @@ export const updateRESOURCE_NAME = createAsyncThunk(
 export const deleteRESOURCE_NAME = createAsyncThunk(
   `${RESOURCE_NAME}/delete${RESOURCE_NAME}`,
   async ({ itemId }, { getState, signal, rejectWithValue }) => {
-    const token = getAuthToken(getState());
+    const token = getAuthTokenFromState(getState());
     if (!token) return rejectWithValue({ message: "Authentication required" });
     try {
       await api.delete(`${API_ENDPOINT}/${itemId}`, {

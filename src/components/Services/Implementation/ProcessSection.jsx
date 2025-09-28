@@ -1,17 +1,48 @@
 // components/Implementation/ProcessSection.jsx
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const ProcessSection = ({ data = {} }) => {
+    const [defaultData, setDefaultData] = useState(null);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('/data/Implementation.json');
+                const jsonData = await response.json();
+                setDefaultData(jsonData.processSection);
+            } catch (error) {
+                console.error('Failed to load Implementation data:', error);
+                // Fallback data
+                setDefaultData({
+                    title: "Our Implementation Process",
+                    subtitle: "A proven methodology for seamless business transformation",
+                    image: "/Videos/implementation/implementProcess.jpg",
+                    steps: [],
+                    ctaButton: "Start Your Journey"
+                });
+            }
+        };
+        fetchData();
+    }, []);
+
+    // Use props if provided, otherwise fall back to default data
+    const displayData = data && Object.keys(data).length > 0 ? data : (defaultData || {
+        title: "Our Implementation Process",
+        subtitle: "A proven methodology for seamless business transformation",
+        image: "/Videos/implementation/implementProcess.jpg",
+        steps: [],
+        ctaButton: "Start Your Journey"
+    });
     return (
         <div className="bg-gray-50 py-12 light-section">
             <div className="container mx-auto px-6">
                 {/* Section Header */}
                 <div className="text-center mb-10">
                     <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
-                        {data.title || 'Our Implementation'} <span className="text-blue-600">Process</span>
+                        {displayData.title}
                     </h2>
                     <p className="text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto">
-                        {data.subtitle || 'A proven methodology for seamless business transformation'}
+                        {displayData.subtitle}
                     </p>
                 </div>
 
@@ -32,7 +63,7 @@ const ProcessSection = ({ data = {} }) => {
                                 {/* Inner glow container */}
                                 <div className="relative bg-gradient-to-br from-white/5 via-transparent to-blue-500/5 rounded-2xl p-4 border border-white/20">
                                     <img 
-                                        src={data.image} 
+                                        src={displayData.image} 
                                         alt="Implementation Process - Strategic NetSuite Solutions" 
                                         className="w-full h-auto rounded-xl shadow-2xl brightness-105 contrast-110 saturate-105 group-hover:brightness-110 group-hover:contrast-115 group-hover:saturate-110 transition-all duration-500 filter drop-shadow-xl"
                                     />
@@ -104,7 +135,7 @@ const ProcessSection = ({ data = {} }) => {
                             <div className="absolute left-6 top-6 bottom-6 w-0.5 bg-gradient-to-b from-blue-300 via-blue-500 via-blue-700 to-blue-900"></div>
                             
                             <div className="space-y-6">
-                                {(data.steps || []).map((step, index) => {
+                                {(displayData.steps || []).map((step, index) => {
                                     const bgColors = ['bg-blue-300', 'bg-blue-500', 'bg-blue-700', 'bg-blue-900'];
                                     return (
                                         <div key={index} className="relative flex items-start group">
@@ -131,7 +162,7 @@ const ProcessSection = ({ data = {} }) => {
                         {/* Call to Action */}
                         <div className="mt-6">
                             <button className="w-full bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105">
-                                {data.ctaButton}
+                                {displayData.ctaButton}
                             </button>
                         </div>
                     </div>

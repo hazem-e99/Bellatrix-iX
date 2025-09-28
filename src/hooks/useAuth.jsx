@@ -1,6 +1,7 @@
 import { useState, useEffect, createContext, useContext } from 'react';
 import { authService } from '../services/authApi';
 import { toast } from 'react-hot-toast';
+import { getAuthToken, setAuthToken, setUserData, getUserData, clearAuthData } from '../utils/tokenManager';
 
 // Create Auth Context
 const AuthContext = createContext();
@@ -51,22 +52,22 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const checkAuth = () => {
       try {
-        const token = localStorage.getItem('adminToken');
-        const userData = localStorage.getItem('adminUser');
+        // Use centralized token manager for consistency
+        const token = getAuthToken();
+        const userData = getUserData();
         
         if (token && userData) {
-          const parsedUser = JSON.parse(userData);
           const tokenRole = deriveRoleFromToken(token);
-          const role = parsedUser.role || tokenRole || 'Admin'; // Default to Admin
+          const role = userData.role || tokenRole || 'Admin'; // Default to Admin
           
           // Allow access if we have a valid token
-          setUser({ ...parsedUser, role, token });
+          setUser({ ...userData, role, token });
           setIsAuthenticated(true);
         }
       } catch (error) {
         console.error('Error checking authentication:', error);
-        localStorage.removeItem('adminToken');
-        localStorage.removeItem('adminUser');
+        // Clear all authentication data using centralized token manager
+        clearAuthData();
       } finally {
         setLoading(false);
       }
@@ -108,8 +109,9 @@ export const AuthProvider = ({ children }) => {
           token 
         };
         
-        localStorage.setItem('adminToken', token);
-        localStorage.setItem('adminUser', JSON.stringify(normalizedUser));
+        // Store token and user data using centralized token manager
+        setAuthToken(token);
+        setUserData(normalizedUser);
         setUser(normalizedUser);
         setIsAuthenticated(true);
         toast.success('Login successful!');

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import api, { getAuthToken } from "../../lib/api";
+import api, { getAuthTokenFromState } from "../../lib/api";
 
 const initialState = {
   item: null, // About is typically a single object
@@ -35,7 +35,7 @@ export const fetchAbout = createAsyncThunk(
 export const createAbout = createAsyncThunk(
   "about/createAbout",
   async ({ payload }, { getState, signal, rejectWithValue }) => {
-    const token = getAuthToken(getState());
+    const token = getAuthTokenFromState(getState());
     if (!token) return rejectWithValue({ message: "Authentication required" });
     try {
       const response = await api.post("/api/about", payload, {
@@ -55,7 +55,7 @@ export const createAbout = createAsyncThunk(
 export const updateAbout = createAsyncThunk(
   "about/updateAbout",
   async ({ payload }, { getState, signal, rejectWithValue }) => {
-    const token = getAuthToken(getState());
+    const token = getAuthTokenFromState(getState());
     if (!token) return rejectWithValue({ message: "Authentication required" });
     try {
       const response = await api.patch("/api/about", payload, {
@@ -75,7 +75,7 @@ export const updateAbout = createAsyncThunk(
 export const deleteAbout = createAsyncThunk(
   "about/deleteAbout",
   async (_, { getState, signal, rejectWithValue }) => {
-    const token = getAuthToken(getState());
+    const token = getAuthTokenFromState(getState());
     if (!token) return rejectWithValue({ message: "Authentication required" });
     try {
       await api.delete("/api/about", {

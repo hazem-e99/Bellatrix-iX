@@ -1,27 +1,69 @@
 import React, { useState, useEffect } from 'react';
 
-const PayrollStepper = ({ steps }) => {
+const PayrollStepper = ({ steps = [], title }) => {
   const [current, setCurrent] = useState(0);
+  const [defaultData, setDefaultData] = useState(null);
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/data/payroll.json');
+        const data = await response.json();
+        setDefaultData(data.coreWorkflow);
+      } catch (error) {
+        console.error('Failed to load payroll data:', error);
+        setDefaultData({ steps: [] });
+      }
+    };
+    fetchData();
+  }, []);
+
+  // Use provided steps or default data
+  const displaySteps = steps.length > 0 ? steps : (defaultData?.steps || []);
+  const displayTitle = title || defaultData?.title || "Payroll Process Steps";
+
+  useEffect(() => {
+    if (!displaySteps || displaySteps.length === 0) return;
+    
     const interval = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % steps.length);
+      setCurrent((prev) => (prev + 1) % displaySteps.length);
     }, 4000);
     return () => clearInterval(interval);
-  }, [steps.length]);
+  }, [displaySteps?.length]);
+
+  // Early return if no steps provided
+  if (!displaySteps || displaySteps.length === 0) {
+    return (
+      <div className="w-full">
+        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center">
+          <p className="text-yellow-800">No workflow steps available to display.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full">
+      {/* Title */}
+      {displayTitle && (
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-gray-800 mb-2">{displayTitle}</h2>
+          {defaultData?.description && (
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">{defaultData.description}</p>
+          )}
+        </div>
+      )}
+
       {/* Desktop Stepper */}
       <div className="hidden md:flex mb-12 relative">
         <div className="flex justify-between items-center w-full relative">
           <div className="absolute top-7 left-7 right-7 h-2 bg-gray-200 rounded-full z-0"></div>
           <div
             className="absolute top-7 left-7 h-2 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full z-0 transition-all duration-500"
-            style={{ width: `${7 + (current / (steps.length - 1)) * (100 - 14)}%` }}
+            style={{ width: `${7 + (current / (displaySteps.length - 1)) * (100 - 14)}%` }}
           ></div>
           
-          {steps.map((step, idx) => (
+          {displaySteps.map((step, idx) => (
             <div key={idx} className="z-10 flex flex-col items-center relative">
               <button
                 onClick={() => setCurrent(idx)}
@@ -35,7 +77,7 @@ const PayrollStepper = ({ steps }) => {
               </button>
               <span className={`text-sm font-medium max-w-[120px] text-center absolute top-16
                 ${idx <= current ? 'text-blue-700' : 'text-gray-500'}`}>
-                {step.title.split(' ')[0]}
+                {step?.title?.split(' ')[0] || `Step ${idx + 1}`}
               </span>
             </div>
           ))}
@@ -45,7 +87,7 @@ const PayrollStepper = ({ steps }) => {
       {/* Mobile Stepper */}
       <div className="flex md:hidden mb-6 overflow-x-auto pb-2">
         <div className="flex space-x-3">
-          {steps.map((step, idx) => (
+          {displaySteps.map((step, idx) => (
             <button
               key={idx}
               onClick={() => setCurrent(idx)}
@@ -54,9 +96,9 @@ const PayrollStepper = ({ steps }) => {
                   ? 'bg-blue-600 text-white border-blue-600' 
                   : 'bg-white text-gray-700 border-gray-200'
                 }`}
-            >
-              {step.title.split(' ')[0]}
-            </button>
+              >
+                {step?.title?.split(' ')[0] || `Step ${idx + 1}`}
+              </button>
           ))}
         </div>
       </div>
@@ -66,17 +108,17 @@ const PayrollStepper = ({ steps }) => {
         <div className="flex flex-col lg:flex-row gap-8">
           <div className="lg:w-1/2">
             <h3 className="text-2xl font-bold text-gray-800 mb-3">
-              {steps[current].title}
+              {displaySteps[current]?.title || `Step ${current + 1}`}
             </h3>
             <p className="text-lg text-gray-700 mb-6">
-              {steps[current].description}
+              {displaySteps[current]?.desc || displaySteps[current]?.description || 'No description available.'}
             </p>
             
-            {steps[current].details && Array.isArray(steps[current].details) && steps[current].details.length > 0 && (
+            {displaySteps[current]?.benefits && Array.isArray(displaySteps[current].benefits) && displaySteps[current].benefits.length > 0 && (
               <div className="mb-6">
                 <h4 className="text-sm font-semibold text-gray-600 uppercase mb-3">Key Features</h4>
                 <div className="space-y-2">
-                  {steps[current].details.map((detail, idx) => (
+                  {displaySteps[current].benefits.map((detail, idx) => (
                     <div key={idx} className="flex items-center text-sm text-gray-600">
                       <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
                       {detail}

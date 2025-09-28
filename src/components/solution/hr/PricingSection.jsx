@@ -1,54 +1,34 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const PricingSection = ({ data = {} }) => {
-  const defaultPricing = [
-    {
-      name: "Basic",
-      price: "$99",
-      period: "/month",
-      description: "Perfect for small businesses getting started",
-      features: [
-        "Up to 50 employees",
-        "Basic HR management",
-        "Payroll processing",
-        "Email support",
-        "Mobile app access"
-      ],
-      isPopular: false
-    },
-    {
-      name: "Professional",
-      price: "$199",
-      period: "/month", 
-      description: "Ideal for growing companies",
-      features: [
-        "Up to 200 employees",
-        "Advanced HR features",
-        "Time & attendance tracking",
-        "Performance management",
-        "Priority support",
-        "Custom reports"
-      ],
-      isPopular: true
-    },
-    {
-      name: "Enterprise",
-      price: "Custom",
-      period: "",
-      description: "For large organizations with complex needs",
-      features: [
-        "Unlimited employees",
-        "Full HR suite", 
-        "Advanced analytics",
-        "API access",
-        "Dedicated support",
-        "Custom integrations"
-      ],
-      isPopular: false
-    }
-  ];
+  const [defaultData, setDefaultData] = useState(null);
 
-  const pricing = data.pricing || defaultPricing;
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/data/hr.json');
+        const jsonData = await response.json();
+        setDefaultData(jsonData.pricing);
+      } catch (error) {
+        console.error('Failed to load HR data:', error);
+        // Fallback data
+        setDefaultData([
+          {
+            name: "Essential",
+            price: "$2,500",
+            period: "one-time implementation",
+            description: "Perfect for small teams getting started with HR automation",
+            features: ["Basic system analysis & configuration", "Standard implementation setup"],
+            isPopular: false
+          }
+        ]);
+      }
+    };
+    fetchData();
+  }, []);
+
+  // Use props if provided, otherwise fall back to default data
+  const pricing = data.pricing || defaultData || [];
   return (
     <section className="py-12 relative" style={{ backgroundColor: '#001038' }}>
       <div className="absolute inset-0 bg-gradient-to-br from-blue-900/10 via-transparent to-blue-800/10 pointer-events-none"></div>

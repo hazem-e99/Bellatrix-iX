@@ -51,10 +51,10 @@ Centralized Axios instance with:
 - 10-second timeout
 - Error normalization interceptors
 - File upload helper (`uploadForm`)
-- Auth token helper (`getAuthToken`)
+- Auth token helper (`getAuthTokenFromState`)
 
 ```javascript
-import api, { uploadForm, getAuthToken } from '../lib/api';
+import api, { uploadForm, getAuthTokenFromState } from '../lib/api';
 
 // Standard API call
 const response = await api.get('/api/endpoint');

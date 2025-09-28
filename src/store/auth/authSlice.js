@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api, { uploadForm } from "../../lib/api";
+import { getAuthToken, setAuthToken } from "../../utils/tokenManager";
 
 /**
  * @typedef {'idle' | 'loading' | 'succeeded' | 'failed'} LoadStatus
@@ -14,7 +15,7 @@ import api, { uploadForm } from "../../lib/api";
 
 const initialState = {
   user: null,
-  token: localStorage.getItem("authToken") || null,
+  token: getAuthToken(),
   status: "idle",
   error: null,
   lastFetchedAt: null,
@@ -83,9 +84,9 @@ export const login = createAsyncThunk(
         expiration: userLoginData.expiration,
       };
 
-      // Store token in localStorage
+      // Store token using centralized token manager
       if (token) {
-        localStorage.setItem("authToken", token);
+        setAuthToken(token);
       }
 
       return { token, user, fetchedAt: Date.now() };

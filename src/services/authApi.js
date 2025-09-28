@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { clearAuthData } from '../utils/tokenManager';
 
 // Create axios instance with base URL
 const authApi = axios.create({
@@ -27,8 +28,8 @@ authApi.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem('adminToken');
-      localStorage.removeItem('adminUser');
+      // Clear all authentication data using centralized token manager
+      clearAuthData();
       window.location.href = '/auth/login';
     }
     return Promise.reject(error);

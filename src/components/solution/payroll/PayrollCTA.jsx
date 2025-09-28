@@ -1,15 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const PayrollCTA = ({ ctaData, onCtaClick }) => {
-  // Default data in case props are not provided
-  const defaultData = {
+  const [defaultData, setDefaultData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/data/payroll.json');
+        const data = await response.json();
+        setDefaultData(data.cta);
+      } catch (error) {
+        console.error('Failed to load payroll data:', error);
+        // Fallback data
+        setDefaultData({
+          title: "Ready to Transform Your Payroll Process?",
+          description: "Join thousands of businesses that have automated their payroll and reduced processing time by 80%",
+          buttonText: "Schedule a Demo"
+        });
+      }
+    };
+    fetchData();
+  }, []);
+
+  // Use provided data or default data
+  const data = ctaData || defaultData || {
     title: "Ready to Transform Your Payroll Process?",
     description: "Join thousands of businesses that have automated their payroll and reduced processing time by 80%",
     buttonText: "Schedule a Demo"
   };
-
-  // Use provided data or default data
-  const data = ctaData || defaultData;
 
   return (
     <section className="py-20 relative overflow-hidden">

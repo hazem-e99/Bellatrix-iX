@@ -1,7 +1,29 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const AboutMission = ({ data }) => {
-  const missionData = data || {
+  const [defaultData, setDefaultData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/data/about.json');
+        const jsonData = await response.json();
+        setDefaultData(jsonData.mission);
+      } catch (error) {
+        console.error('Failed to load About data:', error);
+        // Fallback data
+        setDefaultData({
+          title: "Our Mission",
+          description: "To empower businesses with innovative technology solutions that transform operations, enhance productivity, and drive sustainable growth.",
+          vision: "To be the global leader in business transformation consulting, helping organizations achieve their full potential through technology excellence."
+        });
+      }
+    };
+    fetchData();
+  }, []);
+
+  // Use props if provided, otherwise fall back to default data
+  const missionData = data || defaultData || {
     title: "Our Mission",
     description: "To empower businesses with innovative technology solutions that transform operations, enhance productivity, and drive sustainable growth.",
     vision: "To be the global leader in business transformation consulting, helping organizations achieve their full potential through technology excellence."

@@ -1,6 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-const PayrollHero = ({ title, subtitle, bgColor, bgVideo, onCtaClick }) => (
+const PayrollHero = ({ title, subtitle, bgColor, bgVideo, onCtaClick }) => {
+  const [defaultData, setDefaultData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/data/payroll.json');
+        const data = await response.json();
+        setDefaultData(data.hero);
+      } catch (error) {
+        console.error('Failed to load payroll data:', error);
+        // Fallback data
+        setDefaultData({
+          title: "Transform Your Payroll Process",
+          subtitle: "Streamline operations with our intelligent, automated payroll system"
+        });
+      }
+    };
+    fetchData();
+  }, []);
+
+  // Use props if provided, otherwise fall back to default data
+  const displayData = {
+    title: title || defaultData?.title || "Transform Your Payroll Process",
+    subtitle: subtitle || defaultData?.subtitle || "Streamline operations with our intelligent, automated payroll system",
+    bgColor: bgColor || defaultData?.bgColor,
+    bgVideo: bgVideo || defaultData?.bgVideo
+  };
+
+  return (
 <section className="py-24 lg:py-32 flex items-center justify-center relative min-h-screen">
     {/* Background Image */}
     <div className="absolute inset-0">
@@ -19,18 +48,18 @@ const PayrollHero = ({ title, subtitle, bgColor, bgVideo, onCtaClick }) => (
       <div className="text-center">
         <div className="flex flex-col items-center justify-center space-y-8">
           <h1 className="text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-black leading-[0.9] text-white drop-shadow-lg text-center" style={{textShadow: '0 0 20px rgba(255, 255, 255, 0.5), 0 0 40px rgba(255, 255, 255, 0.3)'}}>
-            <span className="block mb-2">Transform Your</span>
-            <span className="block">Payroll Process</span>
+            {displayData.title}
           </h1>
           <div className="max-w-4xl mx-auto space-y-4">
             <p className="text-lg md:text-xl lg:text-2xl text-gray-100 leading-relaxed font-medium drop-shadow-md text-center" style={{textShadow: '0 0 15px rgba(255, 255, 255, 0.4), 0 0 30px rgba(255, 255, 255, 0.2)'}}>
-              Streamline operations with our intelligent, automated payroll system
+              {displayData.subtitle}
             </p>
           </div>
         </div>
       </div>
     </div>
   </section>
-);
+  );
+};
 
 export default PayrollHero;

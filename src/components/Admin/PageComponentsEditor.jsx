@@ -8,11 +8,14 @@ import {
   ArrowPathIcon,
   ExclamationTriangleIcon,
   Bars3Icon,
+  MagnifyingGlassIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/outline";
 import Button from "../ui/Button";
 import Input from "../ui/Input";
 import Modal, { ModalFooter } from "../ui/Modal";
 import DynamicFormField from "../ui/DynamicFormField";
+import Card, { CardContent } from "../ui/Card";
 import pagesAPI from "../../lib/pagesAPI";
 import {
   DndContext,
@@ -42,6 +45,7 @@ const PageComponentsEditor = ({ pageId, pageName, onClose, onSave, showToast }) 
   const [components, setComponents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [availableComponents, setAvailableComponents] = useState([]);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -53,10 +57,195 @@ const PageComponentsEditor = ({ pageId, pageName, onClose, onSave, showToast }) 
   const [editingComponent, setEditingComponent] = useState(null);
   const [errors, setErrors] = useState({});
 
-  // Load components on mount
+  // Load components and available components on mount
   useEffect(() => {
     loadComponents();
+    loadAvailableComponents();
   }, [pageId]);
+
+  // Load available components from component map
+  const loadAvailableComponents = async () => {
+    try {
+      // Lazy import to prevent circular deps when builder imports registry that imports components directory
+      const { idToPathMap } = await import("../componentMap");
+      
+      // Build a generic list using keys; categorize by enhanced heuristics
+      const items = Object.keys(idToPathMap).map((componentType) => {
+        const path = idToPathMap[componentType];
+        const category = categorizeComponent(componentType, path);
+        const icon = getComponentIcon(componentType, category);
+        
+        return {
+          id: componentType,
+          name: componentType.replace(/([A-Z])/g, " $1").trim(), // Add spaces before capital letters
+          description: `Component: ${componentType}`,
+          icon,
+          componentType,
+          componentName: componentType,
+          category,
+        };
+      });
+      
+      setAvailableComponents(items);
+    } catch (e) {
+      console.error("Failed to load component map", e);
+      // Fallback to basic components
+      setAvailableComponents([
+        { id: "Generic", name: "Generic", componentType: "Generic", category: "layout", icon: "📄" },
+        { id: "Hero", name: "Hero", componentType: "Hero", category: "layout", icon: "🎯" },
+        { id: "Text", name: "Text", componentType: "Text", category: "content", icon: "📝" },
+        { id: "Image", name: "Image", componentType: "Image", category: "media", icon: "🖼️" },
+      ]);
+    }
+  };
+
+  // Component categorization function (reused from EnhancedPageBuilder)
+  const categorizeComponent = (componentType, path) => {
+    const lowerType = componentType.toLowerCase();
+    const lowerPath = (path || "").toLowerCase();
+    
+    // Hero components
+    if (lowerType.includes("hero")) return "hero";
+    
+    // Layout components
+    if (
+      lowerType.includes("header") ||
+      lowerType.includes("footer") ||
+      lowerType.includes("navigation") ||
+      lowerType.includes("nav") ||
+      lowerType.includes("layout")
+    )
+      return "layout";
+    
+    // CTA components
+    if (
+      lowerType.includes("cta") ||
+      lowerType.includes("calltoaction") ||
+      lowerType.includes("contact") ||
+      lowerType.includes("demo")
+    )
+      return "cta";
+    
+    // FAQ components
+    if (lowerType.includes("faq") || lowerType.includes("questions"))
+      return "faq";
+    
+    // Pricing components
+    if (
+      lowerType.includes("pricing") ||
+      lowerType.includes("price") ||
+      lowerType.includes("plan") ||
+      lowerType.includes("subscription")
+    )
+      return "pricing";
+    
+    // About/Team components
+    if (
+      lowerType.includes("about") ||
+      lowerType.includes("team") ||
+      lowerType.includes("member") ||
+      lowerType.includes("staff") ||
+      lowerPath.includes("about/")
+    )
+      return "about";
+    
+    // Features/Benefits components
+    if (
+      lowerType.includes("feature") ||
+      lowerType.includes("benefit") ||
+      lowerType.includes("advantage")
+    )
+      return "features";
+    
+    // Testimonials/Reviews
+    if (
+      lowerType.includes("testimonial") ||
+      lowerType.includes("review") ||
+      lowerType.includes("feedback")
+    )
+      return "testimonials";
+    
+    // Solution components
+    if (lowerPath.includes("solution/") || lowerType.includes("solution"))
+      return "solution";
+    
+    // Services components
+    if (lowerPath.includes("services/") || lowerType.includes("service"))
+      return "services";
+    
+    // Industry components
+    if (
+      lowerPath.includes("industries/") ||
+      lowerType.includes("industry")
+    )
+      return "industry";
+    
+    // Portfolio/Gallery
+    if (
+      lowerType.includes("portfolio") ||
+      lowerType.includes("gallery") ||
+      lowerType.includes("showcase")
+    )
+      return "portfolio";
+    
+    // Blog/News
+    if (
+      lowerType.includes("blog") ||
+      lowerType.includes("news") ||
+      lowerType.includes("article")
+    )
+      return "blog";
+    
+    // Default to content
+    return "content";
+  };
+
+  // Component icon function (reused from EnhancedPageBuilder)
+  const getComponentIcon = (componentType, category) => {
+    const type = componentType.toLowerCase();
+    
+    // Specific component icons
+    if (type.includes('hero')) return '🎯';
+    if (type.includes('header')) return '📋';
+    if (type.includes('footer')) return '📄';
+    if (type.includes('navigation') || type.includes('nav')) return '🧭';
+    if (type.includes('sidebar')) return '📑';
+    if (type.includes('image') || type.includes('gallery')) return '🖼️';
+    if (type.includes('video')) return '🎥';
+    if (type.includes('carousel') || type.includes('slider')) return '🎠';
+    if (type.includes('form') || type.includes('contact')) return '📝';
+    if (type.includes('button')) return '🔘';
+    if (type.includes('modal')) return '🪟';
+    if (type.includes('dropdown')) return '🔽';
+    if (type.includes('table')) return '📊';
+    if (type.includes('list')) return '📋';
+    if (type.includes('grid')) return '⚏';
+    if (type.includes('chart')) return '📈';
+    if (type.includes('statistics') || type.includes('stats')) return '📊';
+    if (type.includes('product') || type.includes('shop')) return '🛍️';
+    if (type.includes('cart')) return '🛒';
+    if (type.includes('checkout')) return '💳';
+    if (type.includes('pricing')) return '💰';
+    
+    // Category-based icons
+    switch (category) {
+      case 'hero': return '🎯';
+      case 'layout': return '📐';
+      case 'cta': return '📞';
+      case 'faq': return '❓';
+      case 'pricing': return '💰';
+      case 'about': return '👥';
+      case 'features': return '⭐';
+      case 'testimonials': return '💬';
+      case 'solution': return '🔧';
+      case 'services': return '🛠️';
+      case 'industry': return '🏭';
+      case 'portfolio': return '🖼️';
+      case 'blog': return '📝';
+      case 'content': return '📄';
+      default: return '📄';
+    }
+  };
 
   const loadComponents = async () => {
     try {
@@ -93,7 +282,21 @@ const PageComponentsEditor = ({ pageId, pageName, onClose, onSave, showToast }) 
   const handleUpdateComponent = async (componentId, componentData) => {
     try {
       setSaving(true);
-      const updatedComponent = await pagesAPI.updatePageComponent(componentId, componentData);
+      
+      // Find the current component to preserve its orderIndex
+      const currentComponent = components.find(comp => comp.id === componentId);
+      
+      // Only update the fields that are provided, preserve orderIndex
+      const updateData = {
+        componentType: componentData.componentType,
+        componentName: componentData.componentName,
+        contentJson: componentData.contentJson,
+        // Don't include orderIndex in updates unless explicitly provided
+        ...(componentData.orderIndex !== undefined && { orderIndex: componentData.orderIndex })
+      };
+      
+      console.log("Updating component with data:", updateData);
+      const updatedComponent = await pagesAPI.updatePageComponent(componentId, updateData);
       
       setComponents(prev => 
         prev.map(comp => comp.id === componentId ? updatedComponent : comp)
@@ -255,6 +458,7 @@ const PageComponentsEditor = ({ pageId, pageName, onClose, onSave, showToast }) 
         onClose={() => setShowAddModal(false)}
         onSave={handleAddComponent}
         loading={saving}
+        availableComponents={availableComponents}
       />
 
       {/* Edit Component Modal */}
@@ -269,9 +473,10 @@ const PageComponentsEditor = ({ pageId, pageName, onClose, onSave, showToast }) 
   );
 };
 
-// Component Card
+// Component Card with Structured Preview
 const ComponentCard = ({ component, index, onEdit, onDelete, isReordering = false }) => {
-  const [contentPreview, setContentPreview] = useState("");
+  const [contentPreview, setContentPreview] = useState([]);
+  const [expandedPreview, setExpandedPreview] = useState(false);
   
   const {
     attributes,
@@ -291,11 +496,38 @@ const ComponentCard = ({ component, index, onEdit, onDelete, isReordering = fals
   useEffect(() => {
     try {
       const content = JSON.parse(component.contentJson || "{}");
-      setContentPreview(JSON.stringify(content, null, 2).substring(0, 100) + "...");
+      const previewItems = Object.entries(content)
+        .slice(0, expandedPreview ? undefined : 3)
+        .map(([key, value]) => ({
+          key,
+          value: typeof value === 'object' ? 
+            (Array.isArray(value) ? `[${value.length} items]` : '{object}') : 
+            String(value).substring(0, 50)
+        }));
+      setContentPreview(previewItems);
     } catch {
-      setContentPreview("Invalid JSON content");
+      setContentPreview([{ key: "error", value: "Invalid JSON content" }]);
     }
-  }, [component.contentJson]);
+  }, [component.contentJson, expandedPreview]);
+
+  const renderPreviewValue = (item) => {
+    const { key, value } = item;
+    
+    if (key === "error") {
+      return <span className="text-red-400 font-mono text-xs">{value}</span>;
+    }
+    
+    return (
+      <div className="flex items-center space-x-2 text-xs">
+        <span className="text-blue-400 font-medium min-w-0 flex-shrink-0">
+          {key}:
+        </span>
+        <span className="text-gray-300 font-mono truncate">
+          {value}
+        </span>
+      </div>
+    );
+  };
 
   return (
     <div 
@@ -305,32 +537,59 @@ const ComponentCard = ({ component, index, onEdit, onDelete, isReordering = fals
         isReordering ? 'opacity-50 pointer-events-none' : ''
       } ${isDragging ? 'shadow-lg border-blue-400' : ''}`}
     >
-      <div className="flex items-center justify-between">
-        <div className="flex-1">
-          <div className="flex items-center space-x-2">
-            <span className="text-xs font-medium text-gray-300 bg-white/10 px-2 py-1 rounded">
+      <div className="flex items-start justify-between">
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center space-x-2 mb-2">
+            <span className="text-xs font-medium text-gray-300 bg-white/10 px-2 py-1 rounded flex-shrink-0">
               #{index + 1}
             </span>
-            <h3 className="text-md font-semibold text-white">
+            <h3 className="text-md font-semibold text-white truncate">
               {component.componentName || "Unnamed Component"}
             </h3>
-            <span className="text-xs text-gray-400 bg-blue-500/20 px-2 py-1 rounded">
+            <span className="text-xs text-gray-400 bg-blue-500/20 px-2 py-1 rounded flex-shrink-0">
               {component.componentType}
             </span>
             {isReordering && (
-              <span className="text-xs text-yellow-400 bg-yellow-500/20 px-2 py-1 rounded animate-pulse">
+              <span className="text-xs text-yellow-400 bg-yellow-500/20 px-2 py-1 rounded animate-pulse flex-shrink-0">
                 Reordering...
               </span>
             )}
           </div>
-          <p className="text-xs text-gray-300 mt-1">
-            <span className="font-mono text-xs bg-white/5 px-2 py-1 rounded">
-              {contentPreview}
+          
+          {/* Structured Content Preview */}
+          <div className="space-y-1">
+            {contentPreview.length > 0 ? (
+              <>
+                <div className="bg-white/5 rounded p-2 space-y-1">
+                  {contentPreview.map((item, idx) => (
+                    <div key={idx} className="flex items-center">
+                      {renderPreviewValue(item)}
+                    </div>
+                  ))}
+                </div>
+                
+                {/* Show More/Less Button */}
+                {Object.keys(JSON.parse(component.contentJson || "{}")).length > 3 && (
+                  <button
+                    onClick={() => setExpandedPreview(!expandedPreview)}
+                    className="text-xs text-blue-400 hover:text-blue-300 flex items-center space-x-1"
+                  >
+                    <span>{expandedPreview ? 'Show Less' : `Show ${Object.keys(JSON.parse(component.contentJson || "{}")).length - 3} More`}</span>
+                    <span className={`transform transition-transform ${expandedPreview ? 'rotate-180' : ''}`}>
+                      ▼
             </span>
-          </p>
+                  </button>
+                )}
+              </>
+            ) : (
+              <div className="bg-white/5 rounded p-2">
+                <span className="text-gray-400 text-xs">No content fields</span>
+              </div>
+            )}
+          </div>
         </div>
         
-        <div className="flex items-center space-x-1">
+        <div className="flex items-center space-x-1 ml-2 flex-shrink-0">
           {/* Drag Handle */}
           <div
             {...attributes}
@@ -372,15 +631,113 @@ const ComponentCard = ({ component, index, onEdit, onDelete, isReordering = fals
   );
 };
 
-// Add Component Modal
-const AddComponentModal = ({ isOpen, onClose, onSave, loading }) => {
+// Add Component Modal with Enhanced Filtering
+const AddComponentModal = ({ isOpen, onClose, onSave, loading, availableComponents }) => {
+  const [selectedComponent, setSelectedComponent] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [searchTerm, setSearchTerm] = useState("");
   const [formData, setFormData] = useState({
-    componentType: "Generic",
+    componentType: "",
     componentName: "",
     contentJson: JSON.stringify({})
   });
   const [jsonData, setJsonData] = useState({});
   const [errors, setErrors] = useState({});
+
+  // Dynamic category generation based on available components
+  const categories = React.useMemo(() => {
+    // Get components that match search term (if any)
+    const searchFilteredComponents = searchTerm.trim()
+      ? availableComponents.filter((comp) => {
+        const search = searchTerm.toLowerCase().trim();
+          return (
+            comp.name.toLowerCase().includes(search) ||
+               comp.componentType.toLowerCase().includes(search) ||
+               comp.category.toLowerCase().includes(search) ||
+            comp.description.toLowerCase().includes(search)
+          );
+        })
+      : availableComponents;
+
+    // Count components per category (considering search filter)
+    const categoryCounts = {};
+    searchFilteredComponents.forEach((comp) => {
+      categoryCounts[comp.category] = (categoryCounts[comp.category] || 0) + 1;
+    });
+
+    // Start with "All Components"
+    const dynamicCategories = [
+      { 
+        id: "all", 
+        name: "All Components", 
+        icon: "📄",
+        count: searchFilteredComponents.length,
+      },
+    ];
+
+    // Extract unique categories from available components
+    const uniqueCategories = [
+      ...new Set(
+      availableComponents
+          .map((comp) => comp.category)
+          .filter((category) => category && category !== "all")
+      ),
+    ];
+
+    // Define category icons and display names
+    const categoryConfig = {
+      hero: { name: "Hero", icon: "🎯" },
+      layout: { name: "Layout", icon: "📐" },
+      cta: { name: "Call to Action", icon: "📞" },
+      faq: { name: "FAQ", icon: "❓" },
+      pricing: { name: "Pricing", icon: "💰" },
+      about: { name: "About", icon: "👥" },
+      features: { name: "Features", icon: "⭐" },
+      testimonials: { name: "Testimonials", icon: "💬" },
+      solution: { name: "Solution", icon: "🔧" },
+      services: { name: "Services", icon: "🛠️" },
+      industry: { name: "Industry", icon: "🏭" },
+      portfolio: { name: "Portfolio", icon: "🖼️" },
+      blog: { name: "Blog", icon: "📝" },
+      content: { name: "Content", icon: "📄" },
+    };
+
+    // Add dynamic categories
+    uniqueCategories.forEach((category) => {
+      const config = categoryConfig[category] || { name: category, icon: "📄" };
+      dynamicCategories.push({
+        id: category,
+        name: config.name,
+        icon: config.icon,
+        count: categoryCounts[category] || 0,
+      });
+    });
+
+    return dynamicCategories;
+  }, [availableComponents, searchTerm]);
+
+  const filteredComponents = React.useMemo(() => {
+    let filtered = availableComponents;
+    
+    // Filter by category
+    if (selectedCategory !== "all") {
+      filtered = filtered.filter((comp) => comp.category === selectedCategory);
+    }
+    
+    // Filter by search term
+    if (searchTerm.trim()) {
+      const search = searchTerm.toLowerCase().trim();
+      filtered = filtered.filter(
+        (comp) =>
+        comp.name.toLowerCase().includes(search) ||
+        comp.componentType.toLowerCase().includes(search) ||
+        comp.category.toLowerCase().includes(search) ||
+        comp.description.toLowerCase().includes(search)
+      );
+    }
+    
+    return filtered;
+  }, [availableComponents, selectedCategory, searchTerm]);
 
   const handleJsonFieldChange = (path, value) => {
     const updatedJsonData = updateJsonFromFormFields(jsonData, path, value);
@@ -391,11 +748,136 @@ const AddComponentModal = ({ isOpen, onClose, onSave, loading }) => {
     }));
   };
 
+  const handleComponentSelect = (component) => {
+    setSelectedComponent(component);
+    setFormData(prev => ({
+      ...prev,
+      componentType: component.componentType,
+      componentName: component.name
+    }));
+    
+    // Initialize with basic JSON structure based on component type
+    const basicJson = getBasicJsonForComponent(component.componentType);
+    setJsonData(basicJson);
+    setFormData(prev => ({
+      ...prev,
+      contentJson: JSON.stringify(basicJson, null, 2)
+    }));
+  };
+
+  const getBasicJsonForComponent = (componentType) => {
+    const type = componentType.toLowerCase();
+    
+    if (type.includes('hero')) {
+      return {
+        title: "",
+        subtitle: "",
+        description: "",
+        imageUrl: "",
+        buttonText: "",
+        buttonUrl: ""
+      };
+    } else if (type.includes('cta')) {
+      return {
+        title: "",
+        description: "",
+        buttonText: "",
+        buttonUrl: "",
+        backgroundColor: ""
+      };
+    } else if (type.includes('pricing')) {
+      return {
+        title: "",
+        subtitle: "",
+        plans: [
+          { name: "Basic", price: "", features: [], buttonText: "Get Started", buttonUrl: "" }
+        ]
+      };
+    } else if (type.includes('faq')) {
+      return {
+        title: "",
+        subtitle: "",
+        questions: [
+          { question: "", answer: "" }
+        ]
+      };
+    } else if (type.includes('about') || type.includes('team')) {
+      return {
+        title: "",
+        subtitle: "",
+        description: "",
+        members: [
+          { name: "", role: "", image: "", bio: "" }
+        ]
+      };
+    } else if (type.includes('feature') || type.includes('benefit')) {
+      return {
+        title: "",
+        subtitle: "",
+        features: [
+          { title: "", description: "", icon: "" }
+        ]
+      };
+    } else if (type.includes('testimonial')) {
+      return {
+        title: "",
+        subtitle: "",
+        testimonials: [
+          { name: "", role: "", company: "", content: "", image: "" }
+        ]
+      };
+    } else if (type.includes('solution') || type.includes('service')) {
+      return {
+        title: "",
+        subtitle: "",
+        description: "",
+        features: [],
+        benefits: []
+      };
+    } else if (type.includes('industry')) {
+      return {
+        title: "",
+        subtitle: "",
+        description: "",
+        challenges: [],
+        solutions: []
+      };
+    } else if (type.includes('image') || type.includes('gallery')) {
+      return {
+        imageUrl: "",
+        alt: "",
+        caption: "",
+        width: "",
+        height: ""
+      };
+    } else if (type.includes('form') || type.includes('contact')) {
+      return {
+        title: "",
+        fields: [
+          { name: "name", label: "Name", type: "text", required: true },
+          { name: "email", label: "Email", type: "email", required: true },
+          { name: "message", label: "Message", type: "textarea", required: true }
+        ]
+      };
+    } else if (type.includes('text') || type.includes('content')) {
+      return {
+        title: "",
+        content: "",
+        alignment: "left"
+      };
+    } else {
+      return {
+        title: "",
+        content: ""
+      };
+    }
+  };
+
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.componentType || formData.componentType.length > 50) {
-      newErrors.componentType = "Component type must be 1-50 characters";
+    if (!selectedComponent) {
+      newErrors.component = "Please select a component type";
     }
 
     if (formData.componentName && formData.componentName.length > 100) {
@@ -419,50 +901,134 @@ const AddComponentModal = ({ isOpen, onClose, onSave, loading }) => {
   const handleSave = () => {
     if (validateForm()) {
       onSave(formData);
+      setSelectedComponent(null);
       setFormData({
-        componentType: "Generic",
+        componentType: "",
         componentName: "",
         contentJson: JSON.stringify({})
       });
       setJsonData({});
       setErrors({});
+      setSearchTerm("");
+      setSelectedCategory("all");
     }
   };
 
   const dynamicFields = generateFormFieldsFromJson(jsonData, handleJsonFieldChange);
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Add Component" size="lg">
-      <div className="space-y-4 max-h-[70vh] overflow-y-auto">
-        {/* Basic Component Info */}
-        <div className="space-y-3">
-          <h3 className="text-md font-semibold text-white flex items-center">
-            <DocumentTextIcon className="h-4 w-4 mr-2 text-blue-400" />
-            Component Information
+    <Modal isOpen={isOpen} onClose={onClose} title="Add Component" size="xl">
+      <div className="flex h-[80vh]">
+        {/* Left Panel - Component Selection */}
+        <div className="w-1/2 border-r border-white/20 p-4 overflow-y-auto">
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-white flex items-center">
+              <DocumentTextIcon className="h-5 w-5 mr-2 text-blue-400" />
+              Select Component Type
           </h3>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <label className="block text-sm font-medium text-white">
-                Component Type *
-              </label>
-              <select
-                value={formData.componentType}
-                onChange={(e) => setFormData(prev => ({ ...prev, componentType: e.target.value }))}
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="Generic" className="bg-gray-800 text-white">Generic</option>
-                <option value="Hero" className="bg-gray-800 text-white">Hero</option>
-                <option value="Text" className="bg-gray-800 text-white">Text</option>
-                <option value="Image" className="bg-gray-800 text-white">Image</option>
-                <option value="Gallery" className="bg-gray-800 text-white">Gallery</option>
-                <option value="Contact" className="bg-gray-800 text-white">Contact</option>
-              </select>
-              {errors.componentType && (
-                <p className="text-sm text-red-400">{errors.componentType}</p>
-              )}
+            {/* Search */}
+            <div className="relative">
+              <MagnifyingGlassIcon className="h-4 w-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                placeholder="Search components..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-9 pr-3 py-2 text-sm border border-white/20 bg-white/5 text-white placeholder:text-gray-400 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
             </div>
 
+            {/* Category Filter */}
+            <div className="flex flex-wrap gap-2">
+              {categories.map((category) => (
+                <button
+                  key={category.id}
+                  onClick={() => setSelectedCategory(category.id)}
+                  className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${
+                    selectedCategory === category.id
+                      ? "bg-blue-600 text-white border-blue-500"
+                      : "bg-white/10 text-gray-300 border-white/20 hover:bg-white/20"
+                  }`}
+                >
+                  <span className="mr-1">{category.icon}</span>
+                  {category.name} ({category.count})
+                </button>
+              ))}
+            </div>
+
+            {/* Component Grid */}
+            <div className="grid grid-cols-1 gap-3 max-h-96 overflow-y-auto">
+              {filteredComponents.map((component) => (
+                <Card
+                  key={component.id}
+                  className={`cursor-pointer transition-all duration-200 border ${
+                    selectedComponent?.id === component.id
+                      ? "bg-blue-600/20 border-blue-500 shadow-lg"
+                      : "bg-white/10 border-white/20 hover:bg-white/15"
+                  }`}
+                  onClick={() => handleComponentSelect(component)}
+                >
+                  <CardContent className="p-3">
+                    <div className="flex items-center space-x-3">
+                      <div className="text-2xl">{component.icon}</div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="text-sm font-semibold text-white truncate">
+                          {component.name}
+                        </h4>
+                        <p className="text-xs text-gray-300 truncate">
+                          {component.description}
+                        </p>
+                        <div className="flex items-center space-x-2 mt-1">
+                          <span className="text-xs text-gray-400 bg-white/10 px-2 py-0.5 rounded">
+                            {component.category}
+                          </span>
+                          <span className="text-xs text-gray-400 font-mono">
+                            {component.componentType}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+              
+              {filteredComponents.length === 0 && (
+                <div className="text-center py-8 text-gray-400">
+                  <DocumentTextIcon className="h-12 w-12 mx-auto mb-2 opacity-50" />
+                  <p>No components found matching your criteria</p>
+                </div>
+              )}
+            </div>
+          </div>
+            </div>
+
+        {/* Right Panel - Component Configuration */}
+        <div className="w-1/2 p-4 overflow-y-auto">
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-white flex items-center">
+              <DocumentTextIcon className="h-5 w-5 mr-2 text-green-400" />
+              Configure Component
+            </h3>
+
+            {selectedComponent ? (
+              <>
+                {/* Selected Component Info */}
+                <div className="bg-white/10 border border-white/20 rounded-lg p-3">
+                  <div className="flex items-center space-x-3">
+                    <div className="text-2xl">{selectedComponent.icon}</div>
+                    <div>
+                      <h4 className="text-sm font-semibold text-white">
+                        {selectedComponent.name}
+                      </h4>
+                      <p className="text-xs text-gray-300">
+                        {selectedComponent.description}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Component Name */}
             <div className="space-y-2">
               <label className="block text-sm font-medium text-white">
                 Component Name
@@ -478,16 +1044,13 @@ const AddComponentModal = ({ isOpen, onClose, onSave, loading }) => {
               {errors.componentName && (
                 <p className="text-sm text-red-400">{errors.componentName}</p>
               )}
-            </div>
-          </div>
         </div>
 
         {/* Dynamic Content Fields */}
         <div className="space-y-3">
-          <h3 className="text-md font-semibold text-white flex items-center">
-            <DocumentTextIcon className="h-4 w-4 mr-2 text-green-400" />
+                  <h4 className="text-md font-semibold text-white">
             Content Fields
-          </h3>
+                  </h4>
           
           {dynamicFields.length > 0 ? (
             <div className="space-y-4">
@@ -501,62 +1064,8 @@ const AddComponentModal = ({ isOpen, onClose, onSave, loading }) => {
             </div>
           ) : (
             <div className="text-center py-8 bg-white/5 rounded-lg border border-white/10">
-              <DocumentTextIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <h4 className="text-lg font-medium text-white mb-2">No Content Fields</h4>
-              <p className="text-gray-300 mb-4">Add some content fields to get started.</p>
-              <div className="flex flex-wrap gap-2 justify-center">
-                <button
-                  onClick={() => {
-                    const newJsonData = { title: "", content: "" };
-                    setJsonData(newJsonData);
-                    setFormData(prev => ({
-                      ...prev,
-                      contentJson: JSON.stringify(newJsonData, null, 2)
-                    }));
-                  }}
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm"
-                >
-                  Add Basic Fields
-                </button>
-                <button
-                  onClick={() => {
-                    const newJsonData = { 
-                      title: "", 
-                      subtitle: "", 
-                      description: "",
-                      imageUrl: "",
-                      buttonText: "",
-                      buttonUrl: ""
-                    };
-                    setJsonData(newJsonData);
-                    setFormData(prev => ({
-                      ...prev,
-                      contentJson: JSON.stringify(newJsonData, null, 2)
-                    }));
-                  }}
-                  className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md text-sm"
-                >
-                  Add Hero Fields
-                </button>
-                <button
-                  onClick={() => {
-                    const newJsonData = { 
-                      title: "", 
-                      items: [
-                        { title: "", description: "" }
-                      ]
-                    };
-                    setJsonData(newJsonData);
-                    setFormData(prev => ({
-                      ...prev,
-                      contentJson: JSON.stringify(newJsonData, null, 2)
-                    }));
-                  }}
-                  className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-md text-sm"
-                >
-                  Add List Fields
-                </button>
-              </div>
+                      <DocumentTextIcon className="h-8 w-8 text-gray-400 mx-auto mb-2" />
+                      <p className="text-gray-300 text-sm">No content fields configured</p>
             </div>
           )}
         </div>
@@ -581,7 +1090,7 @@ const AddComponentModal = ({ isOpen, onClose, onSave, loading }) => {
                     // Invalid JSON, don't update jsonData
                   }
                 }}
-                rows={8}
+                        rows={6}
                 className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm resize-none"
                 placeholder='{"title": "Example", "content": "..."}'
               />
@@ -590,6 +1099,16 @@ const AddComponentModal = ({ isOpen, onClose, onSave, loading }) => {
               )}
             </div>
           </details>
+                </div>
+              </>
+            ) : (
+              <div className="text-center py-16 text-gray-400">
+                <DocumentTextIcon className="h-16 w-16 mx-auto mb-4 opacity-50" />
+                <h4 className="text-lg font-medium text-white mb-2">Select a Component</h4>
+                <p>Choose a component type from the left panel to configure it</p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -604,7 +1123,7 @@ const AddComponentModal = ({ isOpen, onClose, onSave, loading }) => {
         </Button>
         <Button
           onClick={handleSave}
-          disabled={loading}
+          disabled={loading || !selectedComponent}
           className="bg-blue-600 hover:bg-blue-700 text-white flex items-center space-x-1 text-sm px-3 py-1"
         >
           {loading ? (
@@ -744,19 +1263,56 @@ const EditComponentModal = ({ isOpen, onClose, component, onSave, loading }) => 
 
         {/* Dynamic Content Fields */}
         <div className="space-y-3">
+           <div className="flex items-center justify-between">
           <h3 className="text-md font-semibold text-white flex items-center">
             <DocumentTextIcon className="h-4 w-4 mr-2 text-green-400" />
             Content Fields
           </h3>
+             <div className="flex items-center space-x-2">
+               <button
+                 onClick={() => {
+                   const fieldName = prompt("Enter field name:");
+                   if (fieldName && fieldName.trim()) {
+                     const newJsonData = { ...jsonData, [fieldName.trim()]: "" };
+                     setJsonData(newJsonData);
+                     setFormData(prev => ({
+                       ...prev,
+                       contentJson: JSON.stringify(newJsonData, null, 2)
+                     }));
+                   }
+                 }}
+                 className="px-3 py-1 bg-green-600 hover:bg-green-700 text-white rounded text-xs flex items-center space-x-1"
+               >
+                 <PlusIcon className="h-3 w-3" />
+                 <span>Add Field</span>
+               </button>
+             </div>
+           </div>
           
           {dynamicFields.length > 0 ? (
             <div className="space-y-4">
               {dynamicFields.map((field) => (
+                 <div key={field.key} className="relative">
                 <DynamicFormField
-                  key={field.key}
                   field={field}
                   onChange={handleJsonFieldChange}
                 />
+                   <button
+                     onClick={() => {
+                       const newJsonData = { ...jsonData };
+                       delete newJsonData[field.key];
+                       setJsonData(newJsonData);
+                       setFormData(prev => ({
+                         ...prev,
+                         contentJson: JSON.stringify(newJsonData, null, 2)
+                       }));
+                     }}
+                     className="absolute top-0 right-0 p-1 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded"
+                     title="Remove field"
+                   >
+                     <XMarkIcon className="h-4 w-4" />
+                   </button>
+                 </div>
               ))}
             </div>
           ) : (
@@ -764,6 +1320,7 @@ const EditComponentModal = ({ isOpen, onClose, component, onSave, loading }) => 
               <DocumentTextIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
               <h4 className="text-lg font-medium text-white mb-2">No Content Fields</h4>
               <p className="text-gray-300 mb-4">This component doesn't have any content fields yet.</p>
+               <div className="flex flex-wrap gap-2 justify-center">
               <button
                 onClick={() => {
                   const newJsonData = { title: "", content: "" };
@@ -777,6 +1334,45 @@ const EditComponentModal = ({ isOpen, onClose, component, onSave, loading }) => 
               >
                 Add Basic Fields
               </button>
+                 <button
+                   onClick={() => {
+                     const newJsonData = { 
+                       title: "", 
+                       subtitle: "", 
+                       description: "",
+                       imageUrl: "",
+                       buttonText: "",
+                       buttonUrl: ""
+                     };
+                     setJsonData(newJsonData);
+                     setFormData(prev => ({
+                       ...prev,
+                       contentJson: JSON.stringify(newJsonData, null, 2)
+                     }));
+                   }}
+                   className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md text-sm"
+                 >
+                   Add Hero Fields
+                 </button>
+                 <button
+                   onClick={() => {
+                     const newJsonData = { 
+                       title: "", 
+                       questions: [
+                         { question: "", answer: "" }
+                       ]
+                     };
+                     setJsonData(newJsonData);
+                     setFormData(prev => ({
+                       ...prev,
+                       contentJson: JSON.stringify(newJsonData, null, 2)
+                     }));
+                   }}
+                   className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-md text-sm"
+                 >
+                   Add FAQ Fields
+                 </button>
+               </div>
             </div>
           )}
         </div>

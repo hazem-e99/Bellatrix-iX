@@ -1,6 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const DemoModal = ({ showDemo, setShowDemo, demoImages, demoIdx, imgFade, handleDemoChange, nextDemo, prevDemo }) => {
+  const [defaultData, setDefaultData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/data/hr.json');
+        const jsonData = await response.json();
+        setDefaultData(jsonData.demoImages);
+      } catch (error) {
+        console.error('Failed to load HR data:', error);
+        // Fallback data
+        setDefaultData([
+          "/images/Hr/hr-dashboard-1.png",
+          "/images/Hr/hr-analytics-2.png",
+          "/images/Hr/hr-onboarding-3.png"
+        ]);
+      }
+    };
+    fetchData();
+  }, []);
+
+  // Use props if provided, otherwise fall back to default data
+  const displayDemoImages = demoImages || defaultData || [
+    "/images/Hr/hr-dashboard-1.png",
+    "/images/Hr/hr-analytics-2.png",
+    "/images/Hr/hr-onboarding-3.png"
+  ];
   if (!showDemo) return null;
 
   return (
@@ -26,7 +53,7 @@ const DemoModal = ({ showDemo, setShowDemo, demoImages, demoIdx, imgFade, handle
         </button>
         <div className="flex flex-col items-center">
           <img
-            src={demoImages[demoIdx]}
+            src={displayDemoImages[demoIdx]}
             alt={`Demo ${demoIdx + 1}`}
             className={`rounded-xl shadow-lg w-full h-96 object-cover mb-4 transition-opacity duration-300 ${imgFade ? 'opacity-100' : 'opacity-0'}`}
             style={{ maxWidth: '100%', maxHeight: '420px' }}
@@ -35,18 +62,18 @@ const DemoModal = ({ showDemo, setShowDemo, demoImages, demoIdx, imgFade, handle
             <button
               onClick={prevDemo}
               className="bg-blue-100 hover:bg-blue-300 text-blue-700 font-bold rounded-full w-10 h-10 flex items-center justify-center shadow transition-all disabled:opacity-40"
-              disabled={demoImages.length <= 1}
+              disabled={displayDemoImages.length <= 1}
               aria-label="Previous image"
             >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15.5 19l-7-7 7-7" />
               </svg>
             </button>
-            <span className="text-gray-700 font-semibold">{demoIdx + 1} / {demoImages.length}</span>
+            <span className="text-gray-700 font-semibold">{demoIdx + 1} / {displayDemoImages.length}</span>
             <button
               onClick={nextDemo}
               className="bg-blue-100 hover:bg-blue-300 text-blue-700 font-bold rounded-full w-10 h-10 flex items-center justify-center shadow transition-all disabled:opacity-40"
-              disabled={demoImages.length <= 1}
+              disabled={displayDemoImages.length <= 1}
               aria-label="Next image"
             >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
@@ -56,7 +83,7 @@ const DemoModal = ({ showDemo, setShowDemo, demoImages, demoIdx, imgFade, handle
           </div>
           {/* Dots */}
           <div className="flex gap-2 mt-4">
-            {demoImages.map((_, idx) => (
+            {displayDemoImages.map((_, idx) => (
               <button
                 key={idx}
                 onClick={() => handleDemoChange(idx)}

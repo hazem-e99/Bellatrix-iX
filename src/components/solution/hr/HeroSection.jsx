@@ -1,8 +1,30 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const HeroSection = ({ data = {} }) => {
-  // Default hero data in case data or data.hero is undefined
-  const heroData = data.hero || {
+  const [defaultData, setDefaultData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/data/hr.json');
+        const jsonData = await response.json();
+        setDefaultData(jsonData.hero);
+      } catch (error) {
+        console.error('Failed to load HR data:', error);
+        // Fallback data
+        setDefaultData({
+          title: "Modern HR, Payroll & People Management",
+          subtitle: "Automate HR, empower employees, and stay compliant—on one secure platform designed for the future of work.",
+          bgVideo: "/Videos/hrVideo.mp4",
+          bgColor: "bg-gradient-to-br from-[#191970] via-black to-blue-700"
+        });
+      }
+    };
+    fetchData();
+  }, []);
+
+  // Use props if provided, otherwise fall back to default data
+  const heroData = data.hero || defaultData || {
     title: "Modern HR, Payroll & People Management",
     subtitle: "Automate HR, empower employees, and stay compliant—on one secure platform designed for the future of work.",
     bgVideo: "/Videos/hrVideo.mp4",

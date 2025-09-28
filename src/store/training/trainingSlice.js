@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import api, { getAuthToken } from "../../lib/api";
+import api, { getAuthTokenFromState } from "../../lib/api";
 
 const initialState = {
   items: [],
@@ -35,7 +35,7 @@ export const fetchTraining = createAsyncThunk(
 export const createTraining = createAsyncThunk(
   "training/createTraining",
   async ({ payload }, { getState, signal, rejectWithValue }) => {
-    const token = getAuthToken(getState());
+    const token = getAuthTokenFromState(getState());
     if (!token) return rejectWithValue({ message: "Authentication required" });
     try {
       const response = await api.post("/api/training", payload, {
@@ -55,7 +55,7 @@ export const createTraining = createAsyncThunk(
 export const updateTraining = createAsyncThunk(
   "training/updateTraining",
   async ({ payload }, { getState, signal, rejectWithValue }) => {
-    const token = getAuthToken(getState());
+    const token = getAuthTokenFromState(getState());
     if (!token) return rejectWithValue({ message: "Authentication required" });
     try {
       const response = await api.patch("/api/training", payload, {
@@ -75,7 +75,7 @@ export const updateTraining = createAsyncThunk(
 export const deleteTraining = createAsyncThunk(
   "training/deleteTraining",
   async ({ trainingId }, { getState, signal, rejectWithValue }) => {
-    const token = getAuthToken(getState());
+    const token = getAuthTokenFromState(getState());
     if (!token) return rejectWithValue({ message: "Authentication required" });
     try {
       await api.delete(`/api/training/${trainingId}`, {

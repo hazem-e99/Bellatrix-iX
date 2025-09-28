@@ -1,8 +1,33 @@
 // components/Implementation/ImplementationModal.jsx
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ContactForm from '../../ContactForm';
 
 const ImplementationModal = ({ isOpen, onClose, data }) => {
+    const [defaultData, setDefaultData] = useState(null);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('/data/Implementation.json');
+                const jsonData = await response.json();
+                setDefaultData(jsonData.modalContent);
+            } catch (error) {
+                console.error('Failed to load Implementation data:', error);
+                // Fallback data
+                setDefaultData({
+                    title: "Contact Us",
+                    subtitle: "Let's discuss your project"
+                });
+            }
+        };
+        fetchData();
+    }, []);
+
+    // Use props if provided, otherwise fall back to default data
+    const displayData = data && Object.keys(data).length > 0 ? data : (defaultData || {
+        title: "Contact Us",
+        subtitle: "Let's discuss your project"
+    });
     if (!isOpen) return null;
 
     return (
@@ -19,8 +44,8 @@ const ImplementationModal = ({ isOpen, onClose, data }) => {
                         </svg>
                     </button>
                     <div className="text-center">
-                        <h3 className="text-xl font-bold mb-1 text-blue-900">{data.title}</h3>
-                        <p className="text-gray-500 text-sm">{data.subtitle}</p>
+                        <h3 className="text-xl font-bold mb-1 text-blue-900">{displayData.title}</h3>
+                        <p className="text-gray-500 text-sm">{displayData.subtitle}</p>
                     </div>
                 </div>
                 {/* Form Content */}

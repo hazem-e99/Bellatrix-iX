@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import api, { getAuthToken } from "../../lib/api";
+import api, { getAuthTokenFromState } from "../../lib/api";
 
 /**
  * @typedef {'idle' | 'loading' | 'succeeded' | 'failed'} LoadStatus
@@ -48,7 +48,7 @@ export const fetchHero = createAsyncThunk(
 export const createHero = createAsyncThunk(
   "hero/createHero",
   async ({ payload }, { getState, signal, rejectWithValue }) => {
-    const token = getAuthToken(getState());
+    const token = getAuthTokenFromState(getState());
 
     if (!token) {
       return rejectWithValue({ message: "Authentication required" });
@@ -70,7 +70,7 @@ export const createHero = createAsyncThunk(
 export const updateHero = createAsyncThunk(
   "hero/updateHero",
   async ({ payload }, { getState, signal, rejectWithValue }) => {
-    const token = getAuthToken(getState());
+    const token = getAuthTokenFromState(getState());
 
     if (!token) {
       return rejectWithValue({ message: "Authentication required" });
@@ -92,7 +92,7 @@ export const updateHero = createAsyncThunk(
 export const deleteHero = createAsyncThunk(
   "hero/deleteHero",
   async (_, { getState, signal, rejectWithValue }) => {
-    const token = getAuthToken(getState());
+    const token = getAuthTokenFromState(getState());
 
     if (!token) {
       return rejectWithValue({ message: "Authentication required" });

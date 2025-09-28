@@ -4,7 +4,7 @@
  * This can be adapted for integration, consulting, payroll following the same pattern
  */
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import api, { getAuthToken } from "../../lib/api";
+import api, { getAuthTokenFromState } from "../../lib/api";
 
 const initialState = {
   hero: { item: null, status: "idle", error: null, lastFetchedAt: null },
@@ -43,7 +43,7 @@ export const fetchImplementationHero = createAsyncThunk(
 export const createImplementationHero = createAsyncThunk(
   "implementation/createHero",
   async ({ payload }, { getState, signal, rejectWithValue }) => {
-    const token = getAuthToken(getState());
+    const token = getAuthTokenFromState(getState());
     if (!token) return rejectWithValue({ message: "Authentication required" });
     try {
       const response = await api.post("/api/implementation/hero", payload, {
@@ -63,7 +63,7 @@ export const createImplementationHero = createAsyncThunk(
 export const updateImplementationHero = createAsyncThunk(
   "implementation/updateHero",
   async ({ payload }, { getState, signal, rejectWithValue }) => {
-    const token = getAuthToken(getState());
+    const token = getAuthTokenFromState(getState());
     if (!token) return rejectWithValue({ message: "Authentication required" });
     try {
       const response = await api.patch("/api/implementation/hero", payload, {
@@ -83,7 +83,7 @@ export const updateImplementationHero = createAsyncThunk(
 export const deleteImplementationHero = createAsyncThunk(
   "implementation/deleteHero",
   async (_, { getState, signal, rejectWithValue }) => {
-    const token = getAuthToken(getState());
+    const token = getAuthTokenFromState(getState());
     if (!token) return rejectWithValue({ message: "Authentication required" });
     try {
       await api.delete("/api/implementation/hero", {

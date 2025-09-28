@@ -1,7 +1,37 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
-const AboutMilestones = ({ milestones = [] }) => (
+const AboutMilestones = ({ milestones = [] }) => {
+  const [defaultData, setDefaultData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/data/about.json');
+        const jsonData = await response.json();
+        setDefaultData(jsonData.milestones);
+      } catch (error) {
+        console.error('Failed to load About data:', error);
+        // Fallback data
+        setDefaultData({
+          title: "Our Milestones",
+          description: "Key achievements and milestones that mark our journey of growth, innovation, and commitment to excellence.",
+          items: []
+        });
+      }
+    };
+    fetchData();
+  }, []);
+
+  // Use props if provided, otherwise fall back to default data
+  const displayData = defaultData || {
+    title: "Our Milestones",
+    description: "Key achievements and milestones that mark our journey of growth, innovation, and commitment to excellence.",
+    items: []
+  };
+
+  const displayMilestones = milestones.length > 0 ? milestones : displayData.items;
+  return (
   <section className="py-20 relative overflow-hidden" style={{backgroundColor: '#001038'}}>
     <div className="absolute inset-0 opacity-10">
       <div className="absolute top-0 left-0 w-full h-full">
@@ -16,16 +46,15 @@ const AboutMilestones = ({ milestones = [] }) => (
     <div className="container mx-auto px-6 relative z-10">
       <div className="text-center mb-16">
         <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-          Our <span className="text-cyan-400">Milestones</span>
+          {displayData.title}
         </h2>
         <p className="text-lg text-gray-300 leading-relaxed max-w-3xl mx-auto">
-          Key achievements and milestones that mark our journey of growth, 
-          innovation, and commitment to excellence.
+          {displayData.description}
         </p>
       </div>
       <div className="max-w-4xl mx-auto">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {Array.isArray(milestones) && milestones.map((milestone, index) => (
+          {Array.isArray(displayMilestones) && displayMilestones.map((milestone, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}
@@ -44,6 +73,7 @@ const AboutMilestones = ({ milestones = [] }) => (
       </div>
     </div>
   </section>
-);
+  );
+};
 
 export default AboutMilestones; 

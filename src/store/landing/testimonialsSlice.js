@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import api, { getAuthToken } from "../../lib/api";
+import api, { getAuthTokenFromState } from "../../lib/api";
 
 /**
  * @typedef {'idle' | 'loading' | 'succeeded' | 'failed'} LoadStatus
@@ -48,7 +48,7 @@ export const fetchTestimonials = createAsyncThunk(
 export const createTestimonial = createAsyncThunk(
   "testimonials/createTestimonial",
   async ({ payload }, { getState, signal, rejectWithValue }) => {
-    const token = getAuthToken(getState());
+    const token = getAuthTokenFromState(getState());
     if (!token) return rejectWithValue({ message: "Authentication required" });
     try {
       const response = await api.post("/api/landing/testimonials", payload, {
@@ -68,7 +68,7 @@ export const createTestimonial = createAsyncThunk(
 export const updateTestimonial = createAsyncThunk(
   "testimonials/updateTestimonial",
   async ({ payload }, { getState, signal, rejectWithValue }) => {
-    const token = getAuthToken(getState());
+    const token = getAuthTokenFromState(getState());
     if (!token) return rejectWithValue({ message: "Authentication required" });
     try {
       const response = await api.patch("/api/landing/testimonials", payload, {
@@ -88,7 +88,7 @@ export const updateTestimonial = createAsyncThunk(
 export const deleteTestimonial = createAsyncThunk(
   "testimonials/deleteTestimonial",
   async ({ testimonialId }, { getState, signal, rejectWithValue }) => {
-    const token = getAuthToken(getState());
+    const token = getAuthTokenFromState(getState());
     if (!token) return rejectWithValue({ message: "Authentication required" });
     try {
       await api.delete(`/api/landing/testimonials/${testimonialId}`, {
