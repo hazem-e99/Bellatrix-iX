@@ -219,11 +219,11 @@ export const AuthProvider = ({ children }) => {
 
   // Logout function
   const logout = () => {
-    localStorage.removeItem('adminToken');
-    localStorage.removeItem('adminUser');
+    // Use centralized token manager to clear all auth data
+    clearAuthData();
     setUser(null);
     setIsAuthenticated(false);
-    toast.success('Logged out successfully');
+    toast.success('تم تسجيل الخروج بنجاح');
   };
 
   const value = {

@@ -59,6 +59,7 @@ const PageComponentsEditor = ({ pageId, pageName, onClose, onSave, showToast }) 
 
   // Load components and available components on mount
   useEffect(() => {
+    console.log("PageComponentsEditor mounted with pageId:", pageId);
     loadComponents();
     loadAvailableComponents();
   }, [pageId]);
@@ -251,6 +252,7 @@ const PageComponentsEditor = ({ pageId, pageName, onClose, onSave, showToast }) 
     try {
       setLoading(true);
       const comps = await pagesAPI.getPageComponents(pageId);
+      console.log("Loaded components:", comps);
       setComponents(comps);
     } catch (error) {
       console.error("Error loading components:", error);
@@ -318,9 +320,12 @@ const PageComponentsEditor = ({ pageId, pageName, onClose, onSave, showToast }) 
 
     try {
       setSaving(true);
+      console.log("Deleting component with ID:", componentId);
       await pagesAPI.deletePageComponent(componentId);
       
-      setComponents(prev => prev.filter(comp => comp.id !== componentId));
+      // Refresh components from API to ensure synchronization with backend
+      console.log("Refreshing components after deletion...");
+      await loadComponents();
       showToast("Component deleted successfully", "success");
     } catch (error) {
       console.error("Error deleting component:", error);

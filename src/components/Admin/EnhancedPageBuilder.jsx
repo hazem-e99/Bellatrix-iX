@@ -2063,32 +2063,6 @@ const EnhancedPageBuilder = () => {
         subtitle: "Unify online and in‑store",
         description: "Inventory, POS, and analytics",
       },
-      RetailIndustryStatsSection: {
-        title: "Retail KPIs",
-        stats: [
-          { label: "Basket size", value: "+12%" },
-          { label: "Stockouts", value: "-20%" },
-        ],
-      },
-      RetailChallengesSection: {
-        title: "Retail Challenges",
-        challenges: ["Omnichannel", "Returns", "Forecasting"],
-      },
-      RetailSolutionsSection: {
-        title: "Solutions",
-        solutions: ["OMS", "CRM", "Promotions"],
-      },
-      RetailFeaturesSection: {
-        title: "Key Features",
-        features: ["Click & collect", "Endless aisle", "Clienteling"],
-      },
-      RetailCaseStudiesSection: {
-        title: "Case Studies",
-        caseStudies: [
-          { client: "ShopX", result: "+25% online sales" },
-          { client: "Trendly", result: "-10% returns" },
-        ],
-      },
     };
 
     return (

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import { clearAuthData } from "../../utils/tokenManager";
 import {
   AppBar,
   Box,
@@ -59,7 +60,10 @@ const AdminLayout = () => {
   };
 
   const handleExitAdmin = () => {
-    navigate("/");
+    // Clear all authentication data from localStorage
+    clearAuthData();
+    // Navigate to admin login page
+    navigate("/admin/login");
     handleProfileMenuClose();
   };
 

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import { clearAuthData } from "../../utils/tokenManager";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Bars3Icon,
@@ -335,11 +336,16 @@ const ModernAdminLayout = () => {
                       </div>
                       <div className="py-2">
                         <button
-                          onClick={() => navigate("/")}
+                          onClick={() => {
+                            // Clear all authentication data from localStorage
+                            clearAuthData();
+                            // Navigate to admin login page
+                            navigate("/admin/login");
+                          }}
                           className="flex w-full items-center px-4 py-3 text-sm font-medium text-black hover:bg-blue-50 hover:text-blue-700 transition-colors duration-150"
                         >
                           <PowerIcon className="mr-3 h-4 w-4" />
-                          Exit Admin
+                          Logout
                         </button>
                       </div>
                     </motion.div>

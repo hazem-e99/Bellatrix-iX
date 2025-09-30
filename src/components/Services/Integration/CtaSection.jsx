@@ -1,33 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { integrationData } from '../../../data/integrationData';
+import { mergeStringData } from '../../../utils/dataMerger';
 
 const CtaSection = ({ title, subtitle, buttonText }) => {
-  const [defaultData, setDefaultData] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('/data/integration-data.json');
-        const jsonData = await response.json();
-        setDefaultData(jsonData.cta);
-      } catch (error) {
-        console.error('Failed to load Integration data:', error);
-        // Fallback data
-        setDefaultData({
-          title: "Ready to Integrate?",
-          subtitle: "Let's connect your systems and streamline your business operations.",
-          buttonText: "Start Integration"
-        });
-      }
-    };
-    fetchData();
-  }, []);
-
-  // Use props if provided, otherwise fall back to default data
-  const displayData = {
-    title: title || defaultData?.title || "Ready to Integrate?",
-    subtitle: subtitle || defaultData?.subtitle || "Let's connect your systems and streamline your business operations.",
-    buttonText: buttonText || defaultData?.buttonText || "Start Integration"
+  // Fallback data for when no data is available
+  const fallbackData = {
+    title: "Ready to Integrate?",
+    subtitle: "Let's connect your systems and streamline your business operations.",
+    buttonText: "Start Integration"
   };
+
+  // Merge data with priority: props > defaultData > fallbackData
+  const displayData = {
+    title: mergeStringData(title, integrationData.cta.title, fallbackData.title),
+    subtitle: mergeStringData(subtitle, integrationData.cta.subtitle, fallbackData.subtitle),
+    buttonText: mergeStringData(buttonText, integrationData.cta.buttonText, fallbackData.buttonText)
+  };
+
   return (
     <div className="max-w-2xl mx-auto px-4">
       <h2 className="text-3xl md:text-4xl font-bold mb-4">{displayData.title}</h2>

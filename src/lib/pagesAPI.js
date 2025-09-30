@@ -250,9 +250,16 @@ const pagesAPI = {
    */
   async getPageComponents(pageId) {
     try {
-      const response = await api.get(`/Pages/${pageId}/components`);
-      console.log("Page components response:", response.data);
-      return Array.isArray(response.data) ? response.data : [];
+      // Use the getPageById endpoint with includeComponents=true to get components
+      const response = await api.get(`/Pages/${pageId}?includeComponents=true`);
+      console.log("Page with components response:", response.data);
+      
+      // Extract components from the page data
+      const pageData = response.data;
+      const components = pageData?.components || [];
+      
+      console.log("Extracted components:", components);
+      return Array.isArray(components) ? components : [];
     } catch (error) {
       console.error(`Error fetching components for page ${pageId}:`, error);
       throw error;

@@ -1,36 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { integrationData } from '../../../data/integrationData';
+import { mergeStringData, mergeArrayData } from '../../../utils/dataMerger';
 
 const PopularIntegrations = ({ title, platforms }) => {
-  const [defaultData, setDefaultData] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('/data/integration-data.json');
-        const jsonData = await response.json();
-        setDefaultData(jsonData.popularIntegrations);
-      } catch (error) {
-        console.error('Failed to load Integration data:', error);
-        // Fallback data
-        setDefaultData({
-          title: "Popular Integrations",
-          platforms: []
-        });
-      }
-    };
-    fetchData();
-  }, []);
-
-  // Use props if provided, otherwise fall back to default data with proper mapping
-  const displayData = {
-    title: title || defaultData?.title || "Popular Integrations",
-    platforms: (platforms && platforms.length > 0) ? platforms : 
-               (defaultData?.platforms && defaultData.platforms.length > 0) ? defaultData.platforms : 
-               [
-                 "Shopify", "Magento", "Salesforce", "HubSpot", "PayPal", "Stripe",
-                 "Amazon", "eBay", "QuickBooks", "Xero", "Slack", "Microsoft Office"
-               ]
+  // Fallback data for when no data is available
+  const fallbackData = {
+    title: "Popular Integrations",
+    platforms: [
+      "Shopify", "Magento", "Salesforce", "HubSpot", "PayPal", "Stripe",
+      "Amazon", "eBay", "QuickBooks", "Xero", "Slack", "Microsoft Office"
+    ]
   };
+
+  // Merge data with priority: props > defaultData > fallbackData
+  const displayData = {
+    title: mergeStringData(title, integrationData.popularIntegrations.title, fallbackData.title),
+    platforms: mergeArrayData(platforms, integrationData.popularIntegrations.platforms, fallbackData.platforms)
+  };
+
   return (
     <div className="max-w-6xl mx-auto px-4">
       <h2 className="text-3xl font-bold mb-10 text-blue-800 text-center">{displayData.title}</h2>

@@ -1,69 +1,60 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { integrationData } from '../../../data/integrationData';
+import { mergeStringData, mergeArrayData } from '../../../utils/dataMerger';
 
 const IntegrationTypes = ({ title, items, types }) => {
-  const [defaultData, setDefaultData] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('/data/integration-data.json');
-        const jsonData = await response.json();
-        setDefaultData(jsonData.integrationTypes);
-      } catch (error) {
-        console.error('Failed to load Integration data:', error);
-        // Fallback data
-        setDefaultData({
-          title: "Integration Solutions",
-          items: []
-        });
+  // Fallback data for when no data is available
+  const fallbackData = {
+    title: "Integration Solutions",
+    items: [
+      {
+        title: "E-commerce Integration",
+        description: "Connect NetSuite with Shopify, Magento, WooCommerce, and other platforms",
+        icon: "🛒"
+      },
+      {
+        title: "CRM Integration",
+        description: "Integrate with Salesforce, HubSpot, and other CRM systems",
+        icon: "👥"
+      },
+      {
+        title: "Payment Gateway Integration",
+        description: "Connect with PayPal, Stripe, Square, and other payment processors",
+        icon: "💳"
+      },
+      {
+        title: "Warehouse Management",
+        description: "Integrate with WMS systems for inventory management",
+        icon: "📦"
+      },
+      {
+        title: "Banking & Financial",
+        description: "Connect with banks and financial institutions for automated transactions",
+        icon: "🏦"
+      },
+      {
+        title: "Custom API Integration",
+        description: "Build custom integrations with any third-party system",
+        icon: "🔌"
       }
-    };
-    fetchData();
-  }, []);
-
-  // Use props if provided, otherwise fall back to default data with proper mapping
-  const displayData = {
-    title: title || defaultData?.title || "Integration Solutions",
-    items: (items && items.length > 0) ? items : 
-           (types && types.length > 0) ? types.map(type => ({
-             title: type,
-             description: `Integration with ${type}`,
-             icon: "🔌"
-           })) : 
-           (defaultData?.items && defaultData.items.length > 0) ? defaultData.items : 
-           [
-             {
-               title: "E-commerce Integration",
-               description: "Connect NetSuite with Shopify, Magento, WooCommerce, and other platforms",
-               icon: "🛒"
-             },
-             {
-               title: "CRM Integration",
-               description: "Integrate with Salesforce, HubSpot, and other CRM systems",
-               icon: "👥"
-             },
-             {
-               title: "Payment Gateway Integration",
-               description: "Connect with PayPal, Stripe, Square, and other payment processors",
-               icon: "💳"
-             },
-             {
-               title: "Warehouse Management",
-               description: "Integrate with WMS systems for inventory management",
-               icon: "📦"
-             },
-             {
-               title: "Banking & Financial",
-               description: "Connect with banks and financial institutions for automated transactions",
-               icon: "🏦"
-             },
-             {
-               title: "Custom API Integration",
-               description: "Build custom integrations with any third-party system",
-               icon: "🔌"
-             }
-           ]
+    ]
   };
+
+  // Handle types array conversion if provided
+  const convertedTypes = types && Array.isArray(types) && types.length > 0 
+    ? types.map(type => ({
+        title: type,
+        description: `Integration with ${type}`,
+        icon: "🔌"
+      }))
+    : [];
+
+  // Merge data with priority: props > defaultData > fallbackData
+  const displayData = {
+    title: mergeStringData(title, integrationData.integrationTypes.title, fallbackData.title),
+    items: mergeArrayData(items, integrationData.integrationTypes.items, convertedTypes.length > 0 ? convertedTypes : fallbackData.items)
+  };
+
   return (
     <div className="max-w-6xl mx-auto px-4">
       <h2 className="text-3xl font-bold mb-10 text-blue-800 text-center">{displayData.title}</h2>

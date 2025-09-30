@@ -1,31 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { integrationData } from '../../../data/integrationData';
+import { mergeStringData } from '../../../utils/dataMerger';
 
 const HeroSection = ({ title, subtitle }) => {
-  const [defaultData, setDefaultData] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('/data/integration-data.json');
-        const jsonData = await response.json();
-        setDefaultData(jsonData.hero);
-      } catch (error) {
-        console.error('Failed to load Integration data:', error);
-        // Fallback data
-        setDefaultData({
-          title: "NetSuite Integration Services",
-          subtitle: "Connect NetSuite with your existing systems for seamless data flow"
-        });
-      }
-    };
-    fetchData();
-  }, []);
-
-  // Use props if provided, otherwise fall back to default data
-  const displayData = {
-    title: title || defaultData?.title || "NetSuite Integration Services",
-    subtitle: subtitle || defaultData?.subtitle || "Connect NetSuite with your existing systems for seamless data flow"
+  // Fallback data for when no data is available
+  const fallbackData = {
+    title: "NetSuite Integration Services",
+    subtitle: "Connect NetSuite with your existing systems for seamless data flow"
   };
+
+  // Merge data with priority: props > defaultData > fallbackData
+  const displayData = {
+    title: mergeStringData(title, integrationData.hero.title, fallbackData.title),
+    subtitle: mergeStringData(subtitle, integrationData.hero.subtitle, fallbackData.subtitle)
+  };
+
   return (
     <div className="w-full min-h-screen bg-gradient-to-br from-[#191970] via-black to-blue-700 py-24 md:py-32 text-center flex flex-col items-center justify-center relative overflow-hidden">
       <div className="absolute inset-0 bg-black/30 z-0"></div>

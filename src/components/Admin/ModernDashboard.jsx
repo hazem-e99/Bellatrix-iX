@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import {
   DocumentTextIcon,
   EyeIcon,
@@ -10,70 +11,157 @@ import {
   CalendarIcon,
   PlusIcon,
   ArrowTopRightOnSquareIcon,
+  ExclamationTriangleIcon,
+  CheckCircleIcon,
 } from "@heroicons/react/24/outline";
 import Card, { CardContent, CardHeader, CardTitle } from "../ui/Card";
 import Button from "../ui/Button";
+import dashboardAPI from "../../lib/dashboardAPI";
+import toast from "react-hot-toast";
 
 const ModernDashboard = () => {
-  // Mock data - replace with real data from your JSON server
+  const navigate = useNavigate();
+  
+  // State for dashboard data
+  const [dashboardData, setDashboardData] = useState({
+    stats: null,
+    recentActivity: [],
+    systemStatus: null
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch dashboard data on component mount
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        // Fetch all dashboard data in parallel
+        const [statsData, recentMessages, recentPages, systemStatus] = await Promise.all([
+          dashboardAPI.getDashboardStats(),
+          dashboardAPI.getRecentContactMessages(5),
+          dashboardAPI.getRecentPages(5),
+          dashboardAPI.getSystemStatus()
+        ]);
+
+        // Transform stats data into the format expected by the UI
   const stats = [
     {
       id: 1,
       name: "Total Pages",
-      value: "24",
-      change: "+12%",
+            value: statsData.pages.total.toString(),
+            change: "+12%", // This would need historical data to calculate
       changeType: "increase",
       icon: DocumentTextIcon,
       color: "blue",
     },
-    
-    {
-      id: 3,
-      name: "Page Views",
-      value: "1,234",
-      change: "+8.2%",
+          {
+            id: 2,
+            name: "Published Pages",
+            value: statsData.pages.published.toString(),
+            change: "+8%",
       changeType: "increase",
       icon: EyeIcon,
       color: "green",
     },
+          {
+            id: 3,
+            name: "Total Media",
+            value: statsData.media.totalMedia?.toString() || "0",
+            change: "+5%",
+            changeType: "increase",
+            icon: DocumentTextIcon,
+            color: "purple",
+          },
     {
       id: 4,
-      name: "Avg. Load Time",
-      value: "1.2s",
-      change: "-0.3s",
-      changeType: "decrease",
-      icon: ClockIcon,
+            name: "Contact Messages",
+            value: statsData.contact.totalMessages?.toString() || "0",
+            change: "+15%",
+            changeType: "increase",
+            icon: UsersIcon,
       color: "orange",
     },
   ];
 
+        // Transform recent activity from messages and pages
   const recentActivity = [
-    {
-      id: 1,
-      action: "Page created",
-      item: "About Us",
+          ...recentMessages.map((message, index) => ({
+            id: `msg-${message.id || index}`,
+            action: "New message received",
+            item: message.subject || message.name || "Contact Form",
+            user: message.name || "Anonymous",
+            time: formatTimeAgo(message.createdAt || new Date()),
+            type: "message",
+          })),
+          ...recentPages.map((page, index) => ({
+            id: `page-${page.id || index}`,
+            action: page.isPublished ? "Page published" : "Page created",
+            item: page.name || page.title || "Untitled Page",
       user: "Admin",
-      time: "2 minutes ago",
-      type: "create",
-    },
-    
-    {
-      id: 3,
-      action: "Page published",
-      item: "Services",
-      user: "Admin",
-      time: "3 hours ago",
-      type: "publish",
-    },
-    {
-      id: 4,
-      action: "Settings changed",
-      item: "Site Configuration",
-      user: "Admin",
-      time: "1 day ago",
-      type: "settings",
-    },
-  ];
+            time: formatTimeAgo(page.createdAt || new Date()),
+            type: page.isPublished ? "publish" : "create",
+          })),
+        ].slice(0, 5); // Limit to 5 most recent activities
+
+        setDashboardData({
+          stats,
+          recentActivity,
+          systemStatus
+        });
+
+      } catch (err) {
+        console.error("Error fetching dashboard data:", err);
+        setError(err.message || "Failed to load dashboard data");
+        toast.error("Failed to load dashboard data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
+
+  // Helper function to format time ago
+  const formatTimeAgo = (date) => {
+    const now = new Date();
+    const past = new Date(date);
+    const diffInMinutes = Math.floor((now - past) / (1000 * 60));
+
+    if (diffInMinutes < 1) return "Just now";
+    if (diffInMinutes < 60) return `${diffInMinutes} minutes ago`;
+    if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)} hours ago`;
+    return `${Math.floor(diffInMinutes / 1440)} days ago`;
+  };
+
+  // Helper function to handle quick action clicks
+  const handleQuickAction = (action) => {
+    switch (action.id) {
+      case 1: // Create New Page
+        navigate("/admin/pages/enhanced-create");
+        toast.success("Redirecting to page creation...");
+        break;
+      case 2: // Manage Pages
+        navigate("/admin/pages");
+        toast.success("Opening pages management...");
+        break;
+      case 3: // View Site
+        window.open("/", "_blank");
+        toast.success("Opening site in new tab...");
+        break;
+      case 4: // Analytics
+        // For now, show a message since analytics page might not exist yet
+        toast("Analytics feature coming soon!", {
+          icon: "ℹ️",
+          duration: 3000,
+        });
+        break;
+      default:
+        console.log("Unknown action:", action);
+    }
+  };
 
   const quickActions = [
     {
@@ -81,10 +169,17 @@ const ModernDashboard = () => {
       name: "Create New Page",
       description: "Add a new page to your site",
       icon: PlusIcon,
-      action: "/admin/pages/new",
+      action: "/admin/pages/enhanced-create",
       color: "blue",
     },
-    
+    {
+      id: 2,
+      name: "Manage Pages",
+      description: "Edit and organize your pages",
+      icon: DocumentTextIcon,
+      action: "/admin/pages",
+      color: "purple",
+    },
     {
       id: 3,
       name: "View Site",
@@ -143,12 +238,84 @@ const ModernDashboard = () => {
         return (
           <ArrowTopRightOnSquareIcon className="h-4 w-4 text-purple-500" />
         );
+      case "message":
+        return <UsersIcon className="h-4 w-4 text-blue-500" />;
       case "settings":
         return <ClockIcon className="h-4 w-4 text-orange-500" />;
       default:
         return <DocumentTextIcon className="h-4 w-4 text-gray-500" />;
     }
   };
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="space-y-6 text-white">
+        <div className="mb-8">
+          <h2 className="text-3xl font-bold text-white mb-2">
+            Welcome back! 👋
+          </h2>
+          <p className="text-gray-300 text-lg">
+            Loading your dashboard...
+          </p>
+        </div>
+        
+        {/* Loading skeleton */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[1, 2, 3, 4].map((i) => (
+            <Card key={i} className="bg-white/10 border border-white/20 shadow animate-pulse">
+              <CardContent>
+                <div className="flex items-center justify-between">
+                  <div className="space-y-2">
+                    <div className="h-4 bg-white/20 rounded w-20"></div>
+                    <div className="h-8 bg-white/20 rounded w-16"></div>
+                    <div className="h-3 bg-white/20 rounded w-24"></div>
+                  </div>
+                  <div className="h-12 w-12 bg-white/20 rounded-lg"></div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="space-y-6 text-white">
+        <div className="mb-8">
+          <h2 className="text-3xl font-bold text-white mb-2">
+            Welcome back! 👋
+          </h2>
+          <p className="text-gray-300 text-lg">
+            There was an error loading your dashboard.
+          </p>
+        </div>
+        
+        <Card className="bg-red-500/10 border border-red-500/20 shadow">
+          <CardContent className="p-6">
+            <div className="flex items-center space-x-3">
+              <ExclamationTriangleIcon className="h-6 w-6 text-red-400" />
+              <div>
+                <h3 className="text-lg font-medium text-red-400">Error Loading Dashboard</h3>
+                <p className="text-red-300">{error}</p>
+                <Button 
+                  onClick={() => window.location.reload()} 
+                  className="mt-3 bg-red-600 hover:bg-red-700 text-white"
+                >
+                  Retry
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  const { stats, recentActivity, systemStatus } = dashboardData;
 
   return (
     <div className="space-y-6 text-white">
@@ -257,7 +424,8 @@ const ModernDashboard = () => {
                     >
                       <Button
                         variant="outline"
-                        className="h-auto p-4 flex-col items-start space-y-2 w-full bg-white/10 hover:bg-white/10 border-white/20 text-white"
+                         className="h-auto p-4 flex-col items-start space-y-2 w-full bg-white/10 hover:bg-white/20 border-white/20 text-white transition-all duration-200"
+                         onClick={() => handleQuickAction(action)}
                       >
                         <div className={`p-2 rounded-lg bg-white/10 border border-white/20`}>
                           <IconComponent
@@ -338,40 +506,57 @@ const ModernDashboard = () => {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="flex items-center space-x-3">
-                <div className="h-3 w-3 bg-green-500 rounded-full animate-pulse"></div>
+              {systemStatus && Object.entries(systemStatus).map(([key, status]) => {
+                if (key === 'lastChecked') return null;
+                
+                const getStatusColor = (status) => {
+                  switch (status.status) {
+                    case 'online':
+                    case 'connected':
+                      return 'bg-green-500';
+                    case 'error':
+                      return 'bg-red-500';
+                    case 'unknown':
+                      return 'bg-yellow-500';
+                    default:
+                      return 'bg-gray-500';
+                  }
+                };
+
+                const getStatusIcon = (status) => {
+                  switch (status.status) {
+                    case 'online':
+                    case 'connected':
+                      return <CheckCircleIcon className="h-4 w-4 text-green-400" />;
+                    case 'error':
+                      return <ExclamationTriangleIcon className="h-4 w-4 text-red-400" />;
+                    default:
+                      return <ClockIcon className="h-4 w-4 text-yellow-400" />;
+                  }
+                };
+
+                return (
+                  <div key={key} className="flex items-center space-x-3">
+                    <div className={`h-3 w-3 ${getStatusColor(status)} rounded-full animate-pulse`}></div>
                 <div>
-                  <p className="text-sm font-medium text-white">
-                    Website
+                      <p className="text-sm font-medium text-white capitalize">
+                        {key}
                   </p>
                   <p className="text-xs text-gray-300">
-                    Online & Operational
+                        {status.message}
                   </p>
                 </div>
               </div>
-              <div className="flex items-center space-x-3">
-                <div className="h-3 w-3 bg-green-500 rounded-full animate-pulse"></div>
-                <div>
-                  <p className="text-sm font-medium text-white">
-                    Database
-                  </p>
-                  <p className="text-xs text-gray-300">
-                    Connected
+                );
+              })}
+                </div>
+            {systemStatus?.lastChecked && (
+              <div className="mt-4 pt-4 border-t border-white/10">
+                <p className="text-xs text-gray-400">
+                  Last checked: {new Date(systemStatus.lastChecked).toLocaleString()}
                   </p>
                 </div>
-              </div>
-              <div className="flex items-center space-x-3">
-                <div className="h-3 w-3 bg-yellow-500 rounded-full animate-pulse"></div>
-                <div>
-                  <p className="text-sm font-medium text-white">
-                    Backup
-                  </p>
-                  <p className="text-xs text-gray-300">
-                    Last: 2 hours ago
-                  </p>
-                </div>
-              </div>
-            </div>
+            )}
           </CardContent>
         </Card>
       </motion.div>
