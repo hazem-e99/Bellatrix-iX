@@ -2,6 +2,7 @@ import React, { useState, useEffect, Suspense, lazy } from "react";
 import { useParams } from "react-router-dom";
 import pagesAPI from "../lib/pagesAPI";
 import { getComponentPathFromId, loadComponent } from "./componentMap";
+import { normalizeProps, validateProps } from "../utils/normalizeProps";
 
 const DynamicPageRenderer = () => {
   const { slug } = useParams();
@@ -603,6 +604,80 @@ const DynamicPageRenderer = () => {
     }
   };
 
+  // Helper function to extract and normalize data from various formats (consistent with PagePreview)
+  const extractComponentData = (component) => {
+    let rawData = {};
+    
+    // Always try to parse contentJson first - this is the primary data source
+    if (component.contentJson) {
+      try {
+        // Ensure contentJson is parsed from string to object
+        rawData = typeof component.contentJson === 'string' 
+          ? JSON.parse(component.contentJson) 
+          : component.contentJson;
+        
+        // Log parsed data for debugging
+        console.log(`Parsed contentJson for ${component.componentType}:`, rawData);
+        
+      } catch (err) {
+        console.warn(`Failed to parse contentJson for ${component.componentType}:`, err);
+        console.warn('Raw contentJson:', component.contentJson);
+      }
+    }
+    
+    // If no data or empty data, try to use component properties directly
+    if (!rawData || Object.keys(rawData).length === 0) {
+      // Check if component has direct properties
+      const directProps = ['title', 'subtitle', 'description', 'image', 'programs', 'features'];
+      directProps.forEach(prop => {
+        if (component[prop] !== undefined) {
+          rawData[prop] = component[prop];
+        }
+      });
+    }
+    
+    // Use normalizeProps to map the raw data to the correct component props
+    const normalizedData = normalizeProps(component.componentType, rawData);
+    
+    // Validate the normalized props
+    const validation = validateProps(component.componentType, normalizedData);
+    if (!validation.isValid) {
+      console.warn(`Missing required props for ${component.componentType}:`, validation.missingProps);
+    }
+    
+    // Final log to verify complete data
+    console.log(`Final normalized props for ${component.componentType}:`, normalizedData);
+    
+    return normalizedData;
+  };
+
+  // Normalize common props so sections don't crash on undefined
+  const buildSafeProps = (props) => {
+    const commonArrayKeys = [
+      "items",
+      "list",
+      "milestones",
+      "services",
+      "steps",
+      "faqs",
+      "features",
+      "plans",
+      "members",
+      "values",
+      "sections",
+      "cases",
+      "caseStudies",
+      "benefits",
+      "types",
+      "programs",
+    ];
+    const safe = { ...(props || {}) };
+    commonArrayKeys.forEach((key) => {
+      if (safe[key] === undefined || safe[key] === null) safe[key] = [];
+    });
+    return safe;
+  };
+
   // Render page sections dynamically using actual components
   const renderSection = (section, index) => {
     const sectionId = pageData.components ? `component-${index}` : section.uid;
@@ -611,17 +686,25 @@ const DynamicPageRenderer = () => {
     if (componentData && componentData.Component) {
       const { Component, sectionData } = componentData;
 
-      // Handle new components format
+      // Handle new components format - use consistent logic with PagePreview
       if (pageData.components) {
-        const componentProps = JSON.parse(section.contentJson);
-        const transformedProps = transformProps(
-          section.componentType,
-          componentProps
-        );
-        return <Component key={sectionId} {...transformedProps} />;
+        const normalizedProps = extractComponentData(section);
+        const safeProps = buildSafeProps(normalizedProps);
+        
+        // Add any missing function props that components might expect
+        const propsToPass = {
+          ...safeProps,
+          // Add common function props that components might need
+          renderIcon: safeProps.renderIcon || (() => null),
+          openProgramModal: safeProps.openProgramModal || (() => {}),
+          openFeatureModal: safeProps.openFeatureModal || (() => {}),
+          onCtaClick: safeProps.onCtaClick || (() => {})
+        };
+        
+        return <Component key={sectionId} {...propsToPass} />;
       }
 
-      // Handle old sections format
+      // Handle old sections format - keep existing logic for backward compatibility
       const transformedProps = transformProps(
         section.componentId,
         section.props
@@ -654,10 +737,16 @@ const DynamicPageRenderer = () => {
               // Show component data for new format
               <div className="space-y-2">
                 <h3 className="text-lg font-medium text-gray-900 dark:text-white">
-                  Component Data:
+                  Component Data (contentJson):
                 </h3>
                 <pre className="bg-gray-100 dark:bg-gray-700 p-4 rounded text-sm overflow-auto">
                   {section.contentJson}
+                </pre>
+                <h4 className="text-md font-medium text-gray-900 dark:text-white">
+                  Parsed & Normalized Props:
+                </h4>
+                <pre className="bg-gray-100 dark:bg-gray-700 p-4 rounded text-sm overflow-auto">
+                  {JSON.stringify(extractComponentData(section), null, 2)}
                 </pre>
               </div>
             ) : (

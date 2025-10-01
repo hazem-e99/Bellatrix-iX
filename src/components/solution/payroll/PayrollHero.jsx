@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const PayrollHero = ({ title, subtitle, bgColor, bgVideo, onCtaClick }) => {
+const PayrollHero = ({ title, subtitle, description, ctaButton, backgroundImage, bgColor, bgVideo, onCtaClick }) => {
   const [defaultData, setDefaultData] = useState(null);
 
   useEffect(() => {
@@ -25,6 +25,9 @@ const PayrollHero = ({ title, subtitle, bgColor, bgVideo, onCtaClick }) => {
   const displayData = {
     title: title || defaultData?.title || "Transform Your Payroll Process",
     subtitle: subtitle || defaultData?.subtitle || "Streamline operations with our intelligent, automated payroll system",
+    description: description || defaultData?.description,
+    ctaButton: ctaButton || defaultData?.ctaButton,
+    backgroundImage: backgroundImage || defaultData?.backgroundImage || "/images/payrollFinal.jpeg",
     bgColor: bgColor || defaultData?.bgColor,
     bgVideo: bgVideo || defaultData?.bgVideo
   };
@@ -34,10 +37,11 @@ const PayrollHero = ({ title, subtitle, bgColor, bgVideo, onCtaClick }) => {
     {/* Background Image */}
     <div className="absolute inset-0">
       <img 
-        src="/images/payrollFinal.jpeg" 
+        src={displayData.backgroundImage} 
         alt="Payroll Dashboard Interface"
         className="w-full h-full object-cover"
         onError={(e) => {
+          console.error('Background image failed to load:', e.target.src);
           e.target.style.backgroundColor = '#1e40af';
         }}
       />
@@ -54,6 +58,21 @@ const PayrollHero = ({ title, subtitle, bgColor, bgVideo, onCtaClick }) => {
             <p className="text-lg md:text-xl lg:text-2xl text-gray-100 leading-relaxed font-medium drop-shadow-md text-center" style={{textShadow: '0 0 15px rgba(255, 255, 255, 0.4), 0 0 30px rgba(255, 255, 255, 0.2)'}}>
               {displayData.subtitle}
             </p>
+            {displayData.description && (
+              <p className="text-base md:text-lg text-gray-200 leading-relaxed drop-shadow-md text-center" style={{textShadow: '0 0 10px rgba(255, 255, 255, 0.3), 0 0 20px rgba(255, 255, 255, 0.1)'}}>
+                {displayData.description}
+              </p>
+            )}
+            {displayData.ctaButton && (
+              <div className="mt-8">
+                <button
+                  onClick={onCtaClick || (() => window.location.href = displayData.ctaButton.link)}
+                  className="inline-flex items-center px-8 py-4 text-lg font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
+                >
+                  {displayData.ctaButton.text}
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

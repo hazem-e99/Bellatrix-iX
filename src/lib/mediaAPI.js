@@ -158,6 +158,21 @@ const mediaAPI = {
       throw error;
     }
   },
+
+  /**
+   * Get media item by ID from public endpoint
+   * @param {number} mediaId - Media ID
+   * @returns {Promise<Object>} Media item with fileUrl
+   */
+  async getMediaPublicById(mediaId) {
+    try {
+      const response = await api.get(`/Media/public/${mediaId}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching public media by ID:", error);
+      throw error;
+    }
+  },
 };
 
 export default mediaAPI;

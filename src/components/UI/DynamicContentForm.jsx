@@ -5,8 +5,12 @@ import {
   PhotoIcon,
   VideoCameraIcon,
   XMarkIcon,
+  PlusIcon,
+  TrashIcon,
 } from "@heroicons/react/24/outline";
 import api from "../../lib/api";
+import mediaAPI from "../../lib/mediaAPI";
+import { getFieldConfigForComponent } from "../../data/componentSchemas";
 
 // Media Picker Modal Component
 const MediaPickerModal = ({ isOpen, onClose, onSelect }) => {
@@ -100,47 +104,72 @@ const MediaPickerModal = ({ isOpen, onClose, onSelect }) => {
     }
   };
 
-  const handleSelect = () => {
+  const handleSelect = async () => {
     if (selectedMedia) {
-      console.log("✅ Selected media:", selectedMedia);
-      // Add base URL if the path is relative
-      const mediaUrl =
-        selectedMedia.fileUrl || selectedMedia.filePath || selectedMedia.url;
-      const fullUrl = mediaUrl?.startsWith("http")
-        ? mediaUrl
-        : `http://bellatrix.runasp.net${mediaUrl}`;
-      console.log("🔗 Full media URL:", fullUrl);
-      onSelect(fullUrl);
-      onClose();
-      setSelectedMedia(null);
+      try {
+        console.log("🔍 Fetching media details for ID:", selectedMedia.id);
+        const mediaDetails = await mediaAPI.getMediaPublicById(selectedMedia.id);
+        console.log("📥 Media details response:", mediaDetails);
+        
+        // Extract fileUrl from the response
+        const fileUrl = mediaDetails.fileUrl;
+        console.log("🔗 Media fileUrl:", fileUrl);
+        
+        // Build full URL
+        const fullUrl = fileUrl?.startsWith("http")
+          ? fileUrl
+          : `http://bellatrix.runasp.net${fileUrl}`;
+        console.log("✅ Final full URL:", fullUrl);
+        
+        onSelect(fullUrl);
+        onClose();
+        setSelectedMedia(null);
+      } catch (error) {
+        console.error("❌ Error fetching media details:", error);
+        
+        // Fallback to original behavior if API call fails
+        console.log("✅ Selected media (fallback):", selectedMedia);
+        const mediaUrl =
+          selectedMedia.fileUrl || selectedMedia.filePath || selectedMedia.url;
+        const fullUrl = mediaUrl?.startsWith("http")
+          ? mediaUrl
+          : `http://bellatrix.runasp.net${mediaUrl}`;
+        console.log("🔗 Full media URL (fallback):", fullUrl);
+        onSelect(fullUrl);
+        onClose();
+        setSelectedMedia(null);
+      }
     }
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-4xl h-3/4 flex flex-col">
-        <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-4xl h-[600px] flex flex-col">
+        <div className="p-6 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
           <div className="flex justify-between items-center">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white">
               Select Media
             </h3>
-            <button
-              onClick={onClose}
-              className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 p-1"
-            >
-              <XMarkIcon className="h-6 w-6" />
-            </button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleUploadClick}
-              disabled={uploading}
-              className="ml-2"
-            >
-              {uploading ? "Uploading..." : "Upload Media"}
-            </Button>
+            <div className="flex items-center gap-3">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleUploadClick}
+                disabled={uploading}
+                className="flex items-center gap-2"
+              >
+                <PhotoIcon className="h-4 w-4" />
+                {uploading ? "Uploading..." : "Upload Media"}
+              </Button>
+              <button
+                onClick={onClose}
+                className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              >
+                <XMarkIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+              </button>
+            </div>
             <input
               type="file"
               ref={fileInputRef}
@@ -285,18 +314,18 @@ const MediaPickerModal = ({ isOpen, onClose, onSelect }) => {
           )}
         </div>
 
-        <div className="p-6 border-t border-gray-200 dark:border-gray-700 flex justify-end space-x-3">
+        <div className="p-6 border-t border-gray-200 dark:border-gray-700 flex-shrink-0 flex justify-end space-x-3">
           <Button
             variant="outline"
             onClick={onClose}
-            className="text-gray-600 border-gray-300"
+            className="text-gray-600 dark:text-gray-400 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
           >
             Cancel
           </Button>
           <Button
             onClick={handleSelect}
             disabled={!selectedMedia}
-            className="bg-blue-600 text-white"
+            className="bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Select Media
           </Button>
@@ -307,10 +336,11 @@ const MediaPickerModal = ({ isOpen, onClose, onSelect }) => {
 };
 
 // Dynamic Content Form Component
-const DynamicContentForm = ({ contentJson, onChange, className = "" }) => {
+const DynamicContentForm = ({ contentJson, onChange, className = "", componentType = null }) => {
   const [parsedContent, setParsedContent] = useState({});
   const [mediaPickerOpen, setMediaPickerOpen] = useState(false);
   const [currentMediaField, setCurrentMediaField] = useState(null);
+  const [fieldConfig, setFieldConfig] = useState({});
 
   // Parse contentJson on mount and when it changes
   useEffect(() => {
@@ -326,6 +356,15 @@ const DynamicContentForm = ({ contentJson, onChange, className = "" }) => {
       setParsedContent({});
     }
   }, [contentJson]);
+
+  // Load field configuration for the component type
+  useEffect(() => {
+    if (componentType) {
+      const config = getFieldConfigForComponent(componentType);
+      setFieldConfig(config);
+      console.log(`📝 Field config for ${componentType}:`, config);
+    }
+  }, [componentType]);
 
   // Fields that should use media picker instead of text input
   const mediaFields = [
@@ -425,11 +464,37 @@ const DynamicContentForm = ({ contentJson, onChange, className = "" }) => {
       if (Array.isArray(value)) {
         // Render array items as individual inputs or nested objects
         fields.push(
-          <div key={fieldPath} className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 capitalize">
-              {key.replace(/([A-Z])/g, " $1").trim()}
-            </label>
-            <div className="space-y-2">
+          <div key={fieldPath} className="space-y-3">
+            <div className="flex items-center justify-between">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 capitalize">
+                {key.replace(/([A-Z])/g, " $1").trim()}
+              </label>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  const newArr = [...value];
+                  if (value.length > 0 && typeof value[0] === "object") {
+                    // Add new object with same structure as first item
+                    const newItem = {};
+                    Object.keys(value[0]).forEach(subKey => {
+                      newItem[subKey] = "";
+                    });
+                    newArr.push(newItem);
+                  } else {
+                    // Add new primitive value
+                    newArr.push("");
+                  }
+                  updateField(fieldPath, newArr);
+                }}
+                className="text-xs px-2 py-1"
+              >
+                <PlusIcon className="h-3 w-3 mr-1" />
+                Add Item
+              </Button>
+            </div>
+            <div className="space-y-3">
               {value.map((item, idx) => {
                 const itemPath = `${fieldPath}[${idx}]`;
                 if (item && typeof item === "object") {
@@ -437,12 +502,27 @@ const DynamicContentForm = ({ contentJson, onChange, className = "" }) => {
                   return (
                     <div
                       key={itemPath}
-                      className="border border-gray-200 dark:border-gray-600 rounded-lg p-2"
+                      className="border border-gray-200 dark:border-gray-600 rounded-lg p-4 bg-gray-50 dark:bg-gray-800"
                     >
-                      <div className="text-xs text-gray-500 mb-1">
-                        Item {idx + 1}
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                          Item {idx + 1}
+                        </div>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            const newArr = [...value];
+                            newArr.splice(idx, 1);
+                            updateField(fieldPath, newArr);
+                          }}
+                          className="text-red-600 hover:text-red-700 text-xs px-2 py-1"
+                        >
+                          <TrashIcon className="h-3 w-3" />
+                        </Button>
                       </div>
-                      <div className="space-y-2">
+                      <div className="space-y-3">
                         {renderFields(item, itemPath)}
                       </div>
                     </div>
@@ -450,17 +530,31 @@ const DynamicContentForm = ({ contentJson, onChange, className = "" }) => {
                 } else {
                   // Render simple input for primitive array item
                   return (
-                    <Input
-                      key={itemPath}
-                      value={item || ""}
-                      onChange={(e) => {
-                        const newArr = [...value];
-                        newArr[idx] = e.target.value;
-                        updateField(fieldPath, newArr);
-                      }}
-                      placeholder={`Item ${idx + 1}`}
-                      className="w-full"
-                    />
+                    <div key={itemPath} className="flex items-center space-x-2">
+                      <Input
+                        value={item || ""}
+                        onChange={(e) => {
+                          const newArr = [...value];
+                          newArr[idx] = e.target.value;
+                          updateField(fieldPath, newArr);
+                        }}
+                        placeholder={`Item ${idx + 1}`}
+                        className="flex-1"
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          const newArr = [...value];
+                          newArr.splice(idx, 1);
+                          updateField(fieldPath, newArr);
+                        }}
+                        className="text-red-600 hover:text-red-700 px-2 py-1"
+                      >
+                        <TrashIcon className="h-4 w-4" />
+                      </Button>
+                    </div>
                   );
                 }
               })}

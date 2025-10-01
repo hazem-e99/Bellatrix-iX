@@ -14,6 +14,7 @@ import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import Button from "../ui/Button";
 import Toast from "../ui/Toast";
 import axios from "axios";
+import mediaAPI from "../../lib/mediaAPI";
 
 // API Constants
 const BASE_API = "http://bellatrix.runasp.net/api";
@@ -324,26 +325,48 @@ const MediaPicker = ({
 
   // Handle media selection
   const handleSelect = useCallback(
-    (mediaItem) => {
-      if (maxSelection === 1) {
-        // Single selection - immediately call onSelect and close
-        const fullUrl = toFullUrl(mediaItem.fileUrl);
-        onSelect(fullUrl, mediaItem);
-        onClose();
-      } else {
-        // Multiple selection
-        setSelectedItems((prev) => {
-          const isSelected = prev.find((item) => item.id === mediaItem.id);
-          if (isSelected) {
-            return prev.filter((item) => item.id !== mediaItem.id);
-          } else if (prev.length < maxSelection) {
-            return [...prev, mediaItem];
-          }
-          return prev;
-        });
+    async (mediaItem) => {
+      try {
+        // Fetch detailed media information using the public endpoint
+        console.log("🔍 Fetching media details for ID:", mediaItem.id);
+        const mediaDetails = await mediaAPI.getMediaPublicById(mediaItem.id);
+        console.log("📥 Media details response:", mediaDetails);
+        
+        // Extract fileUrl from the response
+        const fileUrl = mediaDetails.fileUrl;
+        console.log("🔗 Media fileUrl:", fileUrl);
+        
+        if (maxSelection === 1) {
+          // Single selection - build full URL and call onSelect
+          const fullUrl = toFullUrl(fileUrl);
+          console.log("✅ Final full URL:", fullUrl);
+          onSelect(fullUrl, mediaDetails);
+          onClose();
+        } else {
+          // Multiple selection
+          setSelectedItems((prev) => {
+            const isSelected = prev.find((item) => item.id === mediaItem.id);
+            if (isSelected) {
+              return prev.filter((item) => item.id !== mediaItem.id);
+            } else if (prev.length < maxSelection) {
+              return [...prev, mediaDetails];
+            }
+            return prev;
+          });
+        }
+      } catch (error) {
+        console.error("❌ Error fetching media details:", error);
+        showToast("Failed to fetch media details. Please try again.", "error");
+        
+        // Fallback to original behavior if API call fails
+        if (maxSelection === 1) {
+          const fullUrl = toFullUrl(mediaItem.fileUrl);
+          onSelect(fullUrl, mediaItem);
+          onClose();
+        }
       }
     },
-    [maxSelection, onSelect, onClose]
+    [maxSelection, onSelect, onClose, showToast]
   );
 
   // Handle confirm selection (for multiple selection)
@@ -505,14 +528,14 @@ const MediaPicker = ({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
           onClick={onClose}
         >
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
-            className="bg-white rounded-2xl shadow-2xl w-full max-w-6xl max-h-[90vh] overflow-hidden"
+            className="bg-white rounded-2xl shadow-2xl w-full max-w-6xl h-[600px] overflow-hidden flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
@@ -609,7 +632,7 @@ const MediaPicker = ({
             </div>
 
             {/* Content */}
-            <div className="p-6 overflow-y-auto max-h-[calc(90vh-200px)]">
+            <div className="flex-1 p-6 overflow-y-auto">
               {error ? (
                 <div className="text-center py-12">
                   <div className="text-red-500 mb-4">

@@ -26,6 +26,7 @@ import MediaInputDetector from "../ui/MediaInputDetector";
 import DynamicContentForm from "../ui/DynamicContentForm";
 import pagesAPI from "../../lib/pagesAPI";
 import api from "../../lib/api";
+import { getDefaultDataForComponent } from "../../data/componentSchemas";
 
 const EnhancedPageBuilder = () => {
   const navigate = useNavigate();
@@ -402,111 +403,28 @@ const EnhancedPageBuilder = () => {
   };
 
   const addComponent = (component) => {
-    // Dynamic data loading based on component name/type keywords
-    const componentType = component.componentType || "";
-    const componentName = component.componentName || "";
-    const lowerType = componentType.toLowerCase();
-    const lowerName = componentName.toLowerCase();
+    // Always use schema-based default data for consistent pre-filling
+    const defaultContent = getDefaultDataForComponent(component.componentType);
     
-    // Check if component contains "training" keyword
-    const isTrainingComponent =
-      lowerType.includes("training") || lowerName.includes("training");
+    console.log(`Adding component ${component.componentType} with default data:`, defaultContent);
     
-    // Check if component contains "about" keyword
-    const isAboutComponent =
-      lowerType.includes("about") || lowerName.includes("about");
+    const newComponent = {
+      componentType: component.componentType || "Generic",
+      componentName: component.componentName || "New Component",
+      contentJson: JSON.stringify(defaultContent, null, 2),
+      orderIndex: pageData.components.length + 1,
+    };
     
-    if (isTrainingComponent) {
-      // Use default data for training components instead of loading from training.json
-      const defaultContent = getDefaultDataForComponent(
-        component.componentType
-      );
-          const newComponent = {
-            componentType: component.componentType || "Generic",
-            componentName: component.componentName || "New Component",
-            contentJson: JSON.stringify(defaultContent, null, 2),
-            orderIndex: pageData.components.length + 1,
-          };
-          setPageData((prev) => ({
-            ...prev,
-            components: [...prev.components, newComponent],
-          }));
-          showToast(
-        `${
-          component.componentName || component.name || "Component"
-        } added to page with training data`,
-            "success"
-          );
-    } else if (isAboutComponent) {
-      // Load about data for any component containing "about"
-      fetch("/data/about.json")
-        .then((res) => res.json())
-        .then((aboutData) => {
-          console.log(
-            `Applied about content for ${componentType} from /public/data/about.json`,
-            aboutData
-          );
-          const newComponent = {
-            componentType: component.componentType || "Generic",
-            componentName: component.componentName || "New Component",
-            contentJson: JSON.stringify(aboutData, null, 2),
-            orderIndex: pageData.components.length + 1,
-          };
-          setPageData((prev) => ({
-            ...prev,
-            components: [...prev.components, newComponent],
-          }));
-          showToast(
-            `${
-              component.componentName || component.name || "Component"
-            } added to page with about data`,
-            "success"
-          );
-        })
-        .catch((err) => {
-          console.error(`Failed to load about.json for ${componentType}`, err);
-          // Fallback to generic default
-          const defaultContent = getDefaultDataForComponent(
-            component.componentType
-          );
-          const newComponent = {
-            componentType: component.componentType || "Generic",
-            componentName: component.componentName || "New Component",
-            contentJson: JSON.stringify(defaultContent, null, 2),
-            orderIndex: pageData.components.length + 1,
-          };
-          setPageData((prev) => ({
-            ...prev,
-            components: [...prev.components, newComponent],
-          }));
-          showToast(
-            `${
-              component.componentName || component.name || "Component"
-            } added to page (fallback)`,
-            "success"
-          );
-        });
-    } else {
-      // Default behavior for other components
-      const defaultContent = getDefaultDataForComponent(
-        component.componentType
-      );
-      const newComponent = {
-        componentType: component.componentType || "Generic",
-        componentName: component.componentName || "New Component",
-        contentJson: JSON.stringify(defaultContent, null, 2),
-        orderIndex: pageData.components.length + 1,
-      };
-      setPageData((prev) => ({
-        ...prev,
-        components: [...prev.components, newComponent],
-      }));
-      showToast(
-        (component.componentName || component.name || "Component") +
-          " added to page",
-        "success"
-      );
-    }
+    setPageData((prev) => ({
+      ...prev,
+      components: [...prev.components, newComponent],
+    }));
+    
+    showToast(
+      (component.componentName || component.name || "Component") +
+        " added to page",
+      "success"
+    );
   };
 
   // Function to update a specific component field
@@ -2565,7 +2483,15 @@ const CategorySelector = ({ value, onChange }) => {
         setError(null);
         const res = await api.get("/Categories");
         const list = Array.isArray(res.data) ? res.data : [];
-        setCategories(list);
+        
+        // Filter out "Home" and "About" categories
+        const filteredList = list.filter(category => {
+          const name = category.name?.toLowerCase();
+          const slug = category.slug?.toLowerCase();
+          return name !== 'home' && name !== 'about' && slug !== 'home' && slug !== 'about';
+        });
+        
+        setCategories(filteredList);
       } catch (e) {
         setError(e.message || "Failed to load categories");
       } finally {
@@ -3063,20 +2989,22 @@ const SectionsStep = ({
             </div>
           </div>
         </CardHeader>
-        <CardContent>
+        <CardContent className="h-[600px] flex flex-col">
           {pageData.components.length === 0 ? (
-            <div className="text-center py-12">
-              <DocumentTextIcon className="h-20 w-20 text-white/40 mx-auto mb-6" />
-              <h3 className="text-xl font-semibold text-white mb-3">
-                No components added yet
-              </h3>
-              <p className="text-gray-300 text-base leading-relaxed">
-                Click on components above or use "Add Component" button to start
-                building your page
-              </p>
+            <div className="text-center py-12 flex-1 flex items-center justify-center">
+              <div>
+                <DocumentTextIcon className="h-20 w-20 text-white/40 mx-auto mb-6" />
+                <h3 className="text-xl font-semibold text-white mb-3">
+                  No components added yet
+                </h3>
+                <p className="text-gray-300 text-base leading-relaxed">
+                  Click on components above or use "Add Component" button to start
+                  building your page
+                </p>
+              </div>
             </div>
           ) : (
-            <div className="space-y-6">
+            <div className="flex-1 overflow-y-auto space-y-6 pr-2 scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent hover:scrollbar-thumb-white/30">
               {pageData.components.map((component, index) => (
                 <motion.div
                   key={index}
@@ -3238,6 +3166,7 @@ const SectionsStep = ({
                         <div className="bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 p-4">
                           <DynamicContentForm
                             contentJson={component.contentJson || "{}"}
+                            componentType={component.componentType}
                             onChange={(jsonString) =>
                               handleComponentUpdate(
                                 index,

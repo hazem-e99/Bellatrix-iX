@@ -35,6 +35,20 @@ export const normalizeProps = (componentType, contentJson) => {
     }),
 
     // Payroll Components
+    'PayrollHeroSection': (data) => ({
+      title: data.title || "Automated Payroll Solutions",
+      subtitle: data.subtitle || "Simplify payroll processing with our advanced system",
+      description: data.description || "Reduce errors and save time with automated payroll management",
+      ctaButton: data.ctaButton || {
+        text: "Get Started",
+        link: "/payroll",
+        variant: "primary"
+      },
+      backgroundImage: data.backgroundImage,
+      bgVideo: data.bgVideo,
+      bgColor: data.bgColor
+    }),
+
     'PayrollPainPointsSection': (data) => ({
       title: data.painPoints?.title || data.title || "Common Payroll Pain Points",
       subtitle: data.painPoints?.subtitle || data.subtitle || "Problems we solve",
@@ -125,7 +139,7 @@ export const normalizeProps = (componentType, contentJson) => {
         subtitle: data.heroContent?.description || data.hero?.subtitle || data.subtitle || "Empower your team with comprehensive training solutions",
         description: data.heroContent?.description || data.hero?.subtitle || data.subtitle
       },
-      backgroundVideo: data.backgroundVideo || data.hero?.bgVideo || "/Videos/trainingHeroSection.mp4",
+      backgroundVideo: data.backgroundVideo || data.bgVideo || data.heroContent?.backgroundVideo || "/trainingHeroSectionTwo.mp4",
       ctaButton: data.ctaButton || data.hero?.ctaButton || {
         text: "Start Learning Today",
         link: "/training",
@@ -253,6 +267,7 @@ export const validateProps = (componentType, props) => {
     'IntegrationTypesSection': ['title', 'items'],
     'IntegrationBenefitsSection': ['title', 'items'],
     'PopularIntegrationsSection': ['title', 'platforms'],
+    'PayrollHeroSection': ['title', 'subtitle'],
     'PayrollPainPointsSection': ['title', 'painPoints'],
     'PayrollBenefitsSection': ['title', 'items'],
     'PayrollWorkflowSection': ['title', 'steps'],

@@ -1,7 +1,7 @@
 // HeroSection.jsx
 import React from 'react';
 
-const HeroSection = ({ heroContent, renderIcon }) => {
+const HeroSection = ({ heroContent, backgroundVideo, ctaButton, renderIcon }) => {
     return (
         <div className="min-h-screen relative overflow-hidden pt-20">
             {/* Background Video and Effects */}
@@ -32,7 +32,7 @@ const HeroSection = ({ heroContent, renderIcon }) => {
                         WebkitUserSelect: 'none'
                     }}
                 >
-                    <source src="/trainingHeroSectionTwo.mp4" type="video/mp4" />
+                    <source src={backgroundVideo || "/trainingHeroSectionTwo.mp4"} type="video/mp4" />
                     Your browser does not support the video tag.
                 </video>
                 
@@ -60,6 +60,16 @@ const HeroSection = ({ heroContent, renderIcon }) => {
                         <p className="text-lg md:text-xl lg:text-2xl text-gray-200 leading-relaxed max-w-4xl mx-auto animate-fade-in">
                             {heroContent.description}
                         </p>
+                        {ctaButton && (
+                            <div className="mt-8">
+                                <button
+                                    onClick={() => window.location.href = ctaButton.link}
+                                    className="inline-flex items-center px-8 py-4 text-lg font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
+                                >
+                                    {ctaButton.text}
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
