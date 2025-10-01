@@ -339,3 +339,4 @@ export const getFieldConfigForComponent = (componentType) => {
 };
 
 export default componentSchemas;
+

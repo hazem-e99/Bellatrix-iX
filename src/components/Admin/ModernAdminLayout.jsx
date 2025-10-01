@@ -16,16 +16,20 @@ import {
   MoonIcon,
   ChevronDownIcon,
   PowerIcon,
+  ChatBubbleLeftRightIcon,
 } from "@heroicons/react/24/outline";
 import {
   HomeIcon as HomeIconSolid,
   DocumentTextIcon as DocumentTextIconSolid,
   ViewColumnsIcon as ViewColumnsIconSolid,
   Cog6ToothIcon as Cog6ToothIconSolid,
+  ChatBubbleLeftRightIcon as ChatBubbleLeftRightIconSolid,
 } from "@heroicons/react/24/solid";
 import Button from "../ui/Button";
 import { Input } from "../ui/Input";
 import { useTheme } from "../../contexts/ThemeContext";
+import { useMessageNotifications } from "../../hooks/useMessageNotifications";
+import MessageNotification from "./MessageNotification";
 
 const ModernAdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -35,6 +39,7 @@ const ModernAdminLayout = () => {
   const location = useLocation();
   const { isDark, toggleTheme } = useTheme();
   const isEnhancedCreate = location.pathname.startsWith("/admin/pages/enhanced-create");
+  const { notifications: messageNotifications, unreadCount, removeNotification } = useMessageNotifications();
 
   const menuItems = [
     {
@@ -53,7 +58,14 @@ const ModernAdminLayout = () => {
       iconSolid: DocumentTextIconSolid,
       description: "Content Management",
     },
-    
+    {
+      id: "messages",
+      name: "Messages",
+      path: "/admin/messages",
+      icon: ChatBubbleLeftRightIcon,
+      iconSolid: ChatBubbleLeftRightIconSolid,
+      description: "Contact Messages",
+    },
     {
       id: "settings",
       name: "Settings",
@@ -85,7 +97,8 @@ const ModernAdminLayout = () => {
     setSidebarOpen(false);
   };
 
-  const notifications = [
+  // Legacy notifications for the dropdown (can be removed if not needed)
+  const legacyNotifications = [
     {
       id: 1,
       title: "New page created",
@@ -103,7 +116,7 @@ const ModernAdminLayout = () => {
     },
   ];
 
-  const unreadCount = notifications.filter((n) => n.unread).length;
+  const legacyUnreadCount = legacyNotifications.filter((n) => n.unread).length;
 
   return (
     <div className="flex min-h-screen" style={{ backgroundColor: '#001038' }}>
@@ -253,8 +266,13 @@ const ModernAdminLayout = () => {
                   className="text-white hover:text-white hover:bg-white/10"
                 >
                   <BellIcon className="h-5 w-5" />
-                  {unreadCount > 0 && (
+                  {(unreadCount + legacyUnreadCount) > 0 && (
                     <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-blue-500 ring-2 ring-white" />
+                  )}
+                  {(unreadCount + legacyUnreadCount) > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                      {(unreadCount + legacyUnreadCount) > 9 ? '9+' : (unreadCount + legacyUnreadCount)}
+                    </span>
                   )}
                 </Button>
 
@@ -273,7 +291,7 @@ const ModernAdminLayout = () => {
                         </h3>
                       </div>
                       <div className="max-h-64 overflow-y-auto">
-                        {notifications.map((notification) => (
+                        {legacyNotifications.map((notification) => (
                           <div
                             key={notification.id}
                             className="p-4 border-b border-gray-200 last:border-b-0 hover:bg-blue-50 transition-colors duration-150"
@@ -372,6 +390,17 @@ const ModernAdminLayout = () => {
           }}
         />
       )}
+
+      {/* Message Notifications */}
+      {messageNotifications.map((notification) => (
+        <MessageNotification
+          key={notification.id}
+          notification={notification}
+          onClose={() => removeNotification(notification.id)}
+          onReply={(message) => navigate('/admin/messages')}
+          onView={(message) => navigate('/admin/messages')}
+        />
+      ))}
     </div>
   );
 };

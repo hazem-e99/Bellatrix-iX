@@ -60,11 +60,11 @@ const mediaAPI = {
   async uploadMedia(file, options = {}) {
     try {
       const formData = new FormData();
-      formData.append("file", file);
-
-      if (options.role) {
-        formData.append("role", options.role);
-      }
+      formData.append("File", file);
+      formData.append("Role", "12"); // 12 = General role
+      formData.append("AlternateText", file.name);
+      formData.append("Caption", "Uploaded media");
+      formData.append("SortOrder", "1");
 
       // Get auth token
       const token = localStorage.getItem("authToken");
@@ -87,6 +87,7 @@ const mediaAPI = {
         throw new Error(result.message || "Upload failed");
       }
 
+      console.log("📤 MediaAPI upload response:", result);
       return result.data;
     } catch (error) {
       console.error("Error uploading media:", error);

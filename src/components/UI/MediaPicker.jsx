@@ -105,14 +105,29 @@ async function fetchMedia({
 // Upload media function (if needed)
 async function uploadMedia(files, token = null) {
   const formData = new FormData();
-  files.forEach((file) => {
-    formData.append(`files`, file);
-  });
+  
+  // Handle single file upload
+  if (files.length === 1) {
+    const file = files[0];
+    formData.append("File", file);
+    formData.append("Role", "12"); // 12 = General role
+    formData.append("AlternateText", file.name);
+    formData.append("Caption", "Uploaded media");
+    formData.append("SortOrder", "1");
+  } else {
+    // Handle multiple files upload
+    files.forEach((file) => {
+      formData.append("Files", file);
+    });
+    formData.append("Role", "12"); // 12 = General role
+    formData.append("SortOrder", "1");
+  }
 
   const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
   try {
-    const res = await axios.post(`${BASE_API}/Media/upload`, formData, {
+    const endpoint = files.length === 1 ? "/Media/upload" : "/Media/upload-multiple";
+    const res = await axios.post(`${BASE_API}${endpoint}`, formData, {
       headers: {
         ...headers,
         "Content-Type": "multipart/form-data",
@@ -123,6 +138,7 @@ async function uploadMedia(files, token = null) {
     const payload = res.data;
     if (!payload.success && payload.message) throw new Error(payload.message);
 
+    console.log("📤 Upload response:", payload);
     return payload.data || [];
   } catch (error) {
     console.error("Error uploading media:", error);
@@ -232,8 +248,11 @@ const MediaPicker = ({
           return;
         }
 
+        console.log("📤 Uploading files:", validFiles.map(f => f.name));
+
         // Upload files
         const uploadResults = await uploadMedia(validFiles);
+        console.log("✅ Upload results:", uploadResults);
 
         showToast(
           `Successfully uploaded ${
@@ -242,15 +261,18 @@ const MediaPicker = ({
           "success"
         );
 
-        // Refresh media list
+        // Refresh media list to show newly uploaded files
+        console.log("🔄 Refreshing media list after upload...");
         setCurrentPage(1);
-        fetchMediaData({
+        await fetchMediaData({
           page: 1,
           type: currentFilter === "all" ? undefined : currentFilter,
           searchTerm,
         });
+        
+        console.log("✅ Media list refreshed");
       } catch (err) {
-        console.error("Error uploading media:", err);
+        console.error("❌ Error uploading media:", err);
         showToast(`Upload error: ${err.message}`, "error");
       } finally {
         setUploading(false);

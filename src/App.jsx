@@ -20,6 +20,7 @@ import PagesManagement from "./components/Admin/PagesManagement";
 import EnhancedPageBuilder from "./components/Admin/EnhancedPageBuilder";
 import TemplatesManagement from "./components/Admin/TemplatesManagement";
 import SettingsManagement from "./components/Admin/SettingsManagement";
+import MessagesPage from "./pages/Admin/MessagesPage";
 import DynamicPageRenderer from "./components/DynamicPageRenderer";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { AuthProvider } from "./hooks/useAuth.jsx";
@@ -109,6 +110,7 @@ function App() {
               path="templates/:templateId"
               element={<TemplatesManagement />}
             />
+            <Route path="messages" element={<MessagesPage />} />
             <Route path="settings" element={<SettingsManagement />} />
           </Route>
 

@@ -20,6 +20,18 @@ const MediaPickerModal = ({ isOpen, onClose, onSelect }) => {
   const [uploading, setUploading] = useState(false);
   const fileInputRef = React.useRef();
 
+  // Show toast notification
+  const showToast = (message, type = "info") => {
+    // Simple alert for now - could be enhanced with a proper toast component
+    if (type === "error") {
+      alert(`Error: ${message}`);
+    } else if (type === "success") {
+      alert(`Success: ${message}`);
+    } else {
+      alert(message);
+    }
+  };
+
   useEffect(() => {
     if (isOpen) {
       fetchMedia();
@@ -79,26 +91,33 @@ const MediaPickerModal = ({ isOpen, onClose, onSelect }) => {
   const handleFileChange = async (e) => {
     const selectedFile = e.target.files[0];
     if (!selectedFile) return;
+    
     setUploading(true);
     try {
+      console.log("📤 Uploading file:", selectedFile.name);
+      
       const formData = new FormData();
-      formData.append("file", selectedFile);
-      formData.append(
-        "Role",
-        selectedFile.type.startsWith("video") ? "Video" : "Image"
-      );
-      formData.append("AlternateText", "Uploaded media");
-      formData.append("Caption", "Default caption");
-      formData.append("SortOrder", 1);
+      formData.append("File", selectedFile);
+      formData.append("Role", "12"); // 12 = General role
+      formData.append("AlternateText", selectedFile.name);
+      formData.append("Caption", "Uploaded media");
+      formData.append("SortOrder", "1");
 
-      await api.post("/Media/upload", formData, {
+      const response = await api.post("/Media/upload", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
+      
+      console.log("✅ Upload response:", response.data);
+      
       // Refresh media list after upload
+      console.log("🔄 Refreshing media list after upload...");
       await fetchMedia();
+      console.log("✅ Media list refreshed");
+      
+      showToast("File uploaded successfully!", "success");
     } catch (err) {
       console.error("❌ Error uploading media:", err);
-      alert("Upload failed. Please try again.");
+      showToast("Upload failed. Please try again.", "error");
     } finally {
       setUploading(false);
     }

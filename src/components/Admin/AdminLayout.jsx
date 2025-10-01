@@ -35,6 +35,7 @@ import {
   Search as SearchIcon,
   LightMode as LightModeIcon,
   DarkMode as DarkModeIcon,
+  Message as MessageIcon,
 } from "@mui/icons-material";
 
 const drawerWidth = 280;
@@ -90,7 +91,13 @@ const AdminLayout = () => {
       active: location.pathname.startsWith("/admin/pages"),
       description: "Content Management",
     },
-    
+    {
+      text: "Messages",
+      icon: <MessageIcon />,
+      path: "/admin/messages",
+      active: location.pathname.startsWith("/admin/messages"),
+      description: "Contact Messages",
+    },
     {
       text: "Settings",
       icon: <SettingsIcon />,
