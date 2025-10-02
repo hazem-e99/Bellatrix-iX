@@ -1,20 +1,17 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+import React, { useState, useEffect } from "react";
+import { motion as Motion } from "framer-motion";
 import {
   Cog6ToothIcon,
   UserGroupIcon,
-  LinkIcon,
   PhotoIcon,
   ShieldCheckIcon,
-  KeyIcon,
-  BellIcon,
-  CheckIcon,
-  XMarkIcon,
 } from "@heroicons/react/24/outline";
 import Button from "../ui/Button";
 import { Input, Textarea, Select } from "../ui/Input";
 import Card, { CardContent, CardHeader, CardTitle } from "../ui/Card";
 import Toast from "../ui/Toast";
+import { useJsonData } from "../../hooks/useJsonData";
+import Modal, { ModalFooter } from "../UI/Modal";
 
 const SettingsManagement = () => {
   const [activeTab, setActiveTab] = useState("general");
@@ -26,10 +23,8 @@ const SettingsManagement = () => {
     siteDescription: "Professional business solutions and services",
     siteUrl: "https://bellatrix.com",
     adminEmail: "admin@bellatrix.com",
-    timezone: "UTC",
-    language: "en",
-    primaryColor: "#3B82F6",
-    secondaryColor: "#10B981",
+    clientTheme: "light",
+    adminTheme: "light",
     logo: null,
     favicon: null,
   });
@@ -50,35 +45,99 @@ const SettingsManagement = () => {
     sessionTimeout: 24,
   });
 
-  const [integrationSettings, setIntegrationSettings] = useState({
-    googleAnalytics: "",
-    googleTagManager: "",
-    facebookPixel: "",
-    apiKeys: {
-      emailService: "",
-      paymentGateway: "",
-      cloudStorage: "",
-    },
-    webhooks: [
-      {
-        id: 1,
-        name: "Order Notifications",
-        url: "https://api.example.com/orders",
-        events: ["order.created"],
-      },
-      {
-        id: 2,
-        name: "User Registrations",
-        url: "https://api.example.com/users",
-        events: ["user.created"],
-      },
-    ],
-    notifications: {
-      email: true,
-      sms: false,
-      push: true,
-    },
-  });
+  // Role modal state
+  const [isRoleModalOpen, setIsRoleModalOpen] = useState(false);
+  const [editingRoleId, setEditingRoleId] = useState(null);
+  const [roleForm, setRoleForm] = useState({ name: "", permissions: [] });
+
+  const availablePermissions = ["read", "write", "delete", "manage_users"];
+
+  const openAddRole = () => {
+    setEditingRoleId(null);
+    setRoleForm({ name: "", permissions: [] });
+    setIsRoleModalOpen(true);
+  };
+
+  const openEditRole = (role) => {
+    setEditingRoleId(role.id);
+    setRoleForm({ name: role.name, permissions: [...role.permissions] });
+    setIsRoleModalOpen(true);
+  };
+
+  const closeRoleModal = () => {
+    setIsRoleModalOpen(false);
+  };
+
+  const togglePermissionInForm = (perm) => {
+    setRoleForm((prev) => {
+      const has = prev.permissions.includes(perm);
+      return {
+        ...prev,
+        permissions: has
+          ? prev.permissions.filter((p) => p !== perm)
+          : [...prev.permissions, perm],
+      };
+    });
+  };
+
+  const saveRoleFromForm = () => {
+    const name = roleForm.name.trim();
+    if (!name) {
+      showToast("error", "Role name is required");
+      return;
+    }
+
+    setPermissionSettings((prev) => {
+      let nextRoles;
+      if (editingRoleId != null) {
+        nextRoles = prev.roles.map((r) =>
+          r.id === editingRoleId ? { ...r, name, permissions: roleForm.permissions } : r
+        );
+        showToast("success", "Role updated");
+      } else {
+        const nextId = prev.roles.length ? Math.max(...prev.roles.map((r) => r.id)) + 1 : 1;
+        nextRoles = [
+          ...prev.roles,
+          { id: nextId, name, permissions: roleForm.permissions, users: 0 },
+        ];
+        showToast("success", "Role added");
+      }
+      return { ...prev, roles: nextRoles };
+    });
+
+    setIsRoleModalOpen(false);
+  };
+
+  // Removed integrations state
+
+  // Persistence: load and save settings.json via admin API
+  const { data: persistedSettings, updateData } = useJsonData("settings.json");
+
+  useEffect(() => {
+    if (persistedSettings && typeof persistedSettings === "object") {
+      if (persistedSettings.generalSettings) {
+        setGeneralSettings((prev) => ({ ...prev, ...persistedSettings.generalSettings }));
+      }
+      if (persistedSettings.permissionSettings) {
+        setPermissionSettings((prev) => ({ ...prev, ...persistedSettings.permissionSettings }));
+      }
+      // Removed integration settings merge
+    }
+  }, [persistedSettings]);
+
+  const saveAllSettings = async () => {
+    if (!updateData) return false;
+    const payload = {
+      generalSettings,
+      permissionSettings,
+    };
+    try {
+      const ok = await updateData(payload, "settings.json");
+      return ok;
+    } catch {
+      return false;
+    }
+  };
 
   const tabs = [
     {
@@ -93,12 +152,7 @@ const SettingsManagement = () => {
       icon: UserGroupIcon,
       description: "User roles and access control",
     },
-    {
-      id: "integrations",
-      name: "Integrations",
-      icon: LinkIcon,
-      description: "API keys and third-party services",
-    },
+    // Removed integrations tab
   ];
 
   const showToast = (type, message) => {
@@ -106,20 +160,17 @@ const SettingsManagement = () => {
     setTimeout(() => setToast({ show: false, type: "", message: "" }), 3000);
   };
 
-  const handleSaveGeneral = () => {
-    console.log("Saving general settings:", generalSettings);
-    showToast("success", "General settings saved successfully");
+  const handleSaveGeneral = async () => {
+    const ok = await saveAllSettings();
+    showToast(ok ? "success" : "error", ok ? "General settings saved successfully" : "Failed to save settings");
   };
 
-  const handleSavePermissions = () => {
-    console.log("Saving permission settings:", permissionSettings);
-    showToast("success", "Permission settings saved successfully");
+  const handleSavePermissions = async () => {
+    const ok = await saveAllSettings();
+    showToast(ok ? "success" : "error", ok ? "Permission settings saved successfully" : "Failed to save settings");
   };
 
-  const handleSaveIntegrations = () => {
-    console.log("Saving integration settings:", integrationSettings);
-    showToast("success", "Integration settings saved successfully");
-  };
+  // Removed integrations save handler
 
   const resetToDefaults = (section) => {
     if (section === "general") {
@@ -128,10 +179,8 @@ const SettingsManagement = () => {
         siteDescription: "Professional business solutions and services",
         siteUrl: "https://bellatrix.com",
         adminEmail: "admin@bellatrix.com",
-        timezone: "UTC",
-        language: "en",
-        primaryColor: "#3B82F6",
-        secondaryColor: "#10B981",
+        clientTheme: "light",
+        adminTheme: "light",
         logo: null,
         favicon: null,
       });
@@ -171,38 +220,8 @@ const SettingsManagement = () => {
               }
               placeholder="admin@example.com"
             />
-            <Select
-              label="Timezone"
-              value={generalSettings.timezone}
-              onChange={(e) =>
-                setGeneralSettings({
-                  ...generalSettings,
-                  timezone: e.target.value,
-                })
-              }
-              options={[
-                { value: "UTC", label: "UTC" },
-                { value: "America/New_York", label: "Eastern Time" },
-                { value: "America/Chicago", label: "Central Time" },
-                { value: "America/Los_Angeles", label: "Pacific Time" },
-              ]}
-            />
-            <Select
-              label="Language"
-              value={generalSettings.language}
-              onChange={(e) =>
-                setGeneralSettings({
-                  ...generalSettings,
-                  language: e.target.value,
-                })
-              }
-              options={[
-                { value: "en", label: "English" },
-                { value: "es", label: "Spanish" },
-                { value: "fr", label: "French" },
-                { value: "de", label: "German" },
-              ]}
-            />
+            {/* Timezone removed */}
+            {/* Language removed */}
           </div>
           <div className="mt-4">
             <Textarea
@@ -234,75 +253,49 @@ const SettingsManagement = () => {
         </CardContent>
       </Card>
 
-      {/* Branding */}
+      {/* Branding / Theme */}
       <Card className="dark:bg-gray-800 dark:border-gray-700">
         <CardHeader>
-          <CardTitle className="dark:text-white">Branding</CardTitle>
+          <CardTitle className="dark:text-white">Appearance</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Primary Color
-              </label>
-              <div className="flex items-center space-x-3">
-                <input
-                  type="color"
-                  value={generalSettings.primaryColor}
-                  onChange={(e) =>
-                    setGeneralSettings({
-                      ...generalSettings,
-                      primaryColor: e.target.value,
-                    })
-                  }
-                  className="h-10 w-16 border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer"
-                />
-                <Input
-                  value={generalSettings.primaryColor}
-                  onChange={(e) =>
-                    setGeneralSettings({
-                      ...generalSettings,
-                      primaryColor: e.target.value,
-                    })
-                  }
-                  placeholder="#3B82F6"
-                  className="flex-1"
-                />
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Secondary Color
-              </label>
-              <div className="flex items-center space-x-3">
-                <input
-                  type="color"
-                  value={generalSettings.secondaryColor}
-                  onChange={(e) =>
-                    setGeneralSettings({
-                      ...generalSettings,
-                      secondaryColor: e.target.value,
-                    })
-                  }
-                  className="h-10 w-16 border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer"
-                />
-                <Input
-                  value={generalSettings.secondaryColor}
-                  onChange={(e) =>
-                    setGeneralSettings({
-                      ...generalSettings,
-                      secondaryColor: e.target.value,
-                    })
-                  }
-                  placeholder="#10B981"
-                  className="flex-1"
-                />
-              </div>
-            </div>
+            <Select
+              label="Client Theme"
+              value={generalSettings.clientTheme}
+              className="bg-white/5 border-white/20 text-white dark:bg-white/10 dark:border-white/20 dark:text-white focus-visible:ring-blue-500"
+              optionClassName="bg-gray-900 text-white dark:bg-gray-800 dark:text-white"
+              onChange={(e) =>
+                setGeneralSettings({
+                  ...generalSettings,
+                  clientTheme: e.target.value,
+                })
+              }
+              options={[
+                { value: "light", label: "Light" },
+                { value: "dark", label: "Dark" },
+              ]}
+            />
+            <Select
+              label="Admin Dashboard Theme"
+              value={generalSettings.adminTheme}
+              className="bg-white/5 border-white/20 text-white dark:bg-white/10 dark:border-white/20 dark:text-white focus-visible:ring-blue-500"
+              optionClassName="bg-gray-900 text-white dark:bg-gray-800 dark:text-white"
+              onChange={(e) =>
+                setGeneralSettings({
+                  ...generalSettings,
+                  adminTheme: e.target.value,
+                })
+              }
+              options={[
+                { value: "light", label: "Light" },
+                { value: "dark", label: "Dark" },
+              ]}
+            />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-[oklch(0.75_0.02_260.29)] dark:text-gray-300 mb-2">
                 Logo
               </label>
               <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center">
@@ -316,7 +309,7 @@ const SettingsManagement = () => {
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-[oklch(0.75_0.02_260.29)] dark:text-gray-300 mb-2">
                 Favicon
               </label>
               <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center">
@@ -350,7 +343,7 @@ const SettingsManagement = () => {
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle className="dark:text-white">User Roles</CardTitle>
-            <Button size="sm">Add Role</Button>
+            <Button size="sm" onClick={openAddRole}>Add Role</Button>
           </div>
         </CardHeader>
         <CardContent>
@@ -386,7 +379,7 @@ const SettingsManagement = () => {
                   </div>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Button variant="ghost" size="sm">
+                  <Button variant="ghost" size="sm" onClick={() => openEditRole(role)}>
                     Edit
                   </Button>
                   <Button
@@ -482,222 +475,7 @@ const SettingsManagement = () => {
     </div>
   );
 
-  const renderIntegrationSettings = () => (
-    <div className="space-y-6">
-      {/* Analytics */}
-      <Card className="dark:bg-gray-800 dark:border-gray-700">
-        <CardHeader>
-          <CardTitle className="dark:text-white">
-            Analytics & Tracking
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <Input
-              label="Google Analytics ID"
-              value={integrationSettings.googleAnalytics}
-              onChange={(e) =>
-                setIntegrationSettings({
-                  ...integrationSettings,
-                  googleAnalytics: e.target.value,
-                })
-              }
-              placeholder="G-XXXXXXXXXX"
-            />
-            <Input
-              label="Google Tag Manager ID"
-              value={integrationSettings.googleTagManager}
-              onChange={(e) =>
-                setIntegrationSettings({
-                  ...integrationSettings,
-                  googleTagManager: e.target.value,
-                })
-              }
-              placeholder="GTM-XXXXXXX"
-            />
-            <Input
-              label="Facebook Pixel ID"
-              value={integrationSettings.facebookPixel}
-              onChange={(e) =>
-                setIntegrationSettings({
-                  ...integrationSettings,
-                  facebookPixel: e.target.value,
-                })
-              }
-              placeholder="123456789012345"
-            />
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* API Keys */}
-      <Card className="dark:bg-gray-800 dark:border-gray-700">
-        <CardHeader>
-          <CardTitle className="dark:text-white">API Keys</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <Input
-              label="Email Service API Key"
-              type="password"
-              value={integrationSettings.apiKeys.emailService}
-              onChange={(e) =>
-                setIntegrationSettings({
-                  ...integrationSettings,
-                  apiKeys: {
-                    ...integrationSettings.apiKeys,
-                    emailService: e.target.value,
-                  },
-                })
-              }
-              placeholder="••••••••••••••••"
-              icon={<KeyIcon className="h-4 w-4" />}
-            />
-            <Input
-              label="Payment Gateway API Key"
-              type="password"
-              value={integrationSettings.apiKeys.paymentGateway}
-              onChange={(e) =>
-                setIntegrationSettings({
-                  ...integrationSettings,
-                  apiKeys: {
-                    ...integrationSettings.apiKeys,
-                    paymentGateway: e.target.value,
-                  },
-                })
-              }
-              placeholder="••••••••••••••••"
-              icon={<KeyIcon className="h-4 w-4" />}
-            />
-            <Input
-              label="Cloud Storage API Key"
-              type="password"
-              value={integrationSettings.apiKeys.cloudStorage}
-              onChange={(e) =>
-                setIntegrationSettings({
-                  ...integrationSettings,
-                  apiKeys: {
-                    ...integrationSettings.apiKeys,
-                    cloudStorage: e.target.value,
-                  },
-                })
-              }
-              placeholder="••••••••••••••••"
-              icon={<KeyIcon className="h-4 w-4" />}
-            />
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Webhooks */}
-      <Card className="dark:bg-gray-800 dark:border-gray-700">
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle className="dark:text-white">Webhooks</CardTitle>
-            <Button size="sm">Add Webhook</Button>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-3">
-            {integrationSettings.webhooks.map((webhook) => (
-              <div
-                key={webhook.id}
-                className="flex items-center justify-between p-3 border border-gray-200 dark:border-gray-700 rounded-lg"
-              >
-                <div>
-                  <h4 className="font-medium text-gray-900 dark:text-white">
-                    {webhook.name}
-                  </h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    {webhook.url}
-                  </p>
-                  <div className="flex space-x-1 mt-1">
-                    {webhook.events.map((event) => (
-                      <span
-                        key={event}
-                        className="text-xs px-2 py-1 bg-green-100 dark:bg-green-900/20 text-green-600 dark:text-green-400 rounded"
-                      >
-                        {event}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Button variant="ghost" size="sm">
-                    Edit
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="text-red-600 hover:text-red-700"
-                  >
-                    Delete
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Notifications */}
-      <Card className="dark:bg-gray-800 dark:border-gray-700">
-        <CardHeader>
-          <CardTitle className="dark:text-white">
-            Notification Preferences
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {Object.entries(integrationSettings.notifications).map(
-              ([key, value]) => (
-                <div key={key} className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <BellIcon className="h-5 w-5 text-gray-400" />
-                    <div>
-                      <label className="text-sm font-medium text-gray-900 dark:text-white capitalize">
-                        {key} Notifications
-                      </label>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
-                        Receive notifications via {key}
-                      </p>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() =>
-                      setIntegrationSettings({
-                        ...integrationSettings,
-                        notifications: {
-                          ...integrationSettings.notifications,
-                          [key]: !value,
-                        },
-                      })
-                    }
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                      value ? "bg-blue-600" : "bg-gray-200 dark:bg-gray-700"
-                    }`}
-                  >
-                    <span
-                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                        value ? "translate-x-6" : "translate-x-1"
-                      }`}
-                    />
-                  </button>
-                </div>
-              )
-            )}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Actions */}
-      <div className="flex justify-end">
-        <Button onClick={handleSaveIntegrations}>
-          Save Integration Settings
-        </Button>
-      </div>
-    </div>
-  );
+  // Removed integration settings renderer
 
   return (
     <div className="space-y-6 text-white">
@@ -736,7 +514,7 @@ const SettingsManagement = () => {
                   {tab.description}
                 </div>
                 {isActive && (
-                  <motion.div
+                  <Motion.div
                     className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-500"
                     layoutId="activeTab"
                   />
@@ -748,7 +526,7 @@ const SettingsManagement = () => {
       </div>
 
       {/* Tab Content */}
-      <motion.div
+      <Motion.div
         key={activeTab}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -757,9 +535,9 @@ const SettingsManagement = () => {
         <div className="[&_input]:bg-white/5 [&_input]:border-white/20 [&_input]:text-white [&_textarea]:bg-white/5 [&_textarea]:border-white/20 [&_textarea]:text-white">
           {activeTab === "general" && renderGeneralSettings()}
           {activeTab === "permissions" && renderPermissionSettings()}
-          {activeTab === "integrations" && renderIntegrationSettings()}
+          {/* integrations tab removed */}
         </div>
-      </motion.div>
+      </Motion.div>
 
       {/* Toast Notification */}
       <Toast
@@ -768,6 +546,47 @@ const SettingsManagement = () => {
         isVisible={toast.show}
         onClose={() => setToast({ show: false, type: "", message: "" })}
       />
+
+      {/* Add/Edit Role Modal */}
+      <Modal isOpen={isRoleModalOpen} onClose={closeRoleModal} title={editingRoleId != null ? "Edit Role" : "Add Role"}>
+        <div className="space-y-4">
+          <div>
+            <Input
+              label="Role Name"
+              placeholder="Enter role name"
+              value={roleForm.name}
+              onChange={(e) => setRoleForm((prev) => ({ ...prev, name: e.target.value }))}
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-[oklch(0.75_0.02_260.29)] mb-2">
+              Permissions
+            </label>
+            <div className="grid grid-cols-2 gap-2">
+              {availablePermissions.map((perm) => {
+                const checked = roleForm.permissions.includes(perm);
+                return (
+                  <label key={perm} className="flex items-center space-x-2 text-sm text-white/90">
+                    <input
+                      type="checkbox"
+                      className="h-4 w-4 rounded border-white/30 bg-transparent"
+                      checked={checked}
+                      onChange={() => togglePermissionInForm(perm)}
+                    />
+                    <span className="capitalize">{perm.replace("_", " ")}</span>
+                  </label>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        <ModalFooter className="mt-6">
+          <Button variant="ghost" onClick={closeRoleModal}>Cancel</Button>
+          <Button onClick={saveRoleFromForm}>{editingRoleId != null ? "Save Changes" : "Add Role"}</Button>
+        </ModalFooter>
+      </Modal>
     </div>
   );
 };

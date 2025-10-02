@@ -28,7 +28,7 @@ const Input = React.forwardRef(
     return (
       <div className="w-full">
         {label && (
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-[oklch(0.75_0.02_260.29)] mb-1">
             {label}
           </label>
         )}
@@ -70,7 +70,7 @@ const Textarea = React.forwardRef(
     return (
       <div className="w-full">
         {label && (
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-[oklch(0.75_0.02_260.29)] mb-1">
             {label}
           </label>
         )}
@@ -91,7 +91,7 @@ Textarea.displayName = "Textarea";
 
 const Select = React.forwardRef(
   (
-    { className = "", placeholder, label, error, options = [], ...props },
+    { className = "", placeholder, label, error, options = [], optionClassName = "", ...props },
     ref
   ) => {
     const baseClasses =
@@ -105,21 +105,29 @@ const Select = React.forwardRef(
       .filter(Boolean)
       .join(" ");
 
+    const optionClasses = [
+      "bg-white text-gray-900",
+      "dark:bg-gray-800 dark:text-white",
+      optionClassName,
+    ]
+      .filter(Boolean)
+      .join(" ");
+
     return (
       <div className="w-full">
         {label && (
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-[oklch(0.75_0.02_260.29)] mb-1">
             {label}
           </label>
         )}
         <select className={selectClasses} ref={ref} {...props}>
           {placeholder && (
-            <option value="" disabled>
+            <option value="" disabled className={optionClasses}>
               {placeholder}
             </option>
           )}
           {options.map((option) => (
-            <option key={option.value} value={option.value}>
+            <option key={option.value} value={option.value} className={optionClasses}>
               {option.label}
             </option>
           ))}
