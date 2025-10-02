@@ -1,26 +1,16 @@
 import React from "react";
 import {
-  Card,
-  CardContent,
-  Typography,
-  Box,
-  Chip,
-  Button,
-  IconButton,
-  Avatar,
-  Divider,
-  Tooltip,
-} from "@mui/material";
-import {
-  Reply as ReplyIcon,
-  Delete as DeleteIcon,
-  MarkEmailRead as MarkReadIcon,
-  MarkEmailUnread as MarkUnreadIcon,
-  Email as EmailIcon,
-  Person as PersonIcon,
-  Schedule as ScheduleIcon,
-  Subject as SubjectIcon,
-} from "@mui/icons-material";
+  EyeIcon,
+  PencilIcon,
+  TrashIcon,
+  CheckCircleIcon,
+  ClockIcon,
+  EnvelopeIcon,
+  UserIcon,
+  CalendarIcon,
+} from "@heroicons/react/24/outline";
+import Button from "../ui/Button";
+import Card, { CardContent } from "../ui/Card";
 import { motion } from "framer-motion";
 
 const MessagesList = ({ messages, onReply, onMarkStatus, onDelete }) => {
@@ -53,15 +43,15 @@ const MessagesList = ({ messages, onReply, onMarkStatus, onDelete }) => {
 
   if (messages.length === 0) {
     return (
-      <Card className="bg-gray-800 border border-gray-700 rounded-2xl">
+      <Card className="bg-white/10 border border-white/20 shadow">
         <CardContent className="p-12 text-center">
-          <EmailIcon className="text-gray-500 text-6xl mx-auto mb-4" />
-          <Typography variant="h6" className="text-gray-400 mb-2">
+          <EnvelopeIcon className="h-16 w-16 text-gray-500 mx-auto mb-4" />
+          <h3 className="text-lg font-medium text-gray-400 mb-2">
             No messages found
-          </Typography>
-          <Typography variant="body2" className="text-gray-500">
+          </h3>
+          <p className="text-gray-500">
             There are no messages matching your current filters.
-          </Typography>
+          </p>
         </CardContent>
       </Card>
     );
@@ -80,71 +70,56 @@ const MessagesList = ({ messages, onReply, onMarkStatus, onDelete }) => {
           <Card 
             className={`group border rounded-2xl transition-all duration-300 hover:shadow-2xl cursor-pointer ${
               message.isReplied 
-                ? 'bg-gradient-to-br from-gray-800 to-gray-900 border-gray-700 hover:border-gray-600 hover:shadow-gray-900/20' 
-                : 'bg-gradient-to-br from-gray-800 to-gray-900 border-blue-500 shadow-blue-500/10 hover:border-blue-400 hover:shadow-blue-500/30'
+                ? 'bg-white/10 border-white/20 hover:border-white/30 hover:shadow-white/10' 
+                : 'bg-white/10 border-blue-500/50 shadow-blue-500/10 hover:border-blue-400 hover:shadow-blue-500/20'
             }`}
           >
-            <CardContent className="p-4 sm:p-6">
+            <CardContent className="p-6">
               <div className="flex flex-col sm:flex-row items-start justify-between mb-4 gap-4 sm:gap-0">
                 {/* Message Header */}
-                <div className="flex items-start space-x-3 sm:space-x-4 flex-1 w-full">
-                  <Avatar
-                    sx={{
-                      width: 52,
-                      height: 52,
-                      bgcolor: message.isReplied ? '#6b7280' : '#3b82f6',
-                      fontSize: '1.1rem',
-                      fontWeight: 'bold',
-                      boxShadow: message.isReplied ? '0 4px 12px rgba(107, 114, 128, 0.3)' : '0 4px 12px rgba(59, 130, 246, 0.4)',
-                      transition: 'all 0.3s ease',
-                    }}
-                    className="group-hover:scale-110 transition-transform duration-300"
-                  >
+                <div className="flex items-start space-x-4 flex-1 w-full">
+                  <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg transition-all duration-300 group-hover:scale-110 ${
+                    message.isReplied ? 'bg-gray-600' : 'bg-blue-600'
+                  }`}>
                     {getInitials(message.name || 'U')}
-                  </Avatar>
+                  </div>
                   
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center space-x-2 mb-1">
-                      <Typography 
-                        variant="h6" 
-                        className={`font-semibold group-hover:text-blue-300 transition-colors duration-300 ${
-                          message.isReplied ? 'text-gray-300' : 'text-white'
-                        }`}
-                      >
+                      <h3 className={`font-semibold group-hover:text-blue-300 transition-colors duration-300 ${
+                        message.isReplied ? 'text-gray-300' : 'text-white'
+                      }`}>
                         {message.name || 'Unknown User'}
-                      </Typography>
+                      </h3>
                       {!message.isReplied && (
                         <motion.div
                           initial={{ scale: 0 }}
                           animate={{ scale: 1 }}
                           transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
                         >
-                          <Chip
-                            label="New"
-                            size="small"
-                            className="bg-gradient-to-r from-blue-600 to-blue-700 text-white text-xs shadow-lg"
-                          />
+                          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-600 text-white">
+                            New
+                          </span>
                         </motion.div>
                       )}
                     </div>
                     
                     <div className="flex items-center space-x-4 text-sm text-gray-400 mb-2">
                       <div className="flex items-center space-x-1">
-                        <EmailIcon fontSize="small" />
+                        <EnvelopeIcon className="h-4 w-4" />
                         <span>{message.email || 'No email'}</span>
                       </div>
                       <div className="flex items-center space-x-1">
-                        <ScheduleIcon fontSize="small" />
+                        <CalendarIcon className="h-4 w-4" />
                         <span>{formatDate(message.createdAt || message.date)}</span>
                       </div>
                     </div>
                     
                     {message.subject && (
                       <div className="flex items-center space-x-1 mb-2">
-                        <SubjectIcon fontSize="small" className="text-gray-400" />
-                        <Typography variant="body1" className="text-gray-300 font-medium">
+                        <span className="text-gray-400 text-sm font-medium">
                           {message.subject}
-                        </Typography>
+                        </span>
                       </div>
                     )}
                   </div>
@@ -152,82 +127,69 @@ const MessagesList = ({ messages, onReply, onMarkStatus, onDelete }) => {
 
                 {/* Message Status Badge */}
                 <div className="flex-shrink-0">
-                  <Chip
-                    label={message.isReplied ? 'Replied' : 'Unread'}
-                    size="small"
-                    className={
-                      message.isReplied 
-                        ? 'bg-green-600 text-white' 
-                        : 'bg-orange-600 text-white'
-                    }
-                  />
+                  <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+                    message.isReplied 
+                      ? 'bg-green-600 text-white' 
+                      : 'bg-orange-600 text-white'
+                  }`}>
+                    {message.isReplied ? 'Replied' : 'Unread'}
+                  </span>
                 </div>
               </div>
 
               {/* Message Content */}
-              <Box className="mb-4">
-                <Typography 
-                  variant="body2" 
-                  className={`leading-relaxed ${
-                    message.isReplied ? 'text-gray-400' : 'text-gray-300'
-                  }`}
-                >
+              <div className="mb-4">
+                <p className={`leading-relaxed ${
+                  message.isReplied ? 'text-gray-400' : 'text-gray-300'
+                }`}>
                   {getMessagePreview(message.message || 'No message content')}
-                </Typography>
-              </Box>
+                </p>
+              </div>
 
-              <Divider className="border-gray-700 mb-4" />
+              <div className="border-t border-white/10 pt-4">
+                {/* Action Buttons */}
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-0">
+                  <div className="flex items-center space-x-2 justify-center sm:justify-start">
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <Button
+                        icon={<PencilIcon className="h-4 w-4" />}
+                        onClick={() => onReply(message)}
+                        className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl"
+                      >
+                        Reply
+                      </Button>
+                    </motion.div>
+                    
+                    <motion.div
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                    >
+                      <Button
+                        icon={message.isReplied ? <ClockIcon className="h-4 w-4" /> : <CheckCircleIcon className="h-4 w-4" />}
+                        onClick={() => onMarkStatus(message.id, message.isReplied)}
+                        className="bg-gray-600 hover:bg-gray-700 text-white rounded-xl transition-all duration-300"
+                      >
+                        {message.isReplied ? 'Mark Unread' : 'Mark Read'}
+                      </Button>
+                    </motion.div>
+                  </div>
 
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-0">
-              <div className="flex items-center space-x-2 justify-center sm:justify-start">
-                <Tooltip title="Reply to message">
                   <motion.div
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
                   >
                     <Button
-                      variant="contained"
-                      size="small"
-                      startIcon={<ReplyIcon />}
-                      onClick={() => onReply(message)}
-                      className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl"
+                      icon={<TrashIcon className="h-4 w-4" />}
+                      onClick={() => onDelete(message.id)}
+                      className="bg-red-600 hover:bg-red-700 text-white rounded-xl transition-all duration-300"
                     >
-                      Reply
+                      Delete
                     </Button>
                   </motion.div>
-                </Tooltip>
-                  
-                <Tooltip title={message.isReplied ? "Mark as unread" : "Mark as read"}>
-                  <motion.div
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                  >
-                    <IconButton
-                      size="small"
-                      onClick={() => onMarkStatus(message.id, message.isReplied)}
-                      className="text-gray-400 hover:text-white hover:bg-gray-700/50 rounded-xl transition-all duration-300"
-                    >
-                      {message.isReplied ? <MarkUnreadIcon /> : <MarkReadIcon />}
-                    </IconButton>
-                  </motion.div>
-                </Tooltip>
                 </div>
-
-                <Tooltip title="Delete message">
-                  <motion.div
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                  >
-                    <IconButton
-                      size="small"
-                      onClick={() => onDelete(message.id)}
-                      className="text-gray-400 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-all duration-300"
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </motion.div>
-                </Tooltip>
               </div>
             </CardContent>
           </Card>
