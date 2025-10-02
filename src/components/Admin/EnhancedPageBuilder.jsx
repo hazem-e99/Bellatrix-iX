@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import {
   PlusIcon,
@@ -26,7 +25,6 @@ import MediaInputDetector from "../ui/MediaInputDetector";
 import DynamicContentForm from "../ui/DynamicContentForm";
 import pagesAPI from "../../lib/pagesAPI";
 import api from "../../lib/api";
-import { getDefaultDataForComponent } from "../../data/componentSchemas";
 
 const EnhancedPageBuilder = () => {
   const navigate = useNavigate();
@@ -232,9 +230,7 @@ const EnhancedPageBuilder = () => {
   }, []);
 
   // UI State
-  const [selectedComponent, setSelectedComponent] = useState(null);
   const [editingComponent, setEditingComponent] = useState(null);
-  const [showPreview, setShowPreview] = useState(false);
   const [showSectionEditor, setShowSectionEditor] = useState(false);
   const [showPagePreview, setShowPagePreview] = useState(false);
 
@@ -440,24 +436,6 @@ const EnhancedPageBuilder = () => {
         components: updatedComponents,
       };
     });
-  };
-
-  // Function to auto-fix orderIndex conflicts
-  const fixOrderIndexes = () => {
-    setPageData((prev) => {
-      const updatedComponents = prev.components.map((component, index) => ({
-        ...component,
-        orderIndex: index + 1,
-      }));
-      return {
-        ...prev,
-        components: updatedComponents,
-      };
-    });
-    showToast(
-      "Order indexes have been auto-corrected to be sequential",
-      "success"
-    );
   };
 
   const getDefaultDataForComponent = (componentType) => {
@@ -1746,241 +1724,6 @@ const EnhancedPageBuilder = () => {
           variant: "primary",
         },
       },
-
-      // Additional Training Sections
-      TrainingKeyModulesSection: {
-        keyModulesSection: {
-          title: "Key Training Modules",
-          description: "Comprehensive curriculum designed to master NetSuite from foundation to advanced implementation",
-        },
-        keyModules: [
-          {
-            title: "System Architecture",
-            description: "Core system structure, data flow, and integration patterns",
-            duration: "8 hours",
-            icon: "M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10",
-          },
-          {
-            title: "Financial Management",
-            description: "General ledger, budgeting, financial reporting, and analytics",
-            duration: "12 hours",
-            icon: "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z",
-          },
-        ],
-      },
-      TrainingCTASection: {
-        title: "Ready to Start Your Training Journey?",
-        subtitle: "Transform your skills with our expert-led programs",
-        description: "Join thousands of professionals who have enhanced their capabilities through our training programs",
-        ctaButton: {
-          text: "Enroll Now",
-          link: "/contact",
-          variant: "primary",
-        },
-        features: [
-          "Flexible scheduling",
-          "Expert instructors",
-          "Hands-on learning",
-          "Industry certification",
-        ],
-        backgroundImage: "/images/TrainingWhy.jpg",
-      },
-      TrainingPricingSection: {
-        title: "Training Program Pricing",
-        subtitle: "Choose the perfect training plan for your team",
-        description:
-          "Flexible pricing options to fit your learning needs and budget",
-        plans: [
-          {
-            name: "Individual",
-            price: "$299",
-            period: "per person",
-            description: "Perfect for individual learners",
-            features: [
-              "Access to all modules",
-              "Self-paced learning",
-              "Certificate of completion",
-              "Email support",
-            ],
-            cta: "Get Started",
-            popular: false,
-          },
-          {
-            name: "Team",
-            price: "$199",
-            period: "per person",
-            description: "Ideal for small teams (5-20 people)",
-            features: [
-              "Group discounts",
-              "Team progress tracking",
-              "Dedicated support",
-              "Custom scheduling",
-            ],
-            cta: "Get Started",
-            popular: true,
-          },
-          {
-            name: "Enterprise",
-            price: "Custom",
-            period: "pricing",
-            description: "For large organizations",
-            features: [
-              "Unlimited participants",
-              "Custom curriculum",
-              "On-site training",
-              "24/7 support",
-              "Dedicated account manager",
-            ],
-            cta: "Contact Sales",
-            popular: false,
-          },
-        ],
-      },
-      TrainingFAQSection: {
-        title: "Training Frequently Asked Questions",
-        subtitle: "Everything you need to know about our training programs",
-        description:
-          "Find answers to common questions about our training services",
-        faqs: [
-          {
-            question: "What is the duration of each training program?",
-            answer:
-              "Our training programs range from 1-5 days depending on the complexity and depth of the subject matter. Each program is designed to provide comprehensive coverage while respecting your time constraints.",
-          },
-          {
-            question: "Do you provide certificates upon completion?",
-            answer:
-              "Yes, we provide industry-recognized certificates upon successful completion of our training programs. These certificates demonstrate your proficiency in the covered topics.",
-          },
-          {
-            question: "Can training be customized for our specific needs?",
-            answer:
-              "Absolutely! We offer customized training programs tailored to your organization's specific requirements, industry, and skill levels. Our expert instructors can adapt content to match your business context.",
-          },
-          {
-            question: "What learning formats do you offer?",
-            answer:
-              "We offer multiple learning formats including in-person workshops, virtual live sessions, self-paced online modules, and hybrid approaches to accommodate different learning preferences and schedules.",
-          },
-        ],
-      },
-      TrainingTestimonialsSection: {
-        title: "What Our Participants Say",
-        subtitle: "Success stories from our training graduates",
-        description:
-          "Hear from professionals who have transformed their careers through our training programs",
-        testimonials: [
-          {
-            name: "Sarah Johnson",
-            position: "IT Manager",
-            company: "TechCorp Solutions",
-            content:
-              "The training program exceeded my expectations. The hands-on approach and real-world scenarios made learning both practical and engaging.",
-            rating: 5,
-            image: "/images/testimonials/sarah.jpg",
-          },
-          {
-            name: "Michael Chen",
-            position: "Senior Developer",
-            company: "InnovateTech",
-            content:
-              "The expert instructors and comprehensive curriculum helped me advance my skills significantly. Highly recommended for anyone looking to upskill.",
-            rating: 5,
-            image: "/images/testimonials/michael.jpg",
-          },
-          {
-            name: "Emily Rodriguez",
-            position: "Project Manager",
-            company: "Global Systems",
-            content:
-              "The flexible scheduling and personalized approach made it easy to fit training into my busy schedule while maximizing learning outcomes.",
-            rating: 5,
-            image: "/images/testimonials/emily.jpg",
-          },
-        ],
-      },
-      IntegrationHeroSection: {
-        title: "Integration Services",
-        subtitle: "Connect your ecosystem",
-        description: "APIs, middleware, and data pipelines",
-      },
-      IntegrationTypesSection: {
-        title: "Integration Types",
-        types: ["REST APIs", "iPaaS", "File‑based", "Webhooks"],
-      },
-      IntegrationBenefitsSection: {
-        title: "Benefits",
-        benefits: ["Fewer manual tasks", "Real‑time data", "Higher accuracy"],
-      },
-      CustomizationHeroSection: {
-        title: "Customization Services",
-        subtitle: "Tailor the system to your business",
-        description: "Workflows, scripts, and UI personalization",
-      },
-      CustomizationServicesSection: {
-        title: "What We Customize",
-        services: [
-          {
-            name: "Workflows",
-            description: "Automate approvals and processes",
-          },
-          { name: "Scripts", description: "Server and client logic" },
-          { name: "UI", description: "Forms, fields, and dashboards" },
-        ],
-      },
-      CustomizationProcessSection: {
-        title: "Customization Process",
-        steps: [
-          { title: "Requirements", description: "Gather and analyze" },
-          { title: "Design", description: "Solution blueprint" },
-          { title: "Build", description: "Develop and unit test" },
-          { title: "Deploy", description: "Migrate and verify" },
-        ],
-      },
-      ManufacturingHeroSection: {
-        title: "Manufacturing Industry",
-        subtitle: "Optimize production and supply chain",
-        description: "End‑to‑end visibility and control",
-      },
-      ManufacturingIndustryStatsSection: {
-        title: "Industry Stats",
-        stats: [
-          { label: "Downtime reduced", value: "-25%" },
-          { label: "OTD improved", value: "+18%" },
-        ],
-      },
-      ManufacturingChallengesSection: {
-        title: "Top Challenges",
-        challenges: [
-          "Planning accuracy",
-          "Inventory variance",
-          "Production bottlenecks",
-        ],
-      },
-      ManufacturingSolutionsSection: {
-        title: "Our Solutions",
-        solutions: ["MRP", "Shop floor", "WMS", "Quality"],
-      },
-      ManufacturingCaseStudiesSection: {
-        title: "Case Studies",
-        caseStudies: [
-          { client: "Acme Co.", result: "Cut lead time 30%" },
-          { client: "Beta Ltd.", result: "Reduced scrap 15%" },
-        ],
-      },
-      ManufacturingImplementationProcessSection: {
-        title: "Implementation Roadmap",
-        steps: ["Discovery", "Configuration", "Pilot", "Go‑Live"],
-      },
-      ManufacturingCTASection: {
-        title: "Transform Your Operations",
-        button: { text: "Schedule a demo", link: "/contact" },
-      },
-      RetailHeroSection: {
-        title: "Retail Industry",
-        subtitle: "Unify online and in‑store",
-        description: "Inventory, POS, and analytics",
-      },
     };
 
     return (
@@ -1990,20 +1733,6 @@ const EnhancedPageBuilder = () => {
         content: "Section content",
       }
     );
-  };
-
-  const editComponent = (componentIndex) => {
-    const component = pageData.components[componentIndex];
-    const componentInfo = availableComponents.find(
-      (c) => c.componentType === component.componentType
-    );
-
-    setEditingComponent({
-      ...component,
-      index: componentIndex,
-      componentInfo,
-    });
-    setShowSectionEditor(true);
   };
 
   const saveComponentData = (updatedData) => {
@@ -2627,7 +2356,6 @@ const SectionsStep = ({
   onUpdateComponent,
   onRemoveComponent,
   onDuplicateComponent,
-  onMoveComponent,
 }) => {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
@@ -2760,7 +2488,7 @@ const SectionsStep = ({
       if (!jsonString.trim()) return "{}";
       const parsed = JSON.parse(jsonString);
       return JSON.stringify(parsed, null, 2);
-    } catch (e) {
+    } catch {
       return jsonString; // Return as-is if invalid, let user fix it
     }
   };
@@ -3232,7 +2960,7 @@ const SectionsStep = ({
 };
 
 // Step 3: Review
-const ReviewStep = ({ pageData, onSave, loading }) => {
+const ReviewStep = ({ pageData }) => {
   const [availableComponents] = useState([
     { componentType: "HeroSection", icon: "🎯" },
     { componentType: "HRHeroSection", icon: "👥" },
