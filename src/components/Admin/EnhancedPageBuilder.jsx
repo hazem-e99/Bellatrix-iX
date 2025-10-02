@@ -18,6 +18,7 @@ import Button from "../ui/Button";
 import { Input } from "../ui/Input";
 import Card, { CardContent, CardHeader, CardTitle } from "../ui/Card";
 import Modal, { ModalFooter } from "../ui/Modal";
+import { validateVariant } from "../../utils/variantSystem";
 import Toast from "../ui/Toast";
 import SectionDataEditor from "./SectionDataEditor";
 import PagePreview from "./PagePreview";
@@ -32,7 +33,7 @@ const EnhancedPageBuilder = () => {
   const [loading, setLoading] = useState(false);
   const [isPublishing, setIsPublishing] = useState(false);
   const [toast, setToast] = useState(null);
-  
+
   // Ref to prevent multiple simultaneous API calls
   const isSavingRef = useRef(false);
 
@@ -56,15 +57,15 @@ const EnhancedPageBuilder = () => {
     const loadRegistry = async () => {
       try {
         const { idToPathMap } = await import("../componentMap");
-        
+
         // Enhanced categorization function
         const categorizeComponent = (componentType, path) => {
           const lowerType = componentType.toLowerCase();
           const lowerPath = path.toLowerCase();
-          
+
           // Hero components
           if (lowerType.includes("hero")) return "hero";
-          
+
           // Layout components
           if (
             lowerType.includes("header") ||
@@ -74,7 +75,7 @@ const EnhancedPageBuilder = () => {
             lowerType.includes("layout")
           )
             return "layout";
-          
+
           // CTA components
           if (
             lowerType.includes("cta") ||
@@ -83,11 +84,11 @@ const EnhancedPageBuilder = () => {
             lowerType.includes("demo")
           )
             return "cta";
-          
+
           // FAQ components
           if (lowerType.includes("faq") || lowerType.includes("questions"))
             return "faq";
-          
+
           // Pricing components
           if (
             lowerType.includes("pricing") ||
@@ -96,7 +97,7 @@ const EnhancedPageBuilder = () => {
             lowerType.includes("subscription")
           )
             return "pricing";
-          
+
           // About/Team components
           if (
             lowerType.includes("about") ||
@@ -106,7 +107,7 @@ const EnhancedPageBuilder = () => {
             lowerPath.includes("about/")
           )
             return "about";
-          
+
           // Features/Benefits components
           if (
             lowerType.includes("feature") ||
@@ -114,7 +115,7 @@ const EnhancedPageBuilder = () => {
             lowerType.includes("advantage")
           )
             return "features";
-          
+
           // Testimonials/Reviews
           if (
             lowerType.includes("testimonial") ||
@@ -122,22 +123,22 @@ const EnhancedPageBuilder = () => {
             lowerType.includes("feedback")
           )
             return "testimonials";
-          
+
           // Solution components
           if (lowerPath.includes("solution/") || lowerType.includes("solution"))
             return "solution";
-          
+
           // Services components
           if (lowerPath.includes("services/") || lowerType.includes("service"))
             return "services";
-          
+
           // Industry components
           if (
             lowerPath.includes("industries/") ||
             lowerType.includes("industry")
           )
             return "industry";
-          
+
           // Portfolio/Gallery
           if (
             lowerType.includes("portfolio") ||
@@ -145,7 +146,7 @@ const EnhancedPageBuilder = () => {
             lowerType.includes("showcase")
           )
             return "portfolio";
-          
+
           // Blog/News
           if (
             lowerType.includes("blog") ||
@@ -153,7 +154,7 @@ const EnhancedPageBuilder = () => {
             lowerType.includes("article")
           )
             return "blog";
-          
+
           // Default to content
           return "content";
         };
@@ -161,7 +162,7 @@ const EnhancedPageBuilder = () => {
         // Enhanced icon assignment
         const getComponentIcon = (componentType, category) => {
           const lowerType = componentType.toLowerCase();
-          
+
           if (lowerType.includes("hero")) return "🌟";
           if (lowerType.includes("cta")) return "🚀";
           if (lowerType.includes("faq")) return "❓";
@@ -178,7 +179,7 @@ const EnhancedPageBuilder = () => {
           if (lowerType.includes("header") || lowerType.includes("nav"))
             return "📋";
           if (lowerType.includes("footer")) return "🔗";
-          
+
           // Category-based fallbacks
           const categoryIcons = {
             hero: "🌟",
@@ -203,13 +204,13 @@ const EnhancedPageBuilder = () => {
 
           return categoryIcons[category] || "📄";
         };
-        
+
         // Build a generic list using keys; categorize by enhanced heuristics
         const items = Object.keys(idToPathMap).map((componentType) => {
           const path = idToPathMap[componentType];
           const category = categorizeComponent(componentType, path);
           const icon = getComponentIcon(componentType, category);
-          
+
           return {
             id: componentType,
             name: componentType.replace(/([A-Z])/g, " $1").trim(), // Add spaces before capital letters
@@ -220,7 +221,7 @@ const EnhancedPageBuilder = () => {
             category,
           };
         });
-        
+
         setAvailableComponents(items);
       } catch (e) {
         console.error("Failed to load component registry", e);
@@ -401,21 +402,24 @@ const EnhancedPageBuilder = () => {
   const addComponent = (component) => {
     // Always use schema-based default data for consistent pre-filling
     const defaultContent = getDefaultDataForComponent(component.componentType);
-    
-    console.log(`Adding component ${component.componentType} with default data:`, defaultContent);
-    
+
+    console.log(
+      `Adding component ${component.componentType} with default data:`,
+      defaultContent
+    );
+
     const newComponent = {
       componentType: component.componentType || "Generic",
       componentName: component.componentName || "New Component",
       contentJson: JSON.stringify(defaultContent, null, 2),
       orderIndex: pageData.components.length + 1,
     };
-    
+
     setPageData((prev) => ({
       ...prev,
       components: [...prev.components, newComponent],
     }));
-    
+
     showToast(
       (component.componentName || component.name || "Component") +
         " added to page",
@@ -448,53 +452,57 @@ const EnhancedPageBuilder = () => {
         ctaButton: {
           text: "Get Started",
           link: "/contact",
-          variant: "primary",
+          variant: validateVariant("primary"),
         },
         backgroundImage: "/images/HeroSection.png",
       },
-      
+
       PayrollHeroSection: {
         title: "Automated Payroll Solutions",
         subtitle: "Simplify payroll processing with our advanced system",
-        description: "Reduce errors and save time with automated payroll management",
+        description:
+          "Reduce errors and save time with automated payroll management",
         ctaButton: {
           text: "Get Started",
           link: "/payroll",
-          variant: "primary",
+          variant: validateVariant("primary"),
         },
         backgroundImage: "/images/payrollHeroSection.jpg",
       },
-      
+
       HRHeroSection: {
         titleParts: ["HR Management", "Made Simple"],
-        description: "Streamline your human resources with our comprehensive HR solutions",
+        description:
+          "Streamline your human resources with our comprehensive HR solutions",
         ctaButton: {
           text: "Learn More",
           link: "/hr",
-          variant: "primary",
+          variant: validateVariant("primary"),
         },
         backgroundVideo: "/Videos/hrVideo.mp4",
       },
-      
+
       ImplementationHeroSection: {
         title: "Implementation Services",
         subtitle: "Seamless deployments by experts",
-        description: "We plan, configure, and launch with zero downtime.",
+        description: "We plan, configure, and launch with zero downtime",
         backgroundImage: "/images/impleHeroSection.png",
         ctaButton: {
           text: "Talk to an expert",
           link: "/contact",
-          variant: "primary",
+          variant: "primary", // Make sure this is a string, not validateVariant result
+          icon: "M13 7l5 5m0 0l-5 5m5-5H6",
         },
       },
-      
+
       TrainingHeroSection: {
         heroContent: {
           title: "Professional Training Programs",
-          description: "Empower your team with comprehensive training solutions designed to enhance skills and drive success",
+          description:
+            "Empower your team with comprehensive training solutions designed to enhance skills and drive success",
         },
       },
-      
+
       IntegrationHeroSection: {
         title: "Integration Services",
         subtitle: "Connect your ecosystem",
@@ -502,10 +510,10 @@ const EnhancedPageBuilder = () => {
         ctaButton: {
           text: "Learn More",
           link: "/integration",
-          variant: "primary",
+          variant: validateVariant("primary"),
         },
       },
-      
+
       CustomizationHeroSection: {
         title: "Customization Services",
         subtitle: "Tailor the system to your business",
@@ -513,21 +521,22 @@ const EnhancedPageBuilder = () => {
         ctaButton: {
           text: "Get Started",
           link: "/customization",
-          variant: "primary",
+          variant: validateVariant("primary"),
         },
       },
-      
+
       ManufacturingHeroSection: {
         title: "Manufacturing Solutions",
         subtitle: "Streamline your manufacturing operations",
-        description: "Comprehensive NetSuite solutions for manufacturing businesses",
+        description:
+          "Comprehensive NetSuite solutions for manufacturing businesses",
         ctaButton: {
           text: "Learn More",
           link: "/manufacturing",
-          variant: "primary",
+          variant: validateVariant("primary"),
         },
       },
-      
+
       RetailHeroSection: {
         title: "Retail Solutions",
         subtitle: "Transform your retail business",
@@ -535,25 +544,27 @@ const EnhancedPageBuilder = () => {
         ctaButton: {
           text: "Discover More",
           link: "/retail",
-          variant: "primary",
+          variant: validateVariant("primary"),
         },
       },
-      
+
       AboutHeroSection: {
         title: "About Us",
         subtitle: "Your trusted technology partner",
-        description: "We help businesses transform through innovative technology solutions",
+        description:
+          "We help businesses transform through innovative technology solutions",
         ctaButton: {
           text: "Learn More",
           link: "/about",
-          variant: "primary",
+          variant: validateVariant("primary"),
         },
       },
       // Payroll Sections
       PayrollHowItWorksSection: {
         title: "How Payroll Works",
         subtitle: "Simple, automated payroll processing",
-        description: "Our streamlined process ensures accurate and timely payroll management",
+        description:
+          "Our streamlined process ensures accurate and timely payroll management",
         steps: [
           {
             title: "Data Collection",
@@ -577,7 +588,7 @@ const EnhancedPageBuilder = () => {
           },
         ],
       },
-      
+
       PayrollWorkflowSection: {
         title: "Payroll Workflow",
         subtitle: "Automated workflow management",
@@ -605,7 +616,7 @@ const EnhancedPageBuilder = () => {
           },
         ],
       },
-      
+
       PayrollStepperSection: {
         title: "Payroll Process Steps",
         steps: [
@@ -631,7 +642,7 @@ const EnhancedPageBuilder = () => {
           },
         ],
       },
-      
+
       PayrollPainPointsSection: {
         title: "Common Payroll Pain Points",
         subtitle: "Problems we solve",
@@ -653,26 +664,29 @@ const EnhancedPageBuilder = () => {
           },
         ],
       },
-      
+
       PayrollFAQSection: {
         title: "Payroll FAQ",
         subtitle: "Frequently asked questions",
         faqs: [
           {
             question: "How often can I run payroll?",
-            answer: "You can run payroll as often as needed - weekly, bi-weekly, or monthly.",
+            answer:
+              "You can run payroll as often as needed - weekly, bi-weekly, or monthly.",
           },
           {
             question: "Can I handle multiple pay rates?",
-            answer: "Yes, our system supports multiple pay rates and overtime calculations.",
+            answer:
+              "Yes, our system supports multiple pay rates and overtime calculations.",
           },
           {
             question: "Is tax calculation automatic?",
-            answer: "Yes, all federal, state, and local taxes are calculated automatically.",
+            answer:
+              "Yes, all federal, state, and local taxes are calculated automatically.",
           },
         ],
       },
-      
+
       PayrollCTASection: {
         title: "Ready to Simplify Your Payroll?",
         subtitle: "Get started with automated payroll today",
@@ -680,7 +694,7 @@ const EnhancedPageBuilder = () => {
         ctaButton: {
           text: "Start Free Trial",
           link: "/payroll/trial",
-          variant: "primary",
+          variant: validateVariant("primary"),
         },
       },
 
@@ -733,7 +747,7 @@ const EnhancedPageBuilder = () => {
           },
         ],
       },
-      
+
       HRUseCasesSection: {
         title: "HR Use Cases",
         subtitle: "Real-world applications",
@@ -746,11 +760,15 @@ const EnhancedPageBuilder = () => {
           {
             title: "Enterprise",
             description: "Comprehensive solution for large organizations",
-            features: ["Advanced analytics", "Multi-location support", "Custom workflows"],
+            features: [
+              "Advanced analytics",
+              "Multi-location support",
+              "Custom workflows",
+            ],
           },
         ],
       },
-      
+
       HRPricingSection: {
         title: "HR Pricing",
         subtitle: "Choose your plan",
@@ -774,31 +792,38 @@ const EnhancedPageBuilder = () => {
             name: "Enterprise",
             price: "Custom",
             period: "pricing",
-            features: ["Full features", "Custom integration", "Dedicated support"],
+            features: [
+              "Full features",
+              "Custom integration",
+              "Dedicated support",
+            ],
             cta: "Contact Sales",
           },
         ],
       },
-      
+
       HRFAQSection: {
         title: "HR FAQ",
         subtitle: "Common questions about our HR solutions",
         faqs: [
           {
             question: "Can I integrate with existing systems?",
-            answer: "Yes, we offer comprehensive integration capabilities with most HR and payroll systems.",
+            answer:
+              "Yes, we offer comprehensive integration capabilities with most HR and payroll systems.",
           },
           {
             question: "Is training included?",
-            answer: "Yes, we provide comprehensive training for all users at no additional cost.",
+            answer:
+              "Yes, we provide comprehensive training for all users at no additional cost.",
           },
           {
             question: "What about data security?",
-            answer: "We use enterprise-grade security with encryption and regular backups.",
+            answer:
+              "We use enterprise-grade security with encryption and regular backups.",
           },
         ],
       },
-      
+
       HRCTASection: {
         title: "Transform Your HR Today",
         subtitle: "Start your HR transformation journey",
@@ -806,7 +831,7 @@ const EnhancedPageBuilder = () => {
         ctaButton: {
           text: "Schedule Demo",
           link: "/hr/demo",
-          variant: "primary",
+          variant: validateVariant("primary"),
         },
       },
 
@@ -842,7 +867,7 @@ const EnhancedPageBuilder = () => {
           },
         ],
       },
-      
+
       ImplementationWhyChooseSection: {
         title: "Why Choose Our Implementation",
         subtitle: "What sets us apart",
@@ -869,7 +894,7 @@ const EnhancedPageBuilder = () => {
           },
         ],
       },
-      
+
       ImplementationPricingSection: {
         title: "Implementation Pricing",
         subtitle: "Transparent pricing for all project sizes",
@@ -898,16 +923,42 @@ const EnhancedPageBuilder = () => {
           },
         ],
       },
-      
+
       ImplementationCTASection: {
-        title: "Ready to implement?",
-        subtitle: "Kick off your project now",
+        title: "Ready for a Seamless NetSuite Implementation?",
+        subtitle: "Transform your business operations with our expert NetSuite implementation services. Let's turn your vision into reality with proven methodologies and dedicated support.",
         description: "Get started with your NetSuite implementation today",
-        button: { 
-          text: "Get a quote", 
-          link: "/contact",
+        ctaButton: {
+          text: "Get Started Today",
+          link: "/implementation/contact",
+          variant: "primary", // Will be converted by validateVariant
+        },
+        // Also include alternative structures
+        button: {
+          text: "Get Started Today", 
+          link: "/implementation/contact",
           variant: "primary",
         },
+        buttonText: "Get Started Today",
+        buttonLink: "/implementation/contact",
+        // ADD: Default features/cards data
+        features: [
+          {
+            title: "Quick Response",
+            description: "Get a detailed proposal within 24 hours",
+            icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z",
+          },
+          {
+            title: "Proven Success",
+            description: "99.9% implementation success rate",
+            icon: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z",
+          },
+          {
+            title: "Expert Support",
+            description: "Dedicated team of certified professionals",
+            icon: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z",
+          },
+        ],
       },
 
       // Service Grid
@@ -946,34 +997,40 @@ const EnhancedPageBuilder = () => {
       TrainingProgramsSection: {
         programsSection: {
           title: "Our Training Programs",
-          description: "Comprehensive training solutions designed to empower your team with the skills they need to excel",
+          description:
+            "Comprehensive training solutions designed to empower your team with the skills they need to excel",
           image: "/images/traning.jpg",
           Professional_Badge: "Certified Training",
         },
         trainingPrograms: {
-        programs: [
+          programs: [
             {
               id: 1,
               title: "NetSuite Fundamentals",
               shortDescription: "Core concepts and navigation basics",
-              longDescription: "This comprehensive fundamentals program introduces you to the core concepts of NetSuite, covering essential navigation, basic configuration, and understanding the platform's architecture.",
-              icon: "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253",
+              longDescription:
+                "This comprehensive fundamentals program introduces you to the core concepts of NetSuite, covering essential navigation, basic configuration, and understanding the platform's architecture.",
+              icon:
+                "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253",
             },
             {
               id: 2,
               title: "Advanced Modules",
               shortDescription: "Financial management and reporting",
-              longDescription: "Dive deep into NetSuite's advanced modules with focus on financial management, advanced reporting, and complex business processes.",
-              icon: "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z",
+              longDescription:
+                "Dive deep into NetSuite's advanced modules with focus on financial management, advanced reporting, and complex business processes.",
+              icon:
+                "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z",
             },
           ],
         },
       },
-      
+
       TrainingWhyChooseSection: {
         whyChooseSection: {
           title: "Why Choose Our Training?",
-          description: "We provide world-class training solutions that combine expertise, innovation, and practical application to ensure your team's success",
+          description:
+            "We provide world-class training solutions that combine expertise, innovation, and practical application to ensure your team's success",
           image: "/images/chooese.png",
           Professional_Badge: "Excellence Training",
         },
@@ -981,59 +1038,70 @@ const EnhancedPageBuilder = () => {
           {
             id: 1,
             title: "Expert Instructors",
-            shortDescription: "Certified professionals with years of experience",
-            detailedDescription: "Our instructors are certified NetSuite professionals with extensive real-world experience across various industries.",
+            shortDescription:
+              "Certified professionals with years of experience",
+            detailedDescription:
+              "Our instructors are certified NetSuite professionals with extensive real-world experience across various industries.",
             benefits: [
               "Industry-proven expertise with 10+ years of NetSuite experience",
               "Multiple NetSuite certifications (Administrator, Developer, Consultant)",
               "Real-world implementation experience across 500+ projects",
             ],
-            icon: "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253",
+            icon:
+              "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253",
           },
           {
             id: 2,
             title: "Hands-on Learning",
             shortDescription: "Practical exercises with real-world scenarios",
-            detailedDescription: "Our training methodology emphasizes practical, hands-on learning through real-world scenarios and interactive exercises.",
+            detailedDescription:
+              "Our training methodology emphasizes practical, hands-on learning through real-world scenarios and interactive exercises.",
             benefits: [
               "Live NetSuite sandbox environments for each student",
               "Real business scenarios from actual client implementations",
               "Step-by-step guided exercises with immediate feedback",
             ],
-            icon: "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z",
+            icon:
+              "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z",
           },
         ],
       },
-      
+
       TrainingKeyModulesSection: {
         keyModulesSection: {
           title: "Key Training Modules",
-          description: "Comprehensive curriculum designed to master NetSuite from foundation to advanced implementation",
+          description:
+            "Comprehensive curriculum designed to master NetSuite from foundation to advanced implementation",
         },
         keyModules: [
           {
             title: "System Architecture",
-            description: "Core system structure, data flow, and integration patterns",
+            description:
+              "Core system structure, data flow, and integration patterns",
             duration: "8 hours",
-            icon: "M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10",
+            icon:
+              "M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10",
           },
           {
             title: "Financial Management",
-            description: "General ledger, budgeting, financial reporting, and analytics",
+            description:
+              "General ledger, budgeting, financial reporting, and analytics",
             duration: "12 hours",
-            icon: "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z",
+            icon:
+              "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z",
           },
         ],
       },
-      
+
       TrainingCTASection: {
         title: "Ready to Start Your Training Journey?",
         subtitle: "Transform your skills with our expert-led programs",
-        description: "Join thousands of professionals who have enhanced their capabilities through our training programs",
+        description:
+          "Join thousands of professionals who have enhanced their capabilities through our training programs",
         ctaButton: {
           text: "Enroll Now",
           link: "/contact",
-          variant: "primary",
+          variant: validateVariant("primary"),
         },
         features: [
           "Flexible scheduling",
@@ -1043,11 +1111,12 @@ const EnhancedPageBuilder = () => {
         ],
         backgroundImage: "/images/TrainingWhy.jpg",
       },
-      
+
       TrainingPricingSection: {
         title: "Training Program Pricing",
         subtitle: "Choose the perfect training plan for your team",
-        description: "Flexible pricing options to fit your learning needs and budget",
+        description:
+          "Flexible pricing options to fit your learning needs and budget",
         plans: [
           {
             name: "Individual",
@@ -1094,41 +1163,48 @@ const EnhancedPageBuilder = () => {
           },
         ],
       },
-      
+
       TrainingFAQSection: {
         title: "Training Frequently Asked Questions",
         subtitle: "Everything you need to know about our training programs",
-        description: "Find answers to common questions about our training services",
+        description:
+          "Find answers to common questions about our training services",
         faqs: [
           {
             question: "What is the duration of each training program?",
-            answer: "Our training programs range from 1-5 days depending on the complexity and depth of the subject matter. Each program is designed to provide comprehensive coverage while respecting your time constraints.",
+            answer:
+              "Our training programs range from 1-5 days depending on the complexity and depth of the subject matter. Each program is designed to provide comprehensive coverage while respecting your time constraints.",
           },
           {
             question: "Do you provide certificates upon completion?",
-            answer: "Yes, we provide industry-recognized certificates upon successful completion of our training programs. These certificates demonstrate your proficiency in the covered topics.",
+            answer:
+              "Yes, we provide industry-recognized certificates upon successful completion of our training programs. These certificates demonstrate your proficiency in the covered topics.",
           },
           {
             question: "Can training be customized for our specific needs?",
-            answer: "Absolutely! We offer customized training programs tailored to your organization's specific requirements, industry, and skill levels. Our expert instructors can adapt content to match your business context.",
+            answer:
+              "Absolutely! We offer customized training programs tailored to your organization's specific requirements, industry, and skill levels. Our expert instructors can adapt content to match your business context.",
           },
           {
             question: "What learning formats do you offer?",
-            answer: "We offer multiple learning formats including in-person workshops, virtual live sessions, self-paced online modules, and hybrid approaches to accommodate different learning preferences and schedules.",
+            answer:
+              "We offer multiple learning formats including in-person workshops, virtual live sessions, self-paced online modules, and hybrid approaches to accommodate different learning preferences and schedules.",
           },
         ],
       },
-      
+
       TrainingTestimonialsSection: {
         title: "What Our Participants Say",
         subtitle: "Success stories from our training graduates",
-        description: "Hear from professionals who have transformed their careers through our training programs",
+        description:
+          "Hear from professionals who have transformed their careers through our training programs",
         testimonials: [
           {
             name: "Sarah Johnson",
             position: "IT Manager",
             company: "TechCorp Solutions",
-            content: "The training program exceeded my expectations. The hands-on approach and real-world scenarios made learning both practical and engaging.",
+            content:
+              "The training program exceeded my expectations. The hands-on approach and real-world scenarios made learning both practical and engaging.",
             rating: 5,
             image: "/images/testimonials/sarah.jpg",
           },
@@ -1136,7 +1212,8 @@ const EnhancedPageBuilder = () => {
             name: "Michael Chen",
             position: "Senior Developer",
             company: "InnovateTech",
-            content: "The expert instructors and comprehensive curriculum helped me advance my skills significantly. Highly recommended for anyone looking to upskill.",
+            content:
+              "The expert instructors and comprehensive curriculum helped me advance my skills significantly. Highly recommended for anyone looking to upskill.",
             rating: 5,
             image: "/images/testimonials/michael.jpg",
           },
@@ -1171,12 +1248,12 @@ const EnhancedPageBuilder = () => {
           },
         ],
       },
-      
+
       IntegrationBenefitsSection: {
         title: "Integration Benefits",
         subtitle: "Why integrate with NetSuite",
         description: "Unlock the full potential of your business systems",
-            benefits: [
+        benefits: [
           {
             title: "Fewer Manual Tasks",
             description: "Automate data entry and reduce errors",
@@ -1228,7 +1305,7 @@ const EnhancedPageBuilder = () => {
           },
         ],
       },
-      
+
       CustomizationProcessSection: {
         title: "Customization Process",
         subtitle: "Our proven approach",
@@ -1264,7 +1341,8 @@ const EnhancedPageBuilder = () => {
           {
             label: "Digital Transformation",
             value: "73%",
-            description: "of manufacturers are investing in digital transformation",
+            description:
+              "of manufacturers are investing in digital transformation",
           },
           {
             label: "Efficiency Gains",
@@ -1278,7 +1356,7 @@ const EnhancedPageBuilder = () => {
           },
         ],
       },
-      
+
       ManufacturingChallengesSection: {
         title: "Manufacturing Challenges",
         subtitle: "Common pain points we solve",
@@ -1305,7 +1383,7 @@ const EnhancedPageBuilder = () => {
           },
         ],
       },
-      
+
       ManufacturingSolutionsSection: {
         title: "Manufacturing Solutions",
         subtitle: "Comprehensive NetSuite solutions",
@@ -1328,7 +1406,7 @@ const EnhancedPageBuilder = () => {
           },
         ],
       },
-      
+
       ManufacturingCaseStudiesSection: {
         title: "Manufacturing Case Studies",
         subtitle: "Success stories from our clients",
@@ -1349,7 +1427,7 @@ const EnhancedPageBuilder = () => {
           },
         ],
       },
-      
+
       ManufacturingImplementationProcessSection: {
         title: "Manufacturing Implementation",
         subtitle: "Specialized implementation for manufacturers",
@@ -1377,7 +1455,7 @@ const EnhancedPageBuilder = () => {
           },
         ],
       },
-      
+
       ManufacturingCTASection: {
         title: "Transform Your Manufacturing Operations",
         subtitle: "Get started with NetSuite for manufacturing",
@@ -1385,7 +1463,7 @@ const EnhancedPageBuilder = () => {
         ctaButton: {
           text: "Schedule Demo",
           link: "/manufacturing/demo",
-          variant: "primary",
+          variant: validateVariant("primary"),
         },
       },
 
@@ -1397,7 +1475,8 @@ const EnhancedPageBuilder = () => {
           {
             label: "Omnichannel Growth",
             value: "85%",
-            description: "of retailers are investing in omnichannel capabilities",
+            description:
+              "of retailers are investing in omnichannel capabilities",
           },
           {
             label: "Customer Expectations",
@@ -1411,7 +1490,7 @@ const EnhancedPageBuilder = () => {
           },
         ],
       },
-      
+
       RetailChallengesSection: {
         title: "Retail Challenges",
         subtitle: "Modern retail pain points",
@@ -1438,7 +1517,7 @@ const EnhancedPageBuilder = () => {
           },
         ],
       },
-      
+
       RetailSolutionsSection: {
         title: "Retail Solutions",
         subtitle: "Comprehensive retail management",
@@ -1452,16 +1531,24 @@ const EnhancedPageBuilder = () => {
           {
             title: "Inventory Management",
             description: "Advanced inventory optimization",
-            features: ["Real-time tracking", "Demand forecasting", "Automated reordering"],
+            features: [
+              "Real-time tracking",
+              "Demand forecasting",
+              "Automated reordering",
+            ],
           },
           {
             title: "Customer Management",
             description: "360-degree customer view",
-            features: ["Customer profiles", "Purchase history", "Loyalty programs"],
+            features: [
+              "Customer profiles",
+              "Purchase history",
+              "Loyalty programs",
+            ],
           },
         ],
       },
-      
+
       RetailFeaturesSection: {
         title: "Retail Features",
         subtitle: "Key capabilities for retail success",
@@ -1488,7 +1575,7 @@ const EnhancedPageBuilder = () => {
           },
         ],
       },
-      
+
       RetailCaseStudiesSection: {
         title: "Retail Case Studies",
         subtitle: "Success stories from retail clients",
@@ -1509,7 +1596,7 @@ const EnhancedPageBuilder = () => {
           },
         ],
       },
-      
+
       RetailImplementationSection: {
         title: "Retail Implementation",
         subtitle: "Specialized retail implementation",
@@ -1537,7 +1624,7 @@ const EnhancedPageBuilder = () => {
           },
         ],
       },
-      
+
       RetailCTASection: {
         title: "Transform Your Retail Business",
         subtitle: "Get started with NetSuite for retail",
@@ -1545,7 +1632,7 @@ const EnhancedPageBuilder = () => {
         ctaButton: {
           text: "Schedule Demo",
           link: "/retail/demo",
-          variant: "primary",
+          variant: validateVariant("primary"),
         },
       },
 
@@ -1553,7 +1640,8 @@ const EnhancedPageBuilder = () => {
       AboutMissionSection: {
         title: "Our Mission",
         subtitle: "Empowering business transformation",
-        description: "We are committed to helping businesses achieve their full potential through innovative technology solutions and expert guidance.",
+        description:
+          "We are committed to helping businesses achieve their full potential through innovative technology solutions and expert guidance.",
         missionPoints: [
           {
             title: "Innovation",
@@ -1572,20 +1660,23 @@ const EnhancedPageBuilder = () => {
           },
         ],
       },
-      
+
       AboutValuesSection: {
         title: "Our Values",
         subtitle: "What drives us",
-        description: "Our core values guide everything we do and shape our company culture",
+        description:
+          "Our core values guide everything we do and shape our company culture",
         values: [
           {
             title: "Integrity",
-            description: "We operate with honesty and transparency in all our interactions",
+            description:
+              "We operate with honesty and transparency in all our interactions",
             icon: "🛡️",
           },
           {
             title: "Innovation",
-            description: "We continuously seek new and better ways to solve problems",
+            description:
+              "We continuously seek new and better ways to solve problems",
             icon: "🚀",
           },
           {
@@ -1600,11 +1691,12 @@ const EnhancedPageBuilder = () => {
           },
         ],
       },
-      
+
       AboutTeamSection: {
         title: "Our Team",
         subtitle: "Meet the experts behind our success",
-        description: "Our diverse team of professionals brings together decades of experience in technology and business transformation",
+        description:
+          "Our diverse team of professionals brings together decades of experience in technology and business transformation",
         teamMembers: [
           {
             name: "John Smith",
@@ -1629,7 +1721,7 @@ const EnhancedPageBuilder = () => {
           },
         ],
       },
-      
+
       AboutJourneySection: {
         title: "Our Journey",
         subtitle: "From startup to industry leader",
@@ -1638,12 +1730,14 @@ const EnhancedPageBuilder = () => {
           {
             year: "2010",
             title: "Company Founded",
-            description: "Started with a vision to transform business through technology",
+            description:
+              "Started with a vision to transform business through technology",
           },
           {
             year: "2015",
             title: "First Major Client",
-            description: "Successfully implemented NetSuite for Fortune 500 company",
+            description:
+              "Successfully implemented NetSuite for Fortune 500 company",
           },
           {
             year: "2020",
@@ -1657,11 +1751,12 @@ const EnhancedPageBuilder = () => {
           },
         ],
       },
-      
+
       AboutMilestonesSection: {
         title: "Key Milestones",
         subtitle: "Our achievements over the years",
-        description: "Significant milestones that mark our journey of growth and success",
+        description:
+          "Significant milestones that mark our journey of growth and success",
         milestones: [
           {
             title: "500+ Projects",
@@ -1685,15 +1780,17 @@ const EnhancedPageBuilder = () => {
           },
         ],
       },
-      
+
       AboutDifferentiatorsSection: {
         title: "What Sets Us Apart",
         subtitle: "Our competitive advantages",
-        description: "The unique qualities that make us the preferred choice for NetSuite implementations",
+        description:
+          "The unique qualities that make us the preferred choice for NetSuite implementations",
         differentiators: [
           {
             title: "Deep Expertise",
-            description: "Certified professionals with extensive NetSuite experience",
+            description:
+              "Certified professionals with extensive NetSuite experience",
             icon: "🎓",
           },
           {
@@ -1713,15 +1810,16 @@ const EnhancedPageBuilder = () => {
           },
         ],
       },
-      
+
       AboutCTASection: {
         title: "Ready to Work With Us?",
         subtitle: "Let's transform your business together",
-        description: "Get in touch to discuss how we can help your business succeed",
+        description:
+          "Get in touch to discuss how we can help your business succeed",
         ctaButton: {
           text: "Contact Us",
           link: "/contact",
-          variant: "primary",
+          variant: validateVariant("primary"),
         },
       },
     };
@@ -1826,7 +1924,7 @@ const EnhancedPageBuilder = () => {
     try {
       // Mark that we're currently saving
       isSavingRef.current = true;
-      
+
       // Set appropriate loading state
       if (status === "published") {
         setIsPublishing(true);
@@ -1913,7 +2011,7 @@ const EnhancedPageBuilder = () => {
       // Make the API call to create page with components
       await pagesAPI.createPage(createPageDTO);
       console.log("✅ Page created successfully!");
-      
+
       // Show appropriate success message based on status
       if (status === "published") {
         showToast("Page published successfully", "success");
@@ -2212,14 +2310,19 @@ const CategorySelector = ({ value, onChange }) => {
         setError(null);
         const res = await api.get("/Categories");
         const list = Array.isArray(res.data) ? res.data : [];
-        
+
         // Filter out "Home" and "About" categories
-        const filteredList = list.filter(category => {
+        const filteredList = list.filter((category) => {
           const name = category.name?.toLowerCase();
           const slug = category.slug?.toLowerCase();
-          return name !== 'home' && name !== 'about' && slug !== 'home' && slug !== 'about';
+          return (
+            name !== "home" &&
+            name !== "about" &&
+            slug !== "home" &&
+            slug !== "about"
+          );
         });
-        
+
         setCategories(filteredList);
       } catch (e) {
         setError(e.message || "Failed to load categories");
@@ -2365,11 +2468,11 @@ const SectionsStep = ({
     // Get components that match search term (if any)
     const searchFilteredComponents = searchTerm.trim()
       ? availableComponents.filter((comp) => {
-        const search = searchTerm.toLowerCase().trim();
+          const search = searchTerm.toLowerCase().trim();
           return (
             comp.name.toLowerCase().includes(search) ||
-               comp.componentType.toLowerCase().includes(search) ||
-               comp.category.toLowerCase().includes(search) ||
+            comp.componentType.toLowerCase().includes(search) ||
+            comp.category.toLowerCase().includes(search) ||
             comp.description.toLowerCase().includes(search)
           );
         })
@@ -2383,9 +2486,9 @@ const SectionsStep = ({
 
     // Start with "All Components"
     const dynamicCategories = [
-      { 
-        id: "all", 
-        name: "All Components", 
+      {
+        id: "all",
+        name: "All Components",
         icon: "📄",
         count: searchFilteredComponents.length,
       },
@@ -2394,7 +2497,7 @@ const SectionsStep = ({
     // Extract unique categories from available components
     const uniqueCategories = [
       ...new Set(
-      availableComponents
+        availableComponents
           .map((comp) => comp.category)
           .filter((category) => category && category !== "all")
       ),
@@ -2434,7 +2537,7 @@ const SectionsStep = ({
         name: categoryId.charAt(0).toUpperCase() + categoryId.slice(1),
         icon: "📦",
       };
-      
+
       dynamicCategories.push({
         id: categoryId,
         name: config.name,
@@ -2448,24 +2551,24 @@ const SectionsStep = ({
 
   const filteredComponents = React.useMemo(() => {
     let filtered = availableComponents;
-    
+
     // Filter by category
     if (selectedCategory !== "all") {
       filtered = filtered.filter((comp) => comp.category === selectedCategory);
     }
-    
+
     // Filter by search term
     if (searchTerm.trim()) {
       const search = searchTerm.toLowerCase().trim();
       filtered = filtered.filter(
         (comp) =>
-        comp.name.toLowerCase().includes(search) ||
-        comp.componentType.toLowerCase().includes(search) ||
-        comp.category.toLowerCase().includes(search) ||
-        comp.description.toLowerCase().includes(search)
+          comp.name.toLowerCase().includes(search) ||
+          comp.componentType.toLowerCase().includes(search) ||
+          comp.category.toLowerCase().includes(search) ||
+          comp.description.toLowerCase().includes(search)
       );
     }
-    
+
     return filtered;
   }, [availableComponents, selectedCategory, searchTerm]);
 
@@ -2567,9 +2670,9 @@ const SectionsStep = ({
                 <span>{category.name}</span>
                 <span
                   className={`text-xs px-2 py-1 rounded-full ${
-                  selectedCategory === category.id
-                    ? "bg-white/20 text-white"
-                    : "bg-gray-500/20 text-gray-400"
+                    selectedCategory === category.id
+                      ? "bg-white/20 text-white"
+                      : "bg-gray-500/20 text-gray-400"
                   }`}
                 >
                   {category.count}
@@ -2631,38 +2734,35 @@ const SectionsStep = ({
               </div>
             </div>
           ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredComponents.map((component, index) => (
-              <motion.div
-                key={component.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="p-4 border border-white/20 rounded-xl cursor-pointer hover:bg-white/10 hover:border-white/30 transition-all duration-200 group"
-                onClick={() => onAddComponent(component)}
-              >
-                <div className="flex items-center space-x-3">
-                  <div className="text-2xl group-hover:scale-110 transition-transform duration-200">
-                    {component.icon}
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="text-base font-semibold text-white mb-1">
-                      {component.name}
-                    </h4>
-                    <p className="text-sm text-gray-300 leading-relaxed">
-                      {component.description}
-                    </p>
-                    <div className="mt-2">
-                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-500/20 text-blue-300">
-                        {component.category}
-                      </span>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {filteredComponents.map((component) => (
+                <div
+                  key={component.id}
+                  className="p-4 border border-white/20 rounded-xl cursor-pointer hover:bg-white/10 hover:border-white/30 transition-all duration-200 group"
+                  onClick={() => onAddComponent(component)}
+                >
+                  <div className="flex items-center space-x-3">
+                    <div className="text-2xl group-hover:scale-110 transition-transform duration-200">
+                      {component.icon}
                     </div>
+                    <div className="flex-1">
+                      <h4 className="text-base font-semibold text-white mb-1">
+                        {component.name}
+                      </h4>
+                      <p className="text-sm text-gray-300 leading-relaxed">
+                        {component.description}
+                      </p>
+                      <div className="mt-2">
+                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-500/20 text-blue-300">
+                          {component.category}
+                        </span>
+                      </div>
+                    </div>
+                    <PlusIcon className="h-5 w-5 text-white/60 group-hover:text-white transition-colors" />
                   </div>
-                  <PlusIcon className="h-5 w-5 text-white/60 group-hover:text-white transition-colors" />
                 </div>
-              </motion.div>
-            ))}
-          </div>
+              ))}
+            </div>
           )}
         </CardContent>
       </Card>
@@ -2726,19 +2826,16 @@ const SectionsStep = ({
                   No components added yet
                 </h3>
                 <p className="text-gray-300 text-base leading-relaxed">
-                  Click on components above or use "Add Component" button to start
-                  building your page
+                  Click on components above or use "Add Component" button to
+                  start building your page
                 </p>
               </div>
             </div>
           ) : (
             <div className="flex-1 overflow-y-auto space-y-6 pr-2 scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent hover:scrollbar-thumb-white/30">
               {pageData.components.map((component, index) => (
-                <motion.div
+                <div
                   key={index}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
                   className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20"
                 >
                   {/* Component Header */}
@@ -2949,7 +3046,7 @@ const SectionsStep = ({
                       )}
                     </div>
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
           )}

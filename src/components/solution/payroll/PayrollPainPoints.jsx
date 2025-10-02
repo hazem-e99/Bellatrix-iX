@@ -41,7 +41,7 @@ const PayrollPainPoints = ({ painPoints }) => {
           <ul className="space-y-5">
             {displayData.items?.map((item, idx) => (
               <li key={idx} className="flex items-start">
-                <span className="text-lg text-gray-700">• {item.text}</span>
+                <span className="text-lg text-gray-700"> {item.title}</span>
               </li>
             ))}
           </ul>

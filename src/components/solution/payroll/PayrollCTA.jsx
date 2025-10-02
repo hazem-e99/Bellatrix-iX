@@ -1,44 +1,59 @@
-import React, { useState, useEffect } from 'react';
+import React from "react";
+import {
+  getVariantClasses,
+  validateVariant,
+} from "../../../utils/variantSystem";
+import { smartRender } from "../../../utils/htmlSanitizer";
 
-const PayrollCTA = ({ ctaData, onCtaClick }) => {
-  const [defaultData, setDefaultData] = useState(null);
+const PayrollCTA = ({ 
+  title, 
+  subtitle, 
+  description, 
+  ctaButton,
+  features,
+  trustedBy,
+  onCtaClick 
+}) => {
+  console.log('🚀 [PayrollCTA Fixed] Received props:', {
+    title, subtitle, description, ctaButton, features, trustedBy
+  });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('/data/payroll.json');
-        const data = await response.json();
-        setDefaultData(data.cta);
-      } catch (error) {
-        console.error('Failed to load payroll data:', error);
-        // Fallback data
-        setDefaultData({
-          title: "Ready to Transform Your Payroll Process?",
-          description: "Join thousands of businesses that have automated their payroll and reduced processing time by 80%",
-          buttonText: "Schedule a Demo"
-        });
-      }
-    };
-    fetchData();
-  }, []);
-
-  // Use provided data or default data
-  const data = ctaData || defaultData || {
-    title: "Ready to Transform Your Payroll Process?",
-    description: "Join thousands of businesses that have automated their payroll and reduced processing time by 80%",
-    buttonText: "Schedule a Demo"
+  // Use props DIRECTLY - no complex data processing or async fetching
+  const finalData = {
+    title: title || "Ready to Simplify Your Payroll?",
+    subtitle: subtitle || "",
+    description: description || "",
+    buttonText: ctaButton?.text || "Start Free Trial",
+    buttonLink: ctaButton?.link || "/payroll/trial",
+    variant: validateVariant(ctaButton?.variant || "primary"),
+    features: features || [
+      "No setup fees",
+      "30-day money back guarantee",
+      "24/7 customer support",
+    ],
+    trustedBy: trustedBy || [
+      "Fortune 500 Companies",
+      "SMEs",
+      "Startups",
+    ],
   };
+
+  console.log('✅ [PayrollCTA Fixed] Final data:', finalData);
+
+  // Check if title and description contain HTML and render accordingly
+  const titleHTML = smartRender(finalData.title);
+  const descriptionHTML = smartRender(finalData.description);
 
   return (
     <section className="py-20 relative overflow-hidden">
       {/* Background Gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800"></div>
-      
+
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,_rgba(255,255,255,0.15)_1px,_transparent_0)] bg-[length:20px_20px]"></div>
       </div>
-      
+
       {/* Floating Elements */}
       <div className="absolute top-10 left-10 w-20 h-20 bg-white/10 rounded-full blur-xl animate-pulse"></div>
       <div className="absolute bottom-10 right-10 w-16 h-16 bg-purple-400/20 rounded-full blur-lg animate-pulse delay-1000"></div>
@@ -46,69 +61,125 @@ const PayrollCTA = ({ ctaData, onCtaClick }) => {
 
       <div className="container mx-auto px-6 max-w-4xl relative z-10">
         <div className="text-center">
-          {/* Main Title */}
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-white leading-tight">
-            {data.title}
-          </h2>
-          
-          {/* Description */}
-          <p className="text-xl md:text-2xl text-blue-100 mb-10 leading-relaxed max-w-3xl mx-auto">
-            {data.description}
-          </p>
+          {/* Main Title - Fixed HTML rendering */}
+          <h2
+            className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-white leading-tight"
+            {...(titleHTML
+              ? { dangerouslySetInnerHTML: titleHTML }
+              : { children: finalData.title })}
+          />
 
-          {/* CTA Button */}
-          <button
-            onClick={onCtaClick}
-            className="group relative bg-white text-blue-800 px-8 py-4 rounded-xl font-bold text-lg md:text-xl hover:bg-gray-50 transition-all duration-300 shadow-2xl hover:shadow-3xl transform hover:-translate-y-1"
-          >
-            {/* Button content */}
-            <span className="relative z-10 flex items-center justify-center space-x-2">
-              <span>{data.buttonText}</span>
-              <svg 
-                className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-200" 
-                fill="none" 
-                stroke="currentColor" 
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </span>
-            
-            {/* Button hover effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          </button>
+          {/* Subtitle */}
+          {finalData.subtitle && (
+            <h3 className="text-lg md:text-xl text-blue-200 mb-4 leading-relaxed max-w-2xl mx-auto">
+              {finalData.subtitle}
+            </h3>
+          )}
 
-          {/* Additional Benefits */}
+          {/* Description - Fixed HTML rendering */}
+          <p
+            className="text-xl md:text-2xl text-blue-100 mb-10 leading-relaxed max-w-3xl mx-auto"
+            {...(descriptionHTML
+              ? { dangerouslySetInnerHTML: descriptionHTML }
+              : { children: finalData.description })}
+          />
+
+          {/* CTA Button - Enhanced to support both onClick and navigation */}
+          {finalData.buttonLink ? (
+            <a
+              href={finalData.buttonLink}
+              onClick={onCtaClick}
+              className={`group relative px-8 py-4 rounded-xl font-bold text-lg md:text-xl transition-all duration-300 shadow-2xl hover:shadow-3xl transform hover:-translate-y-1 inline-block ${getVariantClasses(
+                finalData.variant
+              )}`}
+            >
+              {/* Button content */}
+              <span className="relative z-10 flex items-center justify-center space-x-2">
+                <span>{finalData.buttonText}</span>
+                <svg
+                  className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-200"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 7l5 5m0 0l-5 5m5-5H6"
+                  />
+                </svg>
+              </span>
+
+              {/* Button hover effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </a>
+          ) : (
+            <button
+              onClick={onCtaClick}
+              className={`group relative px-8 py-4 rounded-xl font-bold text-lg md:text-xl transition-all duration-300 shadow-2xl hover:shadow-3xl transform hover:-translate-y-1 ${getVariantClasses(
+                finalData.variant
+              )}`}
+            >
+              {/* Button content */}
+              <span className="relative z-10 flex items-center justify-center space-x-2">
+                <span>{finalData.buttonText}</span>
+                <svg
+                  className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-200"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 7l5 5m0 0l-5 5m5-5H6"
+                  />
+                </svg>
+              </span>
+
+              {/* Button hover effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </button>
+          )}
+
+          {/* Additional Benefits - Dynamic from form data */}
           <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 text-white/80">
-            <div className="flex items-center justify-center space-x-2">
-              <svg className="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-              <span className="text-sm">No setup fees</span>
-            </div>
-            
-            <div className="flex items-center justify-center space-x-2">
-              <svg className="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-              <span className="text-sm">30-day money back guarantee</span>
-            </div>
-            
-            <div className="flex items-center justify-center space-x-2">
-              <svg className="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-              <span className="text-sm">24/7 customer support</span>
-            </div>
+            {finalData.features.map((feature, index) => (
+              <div
+                key={index}
+                className="flex items-center justify-center space-x-2"
+              >
+                <svg
+                  className="w-5 h-5 text-green-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+                <span className="text-sm">{feature}</span>
+              </div>
+            ))}
           </div>
 
-          {/* Trust indicators */}
+          {/* Trust indicators - Dynamic from form data */}
           <div className="mt-8 pt-8 border-t border-white/20">
-            <p className="text-white/60 text-sm mb-4">Trusted by thousands of businesses worldwide</p>
+            <p className="text-white/60 text-sm mb-4">
+              Trusted by thousands of businesses worldwide
+            </p>
             <div className="flex justify-center items-center space-x-8 opacity-70">
-              <div className="text-white/50 text-xs">✓ Fortune 500 Companies</div>
-              <div className="text-white/50 text-xs">✓ SMEs</div>
-              <div className="text-white/50 text-xs">✓ Startups</div>
+              {finalData.trustedBy.map((company, index) => (
+                <div key={index} className="text-white/50 text-xs">
+                  ✓ {company}
+                </div>
+              ))}
             </div>
           </div>
         </div>

@@ -1,69 +1,82 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import React from 'react';
 
-const AboutCTA = ({ onOpenContactModal }) => {
-  const [defaultData, setDefaultData] = useState(null);
+const AboutCTA = ({ 
+  title, 
+  subtitle, 
+  description, 
+  ctaButton,
+  features,
+  trustedBy,
+  onOpenContactModal 
+}) => {
+  console.log('🚀 [AboutCTASection Fixed] Received props:', {
+    title, subtitle, description, ctaButton, features, trustedBy
+  });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('/data/about.json');
-        const jsonData = await response.json();
-        setDefaultData(jsonData.cta);
-      } catch (error) {
-        console.error('Failed to load About data:', error);
-        // Fallback data
-        setDefaultData({
-          title: "Ready to Build Something Great?",
-          subtitle: "Let's collaborate to transform your business with innovative Oracle NetSuite solutions that drive growth, efficiency, and success.",
-          description: "Contact us today to discuss how we can help you optimize your operations and drive growth.",
-          buttonText: "Start Consultation"
-        });
+  // Use props DIRECTLY - no complex data processing or async fetching
+  const finalData = {
+    title: title || "Ready to Build Something Great?",
+    subtitle: subtitle || "Let's collaborate to transform your business with innovative Oracle NetSuite solutions that drive growth, efficiency, and success.",
+    description: description || "Contact us today to discuss how we can help you optimize your operations and drive growth.",
+    buttonText: ctaButton?.text || "Start Consultation",
+    buttonLink: ctaButton?.link || "/about/contact",
+    variant: ctaButton?.variant || "primary",
+    features: features || [
+      {
+        title: "Quick Start",
+        description: "Get started our consultation"
+      },
+      {
+        title: "Expert Team",
+        description: "Work with certified professionals"
+      },
+      {
+        title: "Proven Results",
+        description: "Join our success stories"
       }
-    };
-    fetchData();
-  }, []);
-
-  // Use default data from JSON
-  const displayData = defaultData || {
-    title: "Ready to Build Something Great?",
-    subtitle: "Let's collaborate to transform your business with innovative Oracle NetSuite solutions that drive growth, efficiency, and success.",
-    description: "Contact us today to discuss how we can help you optimize your operations and drive growth.",
-    buttonText: "Start Consultation"
+    ],
   };
+
+  console.log('✅ [AboutCTASection Fixed] Final data:', finalData);
   return (
   <section className="bg-gray-50 py-20 light-section">
     <div className="container mx-auto px-6">
       <div className="bg-gradient-to-r from-gray-100 to-gray-200 rounded-3xl p-12 text-gray-800 text-center">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
-            {displayData.title}
+            {finalData.title}
           </h2>
           <p className="text-xl mb-8 text-gray-600 leading-relaxed">
-            {displayData.subtitle}
+            {finalData.subtitle}
           </p>
+          {finalData.description && (
+            <p className="text-base md:text-lg text-gray-500 mb-8 leading-relaxed max-w-2xl mx-auto">
+              {finalData.description}
+            </p>
+          )}
           <div className="grid md:grid-cols-3 gap-8 mb-12">
-            <div className="text-center">
-              <h4 className="text-xl font-bold mb-2">Quick Start</h4>
-              <p className="text-gray-600">Get started our consultation</p>
-            </div>
-            <div className="text-center">
-              <h4 className="text-xl font-bold mb-2">Tailored Solutions</h4>
-              <p className="text-gray-600">Custom solutions for your business</p>
-            </div>
-            <div className="text-center">
-              <h4 className="text-xl font-bold mb-2">Proven Results</h4>
-              <p className="text-gray-600">98% client satisfaction rate</p>
-            </div>
+            {finalData.features.map((feature, index) => (
+              <div key={index} className="text-center">
+                <h4 className="text-xl font-bold mb-2">{feature.title}</h4>
+                <p className="text-gray-600">{feature.description}</p>
+              </div>
+            ))}
           </div>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={onOpenContactModal}
-            className="bg-blue-600 text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300"
-          >
-            {displayData.buttonText}
-          </motion.button>
+          {finalData.buttonLink ? (
+            <a
+              href={finalData.buttonLink}
+              className="inline-block bg-blue-600 text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:bg-blue-700"
+            >
+              {finalData.buttonText}
+            </a>
+          ) : (
+            <button
+              onClick={onOpenContactModal}
+              className="bg-blue-600 text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:bg-blue-700"
+            >
+              {finalData.buttonText}
+            </button>
+          )}
         </div>
       </div>
     </div>

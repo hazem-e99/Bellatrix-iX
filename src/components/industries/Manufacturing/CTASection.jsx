@@ -1,21 +1,63 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 
-const CTASection = ({ data, openContactModal }) => {
+const CTASection = ({ 
+  title, 
+  subtitle, 
+  description, 
+  ctaButton,
+  features,
+  trustedBy,
+  openContactModal 
+}) => {
+  console.log('🚀 [ManufacturingCTASection Fixed] Received props:', {
+    title, subtitle, description, ctaButton, features, trustedBy
+  });
+
+  // Use props DIRECTLY - no complex data processing
+  const finalData = {
+    title: title || "Transform Your Manufacturing Operations",
+    subtitle: subtitle || "",
+    description: description || "Join hundreds of manufacturing companies that have optimized their operations with our solutions.",
+    buttonText: ctaButton?.text || "Get Started",
+    buttonLink: ctaButton?.link || "/manufacturing/contact",
+    variant: ctaButton?.variant || "primary",
+    features: features || [
+      {
+        title: "Streamlined Operations",
+        description: "Optimize your manufacturing processes",
+        icon: "M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+      },
+      {
+        title: "Real-time Insights",
+        description: "Get actionable data for better decisions",
+        icon: "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+      },
+      {
+        title: "Expert Support",
+        description: "24/7 support from industry experts",
+        icon: "M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+      }
+    ],
+  };
+
+  console.log('✅ [ManufacturingCTASection Fixed] Final data:', finalData);
   return (
     <div className="bg-gray-50 py-20 light-section">
       <div className="container mx-auto px-6">
         <div className="bg-gradient-to-r from-gray-100 to-gray-200 rounded-3xl p-12 text-gray-800 text-center border border-gray-300">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-gray-900">
-              {data.title}
+              {finalData.title}
             </h2>
+            {finalData.subtitle && (
+              <h3 className="text-xl md:text-2xl text-gray-800 mb-4 leading-relaxed">{finalData.subtitle}</h3>
+            )}
             <p className="text-xl mb-8 leading-relaxed text-gray-700">
-              {data.description}
+              {finalData.description}
             </p>
             
             <div className="grid md:grid-cols-3 gap-8 mb-12">
-              {data.features.map((feature, index) => (
+              {finalData.features.map((feature, index) => (
                 <div key={index} className="text-center">
                   <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-md border border-gray-200">
                     <svg className="w-8 h-8 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -28,14 +70,21 @@ const CTASection = ({ data, openContactModal }) => {
               ))}
             </div>
             
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={openContactModal}
-              className="bg-gray-800 text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:bg-gray-900"
-            >
-              {data.buttonText}
-            </motion.button>
+            {finalData.buttonLink ? (
+              <a
+                href={finalData.buttonLink}
+                className="inline-block bg-gray-800 text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:bg-gray-900"
+              >
+                {finalData.buttonText}
+              </a>
+            ) : (
+              <button
+                onClick={openContactModal}
+                className="bg-gray-800 text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:bg-gray-900"
+              >
+                {finalData.buttonText}
+              </button>
+            )}
           </div>
         </div>
       </div>

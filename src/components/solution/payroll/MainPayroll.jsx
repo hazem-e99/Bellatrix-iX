@@ -91,7 +91,12 @@ export default function PayrollPage({ data }) {
       {/* CTA Section */}
       <section data-theme="dark">
         <PayrollCTA 
-          ctaData={pageData.cta}
+          title={pageData.cta?.title}
+          subtitle={pageData.cta?.subtitle}
+          description={pageData.cta?.description}
+          ctaButton={pageData.cta?.ctaButton}
+          features={pageData.cta?.features}
+          trustedBy={pageData.cta?.trustedBy}
           onCtaClick={openContactModal}
         />
       </section>

@@ -1,5 +1,5 @@
-import React, { useState, useEffect, Suspense, lazy } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import {
   XMarkIcon,
   EyeIcon,
@@ -11,87 +11,94 @@ import Button from "../ui/Button";
 import Card, { CardContent, CardHeader, CardTitle } from "../ui/Card";
 import { getComponentPathFromId, loadComponent } from "../componentMap";
 import { normalizeProps, validateProps } from "../../utils/normalizeProps";
+import { validateVariant } from "../../utils/variantSystem";
 
 // Default mock data for training components
 const trainingDefaultData = {
   TrainingHeroSection: {
     title: "Professional Training Programs",
-    subtitle: "Empower your team with comprehensive training solutions designed to enhance skills and drive success",
+    subtitle:
+      "Empower your team with comprehensive training solutions designed to enhance skills and drive success",
     backgroundVideo: "/Videos/trainingHeroSection.mp4",
     ctaButton: {
       text: "Start Learning Today",
       link: "/training",
-      variant: "primary"
-    }
+      variant: validateVariant("primary"),
+    },
   },
   TrainingProgramsSection: {
     programsSection: {
       title: "Our Training Programs",
-      description: "Comprehensive training solutions designed to empower your team with the skills they need to excel",
+      description:
+        "Comprehensive training solutions designed to empower your team with the skills they need to excel",
       image: "/images/traning.jpg",
-      Professional_Badge: "Certified Training"
+      Professional_Badge: "Certified Training",
     },
     trainingPrograms: [
       {
         id: 1,
         name: "NetSuite Fundamentals",
         duration: "40 hours",
-        level: "Beginner"
+        level: "Beginner",
       },
       {
         id: 2,
         name: "Advanced Modules",
         duration: "60 hours",
-        level: "Intermediate"
+        level: "Intermediate",
       },
       {
         id: 3,
         name: "Customization Training",
         duration: "80 hours",
-        level: "Advanced"
+        level: "Advanced",
       },
       {
         id: 4,
         name: "Admin & Security",
         duration: "50 hours",
-        level: "Expert"
-      }
-    ]
+        level: "Expert",
+      },
+    ],
   },
   TrainingWhyChooseSection: {
     whyChooseSection: {
       title: "Why Choose Our Training?",
-      subtitle: "We provide world-class training solutions that combine expertise, innovation, and practical application to ensure your team's success",
+      subtitle:
+        "We provide world-class training solutions that combine expertise, innovation, and practical application to ensure your team's success",
       image: "/images/chooese.png",
-      Professional_Badge: "Excellence Training"
+      Professional_Badge: "Excellence Training",
     },
     trainingFeatures: [
       {
         id: 1,
         title: "Expert Instructors",
         shortDescription: "Certified professionals with years of experience",
-        icon: "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+        icon:
+          "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253",
       },
       {
         id: 2,
         title: "Hands-on Learning",
         shortDescription: "Practical exercises with real-world scenarios",
-        icon: "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+        icon:
+          "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z",
       },
       {
         id: 3,
         title: "Flexible Scheduling",
         shortDescription: "Multiple training formats to fit your needs",
-        icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+        icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z",
       },
       {
         id: 4,
         title: "Ongoing Support",
         shortDescription: "Continuous assistance beyond training completion",
-        icon: "M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 2.25a9.75 9.75 0 109.75 9.75A9.75 9.75 0 0012 2.25z"
-      }
-    ]
-  }
+        icon:
+          "M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 2.25a9.75 9.75 0 109.75 9.75A9.75 9.75 0 0012 2.25z",
+      },
+    ],
+  },
 };
 
 const PagePreview = ({
@@ -106,48 +113,133 @@ const PagePreview = ({
   const [trainingData, setTrainingData] = useState(null);
 
   useEffect(() => {
+    console.log("🔄 [EFFECT] PagePreview useEffect triggered");
+    console.log("🔄 [EFFECT] isOpen:", isOpen);
+    console.log(
+      "🔄 [EFFECT] pageData.components exists:",
+      !!pageData.components
+    );
+    console.log(
+      "🔄 [EFFECT] pageData.components length:",
+      pageData.components?.length
+    );
+    console.log(
+      "🔄 [EFFECT] Full pageData:",
+      JSON.parse(JSON.stringify(pageData))
+    );
+
     if (isOpen && pageData.components) {
+      console.log(
+        "🔄 [EFFECT] Starting component loading and training data loading"
+      );
       loadComponents();
       loadTrainingData();
+    } else {
+      console.log("🔄 [EFFECT] Skipping loading - conditions not met");
     }
-  }, [isOpen, pageData.components]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, pageData.components, pageData]);
 
   // Load training data as fallback
   const loadTrainingData = async () => {
     try {
-      const response = await fetch('/data/training.json');
+      const response = await fetch("/data/training.json");
       if (response.ok) {
         const data = await response.json();
         setTrainingData(data);
       }
     } catch (err) {
-      console.warn('Failed to load training.json:', err);
+      console.warn("Failed to load training.json:", err);
     }
   };
 
-  // Simple error boundary to isolate section render errors
+  // Enhanced error boundary to isolate section render errors with detailed debugging
   class ErrorBoundary extends React.Component {
     constructor(props) {
       super(props);
-      this.state = { hasError: false, error: null };
+      this.state = { hasError: false, error: null, errorInfo: null };
     }
+
     static getDerivedStateFromError(error) {
+      console.error("🚨 [ERROR BOUNDARY] Component error caught:", error);
       return { hasError: true, error };
     }
-    componentDidCatch(error, info) {
-      // eslint-disable-next-line no-console
-      console.error("Preview component render error:", error, info);
+
+    componentDidCatch(error, errorInfo) {
+      console.error("🚨 [ERROR BOUNDARY] Component render error details:", {
+        error: error,
+        errorInfo: errorInfo,
+        componentStack: errorInfo.componentStack,
+        errorBoundary: this.constructor.name,
+      });
+
+      // Special debugging for ImplementationHeroSection errors
+      if (this.props.componentType === "ImplementationHeroSection") {
+        console.error(
+          "🏗️ [IMPLEMENTATION ERROR] ImplementationHeroSection render error:",
+          {
+            error: error.message,
+            stack: error.stack,
+            componentStack: errorInfo.componentStack,
+            props: this.props,
+          }
+        );
+      }
+
+      this.setState({
+        error,
+        errorInfo,
+      });
     }
+
     render() {
       if (this.state.hasError) {
-        return this.props.fallback || null;
+        console.error(
+          "🚨 [ERROR BOUNDARY] Rendering fallback due to error:",
+          this.state.error
+        );
+
+        return (
+          this.props.fallback || (
+            <div className="p-4 text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg">
+              <h3 className="font-bold text-red-800 mb-2">
+                Component Render Error
+              </h3>
+              <p className="mb-2">
+                {this.state.error?.message || "Unknown error"}
+              </p>
+              <details className="text-xs">
+                <summary className="cursor-pointer font-medium">
+                  Error Details
+                </summary>
+                <pre className="mt-2 p-2 bg-red-100 rounded overflow-auto">
+                  {this.state.error?.stack}
+                </pre>
+                {this.state.errorInfo && (
+                  <pre className="mt-2 p-2 bg-red-100 rounded overflow-auto">
+                    {this.state.errorInfo.componentStack}
+                  </pre>
+                )}
+              </details>
+            </div>
+          )
+        );
       }
+
       return this.props.children;
     }
   }
 
   // Normalize common props so sections don't crash on undefined
   const buildSafeProps = (props) => {
+    console.log("🛡️ ========== [DEBUG START] buildSafeProps ==========");
+    console.log("🛡️ [DEBUG] Input props:", JSON.parse(JSON.stringify(props)));
+    console.log("🛡️ [DEBUG] Input props type:", typeof props);
+    console.log(
+      "🛡️ [DEBUG] Input props keys:",
+      props ? Object.keys(props) : "null/undefined"
+    );
+
     const commonArrayKeys = [
       "items",
       "list",
@@ -165,106 +257,281 @@ const PagePreview = ({
       "benefits",
       "types",
       "programs",
+      "painPoints", // Adding this as it seems to be a common missing prop
+      "trainingPrograms",
+      "trainingFeatures",
     ];
+
     const safe = { ...(props || {}) };
+    console.log(
+      "🛡️ [DEBUG] After spread operator:",
+      JSON.parse(JSON.stringify(safe))
+    );
+
     commonArrayKeys.forEach((key) => {
-      if (safe[key] === undefined || safe[key] === null) safe[key] = [];
+      const originalValue = safe[key];
+      if (safe[key] === undefined || safe[key] === null) {
+        safe[key] = [];
+        console.log(
+          `🛡️ [DEBUG] Set ${key} to empty array (was ${originalValue})`
+        );
+      } else {
+        console.log(`🛡️ [DEBUG] Kept ${key} as:`, safe[key]);
+      }
     });
+
+    console.log(
+      "🛡️ [DEBUG] Final safe props:",
+      JSON.parse(JSON.stringify(safe))
+    );
+    console.log("🛡️ [DEBUG] Final safe props keys:", Object.keys(safe));
+    console.log("🛡️ ========== [DEBUG END] buildSafeProps ==========");
+
     return safe;
   };
 
   // Helper function to extract and normalize data from various formats
   const extractComponentData = (component) => {
+    console.log(" ");
+    console.log("🔍 ========== [DEBUG START] extractComponentData ==========");
+    console.log(
+      "🔍 [DEBUG] Component object:",
+      JSON.parse(JSON.stringify(component))
+    );
+    console.log("🔍 [DEBUG] componentType:", component.componentType);
+    console.log("🔍 [DEBUG] contentJson:", component.contentJson);
+    console.log("🔍 [DEBUG] contentJson type:", typeof component.contentJson);
+    console.log("🔍 [DEBUG] content:", component.content);
+    console.log("🔍 [DEBUG] content type:", typeof component.content);
+
     let rawData = {};
-    
-    // Always try to parse contentJson first - this is the primary data source
+
+    // PRIORITY 1: Use contentJson from form (this is the PRIMARY data source)
     if (component.contentJson) {
       try {
-        // Ensure contentJson is parsed from string to object
-        rawData = typeof component.contentJson === 'string' 
-          ? JSON.parse(component.contentJson) 
-          : component.contentJson;
-        
-        // Log parsed data for debugging
-        console.log(`Parsed contentJson for ${component.componentType}:`, rawData);
-        
+        console.log("✅ [PRIORITY 1] Using component.contentJson from form");
+        rawData =
+          typeof component.contentJson === "string"
+            ? JSON.parse(component.contentJson)
+            : component.contentJson;
+        console.log(
+          "✅ [PRIORITY 1] Successfully parsed contentJson:",
+          rawData
+        );
       } catch (err) {
-        console.warn(`Failed to parse contentJson for ${component.componentType}:`, err);
-        console.warn('Raw contentJson:', component.contentJson);
+        console.warn("❌ [ERROR] Failed to parse contentJson:", err);
+        console.warn(
+          "❌ [ERROR] Raw contentJson that failed:",
+          component.contentJson
+        );
       }
     }
-    
-    // If no data or empty data, try to use component properties directly
-    if (!rawData || Object.keys(rawData).length === 0) {
-      // Check if component has direct properties
-      const directProps = ['title', 'subtitle', 'description', 'image', 'programs', 'features'];
-      directProps.forEach(prop => {
-        if (component[prop] !== undefined) {
-          rawData[prop] = component[prop];
-        }
-      });
+    // PRIORITY 2: Check if content exists (from API) - only if no form data
+    else if (
+      component.content &&
+      typeof component.content === "object" &&
+      Object.keys(component.content).length > 0
+    ) {
+      console.log("✅ [PRIORITY 2] Using component.content from API");
+      rawData = component.content;
+    } else {
+      console.log("ℹ️ [INFO] No content or contentJson found");
     }
-    
-    // If still no data and it's a training component, try to use training.json data
-    if ((!rawData || Object.keys(rawData).length === 0) && component.componentType.includes('Training') && trainingData) {
-      console.log(`Using training.json fallback for ${component.componentType}`);
-      
+
+    console.log("📦 [DEBUG] Raw data extracted:", rawData);
+    console.log("📦 [DEBUG] Raw data keys:", Object.keys(rawData));
+
+    // Check if we have training data available
+    if (trainingData) {
+      console.log(
+        "📚 [DEBUG] Training data is available:",
+        Object.keys(trainingData)
+      );
+    } else {
+      console.log("📚 [DEBUG] Training data is NOT available");
+    }
+
+    // Check if component type exists in training defaults
+    const hasTrainingDefault = trainingDefaultData[component.componentType];
+    console.log("🎯 [DEBUG] Has training default data:", hasTrainingDefault);
+    console.log(
+      "🎯 [DEBUG] Available training default keys:",
+      Object.keys(trainingDefaultData)
+    );
+
+    // If still no data or empty data, try to use training.json data
+    if (
+      (!rawData || Object.keys(rawData).length === 0) &&
+      component.componentType.includes("Training") &&
+      trainingData
+    ) {
+      console.log(
+        "🔄 [FALLBACK 1] Using training.json fallback for",
+        component.componentType
+      );
+
       switch (component.componentType) {
-        case 'TrainingHeroSection':
+        case "TrainingHeroSection":
           rawData = {
             title: trainingData.heroContent?.title,
             subtitle: trainingData.heroContent?.description,
-            backgroundVideo: '/Videos/trainingHeroSection.mp4',
+            backgroundVideo: "/Videos/trainingHeroSection.mp4",
             ctaButton: {
-              text: 'Start Learning Today',
-              link: '/training',
-              variant: 'primary'
-            }
+              text: "Start Learning Today",
+              link: "/training",
+              variant: validateVariant("primary"),
+            },
           };
           break;
-        case 'TrainingProgramsSection':
+        case "TrainingProgramsSection":
           rawData = {
             programsSection: trainingData.programsSection,
-            programs: trainingData.trainingPrograms?.programs || []
+            programs: trainingData.trainingPrograms?.programs || [],
           };
           break;
-        case 'TrainingWhyChooseSection':
+        case "TrainingWhyChooseSection":
           rawData = {
             whyChooseSection: trainingData.whyChooseSection,
-            features: trainingData.trainingFeatures || []
+            features: trainingData.trainingFeatures || [],
           };
           break;
+        default:
+          console.log(
+            "⚠️ [WARNING] No specific fallback for:",
+            component.componentType
+          );
       }
     }
-    
+
+    // Final fallback to training default data
+    if (!rawData || Object.keys(rawData).length === 0) {
+      console.log(
+        "🔄 [FALLBACK 2] Using trainingDefaultData for",
+        component.componentType
+      );
+      rawData = trainingDefaultData[component.componentType] || {};
+    }
+
+    console.log("🎯 [DEBUG] Final raw data before normalization:", rawData);
+
     // Use normalizeProps to map the raw data to the correct component props
     const normalizedData = normalizeProps(component.componentType, rawData);
-    
+    console.log("🔄 [DEBUG] After normalizeProps:", normalizedData);
+
     // Validate the normalized props
     const validation = validateProps(component.componentType, normalizedData);
     if (!validation.isValid) {
-      console.warn(`Missing required props for ${component.componentType}:`, validation.missingProps);
+      console.warn(
+        "❌ [VALIDATION] Missing required props for",
+        component.componentType,
+        ":",
+        validation.missingProps
+      );
+    } else {
+      console.log(
+        "✅ [VALIDATION] Props are valid for",
+        component.componentType
+      );
     }
-    
-    // Final log to verify complete data
-    console.log(`Final normalized props for ${component.componentType}:`, normalizedData);
-    
+
+    console.log("📤 [DEBUG] Final normalized data to return:", normalizedData);
+    console.log("🔍 ========== [DEBUG END] extractComponentData ==========");
+    console.log(" ");
+
     return normalizedData;
   };
 
   const loadComponents = async () => {
+    console.log("🔄 ========== [DEBUG START] loadComponents ==========");
+    console.log("🔄 [DEBUG] Page data components:", pageData.components);
+    console.log(
+      "🔄 [DEBUG] Number of components to load:",
+      pageData.components?.length || 0
+    );
+
     setLoading(true);
     setError(null);
 
     try {
       const componentMap = {};
       for (const component of pageData.components) {
+        console.log(
+          `🔄 [DEBUG] Processing component: ${component.componentType}`
+        );
+        console.log(
+          "🔄 [DEBUG] Component data:",
+          JSON.parse(JSON.stringify(component))
+        );
+
         try {
           const path = getComponentPathFromId(component.componentType);
+          console.log(
+            `🔄 [DEBUG] Component path for ${component.componentType}:`,
+            path
+          );
+
           if (path) {
+            console.log(`🔄 [DEBUG] Loading component from path: ${path}`);
             const Comp = await loadComponent(path);
-            componentMap[component.componentType] = Comp || (() => null);
+            console.log(`🔄 [DEBUG] Component loaded successfully:`, !!Comp);
+            console.log(`🔄 [DEBUG] Component type:`, typeof Comp);
+            console.log(`🔄 [DEBUG] Component name:`, Comp?.name || "unnamed");
+
+            if (Comp) {
+              // Wrap the component to add debugging
+              componentMap[component.componentType] = (props) => {
+                console.log(
+                  `🎭 [RENDER DEBUG] Rendering ${component.componentType} with props:`,
+                  props
+                );
+                console.log(
+                  `🎭 [RENDER DEBUG] Props keys:`,
+                  Object.keys(props || {})
+                );
+                console.log(
+                  `🎭 [RENDER DEBUG] Props JSON:`,
+                  JSON.stringify(props, null, 2)
+                );
+
+                try {
+                  const result = React.createElement(Comp, props);
+                  console.log(
+                    `🎭 [RENDER DEBUG] Component ${component.componentType} rendered successfully`
+                  );
+                  return result;
+                } catch (renderError) {
+                  console.error(
+                    `🎭 [RENDER ERROR] Failed to render ${component.componentType}:`,
+                    renderError
+                  );
+                  return (
+                    <div className="p-4 border border-red-200 bg-red-50 rounded">
+                      <h3 className="text-red-800 font-bold">
+                        Render Error: {component.componentType}
+                      </h3>
+                      <p className="text-red-600">{renderError.message}</p>
+                      <details className="mt-2">
+                        <summary className="cursor-pointer text-sm">
+                          Props Debug
+                        </summary>
+                        <pre className="text-xs bg-white p-2 rounded mt-1 overflow-auto">
+                          {JSON.stringify(props, null, 2)}
+                        </pre>
+                      </details>
+                    </div>
+                  );
+                }
+              };
+            } else {
+              console.warn(
+                `🔄 [WARNING] Component ${component.componentType} loaded as null/undefined`
+              );
+              componentMap[component.componentType] = () => null;
+            }
           } else {
+            console.warn(
+              `🔄 [WARNING] No path found for component: ${component.componentType}`
+            );
             componentMap[component.componentType] = () => (
               <div className="p-6 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800">
                 <div className="mb-4">
@@ -282,8 +549,8 @@ const PagePreview = ({
             );
           }
         } catch (err) {
-          console.warn(
-            `Failed to load component ${component.componentType}:`,
+          console.error(
+            `🔄 [ERROR] Failed to load component ${component.componentType}:`,
             err
           );
           componentMap[component.componentType] = () => (
@@ -296,18 +563,23 @@ const PagePreview = ({
                   Component Type: {component.componentType}
                 </p>
                 <p className="text-sm text-red-600 dark:text-red-400 mt-2">
-                  Component failed to load
+                  Component failed to load: {err.message}
                 </p>
               </div>
             </div>
           );
         }
       }
+
+      console.log("🔄 [DEBUG] Final component map:", Object.keys(componentMap));
+      console.log("🔄 [DEBUG] Component map details:", componentMap);
       setLoadedComponents(componentMap);
     } catch (error) {
+      console.error("🔄 [ERROR] loadComponents failed:", error);
       setError(error.message);
     } finally {
       setLoading(false);
+      console.log("🔄 ========== [DEBUG END] loadComponents ==========");
     }
   };
 
@@ -319,9 +591,30 @@ const PagePreview = ({
   };
 
   const renderComponent = (component, index) => {
+    console.log("🎨 ========== [DEBUG START] renderComponent ==========");
+    console.log("🎨 [DEBUG] Component index:", index);
+    console.log(
+      "🎨 [DEBUG] Component object:",
+      JSON.parse(JSON.stringify(component))
+    );
+    console.log("🎨 [DEBUG] Component type:", component.componentType);
+
     const Component = loadedComponents[component.componentType];
+    console.log("🎨 [DEBUG] Loaded component exists:", !!Component);
+    console.log("🎨 [DEBUG] Loaded component type:", typeof Component);
+    console.log(
+      "🎨 [DEBUG] Available loaded components:",
+      Object.keys(loadedComponents)
+    );
 
     if (!Component) {
+      console.log("❌ [ERROR] Component not found in loadedComponents");
+      console.log(
+        "❌ [ERROR] Available components:",
+        Object.keys(loadedComponents)
+      );
+      console.log("❌ [ERROR] Looking for:", component.componentType);
+
       return (
         <div
           key={index}
@@ -337,34 +630,245 @@ const PagePreview = ({
                 The component "{component.componentType}" could not be loaded
                 for preview.
               </p>
+              <p className="text-xs text-yellow-600 mt-2">
+                Available: {Object.keys(loadedComponents).join(", ") || "None"}
+              </p>
             </div>
           </div>
         </div>
       );
     }
 
+    console.log("✅ [SUCCESS] Component found, starting data processing...");
+
     // Extract and normalize component data using the new normalizeProps function
+    console.log("🔧 [DEBUG] Calling extractComponentData...");
     const normalizedProps = extractComponentData(component);
+    console.log(
+      "🔧 [DEBUG] Normalized props result:",
+      JSON.parse(JSON.stringify(normalizedProps))
+    );
+
+    console.log("🛡️ [DEBUG] Calling buildSafeProps...");
     const safeProps = buildSafeProps(normalizedProps);
+    console.log(
+      "🛡️ [DEBUG] Safe props result:",
+      JSON.parse(JSON.stringify(safeProps))
+    );
 
     // Get default data for the component (fallback for training components)
     const defaultData = trainingDefaultData[component.componentType] || {};
-    
+    console.log(
+      "📚 [DEBUG] Default data for component:",
+      JSON.parse(JSON.stringify(defaultData))
+    );
+    console.log(
+      "📚 [DEBUG] Has default data:",
+      Object.keys(defaultData).length > 0
+    );
+
     // Merge normalized props with defaults - prioritize normalized data over defaults
+    console.log("🔀 [DEBUG] Merging props... (defaultData + safeProps)");
     const mergedProps = { ...defaultData, ...safeProps };
-    
+    console.log(
+      "🔀 [DEBUG] Merged props:",
+      JSON.parse(JSON.stringify(mergedProps))
+    );
+    console.log("🔀 [DEBUG] Merged props keys:", Object.keys(mergedProps));
+
     // Add any missing function props that components might expect
+    console.log("⚙️ [DEBUG] Adding function props...");
     const propsToPass = {
       ...mergedProps,
       // Add common function props that components might need
       renderIcon: mergedProps.renderIcon || (() => null),
       openProgramModal: mergedProps.openProgramModal || (() => {}),
       openFeatureModal: mergedProps.openFeatureModal || (() => {}),
-      onCtaClick: mergedProps.onCtaClick || (() => {})
+      onCtaClick: mergedProps.onCtaClick || (() => {}),
     };
-    
-    // Debug logging for all components to verify data is complete
-    console.log(`Component ${component.componentType} - Final propsToPass:`, propsToPass);
+
+    // Comprehensive debug logging for all components to verify data is complete
+    console.log(
+      `🎯 [FINAL DEBUG] Component ${component.componentType} - Final propsToPass:`,
+      JSON.parse(JSON.stringify(propsToPass))
+    );
+    console.log(`🎯 [FINAL DEBUG] Props keys:`, Object.keys(propsToPass));
+    console.log(`🎯 [FINAL DEBUG] Props summary:`);
+    Object.keys(propsToPass).forEach((key) => {
+      const value = propsToPass[key];
+      const type = typeof value;
+      const isArray = Array.isArray(value);
+      const length = isArray
+        ? value.length
+        : value && typeof value === "object"
+        ? Object.keys(value).length
+        : "N/A";
+      console.log(
+        `  📋 ${key}: ${type}${
+          isArray
+            ? `[${length}]`
+            : type === "object" && value !== null
+            ? `{${length} keys}`
+            : ""
+        } = ${
+          isArray
+            ? `[${value.length} items]`
+            : type === "object" && value !== null
+            ? "{object}"
+            : value
+        }`
+      );
+    });
+
+    // Check for common issues
+    if (propsToPass.painPoints && Array.isArray(propsToPass.painPoints)) {
+      console.log(
+        `✅ [CHECK] painPoints array exists with ${propsToPass.painPoints.length} items:`,
+        propsToPass.painPoints
+      );
+    } else {
+      console.log(
+        `❌ [CHECK] painPoints missing or not an array:`,
+        propsToPass.painPoints
+      );
+    }
+
+    if (propsToPass.title) {
+      console.log(`✅ [CHECK] title exists:`, propsToPass.title);
+    } else {
+      console.log(`❌ [CHECK] title missing:`, propsToPass.title);
+    }
+
+    // Special check for CTA components
+    if (component.componentType.includes("CTA")) {
+      console.log(
+        `🚀 [CTA CHECK] CTA Component detected: ${component.componentType}`
+      );
+      console.log(
+        `🚀 [CTA CHECK] Has ctaButton object:`,
+        !!propsToPass.ctaButton
+      );
+      console.log(
+        `🚀 [CTA CHECK] Has ctaButton.text:`,
+        propsToPass.ctaButton?.text
+      );
+      console.log(
+        `🚀 [CTA CHECK] Has ctaButton.link:`,
+        propsToPass.ctaButton?.link
+      );
+      console.log(`🚀 [CTA CHECK] Has subtitle:`, !!propsToPass.subtitle);
+      console.log(`🚀 [CTA CHECK] Has description:`, !!propsToPass.description);
+      console.log(`🚀 [CTA CHECK] CTA data structure:`, {
+        title: propsToPass.title,
+        subtitle: propsToPass.subtitle,
+        description: propsToPass.description,
+        ctaButton: propsToPass.ctaButton,
+        buttonText: propsToPass.buttonText, // Legacy format
+      });
+    }
+
+    // Special check for ImplementationHeroSection
+    if (component.componentType === "ImplementationHeroSection") {
+      console.log(
+        `🏗️ [IMPLEMENTATION CHECK] ImplementationHeroSection detected`
+      );
+      console.log(
+        `🏗️ [IMPLEMENTATION CHECK] Has data object:`,
+        !!propsToPass.data
+      );
+      console.log(
+        `🏗️ [IMPLEMENTATION CHECK] Data keys:`,
+        propsToPass.data ? Object.keys(propsToPass.data) : "No data"
+      );
+      console.log(
+        `🏗️ [IMPLEMENTATION CHECK] Has backgroundVideo:`,
+        !!propsToPass.data?.backgroundVideo
+      );
+      console.log(
+        `🏗️ [IMPLEMENTATION CHECK] BackgroundVideo value:`,
+        propsToPass.data?.backgroundVideo
+      );
+      console.log(
+        `🏗️ [IMPLEMENTATION CHECK] Has titleParts:`,
+        Array.isArray(propsToPass.data?.titleParts)
+      );
+      console.log(
+        `🏗️ [IMPLEMENTATION CHECK] TitleParts length:`,
+        propsToPass.data?.titleParts?.length
+      );
+      console.log(
+        `🏗️ [IMPLEMENTATION CHECK] TitleParts values:`,
+        propsToPass.data?.titleParts
+      );
+      console.log(
+        `🏗️ [IMPLEMENTATION CHECK] Has description:`,
+        !!propsToPass.data?.description
+      );
+      console.log(
+        `🏗️ [IMPLEMENTATION CHECK] Description value:`,
+        propsToPass.data?.description
+      );
+      console.log(
+        `🏗️ [IMPLEMENTATION CHECK] Has ctaButton:`,
+        !!propsToPass.data?.ctaButton
+      );
+      console.log(
+        `🏗️ [IMPLEMENTATION CHECK] CTAButton structure:`,
+        propsToPass.data?.ctaButton
+      );
+      
+      // Add this debug check for ImplementationHeroSection
+      console.log("🎯 [VARIANT DEBUG] ImplementationHeroSection CTA Data:", {
+        rawVariant: propsToPass.data?.ctaButton?.variant,
+        processedVariant: propsToPass.data?.ctaButton?.variant,
+        variantType: typeof propsToPass.data?.ctaButton?.variant,
+        hasVariantObject: !!propsToPass.data?.ctaButton?.variant
+      });
+      
+      console.log(
+        `🏗️ [IMPLEMENTATION CHECK] Full data structure:`,
+        JSON.stringify(propsToPass.data, null, 2)
+      );
+    }
+
+    // Special check for ImplementationCTASection
+    if (component.componentType === "ImplementationCTASection") {
+      console.log("🎯 [CTA DEBUG] ImplementationCTASection Data:", {
+        rawData: normalizedProps,
+        buttonText: propsToPass.ctaButton?.text,
+        buttonVariant: propsToPass.ctaButton?.variant,
+        hasCtaButtonObject: !!propsToPass.ctaButton,
+        title: propsToPass.title,
+        subtitle: propsToPass.subtitle,
+        description: propsToPass.description
+      });
+      
+      // Additional detailed debugging
+      console.log("🔍 [CTA DEBUG] All button text sources:", {
+        ctaButtonText: propsToPass.ctaButton?.text,
+        buttonText: propsToPass.button?.text,
+        directButtonText: propsToPass.buttonText,
+        allProps: Object.keys(propsToPass),
+        ctaButtonObject: propsToPass.ctaButton,
+        buttonObject: propsToPass.button
+      });
+      
+      // Check if form data is being passed correctly
+      console.log("📋 [FORM DEBUG] ImplementationCTASection form data:", {
+        contentJson: component.contentJson,
+        parsedContent: component.contentJson ? JSON.parse(component.contentJson) : {},
+        hasContentJson: !!component.contentJson
+      });
+      
+      // Add this debug check for ImplementationCTASection features
+      console.log("🎯 [FEATURES DEBUG] ImplementationCTASection Features:", {
+        features: propsToPass.features,
+        featuresCount: propsToPass.features?.length,
+        featuresData: propsToPass.features
+      });
+    }
+
+    console.log("🎨 ========== [DEBUG END] renderComponent ==========");
 
     return (
       <motion.div
@@ -404,20 +908,104 @@ const PagePreview = ({
         <div className="bg-white dark:bg-gray-900 border-l border-r border-b border-gray-200 dark:border-gray-700 rounded-b-lg">
           <div className="min-h-[200px]">
             <ErrorBoundary
+              componentType={component.componentType}
               fallback={
                 <div className="p-4 text-sm text-red-700 bg-red-50 border-t border-r border-b border-red-200 rounded-b-lg">
-                  Failed to render {component.componentType}. Please check its
-                  data.
+                  <h3 className="font-bold mb-2">
+                    Failed to render {component.componentType}
+                  </h3>
+                  <p>Please check the component data and props.</p>
+                  <details className="mt-2">
+                    <summary className="cursor-pointer">Props Debug</summary>
+                    <pre className="text-xs bg-white p-2 rounded mt-1 overflow-auto max-h-40">
+                      {JSON.stringify(propsToPass, null, 2)}
+                    </pre>
+                  </details>
                 </div>
               }
             >
-              <Component {...propsToPass} />
+              {(() => {
+                console.log(
+                  `🎭 [RENDER] About to render ${component.componentType} component`
+                );
+                console.log(`🎭 [RENDER] Component function:`, Component);
+                console.log(`🎭 [RENDER] Props being passed:`, propsToPass);
+
+                try {
+                  const renderedComponent = <Component {...propsToPass} />;
+                  console.log(
+                    `🎭 [RENDER SUCCESS] ${component.componentType} rendered successfully`
+                  );
+                  return renderedComponent;
+                } catch (renderError) {
+                  console.error(
+                    `🎭 [RENDER ERROR] Failed to render ${component.componentType}:`,
+                    renderError
+                  );
+                  throw renderError;
+                }
+              })()}
             </ErrorBoundary>
-            
-            {/* Debug info for all components */}
+
+            {/* Enhanced Debug info for all components */}
             <div className="p-2 text-xs text-gray-500 bg-gray-50 border-t">
-              <strong>Debug:</strong> {component.contentJson ? 'Data from backend (JSON parsed)' : 'Using fallback data'}
-              {!component.contentJson && ' (defaults/training.json)'}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                <div>
+                  <strong>Data Source:</strong>{" "}
+                  {component.contentJson
+                    ? "Backend JSON"
+                    : component.content
+                    ? "Backend Content"
+                    : "Fallback/Default"}
+                </div>
+                <div>
+                  <strong>Props Count:</strong>{" "}
+                  {Object.keys(propsToPass).length}
+                </div>
+                <div>
+                  <strong>Component Status:</strong>{" "}
+                  {Component ? "✅ Loaded" : "❌ Missing"}
+                </div>
+              </div>
+              <details className="mt-2">
+                <summary className="cursor-pointer font-medium">
+                  Detailed Debug Info
+                </summary>
+                <div className="mt-1 space-y-1 text-xs">
+                  <div>
+                    <strong>Component Type:</strong> {component.componentType}
+                  </div>
+                  <div>
+                    <strong>Has contentJson:</strong> {!!component.contentJson}
+                  </div>
+                  <div>
+                    <strong>Has content:</strong> {!!component.content}
+                  </div>
+                  <div>
+                    <strong>Props Keys:</strong>{" "}
+                    {Object.keys(propsToPass).join(", ")}
+                  </div>
+                  {propsToPass.painPoints && (
+                    <div>
+                      <strong>Pain Points:</strong>{" "}
+                      {propsToPass.painPoints.length} items
+                    </div>
+                  )}
+                  {propsToPass.title && (
+                    <div>
+                      <strong>Title:</strong> {propsToPass.title}
+                    </div>
+                  )}
+                  <details className="mt-1">
+                    <summary className="cursor-pointer">
+                      Full Props JSON
+                    </summary>
+                    <pre className="text-xs bg-white p-2 rounded mt-1 overflow-auto max-h-32">
+                      {JSON.stringify(propsToPass, null, 2)}
+                    </pre>
+                  </details>
+                </div>
+              </details>
             </div>
           </div>
         </div>
@@ -545,9 +1133,33 @@ const PagePreview = ({
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                   Components ({pageData.components.length})
                 </h3>
-                {pageData.components.map((component, index) =>
-                  renderComponent(component, index)
-                )}
+                {(() => {
+                  console.log(
+                    "📋 [RENDER LIST] Starting to render component list"
+                  );
+                  console.log(
+                    "📋 [RENDER LIST] Components to render:",
+                    pageData.components.length
+                  );
+                  console.log(
+                    "📋 [RENDER LIST] Component types:",
+                    pageData.components.map((c) => c.componentType)
+                  );
+
+                  return pageData.components.map((component, index) => {
+                    console.log(
+                      `📋 [RENDER LIST] Processing component ${index + 1}/${
+                        pageData.components.length
+                      }: ${component.componentType}`
+                    );
+                    const result = renderComponent(component, index);
+                    console.log(
+                      `📋 [RENDER LIST] Component ${index + 1} processed:`,
+                      !!result
+                    );
+                    return result;
+                  });
+                })()}
               </div>
             </div>
           )}

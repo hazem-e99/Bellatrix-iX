@@ -195,11 +195,13 @@ const DynamicPageRenderer = () => {
         };
       case "PayrollCTASection":
         return {
-          ctaData: props.cta || {
             title: props.title,
-            description: props.subtitle,
-            buttonText: props.buttonText,
-          },
+          subtitle: props.subtitle,
+          description: props.description,
+          ctaButton: props.ctaButton,
+          features: props.features,
+          trustedBy: props.trustedBy,
+          onCtaClick: props.onCtaClick || (() => {})
         };
 
       // ========== HR COMPONENTS ==========
@@ -257,13 +259,13 @@ const DynamicPageRenderer = () => {
         };
       case "HRCTASection":
         return {
-          data: {
-            cta: {
               title: props.title,
-              description: props.subtitle,
-              buttonText: props.buttonText,
-            },
-          },
+          subtitle: props.subtitle,
+          description: props.description,
+          ctaButton: props.ctaButton,
+          features: props.features,
+          trustedBy: props.trustedBy,
+          onCtaClick: props.onCtaClick || (() => {})
         };
 
       // ========== SERVICE COMPONENTS ==========
@@ -291,7 +293,8 @@ const DynamicPageRenderer = () => {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            steps: props.steps || [],
+            description: props.description,
+            phases: props.phases || props.steps || [],
           },
         };
       case "ImplementationWhyChooseSection":
@@ -313,11 +316,13 @@ const DynamicPageRenderer = () => {
         };
       case "ImplementationCTASection":
         return {
-          data: {
             title: props.title,
             subtitle: props.subtitle,
+          description: props.description,
             ctaButton: props.ctaButton,
-          },
+          features: props.features,
+          trustedBy: props.trustedBy,
+          openModal: props.openModal || (() => {})
         };
 
       // ========== TRAINING COMPONENTS ==========
@@ -455,11 +460,13 @@ const DynamicPageRenderer = () => {
         };
       case "ManufacturingCTASection":
         return {
-          data: {
             title: props.title,
             subtitle: props.subtitle,
+          description: props.description,
             ctaButton: props.ctaButton,
-          },
+          features: props.features,
+          trustedBy: props.trustedBy,
+          openContactModal: props.openContactModal || (() => {})
         };
 
       // ========== RETAIL COMPONENTS ==========
@@ -521,11 +528,13 @@ const DynamicPageRenderer = () => {
         };
       case "RetailCTASection":
         return {
-          data: {
             title: props.title,
             subtitle: props.subtitle,
+          description: props.description,
             ctaButton: props.ctaButton,
-          },
+          features: props.features,
+          trustedBy: props.trustedBy,
+          openContactModal: props.openContactModal || (() => {})
         };
 
       // ========== ABOUT COMPONENTS ==========
@@ -587,11 +596,13 @@ const DynamicPageRenderer = () => {
         };
       case "AboutCTASection":
         return {
-          data: {
             title: props.title,
             subtitle: props.subtitle,
+          description: props.description,
             ctaButton: props.ctaButton,
-          },
+          features: props.features,
+          trustedBy: props.trustedBy,
+          onOpenContactModal: props.onOpenContactModal || (() => {})
         };
 
       // ========== DEFAULT CASE ==========
@@ -606,28 +617,36 @@ const DynamicPageRenderer = () => {
 
   // Helper function to extract and normalize data from various formats (consistent with PagePreview)
   const extractComponentData = (component) => {
+    console.log(`🔍 [DynamicPageRenderer] Extracting data for ${component.componentType}`);
+    console.log(`📦 [DynamicPageRenderer] Raw component:`, component);
+    
     let rawData = {};
     
-    // Always try to parse contentJson first - this is the primary data source
+    // PRIORITY 1: Use contentJson from form (this is the PRIMARY data source)
     if (component.contentJson) {
       try {
-        // Ensure contentJson is parsed from string to object
+        console.log(`✅ [PRIORITY 1] Using contentJson from form for ${component.componentType}`);
         rawData = typeof component.contentJson === 'string' 
           ? JSON.parse(component.contentJson) 
           : component.contentJson;
         
-        // Log parsed data for debugging
-        console.log(`Parsed contentJson for ${component.componentType}:`, rawData);
+        console.log(`✅ [PRIORITY 1] Successfully parsed contentJson:`, rawData);
         
       } catch (err) {
-        console.warn(`Failed to parse contentJson for ${component.componentType}:`, err);
+        console.warn(`❌ [ERROR] Failed to parse contentJson for ${component.componentType}:`, err);
         console.warn('Raw contentJson:', component.contentJson);
       }
     }
     
-    // If no data or empty data, try to use component properties directly
-    if (!rawData || Object.keys(rawData).length === 0) {
-      // Check if component has direct properties
+    // PRIORITY 2: Use content from backend API (only if no form data)
+    else if (component.content && typeof component.content === 'object' && Object.keys(component.content).length > 0) {
+      console.log(`✅ [PRIORITY 2] Using content from API for ${component.componentType}`);
+      rawData = component.content;
+    }
+    
+    // PRIORITY 3: Try to use component properties directly (only if no form or API data)
+    else if (!rawData || Object.keys(rawData).length === 0) {
+      console.log(`✅ [PRIORITY 3] Using direct component properties for ${component.componentType}`);
       const directProps = ['title', 'subtitle', 'description', 'image', 'programs', 'features'];
       directProps.forEach(prop => {
         if (component[prop] !== undefined) {
@@ -636,17 +655,21 @@ const DynamicPageRenderer = () => {
       });
     }
     
+    console.log(`📦 [DynamicPageRenderer] Final raw data:`, rawData);
+    
     // Use normalizeProps to map the raw data to the correct component props
     const normalizedData = normalizeProps(component.componentType, rawData);
+    console.log(`🔄 [DynamicPageRenderer] After normalizeProps:`, normalizedData);
     
     // Validate the normalized props
     const validation = validateProps(component.componentType, normalizedData);
     if (!validation.isValid) {
-      console.warn(`Missing required props for ${component.componentType}:`, validation.missingProps);
+      console.warn(`❌ [VALIDATION] Missing required props for ${component.componentType}:`, validation.missingProps);
+    } else {
+      console.log(`✅ [VALIDATION] Props are valid for ${component.componentType}`);
     }
     
-    // Final log to verify complete data
-    console.log(`Final normalized props for ${component.componentType}:`, normalizedData);
+    console.log(`📤 [DynamicPageRenderer] Final normalized props:`, normalizedData);
     
     return normalizedData;
   };

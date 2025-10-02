@@ -1,5 +1,6 @@
 // components/Implementation/HeroSection.jsx
 import React, { useState, useEffect } from 'react';
+import { getVariantClasses, validateVariant } from '../../../utils/variantSystem';
 
 const HeroSection = ({ data = {}, openModal }) => {
     const [defaultData, setDefaultData] = useState(null);
@@ -19,7 +20,8 @@ const HeroSection = ({ data = {}, openModal }) => {
                     description: "We don't just implement solutions—we craft digital experiences that transform the way you do business",
                     ctaButton: {
                         text: "Start Implementation",
-                        icon: "M13 7l5 5m0 0l-5 5m5-5H6"
+                        icon: "M13 7l5 5m0 0l-5 5m5-5H6",
+                        variant: "primary"
                     }
                 });
             }
@@ -28,28 +30,54 @@ const HeroSection = ({ data = {}, openModal }) => {
     }, []);
 
     // Use props if provided, otherwise fall back to default data
-    const displayData = data && Object.keys(data).length > 0 ? data : (defaultData || {
+    const rawData = data && Object.keys(data).length > 0 ? data : (defaultData || {
         backgroundVideo: "/Videos/HomeHeroSectionV.mp4",
         titleParts: ["Where", "Vision", "Meets", "Reality"],
         description: "We don't just implement solutions—we craft digital experiences that transform the way you do business",
         ctaButton: {
             text: "Start Implementation",
-            icon: "M13 7l5 5m0 0l-5 5m5-5H6"
+            icon: "M13 7l5 5m0 0l-5 5m5-5H6",
+            variant: "primary"
         }
     });
+
+    // Convert title/subtitle to titleParts if needed
+    const displayData = {
+        ...rawData,
+        titleParts: rawData.titleParts || (rawData.title && rawData.subtitle ? [rawData.title, rawData.subtitle] : ["Implementation", "Services", "Made", "Simple"])
+    };
+
+    // Get variant classes for the CTA button
+    const ctaVariant = validateVariant(displayData.ctaButton?.variant || "primary");
+    const variantClasses = getVariantClasses(ctaVariant);
+
+    console.log('🎯 [ImplementationHeroSection] CTA Button Debug:', {
+        rawVariant: displayData.ctaButton?.variant,
+        validatedVariant: ctaVariant,
+        variantClasses: variantClasses,
+        ctaButton: displayData.ctaButton
+    });
+
     return (
         <div className="min-h-screen relative overflow-hidden pt-20">
-            {/* Background Video */}
-            <video 
-                autoPlay 
-                muted 
-                loop 
-                playsInline
-                className="absolute inset-0 w-full h-full object-cover"
-            >
-                <source src={displayData.backgroundVideo} type="video/mp4" />
-                Your browser does not support the video tag.
-            </video>
+            {/* Background Video or Image */}
+            {displayData.backgroundVideo && (displayData.backgroundVideo.includes('.mp4') || displayData.backgroundVideo.includes('.webm')) ? (
+                <video 
+                    autoPlay 
+                    muted 
+                    loop 
+                    playsInline
+                    className="absolute inset-0 w-full h-full object-cover"
+                >
+                    <source src={displayData.backgroundVideo} type="video/mp4" />
+                    Your browser does not support the video tag.
+                </video>
+            ) : (
+                <div 
+                    className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
+                    style={{ backgroundImage: `url(${displayData.backgroundVideo || displayData.backgroundImage || '/Videos/HomeHeroSectionV.mp4'})` }}
+                />
+            )}
             
             {/* Creative Overlay with Animated Gradient */}
             <div className="absolute inset-0 bg-gradient-to-br from-white/8 via-white/5 to-white/8 animate-gradient-shift"></div>
@@ -73,37 +101,57 @@ const HeroSection = ({ data = {}, openModal }) => {
                     {/* Main Heading with Text Animation */}
                     <div className="text-center mb-8">
                         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight text-white animate-slide-up">
-                            <span className="inline-block animate-text-glow">{displayData.titleParts[0]}</span>{' '}
-                            <span className="inline-block bg-gradient-to-r from-white via-white to-white bg-clip-text text-transparent animate-gradient-text">
-                                {displayData.titleParts[1]}
-                            </span>{' '}
-                            <span className="inline-block animate-text-glow delay-300">{displayData.titleParts[2]}</span>
-                            <br />
-                            <span className="inline-block bg-gradient-to-r from-white via-white to-white bg-clip-text text-transparent animate-gradient-text-reverse">
-                                {displayData.titleParts[3]}
-                            </span>
+                            {displayData.titleParts.length >= 4 ? (
+                                <>
+                                    <span className="inline-block animate-text-glow">{displayData.titleParts[0]}</span>{' '}
+                                    <span className="inline-block bg-gradient-to-r from-white via-white to-white bg-clip-text text-transparent animate-gradient-text">
+                                        {displayData.titleParts[1]}
+                                    </span>{' '}
+                                    <span className="inline-block animate-text-glow delay-300">{displayData.titleParts[2]}</span>
+                                    <br />
+                                    <span className="inline-block bg-gradient-to-r from-white via-white to-white bg-clip-text text-transparent animate-gradient-text-reverse">
+                                        {displayData.titleParts[3]}
+                                    </span>
+                                </>
+                            ) : displayData.titleParts.length === 2 ? (
+                                <>
+                                    <span className="inline-block animate-text-glow">{displayData.titleParts[0]}</span>
+                                    <br />
+                                    <span className="inline-block bg-gradient-to-r from-white via-white to-white bg-clip-text text-transparent animate-gradient-text">
+                                        {displayData.titleParts[1]}
+                                    </span>
+                                </>
+                            ) : (
+                                <span className="inline-block animate-text-glow">{displayData.titleParts[0] || "Implementation Services"}</span>
+                            )}
                         </h1>
                     </div>
                     
                     {/* Creative Description with Typewriter Effect */}
                     <div className="text-center mb-12">
                         <p className="text-lg md:text-xl lg:text-2xl text-gray-200 leading-relaxed max-w-4xl mx-auto animate-fade-in">
-                            {displayData.description.split('digital experiences')[0]}
-                            <span className="relative inline-block">
-                                <span className="bg-gradient-to-r from-white to-white bg-clip-text text-transparent font-semibold">
-                                    digital experiences
-                                </span>
-                                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-white to-white animate-underline-expand"></span>
-                            </span>
-                            {displayData.description.split('digital experiences')[1]}
+                            {displayData.description && displayData.description.includes('digital experiences') ? (
+                                <>
+                                    {displayData.description.split('digital experiences')[0]}
+                                    <span className="relative inline-block">
+                                        <span className="bg-gradient-to-r from-white to-white bg-clip-text text-transparent font-semibold">
+                                            digital experiences
+                                        </span>
+                                        <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-white to-white animate-underline-expand"></span>
+                                    </span>
+                                    {displayData.description.split('digital experiences')[1]}
+                                </>
+                            ) : (
+                                displayData.description
+                            )}
                         </p>
                     </div>
 
-                    {/* CTA Button */}
+                    {/* CTA Button - Now using variant system */}
                     <div className="text-center">
                         <button 
                             onClick={openModal}
-                            className="group relative px-10 py-4 bg-white text-black font-bold text-lg rounded-full overflow-hidden transition-all duration-300 transform hover:scale-105 hover:shadow-2xl animate-slide-up-delay border-2 border-white"
+                            className={`group relative px-10 py-4 font-bold text-lg rounded-full overflow-hidden transition-all duration-300 transform hover:scale-105 hover:shadow-2xl animate-slide-up-delay ${variantClasses}`}
                         >
                             <span className="relative z-10 flex items-center justify-center">
                                 <svg className="w-5 h-5 mr-2 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -11,6 +11,7 @@ import {
 import api from "../../lib/api";
 import mediaAPI from "../../lib/mediaAPI";
 import { getFieldConfigForComponent } from "../../data/componentSchemas";
+import { getAvailableVariants } from "../../utils/variantSystem";
 
 // Media Picker Modal Component
 const MediaPickerModal = ({ isOpen, onClose, onSelect }) => {
@@ -91,11 +92,11 @@ const MediaPickerModal = ({ isOpen, onClose, onSelect }) => {
   const handleFileChange = async (e) => {
     const selectedFile = e.target.files[0];
     if (!selectedFile) return;
-    
+
     setUploading(true);
     try {
       console.log("📤 Uploading file:", selectedFile.name);
-      
+
       const formData = new FormData();
       formData.append("File", selectedFile);
       formData.append("Role", "12"); // 12 = General role
@@ -106,14 +107,14 @@ const MediaPickerModal = ({ isOpen, onClose, onSelect }) => {
       const response = await api.post("/Media/upload", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      
+
       console.log("✅ Upload response:", response.data);
-      
+
       // Refresh media list after upload
       console.log("🔄 Refreshing media list after upload...");
       await fetchMedia();
       console.log("✅ Media list refreshed");
-      
+
       showToast("File uploaded successfully!", "success");
     } catch (err) {
       console.error("❌ Error uploading media:", err);
@@ -127,25 +128,27 @@ const MediaPickerModal = ({ isOpen, onClose, onSelect }) => {
     if (selectedMedia) {
       try {
         console.log("🔍 Fetching media details for ID:", selectedMedia.id);
-        const mediaDetails = await mediaAPI.getMediaPublicById(selectedMedia.id);
+        const mediaDetails = await mediaAPI.getMediaPublicById(
+          selectedMedia.id
+        );
         console.log("📥 Media details response:", mediaDetails);
-        
+
         // Extract fileUrl from the response
         const fileUrl = mediaDetails.fileUrl;
         console.log("🔗 Media fileUrl:", fileUrl);
-        
+
         // Build full URL
         const fullUrl = fileUrl?.startsWith("http")
           ? fileUrl
           : `http://bellatrix.runasp.net${fileUrl}`;
         console.log("✅ Final full URL:", fullUrl);
-        
+
         onSelect(fullUrl);
         onClose();
         setSelectedMedia(null);
       } catch (error) {
         console.error("❌ Error fetching media details:", error);
-        
+
         // Fallback to original behavior if API call fails
         console.log("✅ Selected media (fallback):", selectedMedia);
         const mediaUrl =
@@ -355,7 +358,12 @@ const MediaPickerModal = ({ isOpen, onClose, onSelect }) => {
 };
 
 // Dynamic Content Form Component
-const DynamicContentForm = ({ contentJson, onChange, className = "", componentType = null }) => {
+const DynamicContentForm = ({
+  contentJson,
+  onChange,
+  className = "",
+  componentType = null,
+}) => {
   const [parsedContent, setParsedContent] = useState({});
   const [mediaPickerOpen, setMediaPickerOpen] = useState(false);
   const [currentMediaField, setCurrentMediaField] = useState(null);
@@ -424,24 +432,96 @@ const DynamicContentForm = ({ contentJson, onChange, className = "", componentTy
     );
   };
 
+  // Fields that should use select dropdown for variants
+  const isVariantField = (fieldName) => {
+    return fieldName.toLowerCase() === "variant";
+  };
+
+  // Get available app routes for link suggestions
+  const getAvailableRoutes = () => {
+    return [
+      { value: "/", label: "Home" },
+      { value: "/about", label: "About Us" },
+      { value: "/services", label: "Services" },
+      { value: "/contact", label: "Contact" },
+      { value: "/training", label: "Training" },
+      { value: "/implementation", label: "Implementation" },
+      { value: "/customization", label: "Customization" },
+      { value: "/consulting", label: "Consulting" },
+      { value: "/support", label: "Support" },
+      { value: "/hr", label: "HR Solutions" },
+      { value: "/payroll", label: "Payroll" },
+      { value: "/manufacturing", label: "Manufacturing" },
+      { value: "/retail", label: "Retail" },
+    ];
+  };
+
+  // Fields that should use route suggestions for links
+  const isLinkField = (fieldName) => {
+    const linkFields = ["link", "url", "href", "to", "route"];
+    return linkFields.some((linkField) =>
+      fieldName.toLowerCase().includes(linkField.toLowerCase())
+    );
+  };
+
   // Update a field value in the parsed content
   const updateField = (path, value) => {
     const newContent = { ...parsedContent };
 
-    // Handle nested paths like "ctaButton.text"
+    // Handle nested paths like "ctaButton.text" or "features[0].title"
     const keys = path.split(".");
     let current = newContent;
 
-    // Navigate to the parent object
+    // Navigate to the parent object, handling array indices
     for (let i = 0; i < keys.length - 1; i++) {
-      if (!current[keys[i]]) {
-        current[keys[i]] = {};
+      const key = keys[i];
+
+      // Check if this key contains an array index (e.g., "features[0]")
+      const arrayMatch = key.match(/^(.+)\[(\d+)\]$/);
+
+      if (arrayMatch) {
+        const arrayKey = arrayMatch[1];
+        const arrayIndex = parseInt(arrayMatch[2], 10);
+
+        // Ensure the array exists
+        if (!current[arrayKey]) {
+          current[arrayKey] = [];
+        }
+
+        // Ensure the array index exists
+        if (!current[arrayKey][arrayIndex]) {
+          current[arrayKey][arrayIndex] = {};
+        }
+
+        current = current[arrayKey][arrayIndex];
+      } else {
+        // Regular object key
+        if (!current[key]) {
+          current[key] = {};
+        }
+        current = current[key];
       }
-      current = current[keys[i]];
     }
 
     // Set the final value
-    current[keys[keys.length - 1]] = value;
+    const finalKey = keys[keys.length - 1];
+    const finalArrayMatch = finalKey.match(/^(.+)\[(\d+)\]$/);
+
+    if (finalArrayMatch) {
+      const arrayKey = finalArrayMatch[1];
+      const arrayIndex = parseInt(finalArrayMatch[2], 10);
+
+      // Ensure the array exists
+      if (!current[arrayKey]) {
+        current[arrayKey] = [];
+      }
+
+      // Set the value at the specific array index
+      current[arrayKey][arrayIndex] = value;
+    } else {
+      // Regular field
+      current[finalKey] = value;
+    }
 
     setParsedContent(newContent);
 
@@ -497,7 +577,7 @@ const DynamicContentForm = ({ contentJson, onChange, className = "", componentTy
                   if (value.length > 0 && typeof value[0] === "object") {
                     // Add new object with same structure as first item
                     const newItem = {};
-                    Object.keys(value[0]).forEach(subKey => {
+                    Object.keys(value[0]).forEach((subKey) => {
                       newItem[subKey] = "";
                     });
                     newArr.push(newItem);
@@ -665,6 +745,85 @@ const DynamicContentForm = ({ contentJson, onChange, className = "", componentTy
                     })()}
                     <span className="text-xs text-gray-600 dark:text-gray-400 truncate">
                       Selected: {value.split("/").pop() || value}
+                    </span>
+                  </div>
+                )}
+              </div>
+            ) : isVariantField(key) ? (
+              <div className="space-y-2">
+                <select
+                  value={value || "primary"}
+                  onChange={(e) => updateField(fieldPath, e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  {getAvailableVariants().map((variant) => (
+                    <option key={variant.value} value={variant.value}>
+                      {variant.label}
+                    </option>
+                  ))}
+                </select>
+                {/* Variant Preview */}
+                {value && (
+                  <div className="flex items-center space-x-2 p-2 bg-gray-50 dark:bg-gray-800 rounded border">
+                    <div
+                      className={`px-3 py-1 text-xs rounded font-medium ${
+                        value === "primary"
+                          ? "bg-blue-600 text-white"
+                          : value === "secondary"
+                          ? "bg-gray-600 text-white"
+                          : value === "success"
+                          ? "bg-green-600 text-white"
+                          : value === "warning"
+                          ? "bg-yellow-600 text-white"
+                          : value === "danger"
+                          ? "bg-red-600 text-white"
+                          : value === "info"
+                          ? "bg-cyan-600 text-white"
+                          : "bg-blue-600 text-white"
+                      }`}
+                    >
+                      {value}
+                    </div>
+                    <span className="text-xs text-gray-600 dark:text-gray-400">
+                      Selected variant style preview
+                    </span>
+                  </div>
+                )}
+              </div>
+            ) : isLinkField(key) ? (
+              <div className="space-y-2">
+                <div className="flex space-x-2">
+                  <Input
+                    value={value || ""}
+                    onChange={(e) => updateField(fieldPath, e.target.value)}
+                    placeholder={`Enter ${key} (e.g., /about or https://example.com)`}
+                    className="flex-1"
+                    list={`routes-${fieldPath.replace(/[^\w]/g, "-")}`}
+                  />
+                </div>
+                <datalist id={`routes-${fieldPath.replace(/[^\w]/g, "-")}`}>
+                  {getAvailableRoutes().map((route) => (
+                    <option key={route.value} value={route.value}>
+                      {route.label}
+                    </option>
+                  ))}
+                </datalist>
+                {/* Link Preview */}
+                {value && (
+                  <div className="flex items-center space-x-2 p-2 bg-gray-50 dark:bg-gray-800 rounded border">
+                    <div className="text-xs">
+                      {value.startsWith("http") ? (
+                        <span className="text-blue-600 dark:text-blue-400">
+                          🔗 External Link
+                        </span>
+                      ) : (
+                        <span className="text-green-600 dark:text-green-400">
+                          🏠 Internal Route
+                        </span>
+                      )}
+                    </div>
+                    <span className="text-xs text-gray-600 dark:text-gray-400 truncate">
+                      {value}
                     </span>
                   </div>
                 )}

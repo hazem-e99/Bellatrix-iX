@@ -13,7 +13,7 @@ const PayrollPainPoints = ({ painPoints }) => (
             by consultancy firms:
           </strong>
           <ul className="space-y-5">
-            {painPoints.map((item, idx) => (
+            {painPoints.items.map((item, idx) => (
               <li key={idx} className="flex items-start">
                 <span className="text-lg text-gray-700">{item.text}</span>
               </li>
@@ -31,7 +31,7 @@ const PayrollPainPoints = ({ painPoints }) => (
             <div className="relative bg-gradient-to-br from-gray-900/10 via-blue-900/5 to-gray-900/10 rounded-3xl p-6 backdrop-blur-md border border-white/30 shadow-2xl group-hover:shadow-blue-500/20 transition-all duration-500">
               <div className="relative bg-gradient-to-br from-white/5 via-transparent to-blue-500/5 rounded-2xl p-4 border border-white/20">
                 <img
-                  src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+                  src={painPoints.image}
                   alt="Payroll Implementation illustration showing digital payroll process"
                   className="w-full h-auto rounded-xl shadow-2xl brightness-105 contrast-110 saturate-105 group-hover:brightness-110 group-hover:contrast-115 group-hover:saturate-110 transition-all duration-500 filter drop-shadow-xl"
                 />
