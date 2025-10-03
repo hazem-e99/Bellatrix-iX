@@ -37,6 +37,20 @@ const EnhancedPageBuilder = () => {
   // Ref to prevent multiple simultaneous API calls
   const isSavingRef = useRef(false);
 
+  // Step navigation handler
+  const handleStepClick = (stepId) => {
+    console.log('🎯 [STEP NAVIGATION] Clicked step:', stepId);
+    
+    if (stepId < currentStep) {
+      setCurrentStep(stepId);
+      console.log(`✅ [STEP NAVIGATION] Navigated back to step ${stepId}`);
+    } else if (stepId === currentStep) {
+      console.log('ℹ️ [STEP NAVIGATION] Already on this step');
+    } else {
+      console.log('❌ [STEP NAVIGATION] Cannot skip ahead to future steps');
+    }
+  };
+
   // Page data
   const [pageData, setPageData] = useState({
     name: "",
@@ -536,6 +550,20 @@ const EnhancedPageBuilder = () => {
           });
         }
 
+        if (updatedComponents[index]?.componentType === 'ManufacturingChallengesSection') {
+          console.log('🏭 [MANUFACTURING CHALLENGES UPDATE] After update:', {
+            componentType: updatedComponents[index].componentType,
+            contentJson: updatedComponents[index].contentJson,
+            parsedContentJson: (() => {
+              try {
+                return JSON.parse(updatedComponents[index].contentJson || '{}');
+              } catch (e) {
+                return { parseError: e.message };
+              }
+            })()
+          });
+        }
+
         if (updatedComponents[index]?.componentType === 'CustomizationServicesSection') {
           console.log('🔧 [CUSTOMIZATION SERVICES UPDATE] After update:', {
             componentType: updatedComponents[index].componentType,
@@ -731,6 +759,8 @@ const EnhancedPageBuilder = () => {
         subtitle: "Your trusted technology partner",
         description:
           "We help businesses transform through innovative technology solutions",
+        backgroundImage: "/images/about-hero.jpg",
+        backgroundVideo: "",
         ctaButton: {
           text: "Learn More",
           link: "/about",
@@ -2033,24 +2063,46 @@ const EnhancedPageBuilder = () => {
     showToast("Section data updated successfully", "success");
   };
 
+  // Function to handle delete confirmation
+  const handleDeleteClick = async (componentIndex) => {
+    console.log('🗑️ [DELETE CLICK] Component to delete:', componentIndex);
+    const component = pageData.components[componentIndex];
+    
+    try {
+      setLoading(true);
+      console.log('🚀 [DELETE API] Deleting component:', component);
+
+      // Create updated components array without the deleted component
+      const updatedComponents = pageData.components.filter((_, index) => index !== componentIndex);
+      
+      // Update order indices for remaining components
+      const reorderedComponents = updatedComponents.map((comp, index) => ({
+        ...comp,
+        orderIndex: index + 1
+      }));
+
+      // Update page data
+      const updatedPageData = {
+        ...pageData,
+        components: reorderedComponents
+      };
+
+      setPageData(updatedPageData);
+      showToast("Component deleted successfully", "success");
+      
+      console.log('✅ [DELETE API] Component deleted successfully');
+    } catch (error) {
+      console.error('❌ [DELETE API] Error deleting component:', error);
+      showToast("Failed to delete component", "error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+  // Legacy removeComponent function for backward compatibility
   const removeComponent = (componentIndex) => {
-    // Remove the component
-    const updatedComponents = pageData.components.filter(
-      (_, index) => index !== componentIndex
-    );
-
-    // Always re-assign all orderIndex values after removal to ensure they're sequential
-    const reorderedComponents = updatedComponents.map((component, index) => ({
-      ...component,
-      orderIndex: index + 1, // Ensure orderIndex values are sequential and 1-based
-    }));
-
-    setPageData((prev) => ({
-      ...prev,
-      components: reorderedComponents,
-    }));
-
-    showToast("Section removed from page", "success");
+    handleDeleteClick(componentIndex);
   };
 
   const duplicateComponent = (componentIndex) => {
@@ -2327,41 +2379,75 @@ const EnhancedPageBuilder = () => {
                 gridTemplateColumns: `repeat(${steps.length}, minmax(0, 1fr))`,
               }}
             >
-              {steps.map((step) => (
-                <div key={step.id} className="flex items-start space-x-3">
-                  <div
-                    className={`flex items-center justify-center w-9 h-9 rounded-full border-2 ${
-                      currentStep >= step.id
-                        ? "bg-blue-500 border-blue-500 text-white"
-                        : "bg-transparent border-gray-600 text-gray-400"
-                    }`}
-                  >
-                    {currentStep > step.id ? (
-                      <CheckIcon className="h-5 w-5" />
-                    ) : (
-                      <span className="text-xs font-semibold">{step.id}</span>
-                    )}
-                  </div>
-                  <div>
-                    <div
-                      className={`text-sm font-semibold ${
-                        currentStep >= step.id ? "text-white" : "text-gray-400"
-                      }`}
+              {steps.map((step) => {
+                const isCompleted = step.id < currentStep;
+                const isCurrent = step.id === currentStep;
+                const isFuture = step.id > currentStep;
+
+                return (
+                  <div key={step.id} className="flex items-start space-x-3 group">
+                    {/* Interactive Step Circle */}
+                    <button
+                      onClick={() => handleStepClick(step.id)}
+                      disabled={isFuture}
+                      className={`
+                        flex items-center justify-center w-9 h-9 rounded-full border-2 
+                        transition-all duration-200 transform
+                        ${isCompleted 
+                          ? 'bg-green-500 border-green-500 text-white cursor-pointer hover:bg-green-600 hover:border-green-600 hover:scale-110 shadow-lg shadow-green-500/25' 
+                          : isCurrent
+                          ? 'bg-blue-500 border-blue-500 text-white cursor-default shadow-lg shadow-blue-500/25'
+                          : 'bg-transparent border-gray-600 text-gray-400 cursor-not-allowed'
+                        }
+                        group-hover:shadow-lg
+                      `}
+                      title={
+                        isCompleted 
+                          ? `Go back to ${step.title}` 
+                          : isCurrent
+                          ? `Current step: ${step.title}`
+                          : `Complete current steps first`
+                      }
                     >
-                      {step.title}
-                    </div>
-                    <div
-                      className={`text-xs ${
-                        currentStep >= step.id
-                          ? "text-gray-300"
-                          : "text-gray-500"
-                      }`}
-                    >
-                      {step.description}
+                      {isCompleted ? (
+                        <CheckIcon className="h-5 w-5" />
+                      ) : (
+                        <span className="text-xs font-semibold">{step.id}</span>
+                      )}
+                    </button>
+                    
+                    {/* Step Info with Enhanced Styling */}
+                    <div className="flex-1 min-w-0 transition-all duration-200">
+                      <div
+                        className={`
+                          text-sm font-semibold transition-colors duration-200
+                          ${isCompleted 
+                            ? 'text-green-400 group-hover:text-green-300' 
+                            : isCurrent
+                            ? 'text-blue-400'
+                            : 'text-gray-400'
+                          }
+                        `}
+                      >
+                        {step.title}
+                      </div>
+                      <div
+                        className={`
+                          text-xs transition-colors duration-200
+                          ${isCompleted 
+                            ? 'text-green-300' 
+                            : isCurrent
+                            ? 'text-blue-300'
+                            : 'text-gray-500'
+                          }
+                        `}
+                      >
+                        {step.description}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
@@ -2465,6 +2551,7 @@ const EnhancedPageBuilder = () => {
           pageData={pageData}
           availableComponents={availableComponents}
         />
+
 
         {/* Toast Notification */}
         {toast && (

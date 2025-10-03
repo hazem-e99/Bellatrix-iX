@@ -1085,6 +1085,25 @@ const PagePreview = ({
       });
     }
 
+    // Special debugging for About sections
+    if (component.componentType.includes('About')) {
+      console.log(`🎯 [ABOUT SECTION DEBUG] ${component.componentType}:`, {
+        inputData: component.contentJson,
+        normalizedData: normalizedProps,
+        finalProps: propsToPass,
+        hasImage: !!propsToPass.backgroundImage || !!propsToPass.image,
+        imageUrl: propsToPass.backgroundImage || propsToPass.image
+      });
+    }
+
+    // Special debugging for team member images
+    if (component.componentType === 'AboutTeamSection') {
+      console.log('👥 [TEAM MEMBERS DEBUG]:', {
+        teamMembers: propsToPass.teamMembers,
+        memberImages: propsToPass.teamMembers?.map(m => m.image)
+      });
+    }
+
     if (component.componentType === 'ManufacturingChallengesSection') {
       console.log('🎯 [MANUFACTURING CHALLENGES RENDER DEBUG]', {
         componentData: component,

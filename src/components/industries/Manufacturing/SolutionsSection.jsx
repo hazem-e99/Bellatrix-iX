@@ -1,34 +1,115 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useComponentData } from '../../../utils/useComponentData';
 import manufacturingData from '../../../../public/data/manufacturing-data.json';
 
-const SolutionsSection = ({ data, activeSolution, setActiveSolution }) => {
-  // Merge props with default data from JSON
-  const finalData = useComponentData('solutions', data, manufacturingData);
-
-  console.log('🏭 [SolutionsSection] Data merge:', {
-    props: data,
-    defaultData: manufacturingData.solutions,
-    finalData: finalData,
-    itemsCount: finalData.items?.length,
-    activeSolution: activeSolution
+const SolutionsSection = (props) => {
+  console.log('🏭 [SolutionsSection] ALL PROPS:', props);
+  
+  // Handle both flat and nested prop structures
+  const title = props?.title || props?.data?.title;
+  const subtitle = props?.subtitle || props?.data?.subtitle;
+  const description = props?.description || props?.data?.description;
+  const solutions = props?.solutions || props?.items || props?.data?.solutions || props?.data?.items || [];
+  
+  // Internal state management for pagination
+  const [activeSolution, setActiveSolution] = useState(0);
+  
+  console.log('🏭 [SolutionsSection] Using data:', { 
+    title, 
+    subtitle, 
+    description,
+    solutionsCount: solutions.length,
+    hasTitle: !!title,
+    hasSubtitle: !!subtitle,
+    hasDescription: !!description,
+    hasSolutions: solutions.length > 0,
+    activeSolution
   });
 
-  // Use default activeSolution if not provided
-  const safeActiveSolution = activeSolution || 0;
-  const safeSetActiveSolution = setActiveSolution || (() => {});
+  // Default data as fallback ONLY if no form data is provided
+  const defaultData = {
+    title: "NetSuite Solutions",
+    subtitle: "Comprehensive manufacturing solutions",
+    description: "Comprehensive manufacturing solutions that address every aspect of your operations, from planning to production to delivery.",
+    solutions: [
+      { 
+        title: "Production Management", 
+        description: "End-to-end production planning and execution", 
+        features: ["Work orders", "Routing", "Capacity planning"],
+        benefits: "40% improvement in production efficiency"
+      },
+      { 
+        title: "Inventory Control", 
+        description: "Advanced inventory management capabilities", 
+        features: ["Multi-location", "Serial tracking", "Cycle counting"],
+        benefits: "30% reduction in inventory costs"
+      },
+      { 
+        title: "Quality Assurance", 
+        description: "Comprehensive quality control systems", 
+        features: ["Quality gates", "Defect tracking", "Compliance reporting"],
+        benefits: "99.5% quality achievement rate"
+      }
+    ]
+  };
+
+  // PRIORITIZE FORM DATA OVER DEFAULTS
+  const finalTitle = title || defaultData.title;
+  const finalSubtitle = subtitle || defaultData.subtitle;
+  const finalDescription = description || defaultData.description;
+  const finalSolutions = solutions.length > 0 ? solutions : defaultData.solutions;
+
+  console.log('🏭 [SolutionsSection] FINAL DATA:', { 
+    finalTitle, 
+    finalSubtitle, 
+    finalDescription,
+    finalSolutions,
+    usingFormData: solutions.length > 0 || !!title || !!subtitle || !!description
+  });
+
+  // Handle pagination dot clicks
+  const handlePaginationClick = (index) => {
+    console.log('🎯 [SOLUTIONS PAGINATION] Clicked dot:', index);
+    setActiveSolution(index);
+  };
+
+  // Reset activeSolution when solutions change
+  useEffect(() => {
+    if (activeSolution >= finalSolutions.length && finalSolutions.length > 0) {
+      setActiveSolution(0);
+    }
+  }, [finalSolutions.length, activeSolution]);
+
+  // Auto-advance carousel (optional)
+  useEffect(() => {
+    if (finalSolutions.length > 1) {
+      const interval = setInterval(() => {
+        setActiveSolution((prev) => (prev + 1) % finalSolutions.length);
+      }, 5000);
+      return () => clearInterval(interval);
+    }
+  }, [finalSolutions.length]);
+
+  console.log('🏭 [SOLUTIONS PAGINATION] Active solution:', activeSolution, 'Total:', finalSolutions.length);
 
   return (
-    <div className="bg-gray-50 py-20 light-section">
+    <section className="manufacturing-solutions bg-gray-50 py-20 light-section">
       <div className="container mx-auto px-6">
+        {/* Title and Subtitle */}
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
-            NetSuite <span className="text-blue-600">Solutions</span>
+            {finalTitle}
           </h2>
+          {finalSubtitle && (
           <p className="text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto">
-            Comprehensive manufacturing solutions that address every aspect of your operations, 
-            from planning to production to delivery.
-          </p>
+              {finalSubtitle}
+            </p>
+          )}
+          {finalDescription && (
+            <p className="text-base text-gray-500 leading-relaxed max-w-4xl mx-auto mt-4">
+              {finalDescription}
+            </p>
+          )}
         </div>
 
         <div className="flex flex-col lg:flex-row items-center gap-12">
@@ -86,14 +167,14 @@ const SolutionsSection = ({ data, activeSolution, setActiveSolution }) => {
 
           {/* Solutions Showcase - Right Side */}
           <div className="flex-1 space-y-6">
-            <h3 className="text-3xl font-bold text-gray-800">{finalData.items?.[safeActiveSolution]?.title}</h3>
+            <h3 className="text-3xl font-bold text-gray-800">{finalSolutions[activeSolution]?.title}</h3>
             <p className="text-gray-600 leading-relaxed text-lg">
-              {finalData.items?.[safeActiveSolution]?.description}
+              {finalSolutions[activeSolution]?.description}
             </p>
             
             <div className="space-y-3 mb-6">
               <h4 className="font-semibold text-gray-800 mb-3">Key Features:</h4>
-              {finalData.items?.[safeActiveSolution]?.features?.map((feature, index) => (
+              {finalSolutions[activeSolution]?.features?.map((feature, index) => (
                 <div key={index} className="flex items-center space-x-3">
                   <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
                   <span className="text-gray-600">{feature}</span>
@@ -106,26 +187,36 @@ const SolutionsSection = ({ data, activeSolution, setActiveSolution }) => {
                 <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                 </svg>
-                <span className="text-blue-700 font-semibold">Result: {finalData.items?.[safeActiveSolution]?.benefits}</span>
+                <span className="text-blue-700 font-semibold">Result: {finalSolutions[activeSolution]?.benefits}</span>
               </div>
             </div>
 
             {/* Solution Navigation */}
+            {finalSolutions.length > 1 && (
             <div className="flex space-x-2 mt-6 justify-center">
-              {finalData.items?.map((_, index) => (
+                {finalSolutions.map((_, index) => (
                 <button
                   key={index}
-                  onClick={() => safeSetActiveSolution(index)}
+                    onClick={() => handlePaginationClick(index)}
                   className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                    safeActiveSolution === index ? 'bg-blue-600' : 'bg-gray-300'
+                      activeSolution === index ? 'bg-blue-600' : 'bg-gray-300'
                   }`}
+                    aria-label={`Go to solution ${index + 1}`}
                 />
               ))}
             </div>
+            )}
+            
+            {/* Empty State */}
+            {finalSolutions.length === 0 && (
+              <div className="text-center py-8">
+                <p className="text-gray-500">No solutions data available</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

@@ -414,6 +414,11 @@ const DynamicContentForm = ({
     "file",
     "asset",
     "poster",
+    // About section specific fields
+    "backgroundImage",
+    "backgroundVideo",
+    "teamMemberImage",
+    "memberImage",
   ];
 
   // Check if a field name suggests it's a media field
@@ -429,7 +434,14 @@ const DynamicContentForm = ({
         lowerFieldName.endsWith("photo") ||
         lowerFieldName.endsWith("asset") ||
         lowerFieldName.endsWith("media")
-    );
+    ) || 
+    // Special handling for About sections
+    (componentType && componentType.includes('About') && (
+      fieldName === 'backgroundImage' ||
+      fieldName === 'backgroundVideo' ||
+      fieldName === 'image' ||
+      (fieldName.includes('team') && fieldName.includes('image'))
+    ));
   };
 
   // Fields that should use select dropdown for variants

@@ -20,7 +20,7 @@ export const useMessageNotifications = () => {
   const fetchUnreadCount = useCallback(async () => {
     try {
       const response = await api.get('/ContactMessages/stats');
-      console.log('📊 [MESSAGE STATS] Response:', response.data);
+      // console.log('📊 [MESSAGE STATS] Response:', response.data);
       
       // Handle different response structures
       if (response.data && typeof response.data === 'object') {
@@ -45,7 +45,7 @@ export const useMessageNotifications = () => {
   const checkForNewMessages = useCallback(async () => {
     try {
       const response = await api.get('/ContactMessages/recent');
-      console.log('📨 [RECENT MESSAGES] Response:', response.data);
+      // console.log('📨 [RECENT MESSAGES] Response:', response.data);
       
       let recentMessages = [];
       

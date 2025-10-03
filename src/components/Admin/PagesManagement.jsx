@@ -54,14 +54,9 @@ const PagesManagement = () => {
     try {
       setLoading(true);
       setError(null);
-      console.log("Fetching pages...");
       const data = await pagesAPI.getPages();
-      console.log("Pages API response:", data);
-      console.log("Data type:", typeof data);
-      console.log("Is array:", Array.isArray(data));
       setPages(data);
     } catch (err) {
-      console.error("Fetch pages error:", err);
       setError(err.message);
       showToast("Error fetching pages: " + err.message, "error");
     } finally {

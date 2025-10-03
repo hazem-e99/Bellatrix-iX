@@ -1,35 +1,43 @@
 import React from 'react';
 import Button from '../../UI/Button';
+import { motion } from 'framer-motion'; // Add this import
 
 const HeroSection = (props) => {
-  // Handle both prop structures:
-  // 1. Nested: { data: { title, subtitle, ... } }
-  // 2. Flat: { title, subtitle, ... }
-  const componentData = props.data || props;
+  console.log('🏭 [ManufacturingHero] All Props:', props);
   
-  console.log('🏭 [HeroSection] Received props:', props);
-  console.log('🏭 [HeroSection] Processed data:', componentData);
-  console.log('🏭 [HeroSection] Data structure check:', {
+  // Handle multiple data structure formats
+  const ctaButton = props.ctaButton || props.data?.ctaButton;
+  const title = props.title || props.data?.title;
+  const subtitle = props.subtitle || props.data?.subtitle;
+  const description = props.description || props.data?.description;
+  const backgroundImage = props.backgroundImage || props.data?.backgroundImage;
+  const backgroundVideo = props.backgroundVideo || props.data?.backgroundVideo;
+  
+  console.log('🏭 [ManufacturingHero] Resolved CTA:', ctaButton);
+  console.log('🏭 [ManufacturingHero] CTA Variant:', ctaButton?.variant);
+  console.log('🏭 [ManufacturingHero] Data structure analysis:', {
     hasDataProp: !!props.data,
     hasFlatProps: !!(props.title || props.subtitle),
-    finalDataSource: props.data ? 'nested' : 'flat'
+    hasCtaButton: !!ctaButton,
+    ctaButtonVariant: ctaButton?.variant,
+    ctaButtonType: typeof ctaButton?.variant
   });
 
   // Use form data directly with fallbacks
   const finalData = {
-    title: componentData?.title || "Manufacturing Solutions",
-    subtitle: componentData?.subtitle || "Streamline your manufacturing operations",
-    description: componentData?.description || "Comprehensive NetSuite solutions for manufacturing businesses",
-    backgroundImage: componentData?.backgroundImage || "/images/manufacturing-hero.jpg",
-    backgroundVideo: componentData?.backgroundVideo || "",
-    ctaButton: componentData?.ctaButton || {
+    title: title || "Manufacturing Solutions",
+    subtitle: subtitle || "Streamline your manufacturing operations",
+    description: description || "Comprehensive NetSuite solutions for manufacturing businesses",
+    backgroundImage: backgroundImage || "/images/manufacturing-hero.jpg",
+    backgroundVideo: backgroundVideo || "",
+    ctaButton: ctaButton || {
       text: "Learn More",
       link: "/manufacturing",
       variant: "primary"
     }
   };
 
-  console.log('🏭 [HeroSection] Final data:', finalData);
+  console.log('🏭 [ManufacturingHero] Final data:', finalData);
   console.log('🔴 [ManufacturingHero] CTA Button:', finalData.ctaButton);
   console.log('🔴 [ManufacturingHero] CTA Variant:', finalData.ctaButton?.variant);
 
@@ -77,35 +85,25 @@ const HeroSection = (props) => {
             {finalData.description}
           </p>
           
-          {/* CTA Button */}
+          {/* CTA Button with proper variant passing */}
           {finalData.ctaButton && (
             <div className="flex justify-center">
-              {(() => {
-                const buttonProps = {
-                  variant: finalData.ctaButton.variant || "primary",
-                  size: "lg",
-                  className: "px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl",
-                  onClick: () => {
-                    if (finalData.ctaButton.link) {
-                      if (finalData.ctaButton.link.startsWith('http')) {
-                        window.open(finalData.ctaButton.link, '_blank');
-                      } else {
-                        window.location.href = finalData.ctaButton.link;
-                      }
+              <Button
+                variant={finalData.ctaButton.variant || "primary"}
+                size="lg"
+                className="px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl"
+                onClick={() => {
+                  if (finalData.ctaButton.link) {
+                    if (finalData.ctaButton.link.startsWith('http')) {
+                      window.open(finalData.ctaButton.link, '_blank');
+                    } else {
+                      window.location.href = finalData.ctaButton.link;
                     }
                   }
-                };
-                
-                console.log('🔴 [MANUFACTURINGHERO] Button props being passed:', buttonProps);
-                console.log('🔴 [MANUFACTURINGHERO] Button variant specifically:', buttonProps.variant);
-                console.log('🔴 [MANUFACTURINGHERO] Button children:', finalData.ctaButton.text);
-                
-                return (
-                  <Button {...buttonProps}>
-                    {finalData.ctaButton.text}
-                  </Button>
-                );
-              })()}
+                }}
+              >
+                {finalData.ctaButton.text}
+              </Button>
             </div>
           )}
         </motion.div>

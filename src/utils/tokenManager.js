@@ -58,17 +58,16 @@ export const getUserData = () => {
 
 /**
  * Clear all authentication data from storage
- * Removes tokens and user data from both localStorage and sessionStorage
+ * Removes ALL data from localStorage and sessionStorage
  */
 export const clearAuthData = () => {
-  // Clear localStorage
-  localStorage.removeItem(TOKEN_KEYS.AUTH_TOKEN);
-  localStorage.removeItem(TOKEN_KEYS.ADMIN_TOKEN);
-  localStorage.removeItem(TOKEN_KEYS.ADMIN_USER);
+  // Clear ALL localStorage data
+  localStorage.clear();
   
-  // Clear sessionStorage
-  sessionStorage.removeItem(TOKEN_KEYS.AUTH_TOKEN);
-  sessionStorage.removeItem(TOKEN_KEYS.ADMIN_TOKEN);
+  // Clear ALL sessionStorage data
+  sessionStorage.clear();
+  
+  console.log('🧹 [LOGOUT] All localStorage and sessionStorage data cleared');
 };
 
 /**

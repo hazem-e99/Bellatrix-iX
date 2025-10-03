@@ -22,3 +22,45 @@
 .animate-background-glow {
   animation: background-glow 12s ease-in-out infinite;
 }
+
+/* Image Input Styles for DynamicContentForm */
+.image-input-group {
+  margin-bottom: 1rem;
+}
+
+.image-input-container {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.image-url-input {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+}
+
+.browse-media-btn {
+  padding: 0.5rem 1rem;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+}
+
+.browse-media-btn:hover {
+  background: #2563eb;
+}
+
+.image-preview {
+  margin-top: 0.5rem;
+  max-width: 200px;
+}
+
+.image-preview img {
+  max-width: 100%;
+  border-radius: 0.375rem;
+  border: 1px solid #e5e7eb;
+}

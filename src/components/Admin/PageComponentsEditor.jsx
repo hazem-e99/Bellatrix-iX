@@ -11,6 +11,7 @@ import {
   MagnifyingGlassIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
+import "./PageComponentsEditor.css";
 import Button from "../ui/Button";
 import Input from "../ui/Input";
 import Modal, { ModalFooter } from "../ui/Modal";
@@ -63,6 +64,15 @@ const PageComponentsEditor = ({ pageId, pageName, onClose, onSave, showToast }) 
     loadComponents();
     loadAvailableComponents();
   }, [pageId]);
+
+  // Add validation for component IDs
+  useEffect(() => {
+    console.log('🔍 [COMPONENTS STATE UPDATE]', {
+      componentsCount: components.length,
+      componentIds: components.map(c => c.id),
+      hasDuplicateIds: new Set(components.map(c => c.id)).size !== components.length
+    });
+  }, [components]);
 
   // Load available components from component map
   const loadAvailableComponents = async () => {
@@ -248,14 +258,27 @@ const PageComponentsEditor = ({ pageId, pageName, onClose, onSave, showToast }) 
     }
   };
 
-  const loadComponents = async () => {
+  const loadComponents = async (forceRefresh = false) => {
     try {
       setLoading(true);
-      const comps = await pagesAPI.getPageComponents(pageId);
-      console.log("Loaded components:", comps);
-      setComponents(comps);
+      console.log('🔄 [LOAD COMPONENTS] Loading components, forceRefresh:', forceRefresh);
+      
+      // Add cache busting parameter
+      const cacheBuster = forceRefresh ? `?t=${Date.now()}` : '';
+      const comps = await pagesAPI.getPageComponents(pageId + cacheBuster);
+      
+      console.log('📦 [LOAD COMPONENTS] Raw API response:', comps);
+      
+      if (comps && Array.isArray(comps)) {
+        console.log('🎯 [LOAD COMPONENTS] Extracted components:', comps.length);
+        console.log('🔍 [LOAD COMPONENTS] Component IDs:', comps.map(c => c.id));
+        setComponents(comps);
+      } else {
+        console.warn('⚠️ [LOAD COMPONENTS] No components found in response');
+        setComponents([]);
+      }
     } catch (error) {
-      console.error("Error loading components:", error);
+      console.error("❌ [LOAD COMPONENTS ERROR]:", error);
       showToast("Error loading page components", "error");
     } finally {
       setLoading(false);
@@ -313,25 +336,74 @@ const PageComponentsEditor = ({ pageId, pageName, onClose, onSave, showToast }) 
     }
   };
 
+  // Add validation before deletion
+  const validateComponentDeletion = (componentId, components) => {
+    const component = components.find(comp => comp.id === componentId);
+    
+    if (!component) {
+      return { isValid: false, message: 'Component not found' };
+    }
+    
+    console.log('🔍 [DELETE VALIDATION] Component to delete:', {
+      id: component.id,
+      type: component.componentType,
+      order: component.orderIndex
+    });
+    
+    return { isValid: true, message: 'Valid for deletion' };
+  };
+
   const handleDeleteComponent = async (componentId) => {
+    console.log('🗑️ [DELETE COMPONENT] Deleting component with ID:', componentId);
+    
+    if (!componentId) {
+      console.error('❌ [DELETE ERROR] No component ID provided');
+      showToast('Cannot delete: No component ID', 'error');
+      return;
+    }
+
+    // Validate component exists before deletion
+    const validation = validateComponentDeletion(componentId, components);
+    
+    if (!validation.isValid) {
+      console.error('❌ [DELETE VALIDATION FAILED]:', validation.message);
+      showToast(validation.message, 'error');
+      return;
+    }
+
     if (!window.confirm("Are you sure you want to delete this component?")) {
       return;
     }
 
     try {
-      setSaving(true);
-      console.log("Deleting component with ID:", componentId);
-      await pagesAPI.deletePageComponent(componentId);
+      setLoading(true);
       
-      // Refresh components from API to ensure synchronization with backend
-      console.log("Refreshing components after deletion...");
-      await loadComponents();
-      showToast("Component deleted successfully", "success");
+      // Use the correct endpoint - only component ID is needed
+      await pagesAPI.deletePageComponent(componentId);
+      console.log('✅ [DELETE SUCCESS] Component deleted from API');
+      
+      // Update local state immediately
+      setComponents(prevComponents => {
+        const updatedComponents = prevComponents.filter(comp => comp.id !== componentId);
+        console.log('🔄 [STATE UPDATE] Components after deletion:', updatedComponents);
+        return updatedComponents;
+      });
+      
+      showToast('Component deleted successfully', 'success');
+      
     } catch (error) {
-      console.error("Error deleting component:", error);
-      showToast("Error deleting component: " + error.message, "error");
+      console.error('❌ [DELETE ERROR] Failed to delete component:', error);
+      
+      // Show specific error message
+      if (error.response?.status === 404) {
+        showToast('Component not found', 'error');
+      } else if (error.response?.status === 500) {
+        showToast('Server error while deleting component', 'error');
+      } else {
+        showToast('Failed to delete component', 'error');
+      }
     } finally {
-      setSaving(false);
+      setLoading(false);
     }
   };
 
@@ -401,6 +473,14 @@ const PageComponentsEditor = ({ pageId, pageName, onClose, onSave, showToast }) 
         </div>
         <div className="flex items-center space-x-2">
           <Button
+            onClick={() => loadComponents(true)}
+            className="bg-gray-600 hover:bg-gray-700 text-white flex items-center space-x-1 text-sm px-3 py-1"
+            disabled={loading}
+          >
+            <ArrowPathIcon className="h-3 w-3" />
+            <span>Force Refresh</span>
+          </Button>
+          <Button
             onClick={() => setShowAddModal(true)}
             className="bg-blue-600 hover:bg-blue-700 text-white flex items-center space-x-1 text-sm px-3 py-1"
           >
@@ -442,16 +522,24 @@ const PageComponentsEditor = ({ pageId, pageName, onClose, onSave, showToast }) 
               items={components.map(comp => comp.id)}
               strategy={verticalListSortingStrategy}
             >
-              {components.map((component, index) => (
-                <ComponentCard
-                  key={component.id}
-                  component={component}
-                  index={index}
-                  onEdit={() => setEditingComponent(component)}
-                  onDelete={() => handleDeleteComponent(component.id)}
-                  isReordering={saving}
-                />
-              ))}
+              {components.map((component, index) => {
+                console.log(`🎨 [RENDER COMPONENT ${index}]`, {
+                  id: component.id,
+                  type: component.componentType,
+                  order: component.orderIndex
+                });
+                
+                return (
+                  <ComponentCard
+                    key={component.id}
+                    component={component}
+                    index={index}
+                    onEdit={() => setEditingComponent(component)}
+                    onDelete={() => handleDeleteComponent(component.id)}
+                    isReordering={saving}
+                  />
+                );
+              })}
             </SortableContext>
           </DndContext>
         )}
@@ -554,6 +642,9 @@ const ComponentCard = ({ component, index, onEdit, onDelete, isReordering = fals
             <span className="text-xs text-gray-400 bg-blue-500/20 px-2 py-1 rounded flex-shrink-0">
               {component.componentType}
             </span>
+            <small className="component-id text-gray-500 text-xs font-mono">
+              ID: {component.id}
+            </small>
             {isReordering && (
               <span className="text-xs text-yellow-400 bg-yellow-500/20 px-2 py-1 rounded animate-pulse flex-shrink-0">
                 Reordering...
@@ -626,7 +717,7 @@ const ComponentCard = ({ component, index, onEdit, onDelete, isReordering = fals
                 ? 'text-gray-500 cursor-not-allowed' 
                 : 'text-red-400 hover:text-red-300 hover:bg-red-500/10'
             }`}
-            title="Delete component"
+            title={`Delete component ID: ${component.id}`}
           >
             <TrashIcon className="h-3 w-3" />
           </button>

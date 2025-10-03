@@ -50,13 +50,6 @@ const Button = React.forwardRef(
     },
     ref
   ) => {
-    // Add debugging for variant handling
-    console.log('🎨 [Button Component] All props received:', { variant, size, children, className, ...props });
-    console.log('🎨 [Button Component] Variant:', variant);
-    console.log('🎨 [Button Component] Variant Type:', typeof variant);
-    console.log('🎨 [Button Component] Children:', children);
-    console.log('🎨 [Button Component] Props keys:', Object.keys({ variant, size, children, className, ...props }));
-    
     const Component = asChild ? motion.div : motion.button;
 
     return (

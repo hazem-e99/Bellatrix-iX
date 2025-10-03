@@ -4,6 +4,13 @@ import pageComponentsAPI from "./pageComponentsAPI.js";
 const BASE_URL = "http://bellatrix.runasp.net/api";
 
 /**
+ * API debugging helper function
+ */
+const debugAPIResponse = (response, endpoint) => {
+  // Debug logging removed
+};
+
+/**
  * Pages API service for handling page-related operations
  */
 const pagesAPI = {
@@ -32,15 +39,10 @@ const pagesAPI = {
       // Get the response - the interceptor in api.js will handle unwrapping
       const response = await api.get(url);
 
-      console.log("Pages API response after interceptor:", response);
-      console.log("Response data:", response.data);
-
       // The data should already be unwrapped by the interceptor
       const pages = Array.isArray(response.data) ? response.data : [];
-      console.log("Final pages array:", pages);
       return pages;
     } catch (error) {
-      console.error("Error fetching pages:", error);
       throw error;
     }
   },
@@ -53,10 +55,8 @@ const pagesAPI = {
   async getPageById(pageId) {
     try {
       const response = await api.get(`/Pages/${pageId}`);
-      console.log("Get page by ID response:", response.data);
       return response.data;
     } catch (error) {
-      console.error(`Error fetching page ${pageId}:`, error);
       throw error;
     }
   },
@@ -68,14 +68,10 @@ const pagesAPI = {
    */
   async createPage(pageData) {
     try {
-      console.log("Original pageData received:", pageData);
-
       // CRITICAL: Always use /Pages/with-components when components exist
       // This prevents duplicate DB key errors (IX_PageComponents_PageId_OrderIndex)
       const hasComponents = pageData.components && Array.isArray(pageData.components) && pageData.components.length > 0;
       const endpoint = hasComponents ? "/Pages/with-components" : "/Pages";
-      
-      console.log(`Endpoint selection: ${endpoint} (hasComponents: ${hasComponents}, components count: ${pageData.components?.length || 0})`);
 
       // Prepare the data to send - remove any id/pageId for new page creation
       let dataToSend = { ...pageData };
@@ -86,8 +82,6 @@ const pagesAPI = {
 
       // Ensure proper component data formatting for API
       if (dataToSend.components && dataToSend.components.length > 0) {
-        console.log("Processing components for API payload...");
-        
         dataToSend.components = dataToSend.components.map((component, index) => {
           // Remove any existing id or pageId from components for new creation
           const cleanComponent = { ...component };
@@ -106,7 +100,6 @@ const pagesAPI = {
           if (cleanComponent.content && typeof cleanComponent.content === "object") {
             // Convert content object to JSON string
             formattedComponent.contentJson = JSON.stringify(cleanComponent.content);
-            console.log(`Component ${index}: converted content object to JSON string`);
           } else if (cleanComponent.contentJson) {
             // Use existing contentJson (ensure it's a string)
             if (typeof cleanComponent.contentJson === "string") {
@@ -114,33 +107,16 @@ const pagesAPI = {
             } else {
               formattedComponent.contentJson = JSON.stringify(cleanComponent.contentJson);
             }
-            console.log(`Component ${index}: used existing contentJson`);
           } else {
             // Default empty content
             formattedComponent.contentJson = JSON.stringify({});
-            console.log(`Component ${index}: set default empty content`);
           }
 
           return formattedComponent;
         });
-        
-        console.log(`Processed ${dataToSend.components.length} components for API`);
       }
 
-      // Final logging before API call (for debugging, no side effects)
-      console.log("=== API CALL SUMMARY ===");
-      console.log("Endpoint:", endpoint);
-      console.log("Method: POST");
-      console.log("Has Components:", hasComponents);
-      console.log("Components Count:", dataToSend.components?.length || 0);
-      console.log("Payload Size (chars):", JSON.stringify(dataToSend).length);
-      console.log("Final payload:", dataToSend);
-      console.log("========================");
-
       const response = await api.post(endpoint, dataToSend);
-      
-      console.log("API Response Status:", response.status);
-      console.log("API Response Data:", response.data);
       
       return response.data;
     } catch (error) {
@@ -155,7 +131,6 @@ const pagesAPI = {
           "Duplicate order index in components. Please try again."
         );
       }
-      console.error("Error creating page:", error);
       throw error;
     }
   },
@@ -168,8 +143,6 @@ const pagesAPI = {
    */
   async updatePage(pageId, pageData) {
     try {
-      console.log("Original updatePageData received:", pageData);
-      
       // Prepare UpdatePageDTO according to swagger schema
       const updateData = {
         id: pageId,
@@ -203,13 +176,9 @@ const pagesAPI = {
         throw new Error("Meta description must not exceed 160 characters");
       }
 
-      console.log("UpdatePageDTO prepared:", updateData);
-
       const response = await api.put("/Pages", updateData);
-      console.log("Update page response:", response.data);
       return response.data;
     } catch (error) {
-      console.error(`Error updating page ${pageId}:`, error);
       throw error;
     }
   },
@@ -223,7 +192,6 @@ const pagesAPI = {
     try {
       await api.delete(`/Pages/${pageId}`);
     } catch (error) {
-      console.error(`Error deleting page ${pageId}:`, error);
       throw error;
     }
   },
@@ -235,10 +203,8 @@ const pagesAPI = {
   async getCategories() {
     try {
       const response = await api.get("/Categories");
-      console.log("Categories API response:", response.data);
       return Array.isArray(response.data) ? response.data : [];
     } catch (error) {
-      console.error("Error fetching categories:", error);
       throw error;
     }
   },
@@ -252,16 +218,13 @@ const pagesAPI = {
     try {
       // Use the getPageById endpoint with includeComponents=true to get components
       const response = await api.get(`/Pages/${pageId}?includeComponents=true`);
-      console.log("Page with components response:", response.data);
       
       // Extract components from the page data
       const pageData = response.data;
       const components = pageData?.components || [];
       
-      console.log("Extracted components:", components);
       return Array.isArray(components) ? components : [];
     } catch (error) {
-      console.error(`Error fetching components for page ${pageId}:`, error);
       throw error;
     }
   },
@@ -282,12 +245,9 @@ const pagesAPI = {
         orderIndex: componentData.orderIndex || 1
       };
 
-      console.log("Creating page component:", createData);
       const response = await api.post(`/Pages/${pageId}/components`, createData);
-      console.log("Create component response:", response.data);
       return response.data;
     } catch (error) {
-      console.error(`Error creating component for page ${pageId}:`, error);
       throw error;
     }
   },
@@ -312,12 +272,9 @@ const pagesAPI = {
         updateData.orderIndex = componentData.orderIndex;
       }
 
-      console.log("Updating page component:", updateData);
       const response = await api.put(`/Pages/components/${componentId}`, updateData);
-      console.log("Update component response:", response.data);
       return response.data;
     } catch (error) {
-      console.error(`Error updating component ${componentId}:`, error);
       throw error;
     }
   },
@@ -329,10 +286,17 @@ const pagesAPI = {
    */
   async deletePageComponent(componentId) {
     try {
-      await api.delete(`/Pages/components/${componentId}`);
-      console.log(`Component ${componentId} deleted successfully`);
+      const response = await api.delete(`/Pages/components/${componentId}`);
+      
+      debugAPIResponse(response, 'DELETE_COMPONENT');
+      
+      return response.data;
+      
     } catch (error) {
-      console.error(`Error deleting component ${componentId}:`, error);
+      if (error.response) {
+        debugAPIResponse(error.response, 'DELETE_COMPONENT_ERROR');
+      }
+      
       throw error;
     }
   },
@@ -346,7 +310,6 @@ const pagesAPI = {
   async reorderPageComponents(pageId, components) {
     try {
       // First, set all components to temporary high orderIndex to avoid conflicts
-      console.log("Setting temporary orderIndex to avoid conflicts...");
       const tempOrderPromises = components.map(async (component) => {
         const tempOrderIndex = 1000 + component.id; // Use high temporary values
         const updateData = {
@@ -360,14 +323,11 @@ const pagesAPI = {
       });
       
       await Promise.all(tempOrderPromises);
-      console.log("Temporary orderIndex set successfully");
       
       // Now update each component to its final orderIndex sequentially
-      console.log("Setting final orderIndex...");
       for (let i = 0; i < components.length; i++) {
         const component = components[i];
         const finalOrderIndex = i + 1; // Start from 1
-        console.log(`Updating component ${component.id} to final order ${finalOrderIndex}`);
         
         const updateData = {
           id: component.id,
@@ -379,10 +339,7 @@ const pagesAPI = {
         
         await this.updatePageComponent(component.id, updateData);
       }
-      
-      console.log(`Successfully reordered ${components.length} components for page ${pageId}`);
     } catch (error) {
-      console.error(`Error reordering components for page ${pageId}:`, error);
       throw error;
     }
   },
@@ -395,10 +352,8 @@ const pagesAPI = {
   async getPublicPageBySlug(slug) {
     try {
       const response = await api.get(`/Pages/public/${slug}`);
-      console.log("Get public page by slug response:", response.data);
       return response.data;
     } catch (error) {
-      console.error(`Error fetching public page by slug ${slug}:`, error);
       throw error;
     }
   },
@@ -424,7 +379,6 @@ const pagesAPI = {
           page.categoryName?.toLowerCase().includes(lowercaseQuery)
       );
     } catch (error) {
-      console.error("Error searching pages:", error);
       throw error;
     }
   },

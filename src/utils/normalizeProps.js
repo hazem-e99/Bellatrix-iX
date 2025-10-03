@@ -199,265 +199,6 @@ export const normalizeProps = (componentType, contentJson) => {
       return normalized;
     },
 
-    CustomizationProcessSection: (data) => {
-      console.log('🔧 [CUSTOMIZATION PROCESS DEBUG] Raw form data:', data);
-      console.log('🔧 [CUSTOMIZATION PROCESS DEBUG] Data structure:', {
-        hasSteps: !!data.steps,
-        hasCustomizationProcess: !!data.customizationProcess,
-        stepsType: Array.isArray(data.steps) ? 'array' : typeof data.steps,
-        allKeys: Object.keys(data)
-      });
-
-      // Handle multiple data structures
-      const stepsSource = 
-        data.steps || 
-        data.customizationProcess?.steps || 
-        [];
-
-      console.log('🔧 [CUSTOMIZATION PROCESS DEBUG] Steps source:', stepsSource);
-
-      // Normalize each step item
-      const normalizedSteps = stepsSource.map((step, index) => {
-        console.log(`🔧 [CUSTOMIZATION PROCESS DEBUG] Processing step ${index}:`, {
-          originalStep: step,
-          hasTitle: !!step.title,
-          hasDescription: !!step.description,
-          hasStep: !!step.step
-        });
-
-        const normalizedStep = {
-          title: step.title || `Step ${index + 1}`,
-          description: step.description || step.desc || "Step description",
-          step: step.step || String(index + 1).padStart(2, '0'),
-          duration: step.duration || step.time || "1 week"
-        };
-
-        console.log(`🔧 [CUSTOMIZATION PROCESS DEBUG] Normalized step ${index}:`, normalizedStep);
-        return normalizedStep;
-      });
-
-      const normalized = {
-        title: data.title || data.customizationProcess?.title || "Customization Process",
-        subtitle: data.subtitle || data.customizationProcess?.subtitle || "Our proven approach",
-        description: data.description || data.customizationProcess?.description || "A structured methodology for successful customization",
-        steps: normalizedSteps,
-      };
-
-      console.log('✅ [CUSTOMIZATION PROCESS DEBUG] Final normalized data:', normalized);
-      return normalized;
-    },
-
-    // Manufacturing Components
-    ManufacturingHeroSection: (data) => {
-      console.log('🔴 [NORMALIZE DEBUG] Input data:', data);
-      
-      const coreData = {
-        title: data.title || "Manufacturing Solutions",
-        subtitle: data.subtitle || "Streamline your manufacturing operations",
-        description: data.description || "Comprehensive NetSuite solutions for manufacturing businesses",
-        backgroundImage: data.backgroundImage || "/images/manufacturing-hero.jpg",
-        backgroundVideo: data.backgroundVideo,
-        ctaButton: {
-          text: data.ctaButton?.text || "Learn More",
-          link: data.ctaButton?.link || "/manufacturing",
-          variant: data.ctaButton?.variant || "primary"
-        }
-      };
-
-      console.log('🔴 [NORMALIZE DEBUG] Core data ctaButton:', coreData.ctaButton);
-      
-      const normalized = {
-        data: coreData,
-        ...coreData // Also spread flat
-      };
-
-      console.log('🔴 [NORMALIZE DEBUG] Final normalized:', normalized);
-      return normalized;
-    },
-
-    // EMERGENCY OVERRIDE - Nuclear option for ManufacturingHeroSection
-    ManufacturingHeroSectionNuclear: (data) => {
-      // NUCLEAR OPTION: Completely ignore defaults if form has any data
-      if (data && Object.keys(data).length > 0) {
-        console.log('🚀 [MANUFACTURING NUCLEAR] USING FORM DATA ONLY:', data);
-        return {
-          data: {
-            title: data.title || "",
-            subtitle: data.subtitle || "",
-            description: data.description || "",
-            backgroundImage: data.backgroundImage || "",
-            ctaButton: data.ctaButton || {}
-          }
-        };
-      }
-      
-      // Fallback only if completely empty
-      return {
-        data: {
-          title: "Manufacturing Solutions",
-          subtitle: "Streamline your manufacturing operations",
-          description: "Comprehensive NetSuite solutions for manufacturing businesses",
-          backgroundImage: "/images/manufacturing-hero.jpg",
-          ctaButton: {
-            text: "Learn More",
-            link: "/manufacturing", 
-            variant: validateVariant("primary")
-          }
-        }
-      };
-    },
-
-    ManufacturingChallengesSection: (data) => {
-      console.log('🏭 [MANUFACTURING CHALLENGES DEBUG] Raw form data:', data);
-      console.log('🏭 [MANUFACTURING CHALLENGES DEBUG] Data structure:', {
-        hasChallenges: !!data.challenges,
-        hasItems: !!data.items,
-        hasManufacturingChallenges: !!data.manufacturingChallenges,
-        challengesType: Array.isArray(data.challenges) ? 'array' : typeof data.challenges,
-        allKeys: Object.keys(data)
-      });
-
-      // Handle multiple data structures
-      const challengesSource = 
-        data.challenges || 
-        data.items || 
-        data.manufacturingChallenges?.challenges || 
-        [];
-
-      console.log('🏭 [MANUFACTURING CHALLENGES DEBUG] Challenges source:', challengesSource);
-
-      // Normalize each challenge item
-      const normalizedChallenges = challengesSource.map((challenge, index) => {
-        console.log(`🏭 [MANUFACTURING CHALLENGES DEBUG] Processing challenge ${index}:`, {
-          originalChallenge: challenge,
-          hasTitle: !!challenge.title,
-          hasName: !!challenge.name,
-          hasDescription: !!challenge.description,
-          hasImpact: !!challenge.impact
-        });
-
-        const normalizedChallenge = {
-          title: challenge.title || challenge.name || `Challenge ${index + 1}`,
-          description: challenge.description || challenge.desc || "Challenge description",
-          impact: challenge.impact || "Medium"
-        };
-
-        console.log(`🏭 [MANUFACTURING CHALLENGES DEBUG] Normalized challenge ${index}:`, normalizedChallenge);
-        return normalizedChallenge;
-      });
-
-      const normalized = {
-        title: data.title || data.manufacturingChallenges?.title || "Manufacturing Challenges",
-        subtitle: data.subtitle || data.manufacturingChallenges?.subtitle || "Common pain points we solve",
-        challenges: normalizedChallenges,
-        items: normalizedChallenges, // Support both prop names
-      };
-
-      console.log('✅ [MANUFACTURING CHALLENGES DEBUG] Normalized:', normalized);
-      return normalized;
-    },
-
-    ManufacturingSolutionsSection: (data) => {
-      console.log('🏭 [MANUFACTURING SOLUTIONS DEBUG] Raw form data:', data);
-      console.log('🏭 [MANUFACTURING SOLUTIONS DEBUG] Data structure:', {
-        hasSolutions: !!data.solutions,
-        hasItems: !!data.items,
-        hasManufacturingSolutions: !!data.manufacturingSolutions,
-        solutionsType: Array.isArray(data.solutions) ? 'array' : typeof data.solutions,
-        allKeys: Object.keys(data)
-      });
-
-      // Handle multiple data structures
-      const solutionsSource = 
-        data.solutions || 
-        data.items || 
-        data.manufacturingSolutions?.solutions || 
-        [];
-
-      console.log('🏭 [MANUFACTURING SOLUTIONS DEBUG] Solutions source:', solutionsSource);
-
-      // Normalize each solution item
-      const normalizedSolutions = solutionsSource.map((solution, index) => {
-        console.log(`🏭 [MANUFACTURING SOLUTIONS DEBUG] Processing solution ${index}:`, {
-          originalSolution: solution,
-          hasTitle: !!solution.title,
-          hasName: !!solution.name,
-          hasDescription: !!solution.description,
-          hasFeatures: !!solution.features
-        });
-
-        const normalizedSolution = {
-          title: solution.title || solution.name || `Solution ${index + 1}`,
-          description: solution.description || solution.desc || "Solution description",
-          features: solution.features || solution.items || []
-        };
-
-        console.log(`🏭 [MANUFACTURING SOLUTIONS DEBUG] Normalized solution ${index}:`, normalizedSolution);
-        return normalizedSolution;
-      });
-
-      const normalized = {
-        title: data.title || data.manufacturingSolutions?.title || "Manufacturing Solutions",
-        subtitle: data.subtitle || data.manufacturingSolutions?.subtitle || "Comprehensive NetSuite solutions",
-        description: data.description || data.manufacturingSolutions?.description || "Tailored solutions for manufacturing businesses",
-        solutions: normalizedSolutions,
-        items: normalizedSolutions, // Support both prop names
-      };
-
-      console.log('✅ [MANUFACTURING SOLUTIONS DEBUG] Normalized:', normalized);
-      return normalized;
-    },
-
-    ManufacturingIndustryStatsSection: (data) => {
-      console.log('🏭 [MANUFACTURING STATS DEBUG] Raw form data:', data);
-      console.log('🏭 [MANUFACTURING STATS DEBUG] Data structure:', {
-        hasStats: !!data.stats,
-        hasItems: !!data.items,
-        hasIndustryStats: !!data.industryStats,
-        statsType: Array.isArray(data.stats) ? 'array' : typeof data.stats,
-        allKeys: Object.keys(data)
-      });
-
-      // Handle multiple data structures
-      const statsSource = 
-        data.stats || 
-        data.items || 
-        data.industryStats?.stats || 
-        [];
-
-      console.log('🏭 [MANUFACTURING STATS DEBUG] Stats source:', statsSource);
-
-      // Normalize each stat item
-      const normalizedStats = statsSource.map((stat, index) => {
-        console.log(`🏭 [MANUFACTURING STATS DEBUG] Processing stat ${index}:`, {
-          originalStat: stat,
-          hasLabel: !!stat.label,
-          hasTitle: !!stat.title,
-          hasValue: !!stat.value,
-          hasDescription: !!stat.description
-        });
-
-        const normalizedStat = {
-          label: stat.label || stat.title || `Stat ${index + 1}`,
-          value: stat.value || "0%",
-          description: stat.description || stat.desc || "Statistic description"
-        };
-
-        console.log(`🏭 [MANUFACTURING STATS DEBUG] Normalized stat ${index}:`, normalizedStat);
-        return normalizedStat;
-      });
-
-      const normalized = {
-        title: data.title || data.industryStats?.title || "Manufacturing Industry Stats",
-        subtitle: data.subtitle || data.industryStats?.subtitle || "The state of manufacturing today",
-        stats: normalizedStats,
-        items: normalizedStats, // Support both prop names
-      };
-
-      console.log('✅ [MANUFACTURING STATS DEBUG] Normalized:', normalized);
-      return normalized;
-    },
-
     PopularIntegrationsSection: (data) => ({
       title:
         data.popularIntegrations?.title || data.title || "Popular Integrations",
@@ -753,7 +494,7 @@ export const normalizeProps = (componentType, contentJson) => {
       console.log('📝 [ImplementationCTASection] Text fields:', {
         buttonText: data.buttonText,
         ctaButtonText: data.ctaButton?.text,
-        buttonTextAlt: data.button?.text,
+        buttonText: data.button?.text,
         title: data.title,
         subtitle: data.subtitle,
         description: data.description
@@ -762,7 +503,7 @@ export const normalizeProps = (componentType, contentJson) => {
         // Check all possible button text properties
         buttonText: data.buttonText,
         ctaButtonText: data.ctaButton?.text,
-        buttonTextAlt: data.button?.text,
+        buttonText: data.button?.text,
         text: data.text,
         ctaText: data.ctaText,
         btnText: data.btnText,
@@ -957,11 +698,6 @@ export const validateProps = (componentType, props) => {
     IntegrationTypesSection: ["title", "items"],
     IntegrationBenefitsSection: ["title", "items"],
     CustomizationServicesSection: ["title", "items"],
-    CustomizationProcessSection: ["title", "steps"],
-    ManufacturingHeroSection: ["title", "subtitle"],
-    ManufacturingChallengesSection: ["title", "challenges"],
-    ManufacturingSolutionsSection: ["title", "solutions"],
-    ManufacturingIndustryStatsSection: ["title", "stats"],
     PopularIntegrationsSection: ["title", "platforms"],
     PayrollHeroSection: ["title", "subtitle"],
     PayrollPainPointsSection: ["title", "painPoints"],
