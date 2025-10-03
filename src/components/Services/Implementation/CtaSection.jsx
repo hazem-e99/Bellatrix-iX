@@ -6,23 +6,30 @@ import {
 } from "../../../utils/variantSystem";
 import { smartRender } from "../../../utils/htmlSanitizer";
 
-const CtaSection = ({ 
-  title, 
-  subtitle, 
-  description, 
+const CtaSection = ({
+  title,
+  subtitle,
+  description,
   ctaButton,
   features,
   trustedBy,
-  openModal 
+  openModal,
 }) => {
-  console.log('🚀 [ImplementationCTASection Fixed] Received props:', {
-    title, subtitle, description, ctaButton, features, trustedBy
+  console.log("🚀 [ImplementationCTASection Fixed] Received props:", {
+    title,
+    subtitle,
+    description,
+    ctaButton,
+    features,
+    trustedBy,
   });
 
   // Use props DIRECTLY - no complex data processing or async fetching
   const finalData = {
     title: title || "Ready for a Seamless NetSuite Implementation?",
-    subtitle: subtitle || "Transform your business operations with our expert NetSuite implementation services. Let's turn your vision into reality with proven methodologies and dedicated support.",
+    subtitle:
+      subtitle ||
+      "Transform your business operations with our expert NetSuite implementation services. Let's turn your vision into reality with proven methodologies and dedicated support.",
     description: description || "",
     buttonText: ctaButton?.text || "Get Started Today",
     buttonLink: ctaButton?.link || "/implementation/contact",
@@ -41,12 +48,13 @@ const CtaSection = ({
       {
         title: "Expert Support",
         description: "Dedicated team of certified professionals",
-        icon: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z",
+        icon:
+          "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z",
       },
     ],
   };
 
-  console.log('✅ [ImplementationCTASection Fixed] Final data:', finalData);
+  console.log("✅ [ImplementationCTASection Fixed] Final data:", finalData);
 
   // Check if title and subtitle contain HTML and render accordingly
   const titleHTML = smartRender(finalData.title);
@@ -112,14 +120,18 @@ const CtaSection = ({
             {finalData.buttonLink ? (
               <a
                 href={finalData.buttonLink}
-                className={`inline-block px-10 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-lg ${getVariantClasses(finalData.variant)}`}
+                className={`inline-block px-10 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-lg ${getVariantClasses(
+                  finalData.variant
+                )}`}
               >
                 {finalData.buttonText}
               </a>
             ) : (
               <button
                 onClick={openModal}
-                className={`px-10 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-lg ${getVariantClasses(finalData.variant)}`}
+                className={`px-10 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-lg ${getVariantClasses(
+                  finalData.variant
+                )}`}
               >
                 {finalData.buttonText}
               </button>

@@ -19,7 +19,7 @@ const DynamicPageRenderer = () => {
 
         // Use the new public API endpoint to fetch page by slug directly
         const response = await pagesAPI.getPublicPageBySlug(slug);
-        
+
         // The API response is wrapped in an ApiResponse object with a 'data' property
         const pageData = response.data || response;
         setPageData(pageData);
@@ -195,13 +195,13 @@ const DynamicPageRenderer = () => {
         };
       case "PayrollCTASection":
         return {
-            title: props.title,
+          title: props.title,
           subtitle: props.subtitle,
           description: props.description,
           ctaButton: props.ctaButton,
           features: props.features,
           trustedBy: props.trustedBy,
-          onCtaClick: props.onCtaClick || (() => {})
+          onCtaClick: props.onCtaClick || (() => {}),
         };
 
       // ========== HR COMPONENTS ==========
@@ -259,13 +259,13 @@ const DynamicPageRenderer = () => {
         };
       case "HRCTASection":
         return {
-              title: props.title,
+          title: props.title,
           subtitle: props.subtitle,
           description: props.description,
           ctaButton: props.ctaButton,
           features: props.features,
           trustedBy: props.trustedBy,
-          onCtaClick: props.onCtaClick || (() => {})
+          onCtaClick: props.onCtaClick || (() => {}),
         };
 
       // ========== SERVICE COMPONENTS ==========
@@ -316,50 +316,66 @@ const DynamicPageRenderer = () => {
         };
       case "ImplementationCTASection":
         return {
-            title: props.title,
-            subtitle: props.subtitle,
+          title: props.title,
+          subtitle: props.subtitle,
           description: props.description,
-            ctaButton: props.ctaButton,
+          ctaButton: props.ctaButton,
           features: props.features,
           trustedBy: props.trustedBy,
-          openModal: props.openModal || (() => {})
+          openModal: props.openModal || (() => {}),
         };
 
       // ========== TRAINING COMPONENTS ==========
       case "TrainingHeroSection":
         return {
           heroContent: {
-            title: props.heroContent?.title || props.title || "Professional Training Programs",
-            description: props.heroContent?.description || props.subtitle || "Empower your team with comprehensive training solutions designed to enhance skills and drive success",
+            title:
+              props.heroContent?.title ||
+              props.title ||
+              "Professional Training Programs",
+            description:
+              props.heroContent?.description ||
+              props.subtitle ||
+              "Empower your team with comprehensive training solutions designed to enhance skills and drive success",
           },
-          backgroundVideo: props.backgroundVideo || "/trainingHeroSectionTwo.mp4",
+          backgroundVideo:
+            props.backgroundVideo || "/trainingHeroSectionTwo.mp4",
           ctaButton: props.ctaButton,
         };
       case "TrainingProgramsSection":
         return {
           programsSection: {
             title: props.title || "Training Programs",
-            description: props.subtitle || "Comprehensive training programs designed to enhance your skills and knowledge.",
-            image: props.image || props.programsSection?.image || "/images/training.jpg",
-            Professional_Badge: props.badge || props.programsSection?.Professional_Badge || "Certified Training"
+            description:
+              props.subtitle ||
+              "Comprehensive training programs designed to enhance your skills and knowledge.",
+            image:
+              props.image ||
+              props.programsSection?.image ||
+              "/images/training.jpg",
+            Professional_Badge:
+              props.badge ||
+              props.programsSection?.Professional_Badge ||
+              "Certified Training",
           },
           trainingPrograms: {
-            programs: props.programs || []
+            programs: props.programs || [],
           },
           renderIcon: props.renderIcon || (() => null),
-          openProgramModal: props.openProgramModal || (() => {})
+          openProgramModal: props.openProgramModal || (() => {}),
         };
       case "TrainingWhyChooseSection":
         return {
           whyChooseSection: {
             title: props.title || "Why Choose Our Training",
-            description: props.subtitle || "Professional development excellence",
+            description:
+              props.subtitle || "Professional development excellence",
             image: props.image || "/images/training-why-choose.jpg",
-            Professional_Badge: props.badge || "Professional Excellence"
+            Professional_Badge: props.badge || "Professional Excellence",
           },
           trainingFeatures: props.features || [],
           renderIcon: props.renderIcon || (() => null),
-          openFeatureModal: props.openFeatureModal || (() => {})
+          openFeatureModal: props.openFeatureModal || (() => {}),
         };
 
       // ========== INTEGRATION COMPONENTS ==========
@@ -457,13 +473,13 @@ const DynamicPageRenderer = () => {
         };
       case "ManufacturingCTASection":
         return {
-            title: props.title,
-            subtitle: props.subtitle,
+          title: props.title,
+          subtitle: props.subtitle,
           description: props.description,
-            ctaButton: props.ctaButton,
+          ctaButton: props.ctaButton,
           features: props.features,
           trustedBy: props.trustedBy,
-          openContactModal: props.openContactModal || (() => {})
+          openContactModal: props.openContactModal || (() => {}),
         };
 
       // ========== RETAIL COMPONENTS ==========
@@ -525,13 +541,13 @@ const DynamicPageRenderer = () => {
         };
       case "RetailCTASection":
         return {
-            title: props.title,
-            subtitle: props.subtitle,
+          title: props.title,
+          subtitle: props.subtitle,
           description: props.description,
-            ctaButton: props.ctaButton,
+          ctaButton: props.ctaButton,
           features: props.features,
           trustedBy: props.trustedBy,
-          openContactModal: props.openContactModal || (() => {})
+          openContactModal: props.openContactModal || (() => {}),
         };
 
       // ========== ABOUT COMPONENTS ==========
@@ -593,13 +609,13 @@ const DynamicPageRenderer = () => {
         };
       case "AboutCTASection":
         return {
-            title: props.title,
-            subtitle: props.subtitle,
+          title: props.title,
+          subtitle: props.subtitle,
           description: props.description,
-            ctaButton: props.ctaButton,
+          ctaButton: props.ctaButton,
           features: props.features,
           trustedBy: props.trustedBy,
-          onOpenContactModal: props.onOpenContactModal || (() => {})
+          onOpenContactModal: props.onOpenContactModal || (() => {}),
         };
 
       // ========== DEFAULT CASE ==========
@@ -614,60 +630,96 @@ const DynamicPageRenderer = () => {
 
   // Helper function to extract and normalize data from various formats (consistent with PagePreview)
   const extractComponentData = (component) => {
-    console.log(`🔍 [DynamicPageRenderer] Extracting data for ${component.componentType}`);
+    console.log(
+      `🔍 [DynamicPageRenderer] Extracting data for ${component.componentType}`
+    );
     console.log(`📦 [DynamicPageRenderer] Raw component:`, component);
-    
+
     let rawData = {};
-    
+
     // PRIORITY 1: Use contentJson from form (this is the PRIMARY data source)
     if (component.contentJson) {
       try {
-        console.log(`✅ [PRIORITY 1] Using contentJson from form for ${component.componentType}`);
-        rawData = typeof component.contentJson === 'string' 
-          ? JSON.parse(component.contentJson) 
-          : component.contentJson;
-        
-        console.log(`✅ [PRIORITY 1] Successfully parsed contentJson:`, rawData);
-        
+        console.log(
+          `✅ [PRIORITY 1] Using contentJson from form for ${component.componentType}`
+        );
+        rawData =
+          typeof component.contentJson === "string"
+            ? JSON.parse(component.contentJson)
+            : component.contentJson;
+
+        console.log(
+          `✅ [PRIORITY 1] Successfully parsed contentJson:`,
+          rawData
+        );
       } catch (err) {
-        console.warn(`❌ [ERROR] Failed to parse contentJson for ${component.componentType}:`, err);
-        console.warn('Raw contentJson:', component.contentJson);
+        console.warn(
+          `❌ [ERROR] Failed to parse contentJson for ${component.componentType}:`,
+          err
+        );
+        console.warn("Raw contentJson:", component.contentJson);
       }
     }
-    
+
     // PRIORITY 2: Use content from backend API (only if no form data)
-    else if (component.content && typeof component.content === 'object' && Object.keys(component.content).length > 0) {
-      console.log(`✅ [PRIORITY 2] Using content from API for ${component.componentType}`);
+    else if (
+      component.content &&
+      typeof component.content === "object" &&
+      Object.keys(component.content).length > 0
+    ) {
+      console.log(
+        `✅ [PRIORITY 2] Using content from API for ${component.componentType}`
+      );
       rawData = component.content;
     }
-    
+
     // PRIORITY 3: Try to use component properties directly (only if no form or API data)
     else if (!rawData || Object.keys(rawData).length === 0) {
-      console.log(`✅ [PRIORITY 3] Using direct component properties for ${component.componentType}`);
-      const directProps = ['title', 'subtitle', 'description', 'image', 'programs', 'features'];
-      directProps.forEach(prop => {
+      console.log(
+        `✅ [PRIORITY 3] Using direct component properties for ${component.componentType}`
+      );
+      const directProps = [
+        "title",
+        "subtitle",
+        "description",
+        "image",
+        "programs",
+        "features",
+      ];
+      directProps.forEach((prop) => {
         if (component[prop] !== undefined) {
           rawData[prop] = component[prop];
         }
       });
     }
-    
+
     console.log(`📦 [DynamicPageRenderer] Final raw data:`, rawData);
-    
+
     // Use normalizeProps to map the raw data to the correct component props
     const normalizedData = normalizeProps(component.componentType, rawData);
-    console.log(`🔄 [DynamicPageRenderer] After normalizeProps:`, normalizedData);
-    
+    console.log(
+      `🔄 [DynamicPageRenderer] After normalizeProps:`,
+      normalizedData
+    );
+
     // Validate the normalized props
     const validation = validateProps(component.componentType, normalizedData);
     if (!validation.isValid) {
-      console.warn(`❌ [VALIDATION] Missing required props for ${component.componentType}:`, validation.missingProps);
+      console.warn(
+        `❌ [VALIDATION] Missing required props for ${component.componentType}:`,
+        validation.missingProps
+      );
     } else {
-      console.log(`✅ [VALIDATION] Props are valid for ${component.componentType}`);
+      console.log(
+        `✅ [VALIDATION] Props are valid for ${component.componentType}`
+      );
     }
-    
-    console.log(`📤 [DynamicPageRenderer] Final normalized props:`, normalizedData);
-    
+
+    console.log(
+      `📤 [DynamicPageRenderer] Final normalized props:`,
+      normalizedData
+    );
+
     return normalizedData;
   };
 
@@ -710,7 +762,7 @@ const DynamicPageRenderer = () => {
       if (pageData.components) {
         const normalizedProps = extractComponentData(section);
         const safeProps = buildSafeProps(normalizedProps);
-        
+
         // Add any missing function props that components might expect
         const propsToPass = {
           ...safeProps,
@@ -718,9 +770,9 @@ const DynamicPageRenderer = () => {
           renderIcon: safeProps.renderIcon || (() => null),
           openProgramModal: safeProps.openProgramModal || (() => {}),
           openFeatureModal: safeProps.openFeatureModal || (() => {}),
-          onCtaClick: safeProps.onCtaClick || (() => {})
+          onCtaClick: safeProps.onCtaClick || (() => {}),
         };
-        
+
         return <Component key={sectionId} {...propsToPass} />;
       }
 

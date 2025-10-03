@@ -21,7 +21,9 @@ export default function PayrollPage({ data }) {
       try {
         const response = await fetch("/data/payroll.json");
         if (!response.ok) {
-          throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
+          throw new Error(
+            `Failed to fetch data: ${response.status} ${response.statusText}`
+          );
         }
         const json = await response.json();
         setPageData(json);
@@ -50,7 +52,12 @@ export default function PayrollPage({ data }) {
     return (
       <div className="flex justify-center items-center min-h-screen">
         <div className="text-red-500">{error || "No payroll data found."}</div>
-        <button onClick={handleRetry} className="ml-4 px-4 py-2 bg-blue-600 text-white rounded">Retry</button>
+        <button
+          onClick={handleRetry}
+          className="ml-4 px-4 py-2 bg-blue-600 text-white rounded"
+        >
+          Retry
+        </button>
       </div>
     );
   }
@@ -59,7 +66,7 @@ export default function PayrollPage({ data }) {
     <div className="bg-gray-50 min-h-screen">
       {/* Hero Section */}
       <section data-theme="dark">
-        <PayrollHero 
+        <PayrollHero
           title={pageData.hero?.title}
           subtitle={pageData.hero?.subtitle}
           bgColor={pageData.hero?.bgColor}
@@ -90,7 +97,7 @@ export default function PayrollPage({ data }) {
 
       {/* CTA Section */}
       <section data-theme="dark">
-        <PayrollCTA 
+        <PayrollCTA
           title={pageData.cta?.title}
           subtitle={pageData.cta?.subtitle}
           description={pageData.cta?.description}

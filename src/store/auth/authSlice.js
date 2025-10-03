@@ -49,61 +49,89 @@ export const login = createAsyncThunk(
     try {
       // Use the correct field names as defined in LoginDTO
       const loginData = {
-        email: payload.email,
+        emailOrUserName:
+          payload.username || payload.email || payload.emailOrUserName,
         password: payload.password,
+        rememberMe: payload.rememberMe || false,
       };
 
-      console.log("🔐 [LOGIN] Attempting login with:", loginData);
+      console.log("Login request data:", loginData);
+      console.log("API base URL:", api.defaults.baseURL);
 
       const response = await api.post("/Authentication/Login", loginData, {
         signal,
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
 
-      console.log("✅ [LOGIN] Login successful:", response.data);
+      console.log("Login response:", response.data);
+
+      // The response contains the user data directly (not wrapped)
+      const userLoginData = response.data;
+
+      // Check if we have a valid response with token
+      if (!userLoginData || !userLoginData.token) {
+        throw new Error("Invalid login response - no token received");
+      }
+
+      const token = userLoginData.token;
+      const user = {
+        id: userLoginData.id,
+        userName: userLoginData.userName,
+        email: userLoginData.email,
+        fullName: userLoginData.fullName,
+        expiration: userLoginData.expiration,
+      };
 
       // Store token using centralized token manager
-      const token = response.data?.data?.token;
       if (token) {
         setAuthToken(token);
       }
 
-      return {
-        token,
-        user: response.data?.data?.user,
-        fetchedAt: Date.now(),
-      };
+      return { token, user, fetchedAt: Date.now() };
     } catch (error) {
-      console.error("❌ [LOGIN] Login failed:", error);
-      return rejectWithValue(error);
+      console.error("Login error:", error.response?.data || error.message);
+
+      // Return more detailed error information
+      const errorMessage =
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        error.message ||
+        "Login failed";
+
+      return rejectWithValue({
+        message: errorMessage,
+        status: error.response?.status,
+        data: error.response?.data,
+      });
     }
   }
 );
 
 export const getProfile = createAsyncThunk(
   "auth/getProfile",
-  async (_, { getState, signal, rejectWithValue }) => {
+  async ({ force = false } = {}, { getState, signal, rejectWithValue }) => {
     const { auth } = getState();
+
+    if (!force && isCacheValid(auth.lastFetchedAt, auth.cacheTTLms)) {
+      return { skip: true };
+    }
 
     if (!auth.token) {
       return rejectWithValue({ message: "No authentication token available" });
     }
 
-    // Check if we have valid cached data
-    if (isCacheValid(auth.lastFetchedAt, auth.cacheTTLms)) {
-      console.log("📋 [PROFILE] Using cached profile data");
-      return { skip: true };
-    }
-
     try {
-      const response = await api.get("/Authentication/GetProfile", {
+      const response = await api.get("/Authentication/Profile", {
         headers: { Authorization: `Bearer ${auth.token}` },
         signal,
       });
-
-      console.log("✅ [PROFILE] Profile fetched successfully:", response.data);
-      return { data: response.data?.data, fetchedAt: Date.now() };
+      return {
+        data: response.data.data || response.data,
+        fetchedAt: Date.now(),
+      };
     } catch (error) {
-      console.error("❌ [PROFILE] Failed to fetch profile:", error);
       return rejectWithValue(error);
     }
   }
@@ -144,9 +172,7 @@ const authSlice = createSlice({
       state.status = "idle";
       state.error = null;
       state.lastFetchedAt = null;
-      // Clear ALL localStorage data
-      localStorage.clear();
-      sessionStorage.clear();
+      localStorage.removeItem("authToken");
     },
     clearError: (state) => {
       state.error = null;

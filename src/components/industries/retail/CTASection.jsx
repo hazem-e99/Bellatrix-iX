@@ -1,23 +1,30 @@
-import React from 'react';
+import React from "react";
 
-const CTASection = ({ 
-  title, 
-  subtitle, 
-  description, 
+const CTASection = ({
+  title,
+  subtitle,
+  description,
   ctaButton,
   features,
   trustedBy,
-  openContactModal 
+  openContactModal,
 }) => {
-  console.log('🚀 [RetailCTASection Fixed] Received props:', {
-    title, subtitle, description, ctaButton, features, trustedBy
+  console.log("🚀 [RetailCTASection Fixed] Received props:", {
+    title,
+    subtitle,
+    description,
+    ctaButton,
+    features,
+    trustedBy,
   });
 
   // Use props DIRECTLY - no complex data processing
   const finalData = {
     title: title || "Ready to Transform Your Retail Operations?",
     subtitle: subtitle || "",
-    description: description || "Join hundreds of retail companies that have unified their commerce operations and improved customer experience with NetSuite. Get started with a free consultation today.",
+    description:
+      description ||
+      "Join hundreds of retail companies that have unified their commerce operations and improved customer experience with NetSuite. Get started with a free consultation today.",
     buttonText: ctaButton?.text || "Get Started",
     buttonLink: ctaButton?.link || "/retail/contact",
     variant: ctaButton?.variant || "primary",
@@ -25,22 +32,23 @@ const CTASection = ({
       {
         title: "Free Assessment",
         description: "Comprehensive evaluation of your retail processes",
-        icon: "M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+        icon: "M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4",
       },
       {
         title: "Rapid Implementation",
         description: "Get up and running faster with our proven methodology",
-        icon: "M13 10V3L4 14h7v7l9-11h-7z"
+        icon: "M13 10V3L4 14h7v7l9-11h-7z",
       },
       {
         title: "Ongoing Support",
         description: "Continuous optimization and support for your success",
-        icon: "M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-      }
+        icon:
+          "M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
+      },
     ],
   };
 
-  console.log('✅ [RetailCTASection Fixed] Final data:', finalData);
+  console.log("✅ [RetailCTASection Fixed] Final data:", finalData);
   return (
     <section className="bg-gray-50 py-20 light-section">
       <div className="container mx-auto px-6">
@@ -50,26 +58,40 @@ const CTASection = ({
               {finalData.title}
             </h2>
             {finalData.subtitle && (
-              <h3 className="text-xl md:text-2xl text-gray-800 mb-4 leading-relaxed">{finalData.subtitle}</h3>
+              <h3 className="text-xl md:text-2xl text-gray-800 mb-4 leading-relaxed">
+                {finalData.subtitle}
+              </h3>
             )}
             <p className="text-xl mb-8 leading-relaxed text-gray-700">
               {finalData.description}
             </p>
-            
+
             <div className="grid md:grid-cols-3 gap-8 mb-12">
               {finalData.features.map((feature, index) => (
                 <div key={index} className="text-center">
                   <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-md border border-gray-200">
-                    <svg className="w-8 h-8 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={feature.icon} />
+                    <svg
+                      className="w-8 h-8 text-gray-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d={feature.icon}
+                      />
                     </svg>
                   </div>
-                  <h4 className="text-xl font-bold mb-2 text-gray-800">{feature.title}</h4>
+                  <h4 className="text-xl font-bold mb-2 text-gray-800">
+                    {feature.title}
+                  </h4>
                   <p className="text-gray-600">{feature.description}</p>
                 </div>
               ))}
             </div>
-            
+
             {finalData.buttonLink ? (
               <a
                 href={finalData.buttonLink}
