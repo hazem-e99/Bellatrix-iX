@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Input } from "../ui/Input";
-import Button from "../ui/Button";
+import { Input } from "./Input";
+import Button from "./Button";
 import {
   PhotoIcon,
   VideoCameraIcon,
@@ -528,6 +528,17 @@ const DynamicContentForm = ({
     // Convert back to JSON string and call onChange
     const jsonString = JSON.stringify(newContent, null, 2);
     console.log("💾 Updated contentJson:", newContent);
+    
+    // Add specific debugging for ManufacturingHeroSection
+    if (componentType === 'ManufacturingHeroSection') {
+      console.log('📝 [DYNAMIC FORM CHANGE] ManufacturingHeroSection:', {
+        field: path,
+        value: value,
+        fullData: newContent,
+        jsonString: jsonString
+      });
+    }
+    
     onChange(jsonString);
   };
 

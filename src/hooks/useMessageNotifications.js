@@ -1,67 +1,43 @@
 import { useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
-
-// Create api instance directly to avoid import issues
-const api = axios.create({
-  baseURL: "http://bellatrix.runasp.net/api",
-  timeout: 10000,
-  headers: { "Content-Type": "application/json" },
-});
-
-// Add request interceptor to add auth token if available
-api.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('authToken');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
-// Add response interceptor to handle wrapped responses
-api.interceptors.response.use(
-  (response) => {
-    if (
-      response.data &&
-      typeof response.data === "object" &&
-      "data" in response.data
-    ) {
-      if (response.data.success === false) {
-        const error = new Error(response.data.message || "API request failed");
-        error.response = { status: response.status, data: response.data };
-        throw error;
-      }
-      return { ...response, data: response.data.data };
-    }
-    return response;
-  },
-  (error) => {
-    const normalizedError = {
-      message:
-        error.response?.data?.message || error.message || "An error occurred",
-      status: error.response?.status || 0,
-      details: error.response?.data || null,
-    };
-    return Promise.reject(normalizedError);
-  }
-);
+import api from '../lib/api';
 
 export const useMessageNotifications = () => {
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [isConnected, setIsConnected] = useState(false);
 
+  // Debug authentication status
+  useEffect(() => {
+    const token = localStorage.getItem('authToken') || localStorage.getItem('adminToken');
+    console.log('🔐 [AUTH DEBUG] Token status:', {
+      hasToken: !!token,
+      tokenLength: token?.length,
+      tokenPreview: token ? token.substring(0, 20) + '...' : 'No token'
+    });
+  }, []);
+
   // Fetch initial unread count
   const fetchUnreadCount = useCallback(async () => {
     try {
       const response = await api.get('/ContactMessages/stats');
-      if (response.data.success) {
-        setUnreadCount(response.data.data.unrepliedMessages || 0);
+      console.log('📊 [MESSAGE STATS] Response:', response.data);
+      
+      // Handle different response structures
+      if (response.data && typeof response.data === 'object') {
+        if (response.data.success && response.data.data) {
+          setUnreadCount(response.data.data.unrepliedMessages || 0);
+        } else if (response.data.unrepliedMessages !== undefined) {
+          setUnreadCount(response.data.unrepliedMessages || 0);
+        }
       }
     } catch (error) {
       console.error('Error fetching message stats:', error);
+      
+      // If it's a 401 error, the user might not be authenticated
+      if (error.status === 401) {
+        console.warn('🔐 [AUTH WARNING] User not authenticated for message stats');
+        // Don't set unread count, keep it at 0
+      }
     }
   }, []);
 
@@ -69,38 +45,57 @@ export const useMessageNotifications = () => {
   const checkForNewMessages = useCallback(async () => {
     try {
       const response = await api.get('/ContactMessages/recent');
-      if (response.data.success) {
-        const recentMessages = response.data.data || [];
-        const now = new Date();
-        
-        // Find messages from the last 30 seconds (simulating real-time)
-        const newMessages = recentMessages.filter(message => {
-          const messageTime = new Date(message.createdAt || message.date);
-          const timeDiff = (now - messageTime) / 1000; // seconds
-          return timeDiff <= 30;
-        });
-
-        // Add new notifications
-        newMessages.forEach(message => {
-          const notificationExists = notifications.some(
-            n => n.message?.id === message.id
-          );
-          
-          if (!notificationExists) {
-            const newNotification = {
-              id: Date.now() + Math.random(),
-              message,
-              timestamp: new Date(),
-              type: 'new_message',
-            };
-            
-            setNotifications(prev => [newNotification, ...prev]);
-            setUnreadCount(prev => prev + 1);
-          }
-        });
+      console.log('📨 [RECENT MESSAGES] Response:', response.data);
+      
+      let recentMessages = [];
+      
+      // Handle different response structures
+      if (response.data && typeof response.data === 'object') {
+        if (response.data.success && Array.isArray(response.data.data)) {
+          recentMessages = response.data.data;
+        } else if (Array.isArray(response.data)) {
+          recentMessages = response.data;
+        } else if (response.data.data && Array.isArray(response.data.data)) {
+          recentMessages = response.data.data;
+        }
       }
+      
+      const now = new Date();
+      
+      // Find messages from the last 30 seconds (simulating real-time)
+      const newMessages = recentMessages.filter(message => {
+        const messageTime = new Date(message.createdAt || message.date || message.timestamp);
+        const timeDiff = (now - messageTime) / 1000; // seconds
+        return timeDiff <= 30;
+      });
+
+      // Add new notifications
+      newMessages.forEach(message => {
+        const notificationExists = notifications.some(
+          n => n.message?.id === message.id
+        );
+        
+        if (!notificationExists) {
+          const newNotification = {
+            id: Date.now() + Math.random(),
+            message,
+            timestamp: new Date(),
+            type: 'new_message',
+          };
+          
+          setNotifications(prev => [newNotification, ...prev]);
+          setUnreadCount(prev => prev + 1);
+        }
+      });
     } catch (error) {
       console.error('Error checking for new messages:', error);
+      
+      // If it's a 401 error, the user might not be authenticated
+      if (error.status === 401) {
+        console.warn('🔐 [AUTH WARNING] User not authenticated for recent messages');
+        // Don't process messages, just return
+        return;
+      }
     }
   }, [notifications]);
 
@@ -123,6 +118,15 @@ export const useMessageNotifications = () => {
 
   // Simulate WebSocket connection for real-time updates
   useEffect(() => {
+    // Check if user is authenticated before starting polling
+    const token = localStorage.getItem('authToken') || localStorage.getItem('adminToken');
+    
+    if (!token) {
+      console.warn('🔐 [AUTH WARNING] No authentication token found, skipping message polling');
+      setIsConnected(false);
+      return;
+    }
+
     // Initial fetch
     fetchUnreadCount();
     
@@ -172,21 +176,34 @@ export const useMessagePolling = (interval = 30000) => {
   const checkForNewMessages = useCallback(async () => {
     try {
       const response = await api.get('/ContactMessages/recent');
-      if (response.data.success) {
-        const recentMessages = response.data.data || [];
-        const now = new Date();
-        
-        // Return messages from the last check
-        const newMessages = recentMessages.filter(message => {
-          const messageTime = new Date(message.createdAt || message.date);
-          return messageTime > lastCheck;
-        });
-
-        setLastCheck(now);
-        return newMessages;
+      console.log('📨 [MESSAGE POLLING] Response:', response.data);
+      
+      let recentMessages = [];
+      
+      // Handle different response structures
+      if (response.data && typeof response.data === 'object') {
+        if (response.data.success && Array.isArray(response.data.data)) {
+          recentMessages = response.data.data;
+        } else if (Array.isArray(response.data)) {
+          recentMessages = response.data;
+        } else if (response.data.data && Array.isArray(response.data.data)) {
+          recentMessages = response.data.data;
+        }
       }
+      
+      const now = new Date();
+      
+      // Return messages from the last check
+      const newMessages = recentMessages.filter(message => {
+        const messageTime = new Date(message.createdAt || message.date || message.timestamp);
+        return messageTime > lastCheck;
+      });
+
+      setLastCheck(now);
+      return newMessages;
     } catch (error) {
       console.error('Error polling for messages:', error);
+      // Don't throw error, just log it to avoid breaking the UI
     }
     return [];
   }, [lastCheck]);

@@ -1,7 +1,19 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useComponentData } from '../../../utils/useComponentData';
+import manufacturingData from '../../../../public/data/manufacturing-data.json';
 
 const CaseStudies = ({ data }) => {
+  // Merge props with default data from JSON
+  const finalData = useComponentData('caseStudies', data, manufacturingData);
+
+  console.log('🏭 [CaseStudies] Data merge:', {
+    props: data,
+    defaultData: manufacturingData.caseStudies,
+    finalData: finalData,
+    itemsCount: finalData.items?.length
+  });
+
   return (
     <div className="py-20 relative overflow-hidden" style={{backgroundColor: '#001038'}}>
       <div className="absolute inset-0 opacity-10">
@@ -26,7 +38,7 @@ const CaseStudies = ({ data }) => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {data.map((study, index) => (
+          {finalData.items?.map((study, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}

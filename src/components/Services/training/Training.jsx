@@ -109,6 +109,8 @@ const Training = () => {
       <section data-theme="dark">
         <HeroSection 
           heroContent={data.heroContent} 
+          backgroundVideo={data.backgroundVideo}
+          ctaButton={data.ctaButton}
           renderIcon={renderIcon}
         />
       </section>

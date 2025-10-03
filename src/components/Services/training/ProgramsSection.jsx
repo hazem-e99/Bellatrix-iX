@@ -8,8 +8,21 @@ const ProgramsSection = ({
   renderIcon,
   openProgramModal,
 }) => {
+  // Debug logging for image data
+  console.log('🎯 [COMPONENT DEBUG] TrainingProgramsSection received props:', {
+    programsSection,
+    imageUrl: programsSection?.image,
+    hasImage: !!programsSection?.image,
+    imageType: typeof programsSection?.image,
+    fullProgramsSection: programsSection
+  });
+
   return (
     <div className="bg-gray-50 py-12 light-section">
+      {/* DEBUG: Show actual image URL being used */}
+      <div style={{display: 'none'}}>
+        Image URL: {programsSection?.image}
+      </div>
       <div className="container mx-auto px-6">
         <div className="text-center mb-10">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
@@ -40,9 +53,18 @@ const ProgramsSection = ({
                 {/* Inner glow container */}
                 <div className="relative bg-gradient-to-br from-white/5 via-transparent to-blue-500/5 rounded-2xl p-4 border border-white/20">
                   <img
-                    src={programsSection.image}
+                    src={programsSection.image || "/images/training.jpg"}
                     alt="Training Programs - Advanced NetSuite Learning Solutions"
                     className="w-full h-auto rounded-xl shadow-2xl brightness-105 contrast-110 saturate-105 group-hover:brightness-110 group-hover:contrast-115 group-hover:saturate-110 transition-all duration-500 filter drop-shadow-xl"
+                    onError={(e) => {
+                      console.error('🖼️ [IMAGE ERROR] Failed to load:', programsSection.image);
+                      console.error('🖼️ [IMAGE ERROR] Fallback to:', "/images/training.jpg");
+                      e.target.src = "/images/training.jpg";
+                    }}
+                    onLoad={(e) => {
+                      console.log('🖼️ [IMAGE LOAD] Success:', programsSection.image);
+                      console.log('🖼️ [IMAGE LOAD] Actual src:', e.target.src);
+                    }}
                   />
 
                   {/* Professional overlay effects */}

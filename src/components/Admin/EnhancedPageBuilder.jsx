@@ -14,16 +14,16 @@ import {
   Cog6ToothIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import Button from "../ui/Button";
-import { Input } from "../ui/Input";
-import Card, { CardContent, CardHeader, CardTitle } from "../ui/Card";
-import Modal, { ModalFooter } from "../ui/Modal";
+import Button from "../UI/Button";
+import { Input } from "../UI/Input";
+import Card, { CardContent, CardHeader, CardTitle } from "../UI/Card";
+import Modal, { ModalFooter } from "../UI/Modal";
 import { validateVariant } from "../../utils/variantSystem";
-import Toast from "../ui/Toast";
+import Toast from "../UI/Toast";
 import SectionDataEditor from "./SectionDataEditor";
 import PagePreview from "./PagePreview";
-import MediaInputDetector from "../ui/MediaInputDetector";
-import DynamicContentForm from "../ui/DynamicContentForm";
+import MediaInputDetector from "../UI/MediaInputDetector";
+import DynamicContentForm from "../UI/DynamicContentForm";
 import pagesAPI from "../../lib/pagesAPI";
 import api from "../../lib/api";
 
@@ -429,12 +429,191 @@ const EnhancedPageBuilder = () => {
 
   // Function to update a specific component field
   const updateComponent = (index, field, value) => {
+    console.log('🔄 [MANUFACTURING UPDATE CRITICAL]', {
+      index: index,
+      field: field,
+      value: value,
+      componentType: pageData.components[index]?.componentType,
+      currentContentJson: pageData.components[index]?.contentJson
+    });
+    
+    // Special handling for image fields
+    if (field === 'image' || field === 'contentJson') {
+      console.log('🖼️ [IMAGE FLOW] Image change detected:', {
+        componentIndex: index,
+        componentType: pageData.components[index]?.componentType,
+        field: field,
+        value: field === 'contentJson' ? (() => {
+          try {
+            const parsed = JSON.parse(value);
+            return {
+              rawValue: value,
+              parsedValue: parsed,
+              imageInJson: parsed.image,
+              programsSectionImage: parsed.programsSection?.image
+            };
+          } catch (e) {
+            return { rawValue: value, parseError: e.message };
+          }
+        })() : value
+      });
+    }
+    
     setPageData((prev) => {
       const updatedComponents = [...prev.components];
-      updatedComponents[index] = {
-        ...updatedComponents[index],
-        [field]: value,
-      };
+      const currentComponent = updatedComponents[index];
+      
+      // Parse existing contentJson or create new
+      let contentData = {};
+      if (currentComponent.contentJson) {
+        try {
+          contentData = JSON.parse(currentComponent.contentJson);
+        } catch (e) {
+          console.error('❌ JSON Parse Error:', e);
+        }
+      }
+      
+      // Update the specific field in contentData
+      if (field === 'contentJson') {
+        // Direct JSON update
+        updatedComponents[index] = {
+          ...currentComponent,
+          contentJson: value
+        };
+      } else {
+        // Update specific field in content JSON
+        const updatedContentData = {
+          ...contentData,
+          [field]: value
+        };
+        
+        updatedComponents[index] = {
+          ...currentComponent,
+          contentJson: JSON.stringify(updatedContentData, null, 2)
+        };
+      }
+      
+      // Additional debugging for TrainingProgramsSection
+        if (updatedComponents[index]?.componentType === 'TrainingProgramsSection') {
+          console.log('🖼️ [TRAINING PROGRAMS UPDATE] After update:', {
+            componentType: updatedComponents[index].componentType,
+            contentJson: updatedComponents[index].contentJson,
+            parsedContentJson: (() => {
+              try {
+                return JSON.parse(updatedComponents[index].contentJson || '{}');
+              } catch (e) {
+                return { parseError: e.message };
+              }
+            })()
+          });
+        }
+
+        if (updatedComponents[index]?.componentType === 'IntegrationTypesSection') {
+          console.log('🔗 [INTEGRATION TYPES UPDATE] After update:', {
+            componentType: updatedComponents[index].componentType,
+            contentJson: updatedComponents[index].contentJson,
+            parsedContentJson: (() => {
+              try {
+                return JSON.parse(updatedComponents[index].contentJson || '{}');
+              } catch (e) {
+                return { parseError: e.message };
+              }
+            })()
+          });
+        }
+
+        if (updatedComponents[index]?.componentType === 'IntegrationBenefitsSection') {
+          console.log('🔗 [INTEGRATION BENEFITS UPDATE] After update:', {
+            componentType: updatedComponents[index].componentType,
+            contentJson: updatedComponents[index].contentJson,
+            parsedContentJson: (() => {
+              try {
+                return JSON.parse(updatedComponents[index].contentJson || '{}');
+              } catch (e) {
+                return { parseError: e.message };
+              }
+            })()
+          });
+        }
+
+        if (updatedComponents[index]?.componentType === 'CustomizationServicesSection') {
+          console.log('🔧 [CUSTOMIZATION SERVICES UPDATE] After update:', {
+            componentType: updatedComponents[index].componentType,
+            contentJson: updatedComponents[index].contentJson,
+            parsedContentJson: (() => {
+              try {
+                return JSON.parse(updatedComponents[index].contentJson || '{}');
+              } catch (e) {
+                return { parseError: e.message };
+              }
+            })()
+          });
+        }
+
+        if (updatedComponents[index]?.componentType === 'CustomizationProcessSection') {
+          console.log('🔧 [CUSTOMIZATION PROCESS UPDATE] After update:', {
+            componentType: updatedComponents[index].componentType,
+            contentJson: updatedComponents[index].contentJson,
+            parsedContentJson: (() => {
+              try {
+                return JSON.parse(updatedComponents[index].contentJson || '{}');
+              } catch (e) {
+                return { parseError: e.message };
+              }
+            })()
+          });
+        }
+
+        if (updatedComponents[index]?.componentType === 'ManufacturingHeroSection') {
+          console.log('✅ [MANUFACTURING UPDATE COMPLETE]', {
+            newContentJson: updatedComponents[index].contentJson,
+            parsed: updatedComponents[index].contentJson ? 
+              JSON.parse(updatedComponents[index].contentJson) : {}
+          });
+        }
+
+        if (updatedComponents[index]?.componentType === 'ManufacturingChallengesSection') {
+          console.log('🏭 [MANUFACTURING CHALLENGES UPDATE] After update:', {
+            componentType: updatedComponents[index].componentType,
+            contentJson: updatedComponents[index].contentJson,
+            parsedContentJson: (() => {
+              try {
+                return JSON.parse(updatedComponents[index].contentJson || '{}');
+              } catch (e) {
+                return { parseError: e.message };
+              }
+            })()
+          });
+        }
+
+        if (updatedComponents[index]?.componentType === 'ManufacturingSolutionsSection') {
+          console.log('🏭 [MANUFACTURING SOLUTIONS UPDATE] After update:', {
+            componentType: updatedComponents[index].componentType,
+            contentJson: updatedComponents[index].contentJson,
+            parsedContentJson: (() => {
+              try {
+                return JSON.parse(updatedComponents[index].contentJson || '{}');
+              } catch (e) {
+                return { parseError: e.message };
+              }
+            })()
+          });
+        }
+
+        if (updatedComponents[index]?.componentType === 'ManufacturingIndustryStatsSection') {
+          console.log('🏭 [MANUFACTURING STATS UPDATE] After update:', {
+            componentType: updatedComponents[index].componentType,
+            contentJson: updatedComponents[index].contentJson,
+            parsedContentJson: (() => {
+              try {
+                return JSON.parse(updatedComponents[index].contentJson || '{}');
+              } catch (e) {
+                return { parseError: e.message };
+              }
+            })()
+          });
+        }
+      
       return {
         ...prev,
         components: updatedComponents,
@@ -501,28 +680,25 @@ const EnhancedPageBuilder = () => {
           description:
             "Empower your team with comprehensive training solutions designed to enhance skills and drive success",
         },
+        backgroundVideo: "/trainingHeroSectionTwo.mp4",
+        // ADD: CTA button data
+        ctaButton: {
+          text: "Start Learning Today",
+          link: "/training",
+          variant: "primary",
+        }
       },
 
       IntegrationHeroSection: {
         title: "Integration Services",
         subtitle: "Connect your ecosystem",
         description: "APIs, middleware, and data pipelines",
-        ctaButton: {
-          text: "Learn More",
-          link: "/integration",
-          variant: validateVariant("primary"),
-        },
       },
 
       CustomizationHeroSection: {
         title: "Customization Services",
         subtitle: "Tailor the system to your business",
         description: "Workflows, scripts, and UI personalization",
-        ctaButton: {
-          text: "Get Started",
-          link: "/customization",
-          variant: validateVariant("primary"),
-        },
       },
 
       ManufacturingHeroSection: {
@@ -530,6 +706,8 @@ const EnhancedPageBuilder = () => {
         subtitle: "Streamline your manufacturing operations",
         description:
           "Comprehensive NetSuite solutions for manufacturing businesses",
+        backgroundImage: "/images/manufacturing-hero.jpg",
+        backgroundVideo: "",
         ctaButton: {
           text: "Learn More",
           link: "/manufacturing",
@@ -999,7 +1177,7 @@ const EnhancedPageBuilder = () => {
           title: "Our Training Programs",
           description:
             "Comprehensive training solutions designed to empower your team with the skills they need to excel",
-          image: "/images/traning.jpg",
+          image: "/images/training.jpg",
           Professional_Badge: "Certified Training",
         },
         trainingPrograms: {
@@ -1315,21 +1493,25 @@ const EnhancedPageBuilder = () => {
             title: "Requirements",
             description: "Gather and analyze your needs",
             duration: "1 week",
+            step: "01",
           },
           {
             title: "Design",
             description: "Create solution blueprint",
             duration: "1 week",
+            step: "02",
           },
           {
             title: "Development",
             description: "Build and test customizations",
             duration: "2-4 weeks",
+            step: "03",
           },
           {
             title: "Deployment",
             description: "Implement and train users",
             duration: "1 week",
+            step: "04",
           },
         ],
       },

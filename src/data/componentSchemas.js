@@ -10,8 +10,6 @@ export const componentSchemas = {
     subtitle: "Connect your ecosystem",
     description: "APIs, middleware, and data pipelines",
     imageUrl: "",
-    buttonText: "Get Started",
-    buttonUrl: "#contact"
   },
   
   IntegrationTypesSection: {
@@ -273,6 +271,116 @@ export const componentSchemas = {
       { name: "name", label: "Full Name", type: "text", required: true },
       { name: "email", label: "Email Address", type: "email", required: true },
       { name: "message", label: "Message", type: "textarea", required: true }
+    ]
+  },
+
+  // Training Components
+  TrainingHeroSection: {
+    heroContent: {
+      title: "Professional Training Programs",
+      description: "Empower your team with comprehensive training solutions designed to enhance skills and drive success"
+    },
+    backgroundVideo: "/trainingHeroSectionTwo.mp4",
+    ctaButton: {
+      text: "Start Learning Today",
+      link: "/training",
+      variant: "primary",
+      icon: ""
+    }
+  },
+
+  TrainingProgramsSection: {
+    programsSection: {
+      title: "Our Training Programs",
+      description: "Comprehensive training solutions designed to empower your team with the skills they need to excel",
+      image: "/images/training.jpg",
+      Professional_Badge: "Certified Training"
+    },
+    trainingPrograms: {
+      programs: [
+        {
+          id: 1,
+          title: "NetSuite Fundamentals",
+          shortDescription: "Core concepts and navigation basics",
+          icon: "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+        },
+        {
+          id: 2,
+          title: "Advanced Modules",
+          shortDescription: "Financial management and reporting",
+          icon: "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+        }
+      ]
+    }
+  },
+
+  // Manufacturing Components
+  ManufacturingHeroSection: {
+    title: "Manufacturing Solutions",
+    subtitle: "Streamline your manufacturing operations",
+    description: "Comprehensive NetSuite solutions for manufacturing businesses",
+    backgroundImage: "/images/manufacturing-hero.jpg",
+    backgroundVideo: "",
+    ctaButton: {
+      text: "Learn More",
+      link: "/manufacturing",
+      variant: "primary"
+    }
+  },
+
+  ManufacturingChallengesSection: {
+    title: "Manufacturing Challenges",
+    subtitle: "Common pain points we solve",
+    challenges: [
+      {
+        title: "Complex Production Planning",
+        description: "Managing multi-level BOMs, work orders, and production schedules",
+        icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2",
+        impact: "High"
+      },
+      {
+        title: "Inventory Management",
+        description: "Tracking raw materials, WIP, and finished goods",
+        icon: "M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4",
+        impact: "Medium"
+      }
+    ]
+  },
+
+  ManufacturingSolutionsSection: {
+    title: "Manufacturing Solutions",
+    subtitle: "Comprehensive NetSuite solutions",
+    description: "Tailored solutions for manufacturing businesses",
+    solutions: [
+      {
+        title: "Production Management",
+        description: "End-to-end production planning and execution",
+        features: ["Work orders", "Routing", "Capacity planning"],
+        benefits: "40% improvement in production efficiency"
+      },
+      {
+        title: "Inventory Control",
+        description: "Advanced inventory management capabilities",
+        features: ["Multi-location", "Serial tracking", "Cycle counting"],
+        benefits: "35% reduction in inventory costs"
+      }
+    ]
+  },
+
+  ManufacturingIndustryStatsSection: {
+    title: "Manufacturing Industry Stats",
+    subtitle: "The state of manufacturing today",
+    stats: [
+      {
+        label: "Digital Transformation",
+        value: "73%",
+        description: "of manufacturers are investing in digital transformation"
+      },
+      {
+        label: "Efficiency Gains",
+        value: "25%",
+        description: "average efficiency improvement with ERP systems"
+      }
     ]
   }
 };

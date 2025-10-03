@@ -11,11 +11,11 @@ import {
   PlusIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
-import Button from "../ui/Button";
-import { Input } from "../ui/Input";
-import Card, { CardContent, CardHeader, CardTitle } from "../ui/Card";
-import Modal, { ModalFooter } from "../ui/Modal";
-import MediaInputDetector from "../ui/MediaInputDetector";
+import Button from "../UI/Button";
+import { Input } from "../UI/Input";
+import Card, { CardContent, CardHeader, CardTitle } from "../UI/Card";
+import Modal, { ModalFooter } from "../UI/Modal";
+import MediaInputDetector from "../UI/MediaInputDetector";
 
 const SectionDataEditor = ({
   isOpen,

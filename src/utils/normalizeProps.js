@@ -32,17 +32,431 @@ export const normalizeProps = (componentType, contentJson) => {
   // Component-specific normalization mappings
   const componentMappings = {
     // Integration Components
-    IntegrationTypesSection: (data) => ({
-      title:
-        data.integrationTypes?.title || data.title || "Integration Solutions",
-      items: data.integrationTypes?.items || data.items || [],
-    }),
+    IntegrationTypesSection: (data) => {
+      console.log('🔗 [INTEGRATION TYPES DEBUG] Raw form data:', data);
+      console.log('🔗 [INTEGRATION TYPES DEBUG] Data structure analysis:', {
+        hasIntegrationTypes: !!data.integrationTypes,
+        hasItems: !!data.items,
+        hasTypes: !!data.types,
+        integrationTypesItems: data.integrationTypes?.items,
+        directItems: data.items,
+        directTypes: data.types,
+        allDataKeys: Object.keys(data)
+      });
 
-    IntegrationBenefitsSection: (data) => ({
+      // PRIORITY: Direct form data OVERRIDES everything
+      const itemsSource = 
+        data.items || // Direct items from form
+        data.integrationTypes?.items || // Nested in integrationTypes
+        data.types || // Alternative types array
+        []; // Empty array fallback
+
+      console.log('🔗 [INTEGRATION TYPES DEBUG] Items source decision:', {
+        source: data.items ? 'directItems' : data.integrationTypes?.items ? 'nestedItems' : data.types ? 'types' : 'empty',
+        finalItems: itemsSource,
+        itemsCount: itemsSource.length
+      });
+
+      // FIX: Ensure proper property mapping for each item
+      const normalizedItems = itemsSource.map((item, index) => {
+        console.log(`🔗 [INTEGRATION TYPES DEBUG] Processing item ${index}:`, {
+          originalItem: item,
+          hasName: !!item.name,
+          hasTitle: !!item.title,
+          hasDescription: !!item.description,
+          hasIcon: !!item.icon
+        });
+
+        const normalizedItem = {
+          title: item.title || item.name || `Integration ${index + 1}`, // Use title as primary (matches component)
+          description: item.description || item.desc || "Integration description",
+          icon: item.icon || "🔗"
+        };
+
+        console.log(`🔗 [INTEGRATION TYPES DEBUG] Normalized item ${index}:`, normalizedItem);
+        return normalizedItem;
+      });
+
+      const normalized = {
+        title: data.integrationTypes?.title || data.title || "Integration Solutions",
+        items: normalizedItems,
+      };
+
+      console.log('✅ [INTEGRATION TYPES DEBUG] Final normalized data:', normalized);
+      console.log('🔗 [INTEGRATION TYPES DEBUG] Final items array with titles:', normalizedItems);
+      return normalized;
+    },
+
+    IntegrationBenefitsSection: (data) => {
+      console.log('🔗 [INTEGRATION BENEFITS DEBUG] Raw form data:', data);
+      console.log('🔗 [INTEGRATION BENEFITS DEBUG] Data structure:', {
+        hasBenefits: !!data.benefits,
+        hasItems: !!data.items,
+        benefitsType: Array.isArray(data.benefits) ? 'array' : typeof data.benefits,
+        itemsType: Array.isArray(data.items) ? 'array' : typeof data.items,
+        allKeys: Object.keys(data)
+      });
+
+      // Handle multiple possible data structures
+      let benefitsArray = [];
+      
+      if (Array.isArray(data.benefits)) {
+        // Direct benefits array from form
+        benefitsArray = data.benefits;
+        console.log('🔗 [INTEGRATION BENEFITS DEBUG] Using direct benefits array:', benefitsArray);
+      } else if (Array.isArray(data.items)) {
+        // Items array from form
+        benefitsArray = data.items;
+        console.log('🔗 [INTEGRATION BENEFITS DEBUG] Using items array:', benefitsArray);
+      } else if (data.benefits && Array.isArray(data.benefits.items)) {
+        // Nested benefits.items structure
+        benefitsArray = data.benefits.items;
+        console.log('🔗 [INTEGRATION BENEFITS DEBUG] Using nested benefits.items:', benefitsArray);
+      }
+
+      console.log('🔗 [INTEGRATION BENEFITS DEBUG] Benefits array:', benefitsArray);
+
+      // Normalize each benefit item
+      const normalizedBenefits = benefitsArray.map((item, index) => {
+        console.log(`🔗 [INTEGRATION BENEFITS DEBUG] Processing benefit ${index}:`, {
+          originalItem: item,
+          hasTitle: !!item.title,
+          hasName: !!item.name,
+          hasDescription: !!item.description,
+          hasIcon: !!item.icon
+        });
+
+        const normalizedItem = {
+          title: item.title || item.name || `Benefit ${index + 1}`,
+          description: item.description || item.desc || "Benefit description",
+          icon: item.icon || "⚡"
+        };
+
+        console.log(`🔗 [INTEGRATION BENEFITS DEBUG] Normalized benefit ${index}:`, normalizedItem);
+        return normalizedItem;
+      });
+
+      const normalized = {
       title: data.benefits?.title || data.title || "Integration Benefits", 
-      items: data.benefits?.items || data.items || [],
-      benefits: data.benefits?.items || data.benefits || data.items || [], // Alternative prop name
-    }),
+        items: normalizedBenefits,
+        benefits: normalizedBenefits, // Support both prop names
+      };
+
+      console.log('✅ [INTEGRATION BENEFITS DEBUG] Final normalized data:', normalized);
+      return normalized;
+    },
+
+    // Customization Components
+    CustomizationServicesSection: (data) => {
+      console.log('🔧 [CUSTOMIZATION SERVICES DEBUG] Raw form data:', data);
+      console.log('🔧 [CUSTOMIZATION SERVICES DEBUG] Data structure:', {
+        hasServices: !!data.services,
+        hasItems: !!data.items,
+        hasCustomizationServices: !!data.customizationServices,
+        servicesType: Array.isArray(data.services) ? 'array' : typeof data.services,
+        itemsType: Array.isArray(data.items) ? 'array' : typeof data.items,
+        allKeys: Object.keys(data)
+      });
+
+      // Handle multiple data structures
+      const servicesSource = 
+        data.services || 
+        data.items || 
+        data.customizationServices?.services || 
+        [];
+
+      console.log('🔧 [CUSTOMIZATION SERVICES DEBUG] Services source:', servicesSource);
+
+      // Normalize each service item
+      const normalizedServices = servicesSource.map((service, index) => {
+        console.log(`🔧 [CUSTOMIZATION SERVICES DEBUG] Processing service ${index}:`, {
+          originalService: service,
+          hasName: !!service.name,
+          hasTitle: !!service.title,
+          hasDescription: !!service.description,
+          hasIcon: !!service.icon
+        });
+
+        const normalizedService = {
+          name: service.name || service.title || `Service ${index + 1}`,
+          description: service.description || service.desc || "Service description",
+          icon: service.icon || "⚙️"
+        };
+
+        console.log(`🔧 [CUSTOMIZATION SERVICES DEBUG] Normalized service ${index}:`, normalizedService);
+        return normalizedService;
+      });
+
+      const normalized = {
+        title: data.title || data.customizationServices?.title || "What We Customize",
+        subtitle: data.subtitle || data.customizationServices?.subtitle || "Comprehensive customization services",
+        description: data.description || data.customizationServices?.description || "Tailor NetSuite to match your unique business processes",
+        services: normalizedServices,
+        items: normalizedServices, // Support both prop names
+      };
+
+      console.log('✅ [CUSTOMIZATION SERVICES DEBUG] Final normalized data:', normalized);
+      return normalized;
+    },
+
+    CustomizationProcessSection: (data) => {
+      console.log('🔧 [CUSTOMIZATION PROCESS DEBUG] Raw form data:', data);
+      console.log('🔧 [CUSTOMIZATION PROCESS DEBUG] Data structure:', {
+        hasSteps: !!data.steps,
+        hasCustomizationProcess: !!data.customizationProcess,
+        stepsType: Array.isArray(data.steps) ? 'array' : typeof data.steps,
+        allKeys: Object.keys(data)
+      });
+
+      // Handle multiple data structures
+      const stepsSource = 
+        data.steps || 
+        data.customizationProcess?.steps || 
+        [];
+
+      console.log('🔧 [CUSTOMIZATION PROCESS DEBUG] Steps source:', stepsSource);
+
+      // Normalize each step item
+      const normalizedSteps = stepsSource.map((step, index) => {
+        console.log(`🔧 [CUSTOMIZATION PROCESS DEBUG] Processing step ${index}:`, {
+          originalStep: step,
+          hasTitle: !!step.title,
+          hasDescription: !!step.description,
+          hasStep: !!step.step
+        });
+
+        const normalizedStep = {
+          title: step.title || `Step ${index + 1}`,
+          description: step.description || step.desc || "Step description",
+          step: step.step || String(index + 1).padStart(2, '0'),
+          duration: step.duration || step.time || "1 week"
+        };
+
+        console.log(`🔧 [CUSTOMIZATION PROCESS DEBUG] Normalized step ${index}:`, normalizedStep);
+        return normalizedStep;
+      });
+
+      const normalized = {
+        title: data.title || data.customizationProcess?.title || "Customization Process",
+        subtitle: data.subtitle || data.customizationProcess?.subtitle || "Our proven approach",
+        description: data.description || data.customizationProcess?.description || "A structured methodology for successful customization",
+        steps: normalizedSteps,
+      };
+
+      console.log('✅ [CUSTOMIZATION PROCESS DEBUG] Final normalized data:', normalized);
+      return normalized;
+    },
+
+    // Manufacturing Components
+    ManufacturingHeroSection: (data) => {
+      console.log('🔴 [NORMALIZE DEBUG] Input data:', data);
+      
+      const coreData = {
+        title: data.title || "Manufacturing Solutions",
+        subtitle: data.subtitle || "Streamline your manufacturing operations",
+        description: data.description || "Comprehensive NetSuite solutions for manufacturing businesses",
+        backgroundImage: data.backgroundImage || "/images/manufacturing-hero.jpg",
+        backgroundVideo: data.backgroundVideo,
+        ctaButton: {
+          text: data.ctaButton?.text || "Learn More",
+          link: data.ctaButton?.link || "/manufacturing",
+          variant: data.ctaButton?.variant || "primary"
+        }
+      };
+
+      console.log('🔴 [NORMALIZE DEBUG] Core data ctaButton:', coreData.ctaButton);
+      
+      const normalized = {
+        data: coreData,
+        ...coreData // Also spread flat
+      };
+
+      console.log('🔴 [NORMALIZE DEBUG] Final normalized:', normalized);
+      return normalized;
+    },
+
+    // EMERGENCY OVERRIDE - Nuclear option for ManufacturingHeroSection
+    ManufacturingHeroSectionNuclear: (data) => {
+      // NUCLEAR OPTION: Completely ignore defaults if form has any data
+      if (data && Object.keys(data).length > 0) {
+        console.log('🚀 [MANUFACTURING NUCLEAR] USING FORM DATA ONLY:', data);
+        return {
+          data: {
+            title: data.title || "",
+            subtitle: data.subtitle || "",
+            description: data.description || "",
+            backgroundImage: data.backgroundImage || "",
+            ctaButton: data.ctaButton || {}
+          }
+        };
+      }
+      
+      // Fallback only if completely empty
+      return {
+        data: {
+          title: "Manufacturing Solutions",
+          subtitle: "Streamline your manufacturing operations",
+          description: "Comprehensive NetSuite solutions for manufacturing businesses",
+          backgroundImage: "/images/manufacturing-hero.jpg",
+          ctaButton: {
+            text: "Learn More",
+            link: "/manufacturing", 
+            variant: validateVariant("primary")
+          }
+        }
+      };
+    },
+
+    ManufacturingChallengesSection: (data) => {
+      console.log('🏭 [MANUFACTURING CHALLENGES DEBUG] Raw form data:', data);
+      console.log('🏭 [MANUFACTURING CHALLENGES DEBUG] Data structure:', {
+        hasChallenges: !!data.challenges,
+        hasItems: !!data.items,
+        hasManufacturingChallenges: !!data.manufacturingChallenges,
+        challengesType: Array.isArray(data.challenges) ? 'array' : typeof data.challenges,
+        allKeys: Object.keys(data)
+      });
+
+      // Handle multiple data structures
+      const challengesSource = 
+        data.challenges || 
+        data.items || 
+        data.manufacturingChallenges?.challenges || 
+        [];
+
+      console.log('🏭 [MANUFACTURING CHALLENGES DEBUG] Challenges source:', challengesSource);
+
+      // Normalize each challenge item
+      const normalizedChallenges = challengesSource.map((challenge, index) => {
+        console.log(`🏭 [MANUFACTURING CHALLENGES DEBUG] Processing challenge ${index}:`, {
+          originalChallenge: challenge,
+          hasTitle: !!challenge.title,
+          hasName: !!challenge.name,
+          hasDescription: !!challenge.description,
+          hasImpact: !!challenge.impact
+        });
+
+        const normalizedChallenge = {
+          title: challenge.title || challenge.name || `Challenge ${index + 1}`,
+          description: challenge.description || challenge.desc || "Challenge description",
+          impact: challenge.impact || "Medium"
+        };
+
+        console.log(`🏭 [MANUFACTURING CHALLENGES DEBUG] Normalized challenge ${index}:`, normalizedChallenge);
+        return normalizedChallenge;
+      });
+
+      const normalized = {
+        title: data.title || data.manufacturingChallenges?.title || "Manufacturing Challenges",
+        subtitle: data.subtitle || data.manufacturingChallenges?.subtitle || "Common pain points we solve",
+        challenges: normalizedChallenges,
+        items: normalizedChallenges, // Support both prop names
+      };
+
+      console.log('✅ [MANUFACTURING CHALLENGES DEBUG] Normalized:', normalized);
+      return normalized;
+    },
+
+    ManufacturingSolutionsSection: (data) => {
+      console.log('🏭 [MANUFACTURING SOLUTIONS DEBUG] Raw form data:', data);
+      console.log('🏭 [MANUFACTURING SOLUTIONS DEBUG] Data structure:', {
+        hasSolutions: !!data.solutions,
+        hasItems: !!data.items,
+        hasManufacturingSolutions: !!data.manufacturingSolutions,
+        solutionsType: Array.isArray(data.solutions) ? 'array' : typeof data.solutions,
+        allKeys: Object.keys(data)
+      });
+
+      // Handle multiple data structures
+      const solutionsSource = 
+        data.solutions || 
+        data.items || 
+        data.manufacturingSolutions?.solutions || 
+        [];
+
+      console.log('🏭 [MANUFACTURING SOLUTIONS DEBUG] Solutions source:', solutionsSource);
+
+      // Normalize each solution item
+      const normalizedSolutions = solutionsSource.map((solution, index) => {
+        console.log(`🏭 [MANUFACTURING SOLUTIONS DEBUG] Processing solution ${index}:`, {
+          originalSolution: solution,
+          hasTitle: !!solution.title,
+          hasName: !!solution.name,
+          hasDescription: !!solution.description,
+          hasFeatures: !!solution.features
+        });
+
+        const normalizedSolution = {
+          title: solution.title || solution.name || `Solution ${index + 1}`,
+          description: solution.description || solution.desc || "Solution description",
+          features: solution.features || solution.items || []
+        };
+
+        console.log(`🏭 [MANUFACTURING SOLUTIONS DEBUG] Normalized solution ${index}:`, normalizedSolution);
+        return normalizedSolution;
+      });
+
+      const normalized = {
+        title: data.title || data.manufacturingSolutions?.title || "Manufacturing Solutions",
+        subtitle: data.subtitle || data.manufacturingSolutions?.subtitle || "Comprehensive NetSuite solutions",
+        description: data.description || data.manufacturingSolutions?.description || "Tailored solutions for manufacturing businesses",
+        solutions: normalizedSolutions,
+        items: normalizedSolutions, // Support both prop names
+      };
+
+      console.log('✅ [MANUFACTURING SOLUTIONS DEBUG] Normalized:', normalized);
+      return normalized;
+    },
+
+    ManufacturingIndustryStatsSection: (data) => {
+      console.log('🏭 [MANUFACTURING STATS DEBUG] Raw form data:', data);
+      console.log('🏭 [MANUFACTURING STATS DEBUG] Data structure:', {
+        hasStats: !!data.stats,
+        hasItems: !!data.items,
+        hasIndustryStats: !!data.industryStats,
+        statsType: Array.isArray(data.stats) ? 'array' : typeof data.stats,
+        allKeys: Object.keys(data)
+      });
+
+      // Handle multiple data structures
+      const statsSource = 
+        data.stats || 
+        data.items || 
+        data.industryStats?.stats || 
+        [];
+
+      console.log('🏭 [MANUFACTURING STATS DEBUG] Stats source:', statsSource);
+
+      // Normalize each stat item
+      const normalizedStats = statsSource.map((stat, index) => {
+        console.log(`🏭 [MANUFACTURING STATS DEBUG] Processing stat ${index}:`, {
+          originalStat: stat,
+          hasLabel: !!stat.label,
+          hasTitle: !!stat.title,
+          hasValue: !!stat.value,
+          hasDescription: !!stat.description
+        });
+
+        const normalizedStat = {
+          label: stat.label || stat.title || `Stat ${index + 1}`,
+          value: stat.value || "0%",
+          description: stat.description || stat.desc || "Statistic description"
+        };
+
+        console.log(`🏭 [MANUFACTURING STATS DEBUG] Normalized stat ${index}:`, normalizedStat);
+        return normalizedStat;
+      });
+
+      const normalized = {
+        title: data.title || data.industryStats?.title || "Manufacturing Industry Stats",
+        subtitle: data.subtitle || data.industryStats?.subtitle || "The state of manufacturing today",
+        stats: normalizedStats,
+        items: normalizedStats, // Support both prop names
+      };
+
+      console.log('✅ [MANUFACTURING STATS DEBUG] Normalized:', normalized);
+      return normalized;
+    },
 
     PopularIntegrationsSection: (data) => ({
       title:
@@ -199,51 +613,88 @@ export const normalizeProps = (componentType, contentJson) => {
     }),
 
     // Training Components
-    TrainingHeroSection: (data) => ({
+    TrainingHeroSection: (data) => {
+      console.log('🔧 [TrainingHeroSection] Raw form data:', data);
+      console.log('🎯 [TRAINING HERO DEBUG] CTA Button data:', {
+        hasCtaButton: !!data.ctaButton,
+        ctaButtonData: data.ctaButton,
+        hasButtonText: !!data.buttonText,
+        hasLink: !!data.link,
+        hasVariant: !!data.variant
+      });
+      
+      const buttonVariant = validateVariant(data.ctaButton?.variant || data.variant || "primary");
+      
+      console.log('🎨 [TrainingHeroSection] Variant Processing:', {
+        originalVariant: data.ctaButton?.variant || data.variant,
+        processedVariant: buttonVariant,
+        variantType: typeof buttonVariant
+      });
+      
+      const normalized = {
       heroContent: {
-        title:
-          data.heroContent?.title ||
-          data.hero?.title ||
-          data.title ||
-          "Professional Training Programs",
-        subtitle:
-          data.heroContent?.description ||
-          data.hero?.subtitle ||
-          data.subtitle ||
-          "Empower your team with comprehensive training solutions",
-        description:
-          data.heroContent?.description || data.hero?.subtitle || data.subtitle,
-      },
-      backgroundVideo:
-        data.backgroundVideo ||
-        data.bgVideo ||
-        data.heroContent?.backgroundVideo ||
-        "/trainingHeroSectionTwo.mp4",
-      ctaButton: data.ctaButton ||
-        data.hero?.ctaButton || {
-        text: "Start Learning Today",
-        link: "/training",
-          variant: "primary",
+          title: data.heroContent?.title || data.hero?.title || data.title || "Professional Training Programs",
+          description: data.heroContent?.description || data.hero?.subtitle || data.subtitle || "Empower your team with comprehensive training solutions designed to enhance skills and drive success",
         },
-    }),
+        backgroundVideo: data.backgroundVideo || data.bgVideo || data.heroContent?.backgroundVideo || "/trainingHeroSectionTwo.mp4",
+        // ADD: Proper CTA button handling with form data
+        ctaButton: data.ctaButton ? {
+          text: data.ctaButton.text || "Start Learning Today",
+          link: data.ctaButton.link || "/training",
+          variant: buttonVariant,
+          icon: data.ctaButton.icon
+        } : {
+          text: data.buttonText || "Start Learning Today",
+          link: data.link || "/training",
+          variant: buttonVariant,
+        }
+      };
+      
+      console.log('✅ [TrainingHeroSection] Normalized data with CTA:', normalized);
+      return normalized;
+    },
 
-    TrainingProgramsSection: (data) => ({
-      programsSection: data.programsSection || {
-        title: data.title || "Our Training Programs",
-        description:
-          data.subtitle ||
-          "Comprehensive training solutions designed to empower your team",
-        image: data.image || "/images/training.jpg",
-        Professional_Badge: data.badge || "Certified Training",
+    TrainingProgramsSection: (data) => {
+      console.log('🖼️ [NORMALIZE DEBUG] TrainingProgramsSection RAW DATA:', {
+        directImage: data.image,
+        programsSectionImage: data.programsSection?.image,
+        allDataKeys: Object.keys(data),
+        fullData: data
+      });
+
+      // PRIORITY: Direct form data OVERRIDES everything
+      const imageSource = 
+        data.image || // Direct image from form
+        data.programsSection?.image || // Nested in programsSection
+        data.programsSection?.image || // From existing programsSection
+        "/images/training.jpg"; // Final fallback
+
+      console.log('🖼️ [NORMALIZE DEBUG] Final image decision:', {
+        source: data.image ? 'direct' : data.programsSection?.image ? 'nested' : 'fallback',
+        finalImage: imageSource,
+        imageSources: {
+          directImage: data.image,
+          programsSectionImage: data.programsSection?.image,
+          fallbackImage: "/images/training.jpg"
+        }
+      });
+
+      const normalized = {
+        programsSection: {
+          title: data.title || data.programsSection?.title || "Our Training Programs",
+          description: data.description || data.programsSection?.description || "Comprehensive training solutions designed to empower your team with the skills they need to excel",
+          image: imageSource, // USE THE RESOLVED IMAGE
+          Professional_Badge: data.badge || data.programsSection?.Professional_Badge || "Certified Training",
       },
       trainingPrograms: {
-        programs:
-          data.trainingPrograms?.programs ||
-          data.programs ||
-          data.trainingPrograms ||
-          [],
-      },
-    }),
+          programs: data.trainingPrograms?.programs || data.programs || data.trainingPrograms || [],
+        }
+      };
+
+      console.log('✅ [NORMALIZE DEBUG] Final normalized data:', normalized);
+      console.log('🖼️ [NORMALIZE DEBUG] Final image URL:', normalized.programsSection.image);
+      return normalized;
+    },
 
     TrainingWhyChooseSection: (data) => ({
       whyChooseSection: data.whyChooseSection || {
@@ -302,7 +753,7 @@ export const normalizeProps = (componentType, contentJson) => {
       console.log('📝 [ImplementationCTASection] Text fields:', {
         buttonText: data.buttonText,
         ctaButtonText: data.ctaButton?.text,
-        buttonText: data.button?.text,
+        buttonTextAlt: data.button?.text,
         title: data.title,
         subtitle: data.subtitle,
         description: data.description
@@ -311,7 +762,7 @@ export const normalizeProps = (componentType, contentJson) => {
         // Check all possible button text properties
         buttonText: data.buttonText,
         ctaButtonText: data.ctaButton?.text,
-        buttonText: data.button?.text,
+        buttonTextAlt: data.button?.text,
         text: data.text,
         ctaText: data.ctaText,
         btnText: data.btnText,
@@ -505,6 +956,12 @@ export const validateProps = (componentType, props) => {
   const requiredProps = {
     IntegrationTypesSection: ["title", "items"],
     IntegrationBenefitsSection: ["title", "items"],
+    CustomizationServicesSection: ["title", "items"],
+    CustomizationProcessSection: ["title", "steps"],
+    ManufacturingHeroSection: ["title", "subtitle"],
+    ManufacturingChallengesSection: ["title", "challenges"],
+    ManufacturingSolutionsSection: ["title", "solutions"],
+    ManufacturingIndustryStatsSection: ["title", "stats"],
     PopularIntegrationsSection: ["title", "platforms"],
     PayrollHeroSection: ["title", "subtitle"],
     PayrollPainPointsSection: ["title", "painPoints"],

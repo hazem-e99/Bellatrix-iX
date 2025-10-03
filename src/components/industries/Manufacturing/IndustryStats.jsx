@@ -1,12 +1,24 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useComponentData } from '../../../utils/useComponentData';
+import manufacturingData from '../../../../public/data/manufacturing-data.json';
 
 const IndustryStats = ({ data }) => {
+  // Merge props with default data from JSON
+  const finalData = useComponentData('industryStats', data, manufacturingData);
+
+  console.log('🏭 [IndustryStats] Data merge:', {
+    props: data,
+    defaultData: manufacturingData.industryStats,
+    finalData: finalData,
+    itemsCount: finalData.items?.length
+  });
+
   return (
     <div className="bg-white py-16 light-section">
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          {data.map((stat, index) => (
+          {finalData.items?.map((stat, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}

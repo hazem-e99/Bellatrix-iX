@@ -1,7 +1,24 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useComponentData } from '../../../utils/useComponentData';
+import manufacturingData from '../../../../public/data/manufacturing-data.json';
 
 const ChallengesSection = ({ data, activeChallenge, setActiveChallenge }) => {
+  // Merge props with default data from JSON
+  const finalData = useComponentData('challenges', data, manufacturingData);
+
+  console.log('🏭 [ChallengesSection] Data merge:', {
+    props: data,
+    defaultData: manufacturingData.challenges,
+    finalData: finalData,
+    itemsCount: finalData.items?.length,
+    activeChallenge: activeChallenge
+  });
+
+  // Use default activeChallenge if not provided
+  const safeActiveChallenge = activeChallenge || 0;
+  const safeSetActiveChallenge = setActiveChallenge || (() => {});
+
   return (
     <div className="py-20 relative overflow-hidden" style={{backgroundColor: '#001038'}}>
       <div className="absolute inset-0 opacity-10">
@@ -33,21 +50,21 @@ const ChallengesSection = ({ data, activeChallenge, setActiveChallenge }) => {
               <div className="mb-6">
                 <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl flex items-center justify-center mb-4">
                   <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={data[activeChallenge].icon} />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={finalData.items?.[safeActiveChallenge]?.icon} />
                   </svg>
                 </div>
                 <h3 className="text-2xl font-bold text-white mb-3">
-                  {data[activeChallenge].title}
+                  {finalData.items?.[safeActiveChallenge]?.title}
                 </h3>
                 <p className="text-gray-300 mb-4">
-                  {data[activeChallenge].description}
+                  {finalData.items?.[safeActiveChallenge]?.description}
                 </p>
                 <div className="bg-blue-900/20 border border-blue-400/30 rounded-lg p-4">
                   <div className="flex items-center space-x-2">
                     <svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
                     </svg>
-                    <span className="text-blue-300 font-semibold">Impact: {data[activeChallenge].impact}</span>
+                    <span className="text-blue-300 font-semibold">Impact: {finalData.items?.[safeActiveChallenge]?.impact}</span>
                   </div>
                 </div>
               </div>
@@ -55,12 +72,12 @@ const ChallengesSection = ({ data, activeChallenge, setActiveChallenge }) => {
 
             {/* Challenge Navigation */}
             <div className="flex space-x-2 mt-6 justify-center">
-              {data.map((_, index) => (
+              {finalData.items?.map((_, index) => (
                 <button
                   key={index}
-                  onClick={() => setActiveChallenge(index)}
+                  onClick={() => safeSetActiveChallenge(index)}
                   className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                    activeChallenge === index ? 'bg-blue-400' : 'bg-gray-500'
+                    safeActiveChallenge === index ? 'bg-blue-400' : 'bg-gray-500'
                   }`}
                 />
               ))}

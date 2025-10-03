@@ -5,17 +5,22 @@ import {
 } from "../../../utils/variantSystem";
 import { smartRender } from "../../../utils/htmlSanitizer";
 
-const PayrollCTA = ({ 
-  title, 
-  subtitle, 
-  description, 
+const PayrollCTA = ({
+  title,
+  subtitle,
+  description,
   ctaButton,
   features,
   trustedBy,
-  onCtaClick 
+  onCtaClick,
 }) => {
-  console.log('🚀 [PayrollCTA Fixed] Received props:', {
-    title, subtitle, description, ctaButton, features, trustedBy
+  console.log("🚀 [PayrollCTA Fixed] Received props:", {
+    title,
+    subtitle,
+    description,
+    ctaButton,
+    features,
+    trustedBy,
   });
 
   // Use props DIRECTLY - no complex data processing or async fetching
@@ -31,14 +36,10 @@ const PayrollCTA = ({
       "30-day money back guarantee",
       "24/7 customer support",
     ],
-    trustedBy: trustedBy || [
-      "Fortune 500 Companies",
-      "SMEs",
-      "Startups",
-    ],
+    trustedBy: trustedBy || ["Fortune 500 Companies", "SMEs", "Startups"],
   };
 
-  console.log('✅ [PayrollCTA Fixed] Final data:', finalData);
+  console.log("✅ [PayrollCTA Fixed] Final data:", finalData);
 
   // Check if title and description contain HTML and render accordingly
   const titleHTML = smartRender(finalData.title);

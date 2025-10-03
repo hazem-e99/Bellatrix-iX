@@ -11,8 +11,8 @@ import {
   EyeIcon,
 } from "@heroicons/react/24/outline";
 import { CheckCircleIcon } from "@heroicons/react/24/solid";
-import Button from "../ui/Button";
-import Toast from "../ui/Toast";
+import Button from "./Button";
+import Toast from "./Toast";
 import axios from "axios";
 import mediaAPI from "../../lib/mediaAPI";
 

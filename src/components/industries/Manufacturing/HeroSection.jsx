@@ -1,14 +1,45 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import Button from '../../UI/Button';
 
-const HeroSection = ({ data }) => {
+const HeroSection = (props) => {
+  // Handle both prop structures:
+  // 1. Nested: { data: { title, subtitle, ... } }
+  // 2. Flat: { title, subtitle, ... }
+  const componentData = props.data || props;
+  
+  console.log('🏭 [HeroSection] Received props:', props);
+  console.log('🏭 [HeroSection] Processed data:', componentData);
+  console.log('🏭 [HeroSection] Data structure check:', {
+    hasDataProp: !!props.data,
+    hasFlatProps: !!(props.title || props.subtitle),
+    finalDataSource: props.data ? 'nested' : 'flat'
+  });
+
+  // Use form data directly with fallbacks
+  const finalData = {
+    title: componentData?.title || "Manufacturing Solutions",
+    subtitle: componentData?.subtitle || "Streamline your manufacturing operations",
+    description: componentData?.description || "Comprehensive NetSuite solutions for manufacturing businesses",
+    backgroundImage: componentData?.backgroundImage || "/images/manufacturing-hero.jpg",
+    backgroundVideo: componentData?.backgroundVideo || "",
+    ctaButton: componentData?.ctaButton || {
+      text: "Learn More",
+      link: "/manufacturing",
+      variant: "primary"
+    }
+  };
+
+  console.log('🏭 [HeroSection] Final data:', finalData);
+  console.log('🔴 [ManufacturingHero] CTA Button:', finalData.ctaButton);
+  console.log('🔴 [ManufacturingHero] CTA Variant:', finalData.ctaButton?.variant);
+
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
       {/* Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url(${data.backgroundImage})`
+          backgroundImage: `url(${finalData.backgroundImage})`
         }}
       />
       
@@ -37,14 +68,46 @@ const HeroSection = ({ data }) => {
           transition={{ duration: 0.8 }}
         >
           <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-blue-200 to-cyan-200 bg-clip-text text-transparent">
-            {data.title}
+            {finalData.title}
           </h1>
           <h2 className="text-2xl md:text-3xl text-blue-200 mb-6 font-semibold">
-            {data.subtitle}
+            {finalData.subtitle}
           </h2>
           <p className="text-xl md:text-2xl text-gray-200 mb-8 leading-relaxed max-w-4xl mx-auto">
-            {data.description}
+            {finalData.description}
           </p>
+          
+          {/* CTA Button */}
+          {finalData.ctaButton && (
+            <div className="flex justify-center">
+              {(() => {
+                const buttonProps = {
+                  variant: finalData.ctaButton.variant || "primary",
+                  size: "lg",
+                  className: "px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl",
+                  onClick: () => {
+                    if (finalData.ctaButton.link) {
+                      if (finalData.ctaButton.link.startsWith('http')) {
+                        window.open(finalData.ctaButton.link, '_blank');
+                      } else {
+                        window.location.href = finalData.ctaButton.link;
+                      }
+                    }
+                  }
+                };
+                
+                console.log('🔴 [MANUFACTURINGHERO] Button props being passed:', buttonProps);
+                console.log('🔴 [MANUFACTURINGHERO] Button variant specifically:', buttonProps.variant);
+                console.log('🔴 [MANUFACTURINGHERO] Button children:', finalData.ctaButton.text);
+                
+                return (
+                  <Button {...buttonProps}>
+                    {finalData.ctaButton.text}
+                  </Button>
+                );
+              })()}
+            </div>
+          )}
         </motion.div>
       </div>
     </div>

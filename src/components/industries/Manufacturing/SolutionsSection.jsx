@@ -1,6 +1,23 @@
 import React from 'react';
+import { useComponentData } from '../../../utils/useComponentData';
+import manufacturingData from '../../../../public/data/manufacturing-data.json';
 
 const SolutionsSection = ({ data, activeSolution, setActiveSolution }) => {
+  // Merge props with default data from JSON
+  const finalData = useComponentData('solutions', data, manufacturingData);
+
+  console.log('🏭 [SolutionsSection] Data merge:', {
+    props: data,
+    defaultData: manufacturingData.solutions,
+    finalData: finalData,
+    itemsCount: finalData.items?.length,
+    activeSolution: activeSolution
+  });
+
+  // Use default activeSolution if not provided
+  const safeActiveSolution = activeSolution || 0;
+  const safeSetActiveSolution = setActiveSolution || (() => {});
+
   return (
     <div className="bg-gray-50 py-20 light-section">
       <div className="container mx-auto px-6">
@@ -69,14 +86,14 @@ const SolutionsSection = ({ data, activeSolution, setActiveSolution }) => {
 
           {/* Solutions Showcase - Right Side */}
           <div className="flex-1 space-y-6">
-            <h3 className="text-3xl font-bold text-gray-800">{data[activeSolution].title}</h3>
+            <h3 className="text-3xl font-bold text-gray-800">{finalData.items?.[safeActiveSolution]?.title}</h3>
             <p className="text-gray-600 leading-relaxed text-lg">
-              {data[activeSolution].description}
+              {finalData.items?.[safeActiveSolution]?.description}
             </p>
             
             <div className="space-y-3 mb-6">
               <h4 className="font-semibold text-gray-800 mb-3">Key Features:</h4>
-              {data[activeSolution].features.map((feature, index) => (
+              {finalData.items?.[safeActiveSolution]?.features?.map((feature, index) => (
                 <div key={index} className="flex items-center space-x-3">
                   <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
                   <span className="text-gray-600">{feature}</span>
@@ -89,18 +106,18 @@ const SolutionsSection = ({ data, activeSolution, setActiveSolution }) => {
                 <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                 </svg>
-                <span className="text-blue-700 font-semibold">Result: {data[activeSolution].benefits}</span>
+                <span className="text-blue-700 font-semibold">Result: {finalData.items?.[safeActiveSolution]?.benefits}</span>
               </div>
             </div>
 
             {/* Solution Navigation */}
             <div className="flex space-x-2 mt-6 justify-center">
-              {data.map((_, index) => (
+              {finalData.items?.map((_, index) => (
                 <button
                   key={index}
-                  onClick={() => setActiveSolution(index)}
+                  onClick={() => safeSetActiveSolution(index)}
                   className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                    activeSolution === index ? 'bg-blue-600' : 'bg-gray-300'
+                    safeActiveSolution === index ? 'bg-blue-600' : 'bg-gray-300'
                   }`}
                 />
               ))}

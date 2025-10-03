@@ -1,7 +1,31 @@
 // HeroSection.jsx
 import React from 'react';
+import { getVariantClasses } from '../../../utils/variantSystem';
 
 const HeroSection = ({ heroContent, backgroundVideo, ctaButton, renderIcon }) => {
+    // Debug logging for CTA button variant
+    console.log('🎨 [TrainingHeroSection] CTA Button Debug:', {
+        ctaButton,
+        variant: ctaButton?.variant,
+        variantType: typeof ctaButton?.variant,
+        hasCtaButton: !!ctaButton
+    });
+
+    // Get variant classes for the CTA button
+    const getButtonClasses = (variant) => {
+        const baseClasses = "inline-flex items-center px-8 py-4 text-lg font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105";
+        const variantClasses = getVariantClasses(variant);
+        const finalClasses = `${baseClasses} ${variantClasses}`;
+        
+        console.log('🎨 [TrainingHeroSection] Button Classes Debug:', {
+            variant,
+            variantClasses,
+            finalClasses
+        });
+        
+        return finalClasses;
+    };
+
     return (
         <div className="min-h-screen relative overflow-hidden pt-20">
             {/* Background Video and Effects */}
@@ -64,7 +88,7 @@ const HeroSection = ({ heroContent, backgroundVideo, ctaButton, renderIcon }) =>
                             <div className="mt-8">
                                 <button
                                     onClick={() => window.location.href = ctaButton.link}
-                                    className="inline-flex items-center px-8 py-4 text-lg font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
+                                    className={getButtonClasses(ctaButton.variant)}
                                 >
                                     {ctaButton.text}
                                 </button>

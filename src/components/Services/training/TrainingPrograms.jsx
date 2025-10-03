@@ -2,6 +2,14 @@ import React from 'react';
 import { renderIcon } from './utils';
 
 const TrainingPrograms = ({ programsSection = {}, trainingPrograms = [], openProgramModal }) => {
+  // Debug logging for image data
+  console.log('🎯 [TrainingPrograms COMPONENT] Received props:', {
+    programsSection,
+    imageUrl: programsSection?.image,
+    hasImage: !!programsSection?.image,
+    imageType: typeof programsSection?.image
+  });
+
   return (
     <div className="container mx-auto px-6">
       <div className="text-center mb-10">
@@ -30,9 +38,18 @@ const TrainingPrograms = ({ programsSection = {}, trainingPrograms = [], openPro
                                         {/* Inner glow container */}
                                         <div className="relative bg-gradient-to-br from-white/5 via-transparent to-blue-500/5 rounded-2xl p-4 border border-white/20">
                                             <img 
-                                                src="/images/traning.jpg" 
-                                                alt="Training Programs - Advanced NetSuite Learning Solutions" 
+                                                src={programsSection.image || "/images/training.jpg"} 
+                                                alt={programsSection.title || "Training Programs - Advanced NetSuite Learning Solutions"} 
                                                 className="w-full h-auto rounded-xl shadow-2xl brightness-105 contrast-110 saturate-105 group-hover:brightness-110 group-hover:contrast-115 group-hover:saturate-110 transition-all duration-500 filter drop-shadow-xl"
+                                                onError={(e) => {
+                                                    console.error('❌ [IMAGE ERROR] Failed to load:', programsSection.image);
+                                                    console.log('❌ [IMAGE ERROR] Falling back to default image');
+                                                    e.target.src = "/images/training.jpg"; // fallback إذا الصورة الجديدة مش شغالة
+                                                }}
+                                                onLoad={(e) => {
+                                                    console.log('✅ [IMAGE LOADED]:', programsSection.image);
+                                                    console.log('✅ [IMAGE LOADED] Actual src:', e.target.src);
+                                                }}
                                             />
                                             
                                             {/* Professional overlay effects */}

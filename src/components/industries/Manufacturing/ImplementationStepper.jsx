@@ -1,32 +1,35 @@
 import React, { useState, useEffect } from 'react';
 
 const ImplementationStepper = ({ implementationProcess }) => {
+  // Ensure we have valid data, fallback to empty array if not
+  const safeProcessData = implementationProcess || [];
+  
   const steps = [
     {
-      title: implementationProcess[0].phase,
-      desc: implementationProcess[0].description,
+      title: safeProcessData[0]?.title || "Discovery & Assessment",
+      desc: safeProcessData[0]?.desc || safeProcessData[0]?.description || "Analyze current manufacturing processes, systems, and requirements",
       details: "Comprehensive analysis of your existing manufacturing operations, including process mapping, system evaluation, and requirements gathering. We identify gaps and opportunities for improvement.",
       icon: (
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
         </svg>
       ),
-      benefits: ['Current state assessment', 'Gap analysis', 'Requirements documentation', 'Process mapping'],
+      benefits: safeProcessData[0]?.benefits || ['Current state assessment', 'Gap analysis', 'Requirements documentation', 'Process mapping'],
     },
     {
-      title: implementationProcess[1].phase,
-      desc: implementationProcess[1].description,
+      title: safeProcessData[1]?.title || "Solution Design",
+      desc: safeProcessData[1]?.desc || safeProcessData[1]?.description || "Design NetSuite configuration tailored to manufacturing workflows",
       details: "Create a detailed blueprint for your NetSuite implementation, including system architecture, integration points, and customization requirements specific to manufacturing processes.",
       icon: (
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
         </svg>
       ),
-      benefits: ['System architecture', 'Process flows', 'Integration design', 'Custom requirements'],
+      benefits: safeProcessData[1]?.benefits || ['System architecture', 'Process flows', 'Integration design', 'Custom requirements'],
     },
     {
-      title: implementationProcess[2].phase,
-      desc: implementationProcess[2].description,
+      title: safeProcessData[2]?.title || "Configuration & Development",
+      desc: safeProcessData[2]?.desc || safeProcessData[2]?.description || "Configure NetSuite modules and develop custom manufacturing features",
       details: "Implementation of NetSuite configuration based on the approved design, including custom script development, workflow automation, and integration setup.",
       icon: (
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -34,29 +37,29 @@ const ImplementationStepper = ({ implementationProcess }) => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
         </svg>
       ),
-      benefits: ['Configured system', 'Custom developments', 'Integration setup', 'Workflow automation'],
+      benefits: safeProcessData[2]?.benefits || ['Configured system', 'Custom developments', 'Integration setup', 'Workflow automation'],
     },
     {
-      title: implementationProcess[3].phase,
-      desc: implementationProcess[3].description,
+      title: safeProcessData[3]?.title || "Testing & Training",
+      desc: safeProcessData[3]?.desc || safeProcessData[3]?.description || "Comprehensive testing and user training for manufacturing teams",
       details: "Thorough system testing including unit, integration, and user acceptance testing. Comprehensive training programs for all user groups to ensure smooth adoption.",
       icon: (
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       ),
-      benefits: ['Test results', 'Training materials', 'User documentation', 'System validation'],
+      benefits: safeProcessData[3]?.benefits || ['Test results', 'Training materials', 'User documentation', 'System validation'],
     },
     {
-      title: implementationProcess[4].phase,
-      desc: implementationProcess[4].description,
+      title: safeProcessData[4]?.title || "Go-Live & Support",
+      desc: safeProcessData[4]?.desc || safeProcessData[4]?.description || "Production deployment with ongoing support and optimization",
       details: "Carefully managed production deployment with real-time monitoring, immediate support, and post-implementation optimization to ensure successful system adoption.",
       icon: (
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
         </svg>
       ),
-      benefits: ['Live system', 'Support documentation', 'Performance monitoring', 'Optimization'],
+      benefits: safeProcessData[4]?.benefits || ['Live system', 'Support documentation', 'Performance monitoring', 'Optimization'],
     },
   ];
   

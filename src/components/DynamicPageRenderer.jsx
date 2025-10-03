@@ -328,15 +328,20 @@ const DynamicPageRenderer = () => {
       // ========== TRAINING COMPONENTS ==========
       case "TrainingHeroSection":
         return {
-          title: props.title,
-          subtitle: props.subtitle,
+          heroContent: {
+            title: props.heroContent?.title || props.title || "Professional Training Programs",
+            description: props.heroContent?.description || props.subtitle || "Empower your team with comprehensive training solutions designed to enhance skills and drive success",
+          },
+          backgroundVideo: props.backgroundVideo || "/trainingHeroSectionTwo.mp4",
           ctaButton: props.ctaButton,
         };
       case "TrainingProgramsSection":
         return {
           programsSection: {
             title: props.title || "Training Programs",
-            description: props.subtitle || "Comprehensive training programs designed to enhance your skills and knowledge."
+            description: props.subtitle || "Comprehensive training programs designed to enhance your skills and knowledge.",
+            image: props.image || props.programsSection?.image || "/images/training.jpg",
+            Professional_Badge: props.badge || props.programsSection?.Professional_Badge || "Certified Training"
           },
           trainingPrograms: {
             programs: props.programs || []
@@ -363,24 +368,17 @@ const DynamicPageRenderer = () => {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            ctaButton: props.ctaButton,
           },
         };
       case "IntegrationTypesSection":
         return {
-          data: {
-            title: props.title,
-            subtitle: props.subtitle,
-            types: props.types || [],
-          },
+          title: props.title || "Integration Types",
+          items: props.items || props.types || [],
         };
       case "IntegrationBenefitsSection":
         return {
-          data: {
-            title: props.title,
-            subtitle: props.subtitle,
-            benefits: props.benefits || [],
-          },
+          title: props.title || "Integration Benefits",
+          items: props.items || props.benefits || [],
         };
 
       // ========== CUSTOMIZATION COMPONENTS ==========
@@ -389,16 +387,12 @@ const DynamicPageRenderer = () => {
           data: {
             title: props.title,
             subtitle: props.subtitle,
-            ctaButton: props.ctaButton,
           },
         };
       case "CustomizationServicesSection":
         return {
-          data: {
-            title: props.title,
-            subtitle: props.subtitle,
-            services: props.services || [],
-          },
+          title: props.title || "What We Customize",
+          items: props.items || props.services || [],
         };
       case "CustomizationProcessSection":
         return {
@@ -415,6 +409,9 @@ const DynamicPageRenderer = () => {
           data: {
             title: props.title,
             subtitle: props.subtitle,
+            description: props.description,
+            backgroundImage: props.backgroundImage,
+            backgroundVideo: props.backgroundVideo,
             ctaButton: props.ctaButton,
           },
         };
