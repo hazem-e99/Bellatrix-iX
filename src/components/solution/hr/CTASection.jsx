@@ -1,4 +1,5 @@
 import React from "react";
+import SEO from "../../SEO";
 
 const CTASection = ({
   title,
@@ -32,38 +33,60 @@ const CTASection = ({
 
   console.log("✅ [HRCTASection Fixed] Final data:", finalData);
   return (
-    <section className="py-16 bg-gray-50 text-center animate-fade-in-up light-section">
-      <div className="max-w-2xl mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-blue-800">
-          {finalData.title}
-        </h2>
-        {finalData.subtitle && (
-          <h3 className="text-lg md:text-xl text-blue-600 mb-4 leading-relaxed">
-            {finalData.subtitle}
-          </h3>
-        )}
-        <p className="text-lg md:text-xl mb-8 text-gray-600">
-          {finalData.description}
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          {finalData.buttonLink ? (
-            <a
-              href={finalData.buttonLink}
-              className="inline-block border-2 border-blue-700 hover:border-blue-400 text-blue-700 hover:text-blue-900 font-semibold rounded-lg px-8 py-4 transition-all duration-200 shadow-lg text-lg hover:bg-blue-100"
-            >
-              {finalData.buttonText}
-            </a>
-          ) : (
-            <button
-              onClick={onCtaClick}
-              className="inline-block border-2 border-blue-700 hover:border-blue-400 text-blue-700 hover:text-blue-900 font-semibold rounded-lg px-8 py-4 transition-all duration-200 shadow-lg text-lg hover:bg-blue-100"
-            >
-              {finalData.buttonText}
-            </button>
-          )}
+    <>
+      <SEO
+        title={`Get Started with Oracle NetSuite HR | ${
+          finalData.title || "Ready to Transform Your HR Operations?"
+        }`}
+        description={`${
+          finalData.description ||
+          "Ready to transform your HR operations with Oracle NetSuite? Join thousands of companies automating HR processes"
+        } - Start your free trial today.`}
+        keywords="Oracle NetSuite HR trial, get started NetSuite HR, HR platform demo, ERP HR implementation, NetSuite HR pricing, HR automation trial"
+        ogTitle={`Get Started with NetSuite HR - ${
+          finalData.title || "Transform Your HR Today"
+        }`}
+        ogDescription={`${(
+          finalData.description ||
+          "Start your Oracle NetSuite HR transformation today"
+        ).substring(0, 120)}... Professional ERP HR solutions and support.`}
+        ogImage="/images/netsuite-hr-cta.jpg"
+      />
+      <section className="py-16 bg-gray-50 text-center animate-fade-in-up light-section">
+        <div className="max-w-2xl mx-auto px-4">
+          <header className="mb-8">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-blue-800">
+              {finalData.title}
+            </h2>
+            {finalData.subtitle && (
+              <h3 className="text-lg md:text-xl text-blue-600 mb-4 leading-relaxed">
+                {finalData.subtitle}
+              </h3>
+            )}
+            <p className="text-lg md:text-xl text-gray-600">
+              {finalData.description}
+            </p>
+          </header>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            {finalData.buttonLink ? (
+              <a
+                href={finalData.buttonLink}
+                className="inline-block border-2 border-blue-700 hover:border-blue-400 text-blue-700 hover:text-blue-900 font-semibold rounded-lg px-8 py-4 transition-all duration-200 shadow-lg text-lg hover:bg-blue-100"
+              >
+                {finalData.buttonText}
+              </a>
+            ) : (
+              <button
+                onClick={onCtaClick}
+                className="inline-block border-2 border-blue-700 hover:border-blue-400 text-blue-700 hover:text-blue-900 font-semibold rounded-lg px-8 py-4 transition-all duration-200 shadow-lg text-lg hover:bg-blue-100"
+              >
+                {finalData.buttonText}
+              </button>
+            )}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 };
 

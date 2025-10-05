@@ -75,7 +75,7 @@ const NetSuiteConsultingMain = () => {
 
   return (
     <>
-      <SEO 
+      <SEO
         title="Oracle NetSuite Consulting Services | Expert ERP Implementation & Optimization"
         description="Professional Oracle NetSuite consulting services including implementation, customization, integration, and optimization. Expert ERP consultants for business transformation and growth."
         keywords="Oracle NetSuite consulting, NetSuite implementation, ERP consulting services, NetSuite customization, Oracle ERP consultants, business process optimization, NetSuite integration"
@@ -84,69 +84,77 @@ const NetSuiteConsultingMain = () => {
         ogImage="/images/netsuite-consulting-services.jpg"
       />
       <main className="min-h-screen bg-gray-50">
-        <HeroSection 
+        <HeroSection
           title={data.hero.title}
           description={data.hero.description}
           ctaText={data.hero.ctaText}
           ctaIcon={data.hero.ctaIcon}
         />
-      <section data-theme="light" >
-        <ConsultingServices
-          title={data.services.title}
-          description={data.services.description}
-          items={data.services.items}
-          image={data.services.image}
-          activeService={activeService}
-          setActiveService={setActiveService}
-        />
-      </section>
+        <section data-theme="light">
+          <ConsultingServices
+            title={data.services.title}
+            description={data.services.description}
+            items={data.services.items}
+            image={data.services.image}
+            activeService={activeService}
+            setActiveService={setActiveService}
+          />
+        </section>
 
-      <section data-theme="dark" className="py-20 relative overflow-hidden" style={{ backgroundColor: "#001038" }}>
-        <IndustryExpertise
-          title={data.industries.title}
-          description={data.industries.description}
-          items={data.industries.items}
-          handleIndustryClick={handleIndustryClick}
-        />
-      </section>
+        <section
+          data-theme="dark"
+          className="py-20 relative overflow-hidden"
+          style={{ backgroundColor: "#001038" }}
+        >
+          <IndustryExpertise
+            title={data.industries.title}
+            description={data.industries.description}
+            items={data.industries.items}
+            handleIndustryClick={handleIndustryClick}
+          />
+        </section>
 
-      <section data-theme="light" className="bg-gray-50 py-20">
-        <ConsultingProcess
-          title={data.process.title}
-          description={data.process.description}
-          image={data.process.image}
-          steps={data.process.steps}
-          openContactModal={openContactModal}
-        />
-      </section>
+        <section data-theme="light" className="bg-gray-50 py-20">
+          <ConsultingProcess
+            title={data.process.title}
+            description={data.process.description}
+            image={data.process.image}
+            steps={data.process.steps}
+            openContactModal={openContactModal}
+          />
+        </section>
 
-      <section data-theme="dark" className="py-20 relative overflow-hidden" style={{ backgroundColor: "#001038" }}>
-        <BenefitsSection
-          title={data.benefits.title}
-          description={data.benefits.description}
-          items={data.benefits.items}
-        />
-      </section>
+        <section
+          data-theme="dark"
+          className="py-20 relative overflow-hidden"
+          style={{ backgroundColor: "#001038" }}
+        >
+          <BenefitsSection
+            title={data.benefits.title}
+            description={data.benefits.description}
+            items={data.benefits.items}
+          />
+        </section>
 
-      <section data-theme="light" className="bg-gray-50 py-20">
-        <CtaSection
-          title={data.cta.title}
-          description={data.cta.description}
-          features={data.cta.features}
-          buttonText={data.cta.buttonText}
-          openContactModal={openContactModal}
-        />
-      </section>
+        <section data-theme="light" className="bg-gray-50 py-20">
+          <CtaSection
+            title={data.cta.title}
+            description={data.cta.description}
+            features={data.cta.features}
+            buttonText={data.cta.buttonText}
+            openContactModal={openContactModal}
+          />
+        </section>
 
-      {/* Contact Modal */}
-      <Modal
-        isOpen={isContactModalOpen}
-        onClose={closeContactModal}
-        title="Schedule Your Consultation"
-        subtitle="Let's discuss your NetSuite consulting needs"
-      >
-        <ContactForm />
-      </Modal>
+        {/* Contact Modal */}
+        <Modal
+          isOpen={isContactModalOpen}
+          onClose={closeContactModal}
+          title="Schedule Your Consultation"
+          subtitle="Let's discuss your NetSuite consulting needs"
+        >
+          <ContactForm />
+        </Modal>
       </main>
     </>
   );

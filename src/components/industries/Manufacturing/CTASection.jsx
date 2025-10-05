@@ -1,4 +1,5 @@
 import React from "react";
+import SEO from "../../SEO";
 import { useComponentData } from "../../../utils/useComponentData";
 import manufacturingData from "../../../../public/data/manufacturing-data.json";
 
@@ -66,21 +67,32 @@ const CTASection = ({
 
   console.log("✅ [ManufacturingCTASection Fixed] Final data:", mergedData);
   return (
-    <div className="bg-gray-50 py-20 light-section">
+    <section className="bg-gray-50 py-20 light-section">
+      <SEO
+        title="Get Started with Oracle NetSuite Manufacturing | Contact Manufacturing ERP Experts"
+        description="Transform your manufacturing operations with Oracle NetSuite ERP. Contact our manufacturing experts for consultation and implementation services. Get started today."
+        keywords="Oracle NetSuite manufacturing contact, manufacturing ERP consultation, NetSuite manufacturing implementation, manufacturing software experts, ERP manufacturing services"
+        ogTitle="Get Started with Oracle NetSuite Manufacturing | Contact Manufacturing ERP Experts"
+        ogDescription="Ready to transform your manufacturing operations? Contact our Oracle NetSuite manufacturing experts for personalized consultation and implementation."
+        ogImage="/images/manufacturing-cta.jpg"
+      />
+
       <div className="container mx-auto px-6">
         <div className="bg-gradient-to-r from-gray-100 to-gray-200 rounded-3xl p-12 text-gray-800 text-center border border-gray-300">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-gray-900">
-              {mergedData.title}
-            </h2>
-            {mergedData.subtitle && (
-              <h3 className="text-xl md:text-2xl text-gray-800 mb-4 leading-relaxed">
-                {mergedData.subtitle}
-              </h3>
-            )}
-            <p className="text-xl mb-8 leading-relaxed text-gray-700">
-              {mergedData.description}
-            </p>
+            <header>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-gray-900">
+                {mergedData.title}
+              </h2>
+              {mergedData.subtitle && (
+                <h3 className="text-xl md:text-2xl text-gray-800 mb-4 leading-relaxed">
+                  {mergedData.subtitle}
+                </h3>
+              )}
+              <p className="text-xl mb-8 leading-relaxed text-gray-700">
+                {mergedData.description}
+              </p>
+            </header>
 
             <div className="grid md:grid-cols-3 gap-8 mb-12">
               {mergedData.features.map((feature, index) => (
@@ -126,7 +138,7 @@ const CTASection = ({
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

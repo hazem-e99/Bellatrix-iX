@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import SEO from "../../SEO";
 import PayrollHero from "./PayrollHero";
 import PayrollPainPoints from "./PayrollPainPoints";
 import PayrollHowItWorks from "./PayrollHowItWorks";
@@ -63,9 +64,18 @@ export default function PayrollPage({ data }) {
   }
 
   return (
-    <div className="bg-gray-50 min-h-screen">
-      {/* Hero Section */}
-      <section data-theme="dark">
+    <>
+      <SEO 
+        title="Oracle NetSuite Payroll Management Solutions | Bellatrix Consulting"
+        description="Transform your payroll operations with Oracle NetSuite's automated payroll management system. Expert implementation, compliance assurance, and streamlined HR processes for modern businesses."
+        keywords="Oracle NetSuite payroll, payroll management system, automated payroll solutions, NetSuite HR implementation, ERP payroll processing, payroll compliance automation"
+        ogTitle="Oracle NetSuite Payroll Management - Complete Automation Solutions"
+        ogDescription="Streamline payroll operations with Oracle NetSuite's comprehensive payroll management system. Automated processing, compliance, and expert implementation services."
+        ogImage="/images/netsuite-payroll-management.jpg"
+      />
+      <main className="bg-gray-50 min-h-screen">
+        {/* Hero Section */}
+        <section data-theme="dark">
         <PayrollHero
           title={pageData.hero?.title}
           subtitle={pageData.hero?.subtitle}
@@ -119,6 +129,7 @@ export default function PayrollPage({ data }) {
           <ContactForm />
         </div>
       </Modal>
-    </div>
+    </main>
+    </>
   );
 }

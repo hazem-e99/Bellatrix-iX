@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import ContactForm from '../../ContactForm';
-import Modal from '../../Modal';
-import HeroSection from './HeroSection';
-import IndustryStats from './IndustryStats';
-import ChallengesSection from './ChallengesSection';
-import SolutionsSection from './SolutionsSection';
-import FeaturesSection from './FeaturesSection';
-import CaseStudiesSection from './CaseStudiesSection';
-import ImplementationSection from './ImplementationSection';
-import CTASection from './CTASection';
+import React, { useState, useEffect } from "react";
+import SEO from "../../SEO";
+import ContactForm from "../../ContactForm";
+import Modal from "../../Modal";
+import HeroSection from "./HeroSection";
+import IndustryStats from "./IndustryStats";
+import ChallengesSection from "./ChallengesSection";
+import SolutionsSection from "./SolutionsSection";
+import FeaturesSection from "./FeaturesSection";
+import CaseStudiesSection from "./CaseStudiesSection";
+import ImplementationSection from "./ImplementationSection";
+import CTASection from "./CTASection";
 
 const Retail = () => {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
@@ -40,13 +41,17 @@ const Retail = () => {
   // Auto-rotate challenges and solutions
   useEffect(() => {
     if (!pageData) return;
-    
+
     const challengeInterval = setInterval(() => {
-      setActiveChallenge((prev) => (prev + 1) % pageData.retailChallenges.length);
+      setActiveChallenge(
+        (prev) => (prev + 1) % pageData.retailChallenges.length
+      );
     }, 4000);
-    
+
     const solutionInterval = setInterval(() => {
-      setActiveSolution((prev) => (prev + 1) % pageData.netSuiteSolutions.length);
+      setActiveSolution(
+        (prev) => (prev + 1) % pageData.netSuiteSolutions.length
+      );
     }, 5000);
 
     return () => {
@@ -70,25 +75,34 @@ const Retail = () => {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <p className="text-red-600">Error loading content. Please try again later.</p>
+          <p className="text-red-600">
+            Error loading content. Please try again later.
+          </p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <HeroSection 
-        data={pageData.hero} 
-        openContactModal={openContactModal}
+    <main className="min-h-screen bg-gray-50">
+      <SEO
+        title="Oracle NetSuite Retail Solutions | Complete E-commerce & Retail Management"
+        description="Transform your retail operations with Oracle NetSuite retail solutions. Comprehensive e-commerce, inventory management, and omnichannel retail platform for modern retailers."
+        keywords="Oracle NetSuite retail, NetSuite e-commerce, retail management software, omnichannel retail, NetSuite retail solutions, e-commerce ERP, retail POS system"
+        ogTitle="Oracle NetSuite Retail Solutions | Complete E-commerce & Retail Management"
+        ogDescription="Complete Oracle NetSuite retail platform for e-commerce, inventory management, and omnichannel retail operations."
+        ogImage="/images/retail-solutions.jpg"
+        canonicalUrl="https://bellatrix.com/industries/retail"
       />
-      
+
+      <HeroSection data={pageData.hero} openContactModal={openContactModal} />
+
       <section className="light-section" data-theme="light">
         <IndustryStats data={pageData.industryStats} />
       </section>
 
       <section className="dark-section" data-theme="dark">
-        <ChallengesSection 
+        <ChallengesSection
           data={pageData}
           activeChallenge={activeChallenge}
           setActiveChallenge={setActiveChallenge}
@@ -96,7 +110,7 @@ const Retail = () => {
       </section>
 
       <section className="light-section" data-theme="light">
-        <SolutionsSection 
+        <SolutionsSection
           data={pageData}
           activeSolution={activeSolution}
           setActiveSolution={setActiveSolution}
@@ -116,7 +130,7 @@ const Retail = () => {
       </section>
 
       <section className="cta-section" data-theme="light">
-        <CTASection 
+        <CTASection
           data={pageData.ctaSection}
           openContactModal={openContactModal}
         />
@@ -126,7 +140,7 @@ const Retail = () => {
       <Modal isOpen={isContactModalOpen} onClose={closeContactModal}>
         <ContactForm onSuccess={closeContactModal} />
       </Modal>
-    </div>
+    </main>
   );
 };
 

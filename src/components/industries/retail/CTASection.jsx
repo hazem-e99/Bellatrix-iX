@@ -1,4 +1,5 @@
 import React from "react";
+import SEO from "../../SEO";
 
 const CTASection = ({
   title,
@@ -51,20 +52,31 @@ const CTASection = ({
   console.log("✅ [RetailCTASection Fixed] Final data:", finalData);
   return (
     <section className="bg-gray-50 py-20 light-section">
+      <SEO
+        title="Get Started with Oracle NetSuite Retail | Contact E-commerce Experts"
+        description="Transform your retail business with Oracle NetSuite e-commerce solutions. Contact our retail experts for consultation and implementation services. Get started today."
+        keywords="Oracle NetSuite retail contact, e-commerce consultation, NetSuite retail implementation, retail software experts, ERP retail services, e-commerce platform setup"
+        ogTitle="Get Started with Oracle NetSuite Retail | Contact E-commerce Experts"
+        ogDescription="Ready to transform your retail operations? Contact our Oracle NetSuite retail experts for personalized e-commerce consultation and implementation."
+        ogImage="/images/retail-cta.jpg"
+      />
+
       <div className="container mx-auto px-6">
         <div className="bg-gradient-to-r from-gray-100 to-gray-200 rounded-3xl p-12 text-gray-800 text-center border border-gray-300">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-gray-900">
-              {finalData.title}
-            </h2>
-            {finalData.subtitle && (
-              <h3 className="text-xl md:text-2xl text-gray-800 mb-4 leading-relaxed">
-                {finalData.subtitle}
-              </h3>
-            )}
-            <p className="text-xl mb-8 leading-relaxed text-gray-700">
-              {finalData.description}
-            </p>
+            <header>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-gray-900">
+                {finalData.title}
+              </h2>
+              {finalData.subtitle && (
+                <h3 className="text-xl md:text-2xl text-gray-800 mb-4 leading-relaxed">
+                  {finalData.subtitle}
+                </h3>
+              )}
+              <p className="text-xl mb-8 leading-relaxed text-gray-700">
+                {finalData.description}
+              </p>
+            </header>
 
             <div className="grid md:grid-cols-3 gap-8 mb-12">
               {finalData.features.map((feature, index) => (

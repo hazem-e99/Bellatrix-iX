@@ -1,18 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import HeroSection from './HeroSection';
-import BenefitsSection from './BenefitsSection';
-import ModulesSection from './ModulesSection';
-import UseCasesSection from './UseCasesSection';
-import PricingSection from './PricingSection';
-import CTASection from './CTASection';
-import FAQSection from './FAQSection';
-import DemoModal from './DemoModal';
+import React, { useState, useEffect } from "react";
+import SEO from "../../SEO";
+import HeroSection from "./HeroSection";
+import BenefitsSection from "./BenefitsSection";
+import ModulesSection from "./ModulesSection";
+import UseCasesSection from "./UseCasesSection";
+import PricingSection from "./PricingSection";
+import CTASection from "./CTASection";
+import FAQSection from "./FAQSection";
+import DemoModal from "./DemoModal";
 
 const HRSolution = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
   const [openFAQ, setOpenFAQ] = useState(null);
   const [activeBenefitIdx, setActiveBenefitIdx] = useState(0);
   const [showDemo, setShowDemo] = useState(false);
@@ -35,10 +36,10 @@ const HRSolution = () => {
         setLoading(false);
       }
     };
-    
+
     fetchData();
   }, []);
-  
+
   const handleDemoChange = (newIdx) => {
     setImgFade(false);
     setTimeout(() => {
@@ -46,18 +47,23 @@ const HRSolution = () => {
       setImgFade(true);
     }, 200);
   };
-  
-  const nextDemo = () => handleDemoChange((demoIdx + 1) % (data?.demoImages?.length || 1));
-  const prevDemo = () => handleDemoChange((demoIdx - 1 + (data?.demoImages?.length || 1)) % (data?.demoImages?.length || 1));
+
+  const nextDemo = () =>
+    handleDemoChange((demoIdx + 1) % (data?.demoImages?.length || 1));
+  const prevDemo = () =>
+    handleDemoChange(
+      (demoIdx - 1 + (data?.demoImages?.length || 1)) %
+        (data?.demoImages?.length || 1)
+    );
 
   // Animation for Benefits Cards
   useEffect(() => {
     if (!data?.features?.items) return;
-    
+
     const interval = setInterval(() => {
       setActiveBenefitIdx((prev) => (prev + 1) % data.features.items.length);
     }, 4500);
-    
+
     return () => clearInterval(interval);
   }, [data?.features?.items]);
 
@@ -87,6 +93,14 @@ const HRSolution = () => {
 
   return (
     <>
+      <SEO
+        title="Oracle NetSuite HR Management Solutions | Bellatrix Consulting"
+        description="Transform your HR operations with Oracle NetSuite's comprehensive HR management platform. Employee management, payroll automation, compliance, and analytics in one solution."
+        keywords="Oracle NetSuite HR, HR management system, employee management software, NetSuite human resources, ERP HR solutions, payroll automation, HR compliance"
+        ogTitle="Oracle NetSuite HR Management - Complete Human Resources Solutions"
+        ogDescription="Streamline HR operations with Oracle NetSuite's integrated HR management platform. Employee lifecycle management, payroll, compliance, and analytics."
+        ogImage="/images/netsuite-hr-management.jpg"
+      />
       <main className="bg-gradient-to-br from-blue-50 to-white min-h-screen text-slate-800">
         {/* Hero Section - Dark Theme */}
         <section data-theme="dark">
@@ -95,10 +109,10 @@ const HRSolution = () => {
 
         {/* Benefits Section - Light Theme */}
         <section data-theme="light">
-          <BenefitsSection 
-            data={data} 
-            activeBenefitIdx={activeBenefitIdx} 
-            onShowDemo={() => setShowDemo(true)} 
+          <BenefitsSection
+            data={data}
+            activeBenefitIdx={activeBenefitIdx}
+            onShowDemo={() => setShowDemo(true)}
           />
         </section>
 
@@ -124,11 +138,7 @@ const HRSolution = () => {
 
         {/* FAQ Section - Light Theme */}
         <section data-theme="light">
-          <FAQSection 
-            data={data} 
-            openFAQ={openFAQ} 
-            setOpenFAQ={setOpenFAQ} 
-          />
+          <FAQSection data={data} openFAQ={openFAQ} setOpenFAQ={setOpenFAQ} />
         </section>
 
         {/* Demo Modal */}

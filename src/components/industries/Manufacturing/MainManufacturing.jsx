@@ -1,34 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import HeroSection from './HeroSection';
-import IndustryStats from './IndustryStats';
-import ChallengesSection from './ChallengesSection';
-import SolutionsSection from './SolutionsSection';
-import CaseStudies from './CaseStudies';
-import ImplementationProcess from './ImplementationProcess';
-import CTASection from './CTASection';
-import Modal from '../../Modal';
-import ContactForm from '../../ContactForm';
-import { usePageData } from '../../../hooks/useJsonServerData.jsx';
+import React, { useState, useEffect } from "react";
+import SEO from "../../SEO";
+import HeroSection from "./HeroSection";
+import IndustryStats from "./IndustryStats";
+import ChallengesSection from "./ChallengesSection";
+import SolutionsSection from "./SolutionsSection";
+import CaseStudies from "./CaseStudies";
+import ImplementationProcess from "./ImplementationProcess";
+import CTASection from "./CTASection";
+import Modal from "../../Modal";
+import ContactForm from "../../ContactForm";
+import { usePageData } from "../../../hooks/useJsonServerData.jsx";
 
 const Manufacturing = () => {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [activeChallenge, setActiveChallenge] = useState(0);
   const [activeSolution, setActiveSolution] = useState(0);
-  
+
   const openContactModal = () => setIsContactModalOpen(true);
   const closeContactModal = () => setIsContactModalOpen(false);
 
   // Fetch data from JSON Server
-  const { data, isLoading: loading } = usePageData('manufacturing');
+  const { data, isLoading: loading } = usePageData("manufacturing");
 
   // Auto-rotate challenges and solutions
   useEffect(() => {
     if (!data) return;
-    
+
     const challengeInterval = setInterval(() => {
-      setActiveChallenge((prev) => (prev + 1) % data.manufacturingChallenges.length);
+      setActiveChallenge(
+        (prev) => (prev + 1) % data.manufacturingChallenges.length
+      );
     }, 4000);
-    
+
     const solutionInterval = setInterval(() => {
       setActiveSolution((prev) => (prev + 1) % data.netSuiteSolutions.length);
     }, 5000);
@@ -61,7 +64,17 @@ const Manufacturing = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <main className="min-h-screen bg-gray-50">
+      <SEO
+        title="Oracle NetSuite Manufacturing Solutions | Bellatrix ERP Consulting"
+        description="Transform your manufacturing operations with Oracle NetSuite ERP solutions. Expert manufacturing consulting, implementation, and optimization services for production efficiency."
+        keywords="Oracle NetSuite manufacturing, NetSuite ERP manufacturing, manufacturing software, production management, ERP manufacturing solutions, NetSuite manufacturing consulting"
+        ogTitle="Oracle NetSuite Manufacturing Solutions | Bellatrix ERP Consulting"
+        ogDescription="Expert Oracle NetSuite manufacturing solutions for streamlined production, inventory management, and manufacturing operations optimization."
+        ogImage="/images/manufacturing-solutions.jpg"
+        canonicalUrl="https://bellatrix.com/industries/manufacturing"
+      />
+
       <section data-theme="dark">
         <HeroSection data={data.hero} />
       </section>
@@ -71,16 +84,16 @@ const Manufacturing = () => {
       </section>
 
       <section data-theme="dark">
-        <ChallengesSection 
-          data={data.manufacturingChallenges} 
+        <ChallengesSection
+          data={data.manufacturingChallenges}
           activeChallenge={activeChallenge}
           setActiveChallenge={setActiveChallenge}
         />
       </section>
 
       <section data-theme="light">
-        <SolutionsSection 
-          data={data.netSuiteSolutions} 
+        <SolutionsSection
+          data={data.netSuiteSolutions}
           activeSolution={activeSolution}
           setActiveSolution={setActiveSolution}
         />
@@ -95,10 +108,7 @@ const Manufacturing = () => {
       </section>
 
       <section data-theme="light">
-        <CTASection 
-          data={data.cta} 
-          openContactModal={openContactModal}
-        />
+        <CTASection data={data.cta} openContactModal={openContactModal} />
       </section>
 
       {/* Contact Modal */}
@@ -112,7 +122,7 @@ const Manufacturing = () => {
           <ContactForm />
         </div>
       </Modal>
-    </div>
+    </main>
   );
 };
 
