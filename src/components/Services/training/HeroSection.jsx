@@ -1,8 +1,9 @@
 // HeroSection.jsx
 import React from 'react';
+import SEO from '../../SEO';
 import { getVariantClasses } from '../../../utils/variantSystem';
 
-const HeroSection = ({ heroContent, backgroundVideo, ctaButton, renderIcon }) => {
+const HeroSection = ({ heroContent, backgroundVideo, ctaButton }) => {
     // Debug logging for CTA button variant
     console.log('🎨 [TrainingHeroSection] CTA Button Debug:', {
         ctaButton,
@@ -27,10 +28,19 @@ const HeroSection = ({ heroContent, backgroundVideo, ctaButton, renderIcon }) =>
     };
 
     return (
-        <div className="min-h-screen relative overflow-hidden pt-20">
-            {/* Background Video and Effects */}
-            <div 
-                className="absolute inset-0 w-full h-full"
+        <>
+            <SEO 
+                title="Oracle NetSuite Training Hero | Professional ERP Education & Skills Development"
+                description="Transform your career with Oracle NetSuite training programs. Expert-led education covering ERP implementation, customization, and advanced system management for business success."
+                keywords="Oracle NetSuite training hero, NetSuite education programs, ERP training courses, NetSuite skill development, Oracle training certification, professional ERP education"
+                ogTitle="Oracle NetSuite Training - Professional ERP Education Programs"
+                ogDescription="Master Oracle NetSuite with comprehensive training programs. Expert-led education for implementation, customization, and advanced ERP management skills."
+                ogImage="/images/netsuite-training-hero.jpg"
+            />
+            <header className="min-h-screen relative overflow-hidden pt-20">
+                {/* Background Video and Effects */}
+                <div 
+                    className="absolute inset-0 w-full h-full"
                 onContextMenu={(e) => e.preventDefault()}
                 onDragStart={(e) => e.preventDefault()}
                 onDrop={(e) => e.preventDefault()}
@@ -104,7 +114,8 @@ const HeroSection = ({ heroContent, backgroundVideo, ctaButton, renderIcon }) =>
                     <div className="w-1 h-3 bg-white/60 rounded-full mt-2 animate-scroll-indicator"></div>
                 </div>
             </div>
-        </div>
+            </header>
+        </>
     );
 };
 

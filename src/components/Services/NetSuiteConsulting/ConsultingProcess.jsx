@@ -1,4 +1,5 @@
 import React from "react";
+import SEO from "../../SEO";
 
 const ConsultingProcess = ({ 
   title, 
@@ -8,8 +9,17 @@ const ConsultingProcess = ({
   openContactModal 
 }) => {
   return (
-    <div className="container mx-auto px-6">
-      <div className="text-center mb-16">
+    <>
+      <SEO 
+        title="Oracle NetSuite Consulting Process | Proven ERP Implementation Methodology"
+        description="Proven Oracle NetSuite consulting process with structured methodology for successful ERP implementation including discovery, design, development, testing, and go-live phases."
+        keywords="NetSuite consulting process, Oracle ERP implementation methodology, NetSuite project phases, ERP consulting steps, NetSuite implementation timeline"
+        ogTitle="NetSuite Consulting Process - Proven Oracle ERP Implementation"
+        ogDescription="Structured Oracle NetSuite consulting process ensuring successful ERP implementation with proven methodology and expert guidance through every project phase."
+        ogImage="/images/netsuite-consulting-process.jpg"
+      />
+      <section className="container mx-auto px-6">
+      <header className="text-center mb-16">
         <h2
           className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-4"
           dangerouslySetInnerHTML={{ __html: title }}
@@ -17,7 +27,7 @@ const ConsultingProcess = ({
         <p className="text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto">
           {description}
         </p>
-      </div>
+      </header>
 
       <div className="flex flex-col lg:flex-row items-center gap-8">
         <div className="flex-1 flex justify-center">
@@ -30,13 +40,11 @@ const ConsultingProcess = ({
 
             <div className="relative bg-gradient-to-br from-gray-900/10 via-blue-900/5 to-gray-900/10 rounded-3xl p-6 backdrop-blur-md border border-white/30 shadow-2xl group-hover:shadow-blue-500/20 transition-all duration-500">
               <div className="relative bg-gradient-to-br from-white/5 via-transparent to-blue-500/5 rounded-2xl p-4 border border-white/20">
-                <img
-                  src={image}
-                  alt="Consulting Process - Strategic NetSuite Solutions"
-                  className="w-full h-auto rounded-xl shadow-2xl brightness-105 contrast-110 saturate-105 group-hover:brightness-110 group-hover:contrast-115 group-hover:saturate-110 transition-all duration-500 filter drop-shadow-xl"
-                />
-
-                <div className="absolute inset-4 rounded-xl bg-gradient-to-tr from-blue-500/5 via-transparent via-transparent to-cyan-400/5 pointer-events-none"></div>
+              <img
+                src={image}
+                alt="Oracle NetSuite Consulting Process - Strategic ERP Implementation Solutions"
+                className="w-full h-auto rounded-xl shadow-2xl brightness-105 contrast-110 saturate-105 group-hover:brightness-110 group-hover:contrast-115 group-hover:saturate-110 transition-all duration-500 filter drop-shadow-xl"
+              />                <div className="absolute inset-4 rounded-xl bg-gradient-to-tr from-blue-500/5 via-transparent via-transparent to-cyan-400/5 pointer-events-none"></div>
                 <div className="absolute inset-4 rounded-xl bg-gradient-to-bl from-transparent via-white/3 to-transparent pointer-events-none"></div>
               </div>
 
@@ -114,7 +122,7 @@ const ConsultingProcess = ({
                   "bg-blue-900",
                 ];
                 return (
-                  <div
+                  <article
                     key={index}
                     className="relative flex items-start group"
                   >
@@ -140,7 +148,7 @@ const ConsultingProcess = ({
                         </p>
                       </div>
                     </div>
-                  </div>
+                  </article>
                 );
               })}
             </div>
@@ -150,13 +158,15 @@ const ConsultingProcess = ({
             <button
               onClick={openContactModal}
               className="w-full bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105"
+              aria-label="Start Your Oracle NetSuite Consulting Journey"
             >
               Start Your Consulting Journey
             </button>
           </div>
         </div>
       </div>
-    </div>
+    </section>
+    </>
   );
 };
 

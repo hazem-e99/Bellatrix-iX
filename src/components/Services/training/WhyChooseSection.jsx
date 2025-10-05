@@ -1,5 +1,6 @@
 // WhyChooseSection.jsx
 import React from 'react';
+import SEO from '../../SEO';
 import FeatureCard from './FeatureCard';
 
 const WhyChooseSection = ({ whyChooseSection, trainingFeatures, renderIcon, openFeatureModal }) => {
@@ -48,16 +49,25 @@ const WhyChooseSection = ({ whyChooseSection, trainingFeatures, renderIcon, open
     const remainingWords = titleParts.slice(1).join(' ') || "Choose Our Training";
 
     return (
-        <div className="bg-gray-50 py-12 light-section">
-            <div className="container mx-auto px-6">
-                <div className="text-center mb-10">
-                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
+        <>
+            <SEO 
+                title={`Why Choose Oracle NetSuite Training | ${whyChooseSection.title || 'Professional ERP Education'}`}
+                description={`${whyChooseSection.description || 'Discover why our Oracle NetSuite training is the best choice for professional ERP education'} - Expert instructors, hands-on learning, industry recognition.`}
+                keywords="why choose NetSuite training, Oracle ERP education benefits, professional NetSuite certification, ERP training advantages, NetSuite learning benefits"
+                ogTitle={`Why Choose Our Oracle NetSuite Training - ${whyChooseSection.title || 'Professional ERP Education'}`}
+                ogDescription={`${(whyChooseSection.description || 'Professional Oracle NetSuite training with industry-leading benefits').substring(0, 120)}... Discover training excellence.`}
+                ogImage="/images/netsuite-training-benefits.jpg"
+            />
+            <section className="bg-gray-50 py-12 light-section">
+                <div className="container mx-auto px-6">
+                    <header className="text-center mb-10">
+                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
                         {firstWord} <span className="text-blue-600">{remainingWords}</span>
                     </h2>
                     <p className="text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto">
                         {whyChooseSection.description || "Professional development excellence"}
                     </p>
-                </div>
+                </header>
 
                 <div className="flex flex-col lg:flex-row items-center gap-12">
                     {/* Features Grid - Left Side */}
@@ -157,7 +167,8 @@ const WhyChooseSection = ({ whyChooseSection, trainingFeatures, renderIcon, open
                             </div>
                 </div>
             </div>
-        </div>
+        </section>
+        </>
     );
 };
 

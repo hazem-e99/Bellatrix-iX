@@ -1,5 +1,6 @@
 // Training.jsx
 import React, { useState, useEffect } from 'react';
+import SEO from '../../SEO';
 import ContactForm from '../../ContactForm';
 import Modal from '../../Modal';
 import HeroSection from './HeroSection';
@@ -104,9 +105,18 @@ const Training = () => {
     }
 
   return (
-    <div className="custom-scrollbar" style={{backgroundColor: '#001038'}}>
-      {/* Hero Section */}
-      <section data-theme="dark">
+    <>
+      <SEO 
+        title="Oracle NetSuite Training Services | Professional ERP Education & Certification Programs"
+        description="Comprehensive Oracle NetSuite training programs including implementation, customization, and advanced ERP education. Expert-led courses for business transformation and skill development."
+        keywords="Oracle NetSuite training, NetSuite education, ERP training programs, NetSuite certification, Oracle training courses, ERP skill development, NetSuite learning"
+        ogTitle="Oracle NetSuite Training Services - Professional ERP Education Programs"
+        ogDescription="Master Oracle NetSuite with comprehensive training programs. Expert-led education for implementation, customization, and advanced ERP management skills."
+        ogImage="/images/netsuite-training-services.jpg"
+      />
+      <main className="custom-scrollbar" style={{backgroundColor: '#001038'}}>
+        {/* Hero Section */}
+        <section data-theme="dark">
         <HeroSection 
           heroContent={data.heroContent} 
           backgroundVideo={data.backgroundVideo}
@@ -157,7 +167,8 @@ const Training = () => {
         closeContactModal={closeContactModal}
         renderIcon={renderIcon}
       />
-    </div>
+      </main>
+    </>
   );
 };
 

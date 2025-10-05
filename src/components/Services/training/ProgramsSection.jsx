@@ -1,5 +1,6 @@
 // ProgramsSection.jsx
 import React from "react";
+import SEO from "../../SEO";
 import TrainingProgramCard from "./TrainingProgramCard";
 
 const ProgramsSection = ({
@@ -18,14 +19,23 @@ const ProgramsSection = ({
   });
 
   return (
-    <div className="bg-gray-50 py-12 light-section">
-      {/* DEBUG: Show actual image URL being used */}
-      <div style={{display: 'none'}}>
-        Image URL: {programsSection?.image}
-      </div>
-      <div className="container mx-auto px-6">
-        <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
+    <>
+      <SEO 
+        title="Oracle NetSuite Training Programs | Comprehensive ERP Education Courses"
+        description="Explore comprehensive Oracle NetSuite training programs including implementation, customization, advanced modules, and certification courses designed for business professionals."
+        keywords="NetSuite training programs, Oracle ERP training courses, NetSuite education, ERP certification programs, NetSuite learning paths, Oracle training modules"
+        ogTitle="NetSuite Training Programs - Comprehensive Oracle ERP Education"
+        ogDescription="Master Oracle NetSuite with specialized training programs. Comprehensive courses for implementation, customization, and advanced ERP management skills."
+        ogImage="/images/netsuite-training-programs.jpg"
+      />
+      <section className="bg-gray-50 py-12 light-section">
+        {/* DEBUG: Show actual image URL being used */}
+        <div style={{display: 'none'}}>
+          Image URL: {programsSection?.image}
+        </div>
+        <div className="container mx-auto px-6">
+          <header className="text-center mb-10">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
             {programsSection.title.split(" ")[0]}{" "}
             <span className="text-blue-600">
               {programsSection.title.split(" ")[1]}
@@ -34,7 +44,7 @@ const ProgramsSection = ({
           <p className="text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto">
             {programsSection.description}
           </p>
-        </div>
+        </header>
 
         <div className="flex flex-col lg:flex-row items-center gap-8">
           {/* Image - Left Side */}
@@ -54,7 +64,7 @@ const ProgramsSection = ({
                 <div className="relative bg-gradient-to-br from-white/5 via-transparent to-blue-500/5 rounded-2xl p-4 border border-white/20">
                   <img
                     src={programsSection.image || "/images/training.jpg"}
-                    alt="Training Programs - Advanced NetSuite Learning Solutions"
+                    alt="Oracle NetSuite Training Programs - Advanced ERP Learning Solutions"
                     className="w-full h-auto rounded-xl shadow-2xl brightness-105 contrast-110 saturate-105 group-hover:brightness-110 group-hover:contrast-115 group-hover:saturate-110 transition-all duration-500 filter drop-shadow-xl"
                     onError={(e) => {
                       console.error('🖼️ [IMAGE ERROR] Failed to load:', programsSection.image);
@@ -143,7 +153,8 @@ const ProgramsSection = ({
           </div>
         </div>
       </div>
-    </div>
+    </section>
+    </>
   );
 };
 

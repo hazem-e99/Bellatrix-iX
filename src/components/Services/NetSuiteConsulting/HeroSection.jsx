@@ -1,8 +1,18 @@
 import React from "react";
+import SEO from "../../SEO";
 
 const HeroSection = ({ title, description, ctaText, ctaIcon }) => {
   return (
-    <div
+    <>
+      <SEO 
+        title="Oracle NetSuite Consulting Hero | Expert ERP Implementation Services"
+        description="Leading Oracle NetSuite consulting services with proven expertise in ERP implementation, customization, and business transformation for enhanced operational efficiency and growth."
+        keywords="Oracle NetSuite consulting hero, NetSuite ERP implementation, Oracle consulting experts, ERP business transformation, NetSuite customization services"
+        ogTitle="Oracle NetSuite Consulting Services - Expert ERP Implementation"
+        ogDescription="Transform your business with expert Oracle NetSuite consulting services. Professional ERP implementation and customization for operational excellence."
+        ogImage="/images/netsuite-consulting-hero.jpg"
+      />
+      <header
       className="py-12 relative overflow-hidden animate-background-glow"
       style={{
         backgroundColor: "#001038",
@@ -163,7 +173,8 @@ const HeroSection = ({ title, description, ctaText, ctaIcon }) => {
           animation: background-glow 12s ease-in-out infinite;
         }
       `}</style>
-    </div>
+    </header>
+    </>
   );
 };
 

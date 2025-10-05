@@ -1,9 +1,19 @@
 // ModuleCard.jsx
 import React from 'react';
+import SEO from '../../SEO';
 
 const ModuleCard = ({ module, index, renderIcon }) => {
     return (
-        <div className="group relative overflow-hidden bg-gradient-to-br from-gray-800/90 via-gray-700/80 to-gray-800/90 rounded-3xl p-6 border border-gray-600/50 shadow-2xl hover:shadow-blue-500/20 hover:shadow-2xl transition-all duration-500 backdrop-blur-sm">
+        <>
+            <SEO 
+                title={`Oracle NetSuite Training Module | ${module.title || 'ERP Learning Module'}`}
+                description={`${module.title || 'Oracle NetSuite training module'}: ${(module.description || 'Professional ERP training module').substring(0, 120)}... Duration: ${module.duration || 'Variable'}.`}
+                keywords={`NetSuite training module, ${module.title || 'ERP module'}, Oracle training curriculum, NetSuite learning, ERP education module`}
+                ogTitle={`NetSuite Training Module - ${module.title || 'Oracle ERP Learning'}`}
+                ogDescription={`Master ${module.title || 'Oracle NetSuite concepts'} in this training module. ${(module.description || '').substring(0, 100)}... Professional ERP education.`}
+                ogImage="/images/netsuite-training-module.jpg"
+            />
+            <article className="group relative overflow-hidden bg-gradient-to-br from-gray-800/90 via-gray-700/80 to-gray-800/90 rounded-3xl p-6 border border-gray-600/50 shadow-2xl hover:shadow-blue-500/20 hover:shadow-2xl transition-all duration-500 backdrop-blur-sm">
             <div className={`absolute top-0 right-0 w-24 h-24 bg-gradient-to-br ${
                 index % 4 === 0 ? 'from-blue-500/30 to-cyan-500/30' :
                 index % 4 === 1 ? 'from-blue-400/30 to-purple-500/30' :
@@ -29,7 +39,8 @@ const ModuleCard = ({ module, index, renderIcon }) => {
                     Duration: {module.duration}
                 </div>
             </div>
-        </div>
+        </article>
+        </>
     );
 };
 

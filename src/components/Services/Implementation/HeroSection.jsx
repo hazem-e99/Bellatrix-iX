@@ -1,171 +1,223 @@
 // components/Implementation/HeroSection.jsx
-import React, { useState, useEffect } from 'react';
-import { getVariantClasses, validateVariant } from '../../../utils/variantSystem';
+import React, { useState, useEffect } from "react";
+import SEO from "../../SEO";
+import {
+  getVariantClasses,
+  validateVariant,
+} from "../../../utils/variantSystem";
 
 const HeroSection = ({ data = {}, openModal }) => {
-    const [defaultData, setDefaultData] = useState(null);
+  const [defaultData, setDefaultData] = useState(null);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch('/data/Implementation.json');
-                const jsonData = await response.json();
-                setDefaultData(jsonData.heroSection);
-            } catch (error) {
-                console.error('Failed to load Implementation data:', error);
-                // Fallback data
-                setDefaultData({
-                    backgroundVideo: "/Videos/HomeHeroSectionV.mp4",
-                    titleParts: ["Where", "Vision", "Meets", "Reality"],
-                    description: "We don't just implement solutions—we craft digital experiences that transform the way you do business",
-                    ctaButton: {
-                        text: "Start Implementation",
-                        icon: "M13 7l5 5m0 0l-5 5m5-5H6",
-                        variant: "primary"
-                    }
-                });
-            }
-        };
-        fetchData();
-    }, []);
-
-    // Use props if provided, otherwise fall back to default data
-    const rawData = data && Object.keys(data).length > 0 ? data : (defaultData || {
-        backgroundVideo: "/Videos/HomeHeroSectionV.mp4",
-        titleParts: ["Where", "Vision", "Meets", "Reality"],
-        description: "We don't just implement solutions—we craft digital experiences that transform the way you do business",
-        ctaButton: {
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/data/Implementation.json");
+        const jsonData = await response.json();
+        setDefaultData(jsonData.heroSection);
+      } catch (error) {
+        console.error("Failed to load Implementation data:", error);
+        // Fallback data
+        setDefaultData({
+          backgroundVideo: "/Videos/HomeHeroSectionV.mp4",
+          titleParts: ["Where", "Vision", "Meets", "Reality"],
+          description:
+            "We don't just implement solutions—we craft digital experiences that transform the way you do business",
+          ctaButton: {
             text: "Start Implementation",
             icon: "M13 7l5 5m0 0l-5 5m5-5H6",
-            variant: "primary"
-        }
-    });
-
-    // Convert title/subtitle to titleParts if needed
-    const displayData = {
-        ...rawData,
-        titleParts: rawData.titleParts || (rawData.title && rawData.subtitle ? [rawData.title, rawData.subtitle] : ["Implementation", "Services", "Made", "Simple"])
+            variant: "primary",
+          },
+        });
+      }
     };
+    fetchData();
+  }, []);
 
-    // Get variant classes for the CTA button
-    const ctaVariant = validateVariant(displayData.ctaButton?.variant || "primary");
-    const variantClasses = getVariantClasses(ctaVariant);
+  // Use props if provided, otherwise fall back to default data
+  const rawData =
+    data && Object.keys(data).length > 0
+      ? data
+      : defaultData || {
+          backgroundVideo: "/Videos/HomeHeroSectionV.mp4",
+          titleParts: ["Where", "Vision", "Meets", "Reality"],
+          description:
+            "We don't just implement solutions—we craft digital experiences that transform the way you do business",
+          ctaButton: {
+            text: "Start Implementation",
+            icon: "M13 7l5 5m0 0l-5 5m5-5H6",
+            variant: "primary",
+          },
+        };
 
-    console.log('🎯 [ImplementationHeroSection] CTA Button Debug:', {
-        rawVariant: displayData.ctaButton?.variant,
-        validatedVariant: ctaVariant,
-        variantClasses: variantClasses,
-        ctaButton: displayData.ctaButton
-    });
+  // Convert title/subtitle to titleParts if needed
+  const displayData = {
+    ...rawData,
+    titleParts:
+      rawData.titleParts ||
+      (rawData.title && rawData.subtitle
+        ? [rawData.title, rawData.subtitle]
+        : ["Implementation", "Services", "Made", "Simple"]),
+  };
 
-    return (
-        <div className="min-h-screen relative overflow-hidden pt-20">
-            {/* Background Video or Image */}
-            {displayData.backgroundVideo && (displayData.backgroundVideo.includes('.mp4') || displayData.backgroundVideo.includes('.webm')) ? (
-                <video 
-                    autoPlay 
-                    muted 
-                    loop 
-                    playsInline
-                    className="absolute inset-0 w-full h-full object-cover"
-                >
-                    <source src={displayData.backgroundVideo} type="video/mp4" />
-                    Your browser does not support the video tag.
-                </video>
-            ) : (
-                <div 
-                    className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
-                    style={{ backgroundImage: `url(${displayData.backgroundVideo || displayData.backgroundImage || '/Videos/HomeHeroSectionV.mp4'})` }}
-                />
-            )}
-            
-            {/* Creative Overlay with Animated Gradient */}
-            <div className="absolute inset-0 bg-gradient-to-br from-white/8 via-white/5 to-white/8 animate-gradient-shift"></div>
-            
-            {/* Floating Geometric Elements */}
-            <div className="absolute inset-0 overflow-hidden">
-                <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-gradient-to-r from-white/60 to-white/40 rounded-full blur-xl animate-float-slow"></div>
-                <div className="absolute top-3/4 right-1/4 w-24 h-24 bg-gradient-to-r from-white/65 to-white/45 rounded-full blur-lg animate-float-reverse"></div>
-                <div className="absolute top-1/2 left-1/3 w-16 h-16 bg-gradient-to-r from-white/70 to-white/50 rounded-full blur-md animate-pulse-slow"></div>
-                <div className="absolute bottom-1/4 left-1/2 w-20 h-20 bg-gradient-to-r from-white/60 to-white/40 rounded-full blur-lg animate-bounce-gentle"></div>
-            </div>
+  // Get variant classes for the CTA button
+  const ctaVariant = validateVariant(
+    displayData.ctaButton?.variant || "primary"
+  );
+  const variantClasses = getVariantClasses(ctaVariant);
 
-            {/* Animated Grid Pattern */}
-            <div className="absolute inset-0 opacity-20">
-                <div className="w-full h-full bg-grid-pattern animate-grid-flow"></div>
-            </div>
-            
-            {/* Content */}
-            <div className="relative z-10 min-h-screen flex items-center justify-center">
-                <div className="w-full max-w-6xl mx-auto px-6">
-                    {/* Main Heading with Text Animation */}
-                    <div className="text-center mb-8">
-                        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight text-white animate-slide-up">
-                            {displayData.titleParts.length >= 4 ? (
-                                <>
-                                    <span className="inline-block animate-text-glow">{displayData.titleParts[0]}</span>{' '}
-                                    <span className="inline-block bg-gradient-to-r from-white via-white to-white bg-clip-text text-transparent animate-gradient-text">
-                                        {displayData.titleParts[1]}
-                                    </span>{' '}
-                                    <span className="inline-block animate-text-glow delay-300">{displayData.titleParts[2]}</span>
-                                    <br />
-                                    <span className="inline-block bg-gradient-to-r from-white via-white to-white bg-clip-text text-transparent animate-gradient-text-reverse">
-                                        {displayData.titleParts[3]}
-                                    </span>
-                                </>
-                            ) : displayData.titleParts.length === 2 ? (
-                                <>
-                                    <span className="inline-block animate-text-glow">{displayData.titleParts[0]}</span>
-                                    <br />
-                                    <span className="inline-block bg-gradient-to-r from-white via-white to-white bg-clip-text text-transparent animate-gradient-text">
-                                        {displayData.titleParts[1]}
-                                    </span>
-                                </>
-                            ) : (
-                                <span className="inline-block animate-text-glow">{displayData.titleParts[0] || "Implementation Services"}</span>
-                            )}
-                        </h1>
-                    </div>
-                    
-                    {/* Creative Description with Typewriter Effect */}
-                    <div className="text-center mb-12">
-                        <p className="text-lg md:text-xl lg:text-2xl text-gray-200 leading-relaxed max-w-4xl mx-auto animate-fade-in">
-                            {displayData.description && displayData.description.includes('digital experiences') ? (
-                                <>
-                                    {displayData.description.split('digital experiences')[0]}
-                                    <span className="relative inline-block">
-                                        <span className="bg-gradient-to-r from-white to-white bg-clip-text text-transparent font-semibold">
-                                            digital experiences
-                                        </span>
-                                        <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-white to-white animate-underline-expand"></span>
-                                    </span>
-                                    {displayData.description.split('digital experiences')[1]}
-                                </>
-                            ) : (
-                                displayData.description
-                            )}
-                        </p>
-                    </div>
+  console.log("🎯 [ImplementationHeroSection] CTA Button Debug:", {
+    rawVariant: displayData.ctaButton?.variant,
+    validatedVariant: ctaVariant,
+    variantClasses: variantClasses,
+    ctaButton: displayData.ctaButton,
+  });
 
-                    {/* CTA Button - Now using variant system */}
-                    <div className="text-center">
-                        <button 
-                            onClick={openModal}
-                            className={`group relative px-10 py-4 font-bold text-lg rounded-full overflow-hidden transition-all duration-300 transform hover:scale-105 hover:shadow-2xl animate-slide-up-delay ${variantClasses}`}
-                        >
-                            <span className="relative z-10 flex items-center justify-center">
-                                <svg className="w-5 h-5 mr-2 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={displayData.ctaButton.icon} />
-                                </svg>
-                                {displayData.ctaButton.text}
-                            </span>
-                            <div className="absolute inset-0 bg-gray-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        </button>
-                    </div>
-                </div>
-            </div>
+  return (
+    <>
+      <SEO
+        title="Oracle NetSuite ERP Implementation | Where Vision Meets Technology Reality"
+        description="Transform your business operations with expert Oracle NetSuite ERP implementation. Our certified consultants craft enterprise solutions that revolutionize how you do business with proven technology."
+        keywords="Oracle NetSuite ERP implementation, enterprise technology solutions, certified Oracle consultants, business transformation, ERP deployment, CRM integration, IT consulting services"
+        ogTitle="Oracle NetSuite ERP Implementation | Where Vision Meets Technology Reality"
+        ogDescription="Expert Oracle NetSuite ERP implementation services with certified consultants. Transform your business operations with enterprise technology solutions."
+        ogImage="/Videos/HomeHeroSectionV.mp4"
+      />
+      <header className="min-h-screen relative overflow-hidden pt-20">
+        {/* Background Video or Image */}
+        {displayData.backgroundVideo &&
+        (displayData.backgroundVideo.includes(".mp4") ||
+          displayData.backgroundVideo.includes(".webm")) ? (
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
+          >
+            <source src={displayData.backgroundVideo} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        ) : (
+          <div
+            className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: `url(${
+                displayData.backgroundVideo ||
+                displayData.backgroundImage ||
+                "/Videos/HomeHeroSectionV.mp4"
+              })`,
+            }}
+          />
+        )}
+
+        {/* Creative Overlay with Animated Gradient */}
+        <div className="absolute inset-0 bg-gradient-to-br from-white/8 via-white/5 to-white/8 animate-gradient-shift"></div>
+
+        {/* Floating Geometric Elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-gradient-to-r from-white/60 to-white/40 rounded-full blur-xl animate-float-slow"></div>
+          <div className="absolute top-3/4 right-1/4 w-24 h-24 bg-gradient-to-r from-white/65 to-white/45 rounded-full blur-lg animate-float-reverse"></div>
+          <div className="absolute top-1/2 left-1/3 w-16 h-16 bg-gradient-to-r from-white/70 to-white/50 rounded-full blur-md animate-pulse-slow"></div>
+          <div className="absolute bottom-1/4 left-1/2 w-20 h-20 bg-gradient-to-r from-white/60 to-white/40 rounded-full blur-lg animate-bounce-gentle"></div>
         </div>
-    );
+
+        {/* Animated Grid Pattern */}
+        <div className="absolute inset-0 opacity-20">
+          <div className="w-full h-full bg-grid-pattern animate-grid-flow"></div>
+        </div>
+
+        {/* Content */}
+        <div className="relative z-10 min-h-screen flex items-center justify-center">
+          <div className="w-full max-w-6xl mx-auto px-6">
+            {/* Main Heading with Text Animation */}
+            <div className="text-center mb-8">
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight text-white animate-slide-up">
+                {displayData.titleParts.length >= 4 ? (
+                  <>
+                    <span className="inline-block animate-text-glow">
+                      {displayData.titleParts[0]}
+                    </span>{" "}
+                    <span className="inline-block bg-gradient-to-r from-white via-white to-white bg-clip-text text-transparent animate-gradient-text">
+                      {displayData.titleParts[1]}
+                    </span>{" "}
+                    <span className="inline-block animate-text-glow delay-300">
+                      {displayData.titleParts[2]}
+                    </span>
+                    <br />
+                    <span className="inline-block bg-gradient-to-r from-white via-white to-white bg-clip-text text-transparent animate-gradient-text-reverse">
+                      {displayData.titleParts[3]}
+                    </span>
+                  </>
+                ) : displayData.titleParts.length === 2 ? (
+                  <>
+                    <span className="inline-block animate-text-glow">
+                      {displayData.titleParts[0]}
+                    </span>
+                    <br />
+                    <span className="inline-block bg-gradient-to-r from-white via-white to-white bg-clip-text text-transparent animate-gradient-text">
+                      {displayData.titleParts[1]}
+                    </span>
+                  </>
+                ) : (
+                  <span className="inline-block animate-text-glow">
+                    {displayData.titleParts[0] || "Implementation Services"}
+                  </span>
+                )}
+              </h1>
+            </div>
+
+            {/* Creative Description with Typewriter Effect */}
+            <div className="text-center mb-12">
+              <p className="text-lg md:text-xl lg:text-2xl text-gray-200 leading-relaxed max-w-4xl mx-auto animate-fade-in">
+                {displayData.description &&
+                displayData.description.includes("digital experiences") ? (
+                  <>
+                    {displayData.description.split("digital experiences")[0]}
+                    <span className="relative inline-block">
+                      <span className="bg-gradient-to-r from-white to-white bg-clip-text text-transparent font-semibold">
+                        digital experiences
+                      </span>
+                      <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-white to-white animate-underline-expand"></span>
+                    </span>
+                    {displayData.description.split("digital experiences")[1]}
+                  </>
+                ) : (
+                  displayData.description
+                )}
+              </p>
+            </div>
+
+            {/* CTA Button - Now using variant system */}
+            <div className="text-center">
+              <button
+                onClick={openModal}
+                className={`group relative px-10 py-4 font-bold text-lg rounded-full overflow-hidden transition-all duration-300 transform hover:scale-105 hover:shadow-2xl animate-slide-up-delay ${variantClasses}`}
+              >
+                <span className="relative z-10 flex items-center justify-center">
+                  <svg
+                    className="w-5 h-5 mr-2 transition-transform group-hover:translate-x-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d={displayData.ctaButton.icon}
+                    />
+                  </svg>
+                  {displayData.ctaButton.text}
+                </span>
+                <div className="absolute inset-0 bg-gray-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+    </>
+  );
 };
 
 export default HeroSection;

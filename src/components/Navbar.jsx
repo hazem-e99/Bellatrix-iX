@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import SEO from "./SEO";
 import {
   Bars3Icon,
   XMarkIcon,
@@ -8,11 +9,11 @@ import {
 // eslint-disable-next-line
 import { AnimatePresence, motion } from "framer-motion";
 import ContactForm from "./ContactForm";
-import Modal from './Modal';
-import { Link } from 'react-router-dom';
+import Modal from "./Modal";
+import { Link } from "react-router-dom";
 
 const Navbar = ({ industries = [] }) => {
-    const [navbarTheme, setNavbarTheme] = useState("dark");
+  const [navbarTheme, setNavbarTheme] = useState("dark");
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
@@ -102,20 +103,20 @@ const Navbar = ({ industries = [] }) => {
             label: "Full Name *",
             type: "text",
             placeholder: "John Doe",
-            required: true
+            required: true,
           },
           {
             label: "Email Address *",
             type: "email",
             placeholder: "john@company.com",
-            required: true
+            required: true,
           },
           {
             label: "Phone Number",
             type: "tel",
-            placeholder: "+1 (555) 123-4567"
-          }
-        ]
+            placeholder: "+1 (555) 123-4567",
+          },
+        ],
       },
       companyInfo: {
         title: "Company Details",
@@ -123,7 +124,7 @@ const Navbar = ({ industries = [] }) => {
           {
             label: "Company Name",
             type: "text",
-            placeholder: "Your Company Inc."
+            placeholder: "Your Company Inc.",
           },
           {
             label: "Industry",
@@ -137,8 +138,8 @@ const Navbar = ({ industries = [] }) => {
               "Technology",
               "Professional Services",
               "Non-Profit",
-              "Other"
-            ]
+              "Other",
+            ],
           },
           {
             label: "Country",
@@ -154,18 +155,18 @@ const Navbar = ({ industries = [] }) => {
               "United Arab Emirates",
               "Saudi Arabia",
               "Egypt",
-              "Other"
-            ]
-          }
-        ]
+              "Other",
+            ],
+          },
+        ],
       },
       message: {
         label: "Message",
-        placeholder: "Tell us about your project requirements..."
+        placeholder: "Tell us about your project requirements...",
       },
       submitNote: "✓ 24hr response",
-      submitText: "Send Message"
-    }
+      submitText: "Send Message",
+    },
   };
 
   // New Services structure
@@ -174,8 +175,8 @@ const Navbar = ({ industries = [] }) => {
       title: "Support",
       items: [
         { title: "Oracle NetSuite Support", link: "/Support" },
-        { title: "Technical Support", link: "/Support" }
-      ]
+        { title: "Technical Support", link: "/Support" },
+      ],
     },
     consultation: {
       title: "Consultation",
@@ -184,15 +185,15 @@ const Navbar = ({ industries = [] }) => {
         { title: "Training", link: "/Training" },
         { title: "NetSuite Consulting", link: "/netsuite-consulting" },
         { title: "Customization and Development", link: "/customization" },
-        { title: "Integration", link: "/integration" }
-      ]
-    }
+        { title: "Integration", link: "/integration" },
+      ],
+    },
   };
 
   // Industries data
   const industriesData = [
     { title: "Manufacturing", link: "/industries/manufacturing" },
-    { title: "Retail & E-commerce", link: "/industries/retail" }
+    { title: "Retail & E-commerce", link: "/industries/retail" },
   ];
 
   useEffect(() => {
@@ -210,10 +211,10 @@ const Navbar = ({ industries = [] }) => {
   // حل scrollY + getBoundingClientRect
   useEffect(() => {
     const handleScroll = () => {
-      const navbar = document.querySelector('nav');
+      const navbar = document.querySelector("nav");
       const navbarHeight = navbar ? navbar.offsetHeight : 0;
       const scrollPosition = window.scrollY + navbarHeight + 1;
-      const sections = Array.from(document.querySelectorAll('.light-section'));
+      const sections = Array.from(document.querySelectorAll(".light-section"));
       let isLight = false;
       for (let section of sections) {
         const rect = section.getBoundingClientRect();
@@ -269,18 +270,18 @@ const Navbar = ({ industries = [] }) => {
   // Handle escape key to close dropdowns
   useEffect(() => {
     const handleEscapeKey = (event) => {
-      if (event.key === 'Escape') {
+      if (event.key === "Escape") {
         setOpenDropdown(null);
         setOpenSubDropdown(null);
       }
     };
 
     if (openDropdown || openSubDropdown) {
-      document.addEventListener('keydown', handleEscapeKey);
+      document.addEventListener("keydown", handleEscapeKey);
     }
 
     return () => {
-      document.removeEventListener('keydown', handleEscapeKey);
+      document.removeEventListener("keydown", handleEscapeKey);
     };
   }, [openDropdown, openSubDropdown]);
 
@@ -294,9 +295,19 @@ const Navbar = ({ industries = [] }) => {
 
   return (
     <>
-    <nav
+      <SEO
+        title="Bellatrix Navigation | Oracle NetSuite Consulting Services"
+        description="Navigate Bellatrix's comprehensive Oracle NetSuite services including implementation, training, support, and industry-specific solutions."
+        keywords="NetSuite navigation, Oracle consulting menu, implementation services, training programs, technical support, industry solutions"
+        ogTitle="Bellatrix Services Navigation | Oracle NetSuite Solutions"
+        ogDescription="Explore Bellatrix's full range of Oracle NetSuite consulting services, training programs, and industry-specific solutions."
+        ogImage="/images/bellatrix-services-navigation.jpg"
+        twitterCard="summary_large_image"
+      />
+
+      <nav
         className={`fixed w-full top-0 left-0 z-50 transition-all duration-500 ${
-        scrolled
+          scrolled
             ? "bg-gray-900/10 shadow-2xl backdrop-blur-md"
             : "bg-transparent backdrop-blur-md"
         }`}
@@ -308,8 +319,8 @@ const Navbar = ({ industries = [] }) => {
           <div className="absolute bottom-2 left-2/3 w-1 h-1 bg-white/40 rounded-full animate-pulse"></div>
         </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-20 items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between h-20 items-center">
             {/* Premium Logo */}
             <a href="/" className="flex items-center group">
               <div className="flex items-center justify-center h-56 w-56 mr-2 relative">
@@ -323,7 +334,7 @@ const Navbar = ({ industries = [] }) => {
                         initial={{ opacity: 0, y: 16 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -16 }}
-                        transition={{ duration: 0.25, ease: 'easeInOut' }}
+                        transition={{ duration: 0.25, ease: "easeInOut" }}
                         className="absolute top-1/2 left-1/2 h-20 w-20 object-contain -translate-x-1/2 -translate-y-1/2"
                         style={{ zIndex: 2 }}
                       />
@@ -335,7 +346,7 @@ const Navbar = ({ industries = [] }) => {
                         initial={{ opacity: 0, y: 16 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -16 }}
-                        transition={{ duration: 0.25, ease: 'easeInOut' }}
+                        transition={{ duration: 0.25, ease: "easeInOut" }}
                         className="absolute top-1/2 left-1/2 h-56 w-56 object-contain -translate-x-1/2 -translate-y-1/2"
                         style={{ zIndex: 2 }}
                       />
@@ -347,7 +358,7 @@ const Navbar = ({ industries = [] }) => {
                         initial={{ opacity: 0, y: -16 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 16 }}
-                        transition={{ duration: 0.25, ease: 'easeInOut' }}
+                        transition={{ duration: 0.25, ease: "easeInOut" }}
                         className="absolute top-1/2 left-1/2 h-36 w-36 object-contain -translate-x-1/2 -translate-y-1/2"
                         style={{ zIndex: 2 }}
                       />
@@ -355,29 +366,45 @@ const Navbar = ({ industries = [] }) => {
                   </AnimatePresence>
                 </div>
               </div>
-          </a>
+            </a>
 
-          {/* Desktop Navigation */}
+            {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-1">
               {/* Home Link */}
               <Link
                 to="/"
-                className={`px-5 py-3 text-sm font-medium rounded-xl transition-all duration-300 border border-transparent hover:border-white/20 ${isLightSection ? "text-black hover:text-black" : "text-white/90 hover:text-white"}`}
+                className={`px-5 py-3 text-sm font-medium rounded-xl transition-all duration-300 border border-transparent hover:border-white/20 ${
+                  isLightSection
+                    ? "text-black hover:text-black"
+                    : "text-white/90 hover:text-white"
+                }`}
               >
                 Home
               </Link>
 
               {/* Support Dropdown */}
-            <div className="relative" onMouseEnter={() => handleMenuEnter("support")} onMouseLeave={handleMenuLeave}>
-              <button
+              <div
+                className="relative"
+                onMouseEnter={() => handleMenuEnter("support")}
+                onMouseLeave={handleMenuLeave}
+              >
+                <button
                   className={`flex items-center px-5 py-3 text-sm font-medium rounded-xl transition-all duration-300 border ${
                     openDropdown === "support"
-                      ? `${isLightSection ? "text-black border-blue-400/20 shadow" : "text-white border-blue-400/30 shadow"}`
-                      : `${isLightSection ? "text-black/90 hover:text-black border-transparent hover:border-black/20" : "text-white/90 hover:text-white border-transparent hover:border-white/20"}`
+                      ? `${
+                          isLightSection
+                            ? "text-black border-blue-400/20 shadow"
+                            : "text-white border-blue-400/30 shadow"
+                        }`
+                      : `${
+                          isLightSection
+                            ? "text-black/90 hover:text-black border-transparent hover:border-black/20"
+                            : "text-white/90 hover:text-white border-transparent hover:border-white/20"
+                        }`
                   }`}
                   onClick={() => toggleDropdown("support")}
                   onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
+                    if (e.key === "Enter" || e.key === " ") {
                       e.preventDefault();
                       toggleDropdown("support");
                     }
@@ -387,16 +414,16 @@ const Navbar = ({ industries = [] }) => {
                 >
                   <span>Support Service</span>
                   <ChevronDownIcon className="ml-1 h-4 w-4" />
-              </button>
-              <AnimatePresence>
-                {openDropdown === "support" && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
+                </button>
+                <AnimatePresence>
+                  {openDropdown === "support" && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
                       className="absolute left-0 mt-2 w-56 bg-white/70 backdrop-blur-md border border-gray-200 rounded-xl shadow-lg z-50 py-2"
-                    onMouseEnter={() => handleMenuEnter("support")}
-                    onMouseLeave={handleMenuLeave}
+                      onMouseEnter={() => handleMenuEnter("support")}
+                      onMouseLeave={handleMenuLeave}
                       role="menu"
                       aria-label="Support menu"
                     >
@@ -413,19 +440,31 @@ const Navbar = ({ industries = [] }) => {
                     </motion.div>
                   )}
                 </AnimatePresence>
-                    </div>
+              </div>
 
               {/* Consultation Dropdown */}
-            <div className="relative" onMouseEnter={() => handleMenuEnter("consultation")} onMouseLeave={handleMenuLeave}>
-              <button
+              <div
+                className="relative"
+                onMouseEnter={() => handleMenuEnter("consultation")}
+                onMouseLeave={handleMenuLeave}
+              >
+                <button
                   className={`flex items-center px-5 py-3 text-sm font-medium rounded-xl transition-all duration-300 border ${
                     openDropdown === "consultation"
-                      ? `${isLightSection ? "text-black border-blue-400/20 shadow" : "text-white border-blue-400/30 shadow"}`
-                      : `${isLightSection ? "text-black/90 hover:text-black border-transparent hover:border-black/20" : "text-white/90 hover:text-white border-transparent hover:border-white/20"}`
+                      ? `${
+                          isLightSection
+                            ? "text-black border-blue-400/20 shadow"
+                            : "text-white border-blue-400/30 shadow"
+                        }`
+                      : `${
+                          isLightSection
+                            ? "text-black/90 hover:text-black border-transparent hover:border-black/20"
+                            : "text-white/90 hover:text-white border-transparent hover:border-white/20"
+                        }`
                   }`}
                   onClick={() => toggleDropdown("consultation")}
                   onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
+                    if (e.key === "Enter" || e.key === " ") {
                       e.preventDefault();
                       toggleDropdown("consultation");
                     }
@@ -435,45 +474,59 @@ const Navbar = ({ industries = [] }) => {
                 >
                   <span>Consultation Service</span>
                   <ChevronDownIcon className="ml-1 h-4 w-4" />
-              </button>
-              <AnimatePresence>
-                {openDropdown === "consultation" && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
+                </button>
+                <AnimatePresence>
+                  {openDropdown === "consultation" && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
                       className="absolute left-0 mt-2 w-56 bg-white/70 backdrop-blur-md border border-gray-200 rounded-xl shadow-lg z-50 py-2"
-                    onMouseEnter={() => handleMenuEnter("consultation")}
-                    onMouseLeave={handleMenuLeave}
+                      onMouseEnter={() => handleMenuEnter("consultation")}
+                      onMouseLeave={handleMenuLeave}
                       role="menu"
                       aria-label="Consultation menu"
                     >
-                      {servicesStructure.consultation.items.map((item, index) => (
-                        <Link
-                          key={item.title || index}
-                          to={item.link || "#"}
-                          className="block px-5 py-3 text-gray-800 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition-all duration-150 text-base font-medium"
-                          role="menuitem"
-                        >
-                          {item.title}
-                        </Link>
-                      ))}
+                      {servicesStructure.consultation.items.map(
+                        (item, index) => (
+                          <Link
+                            key={item.title || index}
+                            to={item.link || "#"}
+                            className="block px-5 py-3 text-gray-800 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition-all duration-150 text-base font-medium"
+                            role="menuitem"
+                          >
+                            {item.title}
+                          </Link>
+                        )
+                      )}
                     </motion.div>
                   )}
                 </AnimatePresence>
-                    </div>
+              </div>
 
               {/* Solutions Dropdown */}
-              <div className="relative" onMouseEnter={() => handleMenuEnter("solutions")} onMouseLeave={handleMenuLeave}>
+              <div
+                className="relative"
+                onMouseEnter={() => handleMenuEnter("solutions")}
+                onMouseLeave={handleMenuLeave}
+              >
                 <button
                   className={`flex items-center px-5 py-3 text-sm font-medium rounded-xl transition-all duration-300 border ${
                     openDropdown === "solutions"
-                      ? `${isLightSection ? "text-black border-blue-400/20 shadow" : "text-white border-blue-400/30 shadow"}`
-                      : `${isLightSection ? "text-black/90 hover:text-black border-transparent hover:border-black/20" : "text-white/90 hover:text-white border-transparent hover:border-white/20"}`
+                      ? `${
+                          isLightSection
+                            ? "text-black border-blue-400/20 shadow"
+                            : "text-white border-blue-400/30 shadow"
+                        }`
+                      : `${
+                          isLightSection
+                            ? "text-black/90 hover:text-black border-transparent hover:border-black/20"
+                            : "text-white/90 hover:text-white border-transparent hover:border-white/20"
+                        }`
                   }`}
                   onClick={() => toggleDropdown("solutions")}
                   onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
+                    if (e.key === "Enter" || e.key === " ") {
                       e.preventDefault();
                       toggleDropdown("solutions");
                     }
@@ -506,22 +559,34 @@ const Navbar = ({ industries = [] }) => {
                       >
                         HR
                       </Link>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
 
               {/* Industries Dropdown */}
-            <div className="relative" onMouseEnter={() => handleMenuEnter("industries")} onMouseLeave={handleMenuLeave}>
-              <button
+              <div
+                className="relative"
+                onMouseEnter={() => handleMenuEnter("industries")}
+                onMouseLeave={handleMenuLeave}
+              >
+                <button
                   className={`flex items-center px-5 py-3 text-sm font-medium rounded-xl transition-all duration-300 border ${
                     openDropdown === "industries"
-                      ? `${isLightSection ? "text-black border-blue-400/20 shadow" : "text-white border-blue-400/30 shadow"}`
-                      : `${isLightSection ? "text-black/90 hover:text-black border-transparent hover:border-black/20" : "text-white/90 hover:text-white border-transparent hover:border-white/20"}`
+                      ? `${
+                          isLightSection
+                            ? "text-black border-blue-400/20 shadow"
+                            : "text-white border-blue-400/30 shadow"
+                        }`
+                      : `${
+                          isLightSection
+                            ? "text-black/90 hover:text-black border-transparent hover:border-black/20"
+                            : "text-white/90 hover:text-white border-transparent hover:border-white/20"
+                        }`
                   }`}
                   onClick={() => toggleDropdown("industries")}
                   onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
+                    if (e.key === "Enter" || e.key === " ") {
                       e.preventDefault();
                       toggleDropdown("industries");
                     }
@@ -531,17 +596,17 @@ const Navbar = ({ industries = [] }) => {
                 >
                   <span>Industries</span>
                   <ChevronDownIcon className="ml-1 h-4 w-4" />
-              </button>
-              <AnimatePresence>
-                {openDropdown === "industries" && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
+                </button>
+                <AnimatePresence>
+                  {openDropdown === "industries" && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
                       className="absolute left-0 mt-2 w-56 bg-white/70 backdrop-blur-md border border-gray-200 rounded-xl shadow-lg z-50 py-2"
-                    onMouseEnter={() => handleMenuEnter("industries")}
-                    onMouseLeave={handleMenuLeave}
-                  >
+                      onMouseEnter={() => handleMenuEnter("industries")}
+                      onMouseLeave={handleMenuLeave}
+                    >
                       {industriesData.map((item, index) => (
                         <Link
                           key={item.title || index}
@@ -551,16 +616,20 @@ const Navbar = ({ industries = [] }) => {
                           {item.title}
                         </Link>
                       ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
 
               <Link
                 to="/about"
-                className={`px-5 py-3 text-sm font-medium rounded-xl transition-all duration-300 border border-transparent hover:border-white/20 ${isLightSection ? "text-black hover:text-black" : "text-white/90 hover:text-white"}`}
-            >
-              About
+                className={`px-5 py-3 text-sm font-medium rounded-xl transition-all duration-300 border border-transparent hover:border-white/20 ${
+                  isLightSection
+                    ? "text-black hover:text-black"
+                    : "text-white/90 hover:text-white"
+                }`}
+              >
+                About
               </Link>
 
               {/* Premium Contact button */}
@@ -570,34 +639,34 @@ const Navbar = ({ industries = [] }) => {
               >
                 <span className="relative z-10">Contact</span>
               </button>
-          </div>
+            </div>
 
-          {/* Mobile menu button */}
-          <div className="md:hidden flex items-center">
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            {/* Mobile menu button */}
+            <div className="md:hidden flex items-center">
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="inline-flex items-center justify-center p-3 rounded-xl text-white/90 hover:text-white hover:bg-white/10 focus:outline-none border border-white/10 backdrop-blur-sm transition-all duration-300"
-            >
-              {mobileMenuOpen ? (
-                <XMarkIcon className="block h-6 w-6" />
-              ) : (
-                <Bars3Icon className="block h-6 w-6" />
-              )}
-            </button>
+              >
+                {mobileMenuOpen ? (
+                  <XMarkIcon className="block h-6 w-6" />
+                ) : (
+                  <Bars3Icon className="block h-6 w-6" />
+                )}
+              </button>
+            </div>
           </div>
         </div>
-      </div>
 
         {/* Premium Mobile menu */}
-      {mobileMenuOpen && (
-        <motion.div
+        {mobileMenuOpen && (
+          <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             className="md:hidden bg-gray-900/40 backdrop-blur-2xl border-t border-white/10"
           >
             <div className="px-4 pt-4 pb-6 space-y-2">
-            {/* Mobile Home Link */}
+              {/* Mobile Home Link */}
               <Link
                 to="/"
                 className="block px-4 py-3 text-base font-medium text-white/90 rounded-xl hover:bg-white/10 hover:text-white border border-white/10 transition-all duration-300"
@@ -605,16 +674,16 @@ const Navbar = ({ industries = [] }) => {
                 Home
               </Link>
 
-            {/* Mobile Support Dropdown */}
+              {/* Mobile Support Dropdown */}
               <div className="relative">
-              <button
-                onClick={() => toggleDropdown("mobileSupport")}
+                <button
+                  onClick={() => toggleDropdown("mobileSupport")}
                   className="w-full flex justify-between items-center px-4 py-3 text-base font-medium text-white/90 rounded-xl hover:bg-white/10 hover:text-white transition-all duration-300 border border-white/10"
-              >
-                <span>Support Service</span>
+                >
+                  <span>Support Service</span>
                   <ChevronDownIcon className="h-4 w-4" />
-              </button>
-              {openDropdown === "mobileSupport" && (
+                </button>
+                {openDropdown === "mobileSupport" && (
                   <motion.div
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
@@ -633,16 +702,16 @@ const Navbar = ({ industries = [] }) => {
                 )}
               </div>
 
-            {/* Mobile Consultation Dropdown */}
+              {/* Mobile Consultation Dropdown */}
               <div className="relative">
-              <button
-                onClick={() => toggleDropdown("mobileConsultation")}
+                <button
+                  onClick={() => toggleDropdown("mobileConsultation")}
                   className="w-full flex justify-between items-center px-4 py-3 text-base font-medium text-white/90 rounded-xl hover:bg-white/10 hover:text-white transition-all duration-300 border border-white/10"
-              >
-                <span>Consultation Service</span>
+                >
+                  <span>Consultation Service</span>
                   <ChevronDownIcon className="h-4 w-4" />
-              </button>
-              {openDropdown === "mobileConsultation" && (
+                </button>
+                {openDropdown === "mobileConsultation" && (
                   <motion.div
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
@@ -689,19 +758,19 @@ const Navbar = ({ industries = [] }) => {
                       HR
                     </Link>
                   </motion.div>
-              )}
-            </div>
+                )}
+              </div>
 
-            {/* Mobile Industries Dropdown */}
+              {/* Mobile Industries Dropdown */}
               <div className="relative">
-              <button
-                onClick={() => toggleDropdown("mobileIndustries")}
+                <button
+                  onClick={() => toggleDropdown("mobileIndustries")}
                   className="w-full flex justify-between items-center px-4 py-3 text-base font-medium text-white/90 rounded-xl hover:bg-white/10 hover:text-white transition-all duration-300 border border-white/10"
-              >
-                <span>Industries</span>
-                <ChevronDownIcon className="h-4 w-4" />
-              </button>
-              {openDropdown === "mobileIndustries" && (
+                >
+                  <span>Industries</span>
+                  <ChevronDownIcon className="h-4 w-4" />
+                </button>
+                {openDropdown === "mobileIndustries" && (
                   <motion.div
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
@@ -717,27 +786,27 @@ const Navbar = ({ industries = [] }) => {
                       </Link>
                     ))}
                   </motion.div>
-              )}
-            </div>
+                )}
+              </div>
 
               <Link
                 to="/about"
                 className="block px-4 py-3 text-base font-medium text-white/90 rounded-xl hover:bg-white/10 hover:text-white border border-white/10 transition-all duration-300"
-            >
-              About
+              >
+                About
               </Link>
 
               {/* Mobile Contact button */}
               <button
                 onClick={openContactModal}
                 className="block w-full px-4 py-3 mt-4 text-center bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-600 text-white font-medium rounded-xl hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300 border border-white/10 cursor-pointer"
-            >
-              Contact
+              >
+                Contact
               </button>
-          </div>
-        </motion.div>
-      )}
-    </nav>
+            </div>
+          </motion.div>
+        )}
+      </nav>
 
       {/* Contact Modal */}
       <Modal

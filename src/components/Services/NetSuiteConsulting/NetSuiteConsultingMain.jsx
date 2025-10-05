@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import SEO from "../../SEO";
 import ContactForm from "../../ContactForm";
 import Modal from "../../Modal";
 import HeroSection from "./HeroSection";
@@ -73,7 +74,16 @@ const NetSuiteConsultingMain = () => {
     );
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <>
+      <SEO 
+        title="Oracle NetSuite Consulting Services | Expert ERP Implementation & Optimization"
+        description="Professional Oracle NetSuite consulting services including implementation, customization, integration, and optimization. Expert ERP consultants for business transformation and growth."
+        keywords="Oracle NetSuite consulting, NetSuite implementation, ERP consulting services, NetSuite customization, Oracle ERP consultants, business process optimization, NetSuite integration"
+        ogTitle="Oracle NetSuite Consulting Services - Expert ERP Implementation"
+        ogDescription="Transform your business with professional Oracle NetSuite consulting services. Expert implementation, customization, and optimization for enhanced operational efficiency."
+        ogImage="/images/netsuite-consulting-services.jpg"
+      />
+      <main className="min-h-screen bg-gray-50">
         <HeroSection 
           title={data.hero.title}
           description={data.hero.description}
@@ -137,7 +147,8 @@ const NetSuiteConsultingMain = () => {
       >
         <ContactForm />
       </Modal>
-    </div>
+      </main>
+    </>
   );
 };
 

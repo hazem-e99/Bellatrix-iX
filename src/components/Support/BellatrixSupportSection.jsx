@@ -1,8 +1,9 @@
 import React from "react";
+import SEO from "../SEO";
 
 // Component for each support card
 const SupportCard = ({ title, items }) => (
-  <div style={styles.card}>
+  <article style={styles.card}>
     <h3 style={styles.cardTitle}>{title}</h3>
     <ul style={styles.list}>
       {items.map((item, index) => (
@@ -11,7 +12,7 @@ const SupportCard = ({ title, items }) => (
         </li>
       ))}
     </ul>
-  </div>
+  </article>
 );
 
 // Main component
@@ -54,41 +55,77 @@ const BellatrixSupportSection = () => {
   ];
 
   return (
-    <section style={styles.section}>
-      {/* Background Pattern */}
-      <div style={styles.backgroundPattern}>
-        <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}>
-          <svg width="100%" height="100%" viewBox="0 0 100 100" style={{ color: "#93c5fd" }}>
-            <pattern id="supportGrid" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-              <circle cx="1" cy="1" r="1" fill="currentColor" opacity="0.3"/>
-            </pattern>
-            <rect width="100%" height="100%" fill="url(#supportGrid)" />
-          </svg>
+    <>
+      <SEO
+        title="Bellatrix Support Services | Admin, Functional & Development Support"
+        description="Comprehensive Bellatrix support services including admin support, functional support, and development support. Expert consultants for all your ERP needs."
+        keywords="Bellatrix admin support, functional support, development support, ERP consulting, NetSuite administration, business process optimization"
+        ogTitle="Bellatrix Support Services | Admin, Functional & Development Support"
+        ogDescription="Get comprehensive Bellatrix support with our expert consultants covering administration, functional processes, and development needs."
+        ogImage="/images/Support/bellatrix-support-services.jpg"
+      />
+      <section style={styles.section}>
+        {/* Background Pattern */}
+        <div style={styles.backgroundPattern}>
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+            }}
+          >
+            <svg
+              width="100%"
+              height="100%"
+              viewBox="0 0 100 100"
+              style={{ color: "#93c5fd" }}
+            >
+              <pattern
+                id="supportGrid"
+                x="0"
+                y="0"
+                width="20"
+                height="20"
+                patternUnits="userSpaceOnUse"
+              >
+                <circle cx="1" cy="1" r="1" fill="currentColor" opacity="0.3" />
+              </pattern>
+              <rect width="100%" height="100%" fill="url(#supportGrid)" />
+            </svg>
+          </div>
         </div>
-      </div>
 
-      <div style={styles.container}>
-        <h2 style={styles.heading}>
-          Your One-Stop-Shop for <span style={styles.headingSpan}>Bellatrix Support</span>
-        </h2>
-        <p style={styles.paragraph}>
-          Your business, and how you run it, is very unique. So is your
-          Bellatrix instance and required support. Our consultants are well
-          versed in a multitude of different areas to ensure that regardless of
-          the level of support that you require, we can assist you.
-        </p>
-        <p style={styles.paragraph}>
-          Whether you're in need of functional support, administrator support,
-          development support, or all the above, SherpaCare is the answer.
-        </p>
+        <div style={styles.container}>
+          <header>
+            <h2 style={styles.heading}>
+              Your One-Stop-Shop for{" "}
+              <span style={styles.headingSpan}>Bellatrix Support</span>
+            </h2>
+          </header>
+          <p style={styles.paragraph}>
+            Your business, and how you run it, is very unique. So is your
+            Bellatrix instance and required support. Our consultants are well
+            versed in a multitude of different areas to ensure that regardless
+            of the level of support that you require, we can assist you.
+          </p>
+          <p style={styles.paragraph}>
+            Whether you're in need of functional support, administrator support,
+            development support, or all the above, SherpaCare is the answer.
+          </p>
 
-        <div style={styles.cardsContainer}>
-          <SupportCard title="Admin Support" items={adminSupport} />
-          <SupportCard title="Functional Support" items={functionalSupport} />
-          <SupportCard title="Development Support" items={developmentSupport} />
+          <div style={styles.cardsContainer}>
+            <SupportCard title="Admin Support" items={adminSupport} />
+            <SupportCard title="Functional Support" items={functionalSupport} />
+            <SupportCard
+              title="Development Support"
+              items={developmentSupport}
+            />
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 };
 
