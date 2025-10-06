@@ -2,14 +2,14 @@ import React from "react";
 
 const ServicesContent = ({ title, items }) => {
   // Debug logging for received props
-  console.log('🔧 [CUSTOMIZATION SERVICES COMPONENT] Received props:', {
+  console.log("🔧 [CUSTOMIZATION SERVICES COMPONENT] Received props:", {
     title,
     items,
     itemsType: typeof items,
     itemsLength: items?.length,
     firstItem: items?.[0],
     firstItemName: items?.[0]?.name,
-    firstItemTitle: items?.[0]?.title
+    firstItemTitle: items?.[0]?.title,
   });
 
   // Default data fallback
@@ -18,40 +18,40 @@ const ServicesContent = ({ title, items }) => {
       name: "Workflows",
       title: "Workflows",
       description: "Automate approvals and processes",
-      icon: "⚙️"
+      icon: "⚙️",
     },
     {
       name: "Scripts",
-      title: "Scripts", 
+      title: "Scripts",
       description: "Server and client logic",
-      icon: "💻"
+      icon: "💻",
     },
     {
       name: "UI",
       title: "UI",
       description: "Forms, fields, and dashboards",
-      icon: "🎨"
+      icon: "🎨",
     },
     {
       name: "Reports",
       title: "Reports",
       description: "Custom reporting and analytics",
-      icon: "📊"
-    }
+      icon: "📊",
+    },
   ];
 
   const displayItems = items && items.length > 0 ? items : defaultItems;
 
-  console.log('🔧 [CUSTOMIZATION SERVICES COMPONENT] Final display data:', {
+  console.log("🔧 [CUSTOMIZATION SERVICES COMPONENT] Final display data:", {
     title: title || "What We Customize",
     itemsCount: displayItems.length,
     items: displayItems,
-    usingProps: items && items.length > 0
+    usingProps: items && items.length > 0,
   });
 
   return (
     <div className="max-w-6xl mx-auto px-4">
-      <h2 className="text-3xl font-bold mb-10 text-blue-800 text-center">
+      <h2 className="text-3xl font-bold mb-10 text-[var(--color-primary-dark)] text-center">
         {title || "What We Customize"}
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -62,19 +62,21 @@ const ServicesContent = ({ title, items }) => {
             description: service.description,
             icon: service.icon,
             hasName: !!service.name,
-            hasTitle: !!service.title
+            hasTitle: !!service.title,
           });
-          
+
           return (
             <div
               key={index}
-              className="bg-white rounded-xl shadow-lg p-6 border border-blue-100 hover:shadow-xl transition-all duration-300"
+              className="bg-[var(--color-bg-primary)] rounded-xl shadow-lg p-6 border border-[var(--color-border-secondary)] hover:shadow-xl transition-all duration-300"
             >
               <div className="text-4xl mb-4">{service.icon}</div>
-              <h3 className="text-xl font-bold text-blue-800 mb-3">
+              <h3 className="text-xl font-bold text-[var(--color-primary-dark)] mb-3">
                 {service.name || service.title || `Service ${index + 1}`}
               </h3>
-              <p className="text-gray-600">{service.description}</p>
+              <p className="text-[var(--color-text-muted)]">
+                {service.description}
+              </p>
             </div>
           );
         })}

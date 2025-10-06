@@ -42,27 +42,28 @@ const UseCasesSection = ({ data = {} }) => {
         ogDescription="Oracle NetSuite HR platform serves small businesses, medium enterprises, and large corporations with scalable HR management solutions."
         ogImage="/images/netsuite-hr-use-cases.jpg"
       />
-      <section className="py-20 bg-gray-50 animate-fade-in-up light-section">
+      <section className="py-20 bg-[var(--color-bg-secondary)] animate-fade-in-up light-section">
         <div className="max-w-6xl mx-auto px-4">
           <header className="text-center mb-10">
-            <h2 className="text-3xl font-extrabold mb-3 text-blue-800">
-              Who Is It <span className="text-blue-600">For?</span>
+            <h2 className="text-3xl font-extrabold mb-3 text-[var(--color-primary-dark)]">
+              Who Is It{" "}
+              <span className="text-[var(--color-primary)]">For?</span>
             </h2>
-            <div className="mx-auto w-16 h-1 bg-blue-600 rounded-full"></div>
+            <div className="mx-auto w-16 h-1 bg-[var(--color-primary)] rounded-full"></div>
           </header>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
             {useCases.map((u, idx) => (
               <article
                 key={idx}
-                className="bg-white rounded-3xl shadow p-10 flex flex-col items-center text-center border border-gray-200 animate-fade-in-up transition-transform duration-500 hover:scale-105 hover:-rotate-1 hover:shadow-blue-200/40 hover:shadow-2xl cursor-pointer"
+                className="bg-[var(--color-bg-primary)] rounded-3xl shadow p-10 flex flex-col items-center text-center border border-[var(--color-border-primary)] animate-fade-in-up transition-transform duration-500 hover:scale-105 hover:-rotate-1 hover:shadow-[var(--color-primary)]/40 hover:shadow-2xl cursor-pointer"
                 style={{ willChange: "transform" }}
                 role="article"
                 aria-label={`HR Use Case: ${u.title || "Use Case"}`}
               >
-                <h3 className="font-bold text-xl text-blue-800 mb-3">
+                <h3 className="font-bold text-xl text-[var(--color-primary-dark)] mb-3">
                   {u.title || "Use Case"}
                 </h3>
-                <p className="text-gray-600 text-base">
+                <p className="text-[var(--color-text-secondary)] text-base">
                   {u.desc || "Use case description"}
                 </p>
               </article>

@@ -11,8 +11,10 @@ import { AnimatePresence, motion } from "framer-motion";
 import ContactForm from "./ContactForm";
 import Modal from "./Modal";
 import { Link } from "react-router-dom";
+import { useTheme } from "../context/ThemeContext";
 
 const Navbar = ({ industries = [] }) => {
+  const { theme, toggleTheme } = useTheme();
   const [navbarTheme, setNavbarTheme] = useState("dark");
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -314,9 +316,9 @@ const Navbar = ({ industries = [] }) => {
       >
         {/* Floating Geometric Elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-2 left-1/4 w-2 h-2 bg-gradient-to-r from-blue-400/60 to-cyan-400/60 rounded-full animate-pulse"></div>
-          <div className="absolute top-4 right-1/3 w-1.5 h-1.5 bg-gradient-to-r from-cyan-300/50 to-blue-300/50 rounded-full animate-pulse"></div>
-          <div className="absolute bottom-2 left-2/3 w-1 h-1 bg-white/40 rounded-full animate-pulse"></div>
+          <div className="absolute top-2 left-1/4 w-2 h-2 bg-gradient-to-r from-[var(--color-primary)]/60 to-[var(--color-primary-light)]/60 rounded-full animate-pulse"></div>
+          <div className="absolute top-4 right-1/3 w-1.5 h-1.5 bg-gradient-to-r from-[var(--color-primary-light)]/50 to-[var(--color-primary)]/50 rounded-full animate-pulse"></div>
+          <div className="absolute bottom-2 left-2/3 w-1 h-1 bg-[var(--color-white)]/40 rounded-full animate-pulse"></div>
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -632,10 +634,25 @@ const Navbar = ({ industries = [] }) => {
                 About
               </Link>
 
+              {/* Theme Toggle Button */}
+              <button
+                onClick={() =>
+                  toggleTheme(theme === "default" ? "purple" : "default")
+                }
+                className="relative ml-2 px-3 py-3 bg-[var(--color-white)]/10 hover:bg-[var(--color-white)]/20 text-[var(--color-white)] text-sm font-medium rounded-xl transition-all duration-300 border border-[var(--color-white)]/10 backdrop-blur-sm cursor-pointer"
+                title={`Switch to ${
+                  theme === "default" ? "Purple" : "Blue"
+                } theme`}
+              >
+                <span className="text-lg">
+                  {theme === "default" ? "🟣" : "🔵"}
+                </span>
+              </button>
+
               {/* Premium Contact button */}
               <button
                 onClick={openContactModal}
-                className="relative ml-2 px-6 py-3 bg-gradient-to-r from-blue-100 to-blue-200 text-blue-900 text-sm font-medium rounded-xl hover:shadow-lg hover:shadow-blue-200/40 transition-all duration-300 transform hover:scale-105 border border-white/10 backdrop-blur-sm group overflow-hidden cursor-pointer"
+                className="relative ml-2 px-6 py-3 bg-gradient-to-r from-[var(--color-primary-light)] to-[var(--color-primary)] text-[var(--color-text-primary)] text-sm font-medium rounded-xl hover:shadow-lg hover:shadow-[var(--color-primary)]/40 transition-all duration-300 transform hover:scale-105 border border-[var(--color-white)]/10 backdrop-blur-sm group overflow-hidden cursor-pointer"
               >
                 <span className="relative z-10">Contact</span>
               </button>
@@ -796,10 +813,22 @@ const Navbar = ({ industries = [] }) => {
                 About
               </Link>
 
+              {/* Mobile Theme Toggle */}
+              <button
+                onClick={() =>
+                  toggleTheme(theme === "default" ? "purple" : "default")
+                }
+                className="block w-full px-4 py-3 mt-4 text-center bg-[var(--color-white)]/10 hover:bg-[var(--color-white)]/20 text-[var(--color-white)] font-medium rounded-xl border border-[var(--color-white)]/10 transition-all duration-300"
+              >
+                {theme === "default"
+                  ? "🟣 Switch to Purple"
+                  : "🔵 Switch to Blue"}
+              </button>
+
               {/* Mobile Contact button */}
               <button
                 onClick={openContactModal}
-                className="block w-full px-4 py-3 mt-4 text-center bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-600 text-white font-medium rounded-xl hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300 border border-white/10 cursor-pointer"
+                className="block w-full px-4 py-3 mt-4 text-center bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-primary-light)] to-[var(--color-primary-dark)] text-[var(--color-white)] font-medium rounded-xl hover:shadow-lg hover:shadow-[var(--color-primary)]/25 transition-all duration-300 border border-[var(--color-white)]/10 cursor-pointer"
               >
                 Contact
               </button>

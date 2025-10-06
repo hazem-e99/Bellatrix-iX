@@ -4,9 +4,9 @@ import SEO from "../../SEO";
 const HeroSection = ({ data, openContactModal }) => {
   return (
     <header
-      className="py-12 relative overflow-hidden animate-background-glow"
+      className="py-12 relative overflow-hidden animate-background-glow theme-bg-primary"
       style={{
-        backgroundColor: "#001038",
+        backgroundColor: "var(--color-brand-dark-navy)",
         padding: "200px 0 100px",
         width: "100%",
         color: "white",
@@ -133,16 +133,16 @@ const HeroSection = ({ data, openContactModal }) => {
         @keyframes background-glow {
           0%,
           100% {
-            background-color: #001038;
+            background-color: var(--color-brand-dark-navy);
           }
           25% {
-            background-color: #001245;
+            background-color: var(--color-brand-variant);
           }
           50% {
-            background-color: #001038;
+            background-color: var(--color-brand-accent);
           }
           75% {
-            background-color: #000e30;
+            background-color: var(--color-brand-variant);
           }
         }
 

@@ -22,7 +22,7 @@ import TemplatesManagement from "./components/Admin/TemplatesManagement";
 import SettingsManagement from "./components/Admin/SettingsManagement";
 import MessagesPage from "./pages/Admin/MessagesPage";
 import DynamicPageRenderer from "./components/DynamicPageRenderer";
-import { ThemeProvider } from "./contexts/ThemeContext";
+import { ThemeProvider } from "./context/ThemeContext";
 import { AuthProvider } from "./hooks/useAuth.jsx";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AuthRoutes from "./routes/AuthRoutes";
@@ -33,26 +33,26 @@ function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <Toaster 
+        <Toaster
           position="top-right"
           toastOptions={{
             duration: 4000,
             style: {
-              background: '#363636',
-              color: '#fff',
+              background: "#363636",
+              color: "#fff",
             },
             success: {
               duration: 3000,
               iconTheme: {
-                primary: '#10B981',
-                secondary: '#fff',
+                primary: "#10B981",
+                secondary: "#fff",
               },
             },
             error: {
               duration: 5000,
               iconTheme: {
-                primary: '#EF4444',
-                secondary: '#fff',
+                primary: "#EF4444",
+                secondary: "#fff",
               },
             },
           }}
@@ -60,7 +60,7 @@ function App() {
         <Routes>
           {/* Authentication Routes */}
           <Route path="/auth/*" element={<AuthRoutes />} />
-          
+
           {/* Admin Login Route */}
           <Route path="/admin/login" element={<AdminLogin />} />
 
@@ -79,7 +79,10 @@ function App() {
             <Route path="/hr" element={<HRPage />} />
             {/* <Route path="Payroll" element={<SolutionMain />} /> */}
             <Route path="/Payroll" element={<PayrollPage />} />
-            <Route path="/industries/manufacturing" element={<Manufacturing />} />
+            <Route
+              path="/industries/manufacturing"
+              element={<Manufacturing />}
+            />
             <Route path="/industries/retail" element={<Retail />} />
 
             {/* Dynamic Page Routes - This should be last to catch all dynamic pages */}
@@ -94,17 +97,23 @@ function App() {
           </Route>
 
           {/* Protected Admin Routes */}
-          <Route path="/admin/*" element={
-            <ProtectedRoute>
-              <ModernAdminLayout />
-            </ProtectedRoute>
-          }>
+          <Route
+            path="/admin/*"
+            element={
+              <ProtectedRoute>
+                <ModernAdminLayout />
+              </ProtectedRoute>
+            }
+          >
             <Route index element={<ModernDashboard />} />
             <Route path="dashboard" element={<ModernDashboard />} />
             <Route path="auth-dashboard" element={<AuthDashboard />} />
             <Route path="pages" element={<PagesManagement />} />
             <Route path="pages/:pageId" element={<PagesManagement />} />
-            <Route path="pages/enhanced-create" element={<EnhancedPageBuilder />} />
+            <Route
+              path="pages/enhanced-create"
+              element={<EnhancedPageBuilder />}
+            />
             <Route path="templates" element={<TemplatesManagement />} />
             <Route
               path="templates/:templateId"
@@ -115,11 +124,14 @@ function App() {
           </Route>
 
           {/* Legacy Admin Routes (keep for compatibility) - Also Protected */}
-          <Route path="/admin-legacy/*" element={
-            <ProtectedRoute>
-              <AdminLayout />
-            </ProtectedRoute>
-          }>
+          <Route
+            path="/admin-legacy/*"
+            element={
+              <ProtectedRoute>
+                <AdminLayout />
+              </ProtectedRoute>
+            }
+          >
             <Route index element={<AdminDashboard />} />
             <Route path="pages" element={<AdminDashboard />} />
             <Route path="pages/:pageId" element={<AdminDashboard />} />

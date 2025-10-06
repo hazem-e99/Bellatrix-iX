@@ -22,38 +22,40 @@ const ConsultingServices = ({
       <section className="container mx-auto px-6">
         <header className="text-center mb-16">
           <h2
-            className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-4"
+            className="text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--color-text-primary)] mb-4"
             dangerouslySetInnerHTML={{ __html: title }}
           />
-          <p className="text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto">
+          <p className="text-lg text-[var(--color-text-muted)] leading-relaxed max-w-3xl mx-auto">
             {description}
           </p>
         </header>
 
         <div className="flex flex-col lg:flex-row items-center gap-12">
           <article className="flex-1">
-            <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-200">
+            <div className="bg-[var(--color-bg-primary)] rounded-2xl shadow-xl p-8 border border-[var(--color-border-secondary)]">
               <div className="mb-6">
-                <h3 className="text-2xl font-bold text-gray-800 mb-3">
+                <h3 className="text-2xl font-bold text-[var(--color-text-primary)] mb-3">
                   {items[activeService].title}
                 </h3>
-                <p className="text-gray-600 mb-6">
+                <p className="text-[var(--color-text-muted)] mb-6">
                   {items[activeService].description}
                 </p>
               </div>
 
               <div className="space-y-3">
-                <h4 className="font-semibold text-gray-800 mb-3">
+                <h4 className="font-semibold text-[var(--color-text-primary)] mb-3">
                   Key Features:
                 </h4>
                 {items[activeService].features.map((feature, index) => (
                   <div key={index} className="flex items-center space-x-3">
                     <div
-                      className="w-2 h-2 bg-blue-500 rounded-full"
+                      className="w-2 h-2 bg-[var(--color-primary)] rounded-full"
                       role="img"
                       aria-label="Feature indicator"
                     ></div>
-                    <span className="text-gray-700">{feature}</span>
+                    <span className="text-[var(--color-text-secondary)]">
+                      {feature}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -65,7 +67,9 @@ const ConsultingServices = ({
                   key={index}
                   onClick={() => setActiveService(index)}
                   className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                    activeService === index ? "bg-blue-600" : "bg-gray-300"
+                    activeService === index
+                      ? "bg-[var(--color-primary)]"
+                      : "bg-[var(--color-border-secondary)]"
                   }`}
                   aria-label={`View service ${index + 1}`}
                 />
@@ -76,11 +80,11 @@ const ConsultingServices = ({
           <div className="flex-1 flex justify-center">
             <div className="relative group max-w-xl">
               <div className="absolute -inset-8 opacity-30 group-hover:opacity-60 transition-all duration-700">
-                <div className="absolute -inset-6 bg-gradient-to-r from-blue-600/20 via-cyan-500/30 to-blue-600/20 rounded-3xl blur-2xl"></div>
-                <div className="absolute -inset-4 bg-gradient-to-br from-blue-500/15 via-purple-500/20 to-cyan-500/15 rounded-2xl blur-xl"></div>
+                <div className="absolute -inset-6 bg-gradient-to-r from-[var(--color-primary)]/20 via-[var(--color-accent-light)]/30 to-[var(--color-primary)]/20 rounded-3xl blur-2xl"></div>
+                <div className="absolute -inset-4 bg-gradient-to-br from-[var(--color-primary-light)]/15 via-[var(--color-accent)]/20 to-[var(--color-accent-light)]/15 rounded-2xl blur-xl"></div>
               </div>
 
-              <div className="relative bg-gradient-to-br from-gray-900/10 via-blue-900/5 to-gray-900/10 rounded-3xl p-6 backdrop-blur-md border border-white/30 shadow-2xl">
+              <div className="relative bg-gradient-to-br from-[var(--color-text-primary)]/10 via-[var(--color-primary-dark)]/5 to-[var(--color-text-primary)]/10 rounded-3xl p-6 backdrop-blur-md border border-[var(--color-text-inverse)]/30 shadow-2xl">
                 <img
                   src={image}
                   alt="Oracle NetSuite Consulting Services - Professional ERP Implementation"

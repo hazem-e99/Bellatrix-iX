@@ -54,13 +54,13 @@ const BenefitsSection = ({ data, activeBenefitIdx, onShowDemo }) => {
         ).substring(0, 120)}... Professional ERP HR solutions.`}
         ogImage="/images/netsuite-hr-benefits.jpg"
       />
-      <section className="py-20 bg-gray-50 animate-fade-in-up light-section">
+      <section className="py-20 bg-[var(--color-bg-secondary)] animate-fade-in-up light-section">
         <div className="max-w-6xl mx-auto px-4">
           <header className="text-center mb-10">
-            <h2 className="text-3xl font-bold mb-4 text-blue-800">
+            <h2 className="text-3xl font-bold mb-4 text-[var(--color-primary-dark)]">
               {displayData.features.title}
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-lg text-[var(--color-text-secondary)] max-w-2xl mx-auto">
               {displayData.features.description}
             </p>
           </header>
@@ -68,9 +68,9 @@ const BenefitsSection = ({ data, activeBenefitIdx, onShowDemo }) => {
             {displayData.features.items.map((b, idx) => (
               <article
                 key={idx}
-                className={`bg-white rounded-2xl shadow-md p-12 flex flex-col items-center text-center border border-blue-100 hover:border-blue-400 hover:shadow-xl transition-all duration-[2500ms] animate-fade-in-up ${
+                className={`bg-[var(--color-bg-primary)] rounded-2xl shadow-md p-12 flex flex-col items-center text-center border border-[var(--color-primary)]/20 hover:border-[var(--color-primary)] hover:shadow-xl transition-all duration-[2500ms] animate-fade-in-up ${
                   activeBenefitIdx === idx
-                    ? "scale-105 z-10 shadow-2xl border-blue-400"
+                    ? "scale-105 z-10 shadow-2xl border-[var(--color-primary)]"
                     : "scale-100"
                 }`}
                 style={{
@@ -87,17 +87,19 @@ const BenefitsSection = ({ data, activeBenefitIdx, onShowDemo }) => {
                 >
                   {b.icon}
                 </div>
-                <h3 className="font-bold text-2xl text-blue-900 mb-4">
+                <h3 className="font-bold text-2xl text-[var(--color-primary-dark)] mb-4">
                   {b.title}
                 </h3>
-                <p className="text-gray-700 text-lg">{b.desc}</p>
+                <p className="text-[var(--color-text-secondary)] text-lg">
+                  {b.desc}
+                </p>
               </article>
             ))}
           </div>
           <div className="flex justify-center mt-12">
             <button
               onClick={onShowDemo}
-              className="bg-blue-700 hover:bg-blue-900 text-white font-bold px-8 py-4 rounded-xl shadow-lg text-lg transition-all duration-300 hover:scale-105 focus:outline-none"
+              className="bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] text-[var(--color-text-inverse)] font-bold px-8 py-4 rounded-xl shadow-lg text-lg transition-all duration-300 hover:scale-105 focus:outline-none"
             >
               See a Live Demo
             </button>

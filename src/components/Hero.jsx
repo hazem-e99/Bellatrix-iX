@@ -142,21 +142,21 @@ const Hero = () => {
             <article key={currentSlide} className="">
               {/* Subtitle */}
               <header className="text-center mb-4">
-                <span className="inline-block text-white/90 text-sm md:text-base font-semibold letter-spacing-wider mb-2 px-4 py-2 bg-white/10 rounded-full backdrop-blur-sm border border-white/20">
+                <span className="inline-block text-[var(--color-white)]/90 text-sm md:text-base font-semibold letter-spacing-wider mb-2 px-4 py-2 bg-[var(--color-white)]/10 rounded-full backdrop-blur-sm border border-[var(--color-white)]/20">
                   {slides[currentSlide].subtitle}
                 </span>
               </header>
 
               {/* Main Heading */}
               <div className="text-center mb-8">
-                <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight text-white">
+                <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight text-[var(--color-white)]">
                   {slides[currentSlide].title}
                 </h1>
               </div>
 
               {/* Description */}
               <div className="text-center mb-12">
-                <p className="text-lg md:text-xl lg:text-2xl text-gray-200 leading-relaxed max-w-4xl mx-auto">
+                <p className="text-lg md:text-xl lg:text-2xl text-[var(--color-text-light)] leading-relaxed max-w-4xl mx-auto">
                   {slides[currentSlide].description}
                 </p>
               </div>

@@ -57,18 +57,18 @@ const NetSuiteConsultingMain = () => {
   if (loading)
     return (
       <div className="min-h-screen flex items-center justify-center">
-        Loading...
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[var(--color-primary)]"></div>
       </div>
     );
   if (error)
     return (
-      <div className="min-h-screen flex items-center justify-center text-red-500">
+      <div className="min-h-screen flex items-center justify-center text-[var(--color-error)]">
         Error: {error}
       </div>
     );
   if (!data)
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center text-[var(--color-text-primary)]">
         No data available
       </div>
     );
@@ -83,7 +83,7 @@ const NetSuiteConsultingMain = () => {
         ogDescription="Transform your business with professional Oracle NetSuite consulting services. Expert implementation, customization, and optimization for enhanced operational efficiency."
         ogImage="/images/netsuite-consulting-services.jpg"
       />
-      <main className="min-h-screen bg-gray-50">
+      <main className="min-h-screen bg-[var(--color-bg-secondary)]">
         <HeroSection
           title={data.hero.title}
           description={data.hero.description}
@@ -104,7 +104,7 @@ const NetSuiteConsultingMain = () => {
         <section
           data-theme="dark"
           className="py-20 relative overflow-hidden"
-          style={{ backgroundColor: "#001038" }}
+          style={{ backgroundColor: "var(--color-brand-dark-navy)" }}
         >
           <IndustryExpertise
             title={data.industries.title}
@@ -114,7 +114,10 @@ const NetSuiteConsultingMain = () => {
           />
         </section>
 
-        <section data-theme="light" className="bg-gray-50 py-20">
+        <section
+          data-theme="light"
+          className="bg-[var(--color-bg-secondary)] py-20"
+        >
           <ConsultingProcess
             title={data.process.title}
             description={data.process.description}
@@ -127,7 +130,7 @@ const NetSuiteConsultingMain = () => {
         <section
           data-theme="dark"
           className="py-20 relative overflow-hidden"
-          style={{ backgroundColor: "#001038" }}
+          style={{ backgroundColor: "var(--color-brand-dark-navy)" }}
         >
           <BenefitsSection
             title={data.benefits.title}
@@ -136,7 +139,10 @@ const NetSuiteConsultingMain = () => {
           />
         </section>
 
-        <section data-theme="light" className="bg-gray-50 py-20">
+        <section
+          data-theme="light"
+          className="bg-[var(--color-bg-secondary)] py-20"
+        >
           <CtaSection
             title={data.cta.title}
             description={data.cta.description}

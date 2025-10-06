@@ -44,7 +44,7 @@ export default function PayrollPage({ data }) {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[var(--color-primary)]"></div>
       </div>
     );
   }
@@ -52,10 +52,12 @@ export default function PayrollPage({ data }) {
   if (error || !pageData) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <div className="text-red-500">{error || "No payroll data found."}</div>
+        <div className="text-[var(--color-error)]">
+          {error || "No payroll data found."}
+        </div>
         <button
           onClick={handleRetry}
-          className="ml-4 px-4 py-2 bg-blue-600 text-white rounded"
+          className="ml-4 px-4 py-2 bg-[var(--color-primary)] text-[var(--color-text-inverse)] rounded"
         >
           Retry
         </button>
@@ -65,7 +67,7 @@ export default function PayrollPage({ data }) {
 
   return (
     <>
-      <SEO 
+      <SEO
         title="Oracle NetSuite Payroll Management Solutions | Bellatrix Consulting"
         description="Transform your payroll operations with Oracle NetSuite's automated payroll management system. Expert implementation, compliance assurance, and streamlined HR processes for modern businesses."
         keywords="Oracle NetSuite payroll, payroll management system, automated payroll solutions, NetSuite HR implementation, ERP payroll processing, payroll compliance automation"
@@ -73,63 +75,63 @@ export default function PayrollPage({ data }) {
         ogDescription="Streamline payroll operations with Oracle NetSuite's comprehensive payroll management system. Automated processing, compliance, and expert implementation services."
         ogImage="/images/netsuite-payroll-management.jpg"
       />
-      <main className="bg-gray-50 min-h-screen">
+      <main className="bg-[var(--color-bg-secondary)] min-h-screen">
         {/* Hero Section */}
         <section data-theme="dark">
-        <PayrollHero
-          title={pageData.hero?.title}
-          subtitle={pageData.hero?.subtitle}
-          bgColor={pageData.hero?.bgColor}
-          bgVideo={pageData.hero?.bgVideo}
-          onCtaClick={openContactModal}
-        />
-      </section>
+          <PayrollHero
+            title={pageData.hero?.title}
+            subtitle={pageData.hero?.subtitle}
+            bgColor={pageData.hero?.bgColor}
+            bgVideo={pageData.hero?.bgVideo}
+            onCtaClick={openContactModal}
+          />
+        </section>
 
-      {/* Pain Points Section */}
-      <section data-theme="light">
-        <PayrollPainPoints painPoints={pageData.painPoints || []} />
-      </section>
+        {/* Pain Points Section */}
+        <section data-theme="light">
+          <PayrollPainPoints painPoints={pageData.painPoints || []} />
+        </section>
 
-      {/* How It Works Section */}
-      <section data-theme="dark">
-        <PayrollHowItWorks workflowData={pageData.workflow} />
-      </section>
+        {/* How It Works Section */}
+        <section data-theme="dark">
+          <PayrollHowItWorks workflowData={pageData.workflow} />
+        </section>
 
-      {/* Workflow Section */}
-      <section data-theme="light">
-        <PayrollWorkflow workflowData={pageData.workflow} />
-      </section>
+        {/* Workflow Section */}
+        <section data-theme="light">
+          <PayrollWorkflow workflowData={pageData.workflow} />
+        </section>
 
-      {/* FAQ Section */}
-      <section data-theme="light">
-        <PayrollFAQ faqData={pageData.faq} />
-      </section>
+        {/* FAQ Section */}
+        <section data-theme="light">
+          <PayrollFAQ faqData={pageData.faq} />
+        </section>
 
-      {/* CTA Section */}
-      <section data-theme="dark">
-        <PayrollCTA
-          title={pageData.cta?.title}
-          subtitle={pageData.cta?.subtitle}
-          description={pageData.cta?.description}
-          ctaButton={pageData.cta?.ctaButton}
-          features={pageData.cta?.features}
-          trustedBy={pageData.cta?.trustedBy}
-          onCtaClick={openContactModal}
-        />
-      </section>
+        {/* CTA Section */}
+        <section data-theme="dark">
+          <PayrollCTA
+            title={pageData.cta?.title}
+            subtitle={pageData.cta?.subtitle}
+            description={pageData.cta?.description}
+            ctaButton={pageData.cta?.ctaButton}
+            features={pageData.cta?.features}
+            trustedBy={pageData.cta?.trustedBy}
+            onCtaClick={openContactModal}
+          />
+        </section>
 
-      {/* Contact Modal */}
-      <Modal
-        isOpen={isContactModalOpen}
-        onClose={closeContactModal}
-        title="Contact Us"
-        subtitle="Let's discuss your payroll needs"
-      >
-        <div className="p-2">
-          <ContactForm />
-        </div>
-      </Modal>
-    </main>
+        {/* Contact Modal */}
+        <Modal
+          isOpen={isContactModalOpen}
+          onClose={closeContactModal}
+          title="Contact Us"
+          subtitle="Let's discuss your payroll needs"
+        >
+          <div className="p-2">
+            <ContactForm />
+          </div>
+        </Modal>
+      </main>
     </>
   );
 }

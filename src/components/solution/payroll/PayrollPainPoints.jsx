@@ -14,7 +14,7 @@ const PayrollPainPoints = ({ painPoints }) => {
         console.error("Failed to load payroll data:", error);
         setDefaultData({
           title:
-            'The Payroll <span class="text-blue-600">Challenges</span> We Solve',
+            'The Payroll <span class="text-[var(--color-primary)]">Challenges</span> We Solve',
           description:
             "Our system addresses the most common payroll challenges faced by consultancy firms:",
           items: [],
@@ -28,7 +28,7 @@ const PayrollPainPoints = ({ painPoints }) => {
   const displayData = {
     title:
       defaultData?.title ||
-      'The Payroll <span class="text-blue-600">Challenges</span> We Solve',
+      'The Payroll <span class="text-[var(--color-primary)]">Challenges</span> We Solve',
     description:
       defaultData?.description ||
       "Our system addresses the most common payroll challenges faced by businesses:",
@@ -45,23 +45,26 @@ const PayrollPainPoints = ({ painPoints }) => {
         ogDescription="Oracle NetSuite addresses critical payroll challenges including compliance, automation, accuracy, and integration. Professional ERP payroll problem-solving."
         ogImage="/images/netsuite-payroll-challenges.jpg"
       />
-      <section className="bg-gray-50 py-20 light-section">
+      <section className="bg-[var(--color-bg-secondary)] py-20 light-section">
         <div className="container mx-auto px-6 max-w-6xl">
           <header className="text-center mb-12">
             <h2
-              className="text-3xl md:text-4xl font-bold text-gray-800"
+              className="text-3xl md:text-4xl font-bold text-[var(--color-text-primary)]"
               dangerouslySetInnerHTML={{ __html: displayData.title }}
             ></h2>
           </header>
           <div className="flex flex-col md:flex-row gap-12 items-center">
             <div className="md:w-1/2">
-              <strong className="text-xl text-gray-800 block mb-6">
+              <strong className="text-xl text-[var(--color-text-primary)] block mb-6">
                 {displayData.description}
               </strong>
               <ul className="space-y-5">
                 {displayData.items?.map((item, idx) => (
                   <li key={idx} className="flex items-start">
-                    <span className="text-lg text-gray-700"> {item.title}</span>
+                    <span className="text-lg text-[var(--color-text-secondary)]">
+                      {" "}
+                      {item.title}
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -70,12 +73,12 @@ const PayrollPainPoints = ({ painPoints }) => {
               <div className="relative group max-w-lg">
                 {/* Background Effects */}
                 <div className="absolute -inset-8 opacity-30 group-hover:opacity-60 transition-all duration-700">
-                  <div className="absolute -inset-6 bg-gradient-to-r from-blue-600/20 via-cyan-500/30 to-blue-600/20 rounded-3xl blur-2xl"></div>
-                  <div className="absolute -inset-4 bg-gradient-to-br from-blue-500/15 via-purple-500/20 to-cyan-500/15 rounded-2xl blur-xl"></div>
+                  <div className="absolute -inset-6 bg-gradient-to-r from-[var(--color-primary)]/20 via-[var(--color-primary-light)]/30 to-[var(--color-primary)]/20 rounded-3xl blur-2xl"></div>
+                  <div className="absolute -inset-4 bg-gradient-to-br from-[var(--color-primary)]/15 via-[var(--color-primary-dark)]/20 to-[var(--color-primary-light)]/15 rounded-2xl blur-xl"></div>
                 </div>
 
-                <div className="relative bg-white rounded-3xl p-6 backdrop-blur-md border border-gray-200 shadow-2xl">
-                  <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-4 border border-blue-100">
+                <div className="relative bg-[var(--color-bg-primary)] rounded-3xl p-6 backdrop-blur-md border border-[var(--color-border-primary)] shadow-2xl">
+                  <div className="bg-gradient-to-br from-[var(--color-primary)]/5 to-[var(--color-primary)]/10 rounded-2xl p-4 border border-[var(--color-primary)]/20">
                     <img
                       src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
                       alt="Oracle NetSuite Payroll Management Dashboard - Professional ERP payroll automation interface"

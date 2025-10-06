@@ -1,0 +1,336 @@
+/**
+ * Theme Colors CSS Variables
+ * Generated from project-wide color analysis
+ * Usage frequency indicated in comments
+ */
+
+:root {
+  /* ==================================================
+     MOST USED TAILWIND COLORS (sorted by frequency)
+     ================================================== */
+
+  /* White & Black - Core Colors */
+  --color-white: #ffffff; /* 933x text-white, 606x bg-white, 329x border-white */
+  --color-black: #000000; /* 35x bg-black */
+  --color-transparent: transparent; /* 79x border-transparent */
+
+  /* Gray Scale - Primary Text & Backgrounds */
+  --color-gray-50: #f9fafb; /* 128x bg-gray-50 */
+  --color-gray-100: #f3f4f6; /* 44x bg-gray-100 */
+  --color-gray-200: #e5e7eb; /* 141x border-gray-200 */
+  --color-gray-300: #d1d5db; /* 169x border-gray-300, 322x text-gray-300 */
+  --color-gray-400: #9ca3af; /* 234x text-gray-400 */
+  --color-gray-500: #6b7280; /* 167x text-gray-500 */
+  --color-gray-600: #4b5563; /* 322x text-gray-600, 72x border-gray-600 */
+  --color-gray-700: #374151; /* 173x text-gray-700, 43x bg-gray-700, 57x border-gray-700 */
+  --color-gray-800: #1f2937; /* 182x text-gray-800, 80x bg-gray-800 */
+  --color-gray-900: #111827; /* 159x text-gray-900 */
+
+  /* Blue - Primary Brand Color */
+  --color-blue-50: #eff6ff; /* 33x bg-blue-50 */
+  --color-blue-100: #dbeafe; /* 33x bg-blue-100, 49x border-blue-100 */
+  --color-blue-200: #bfdbfe; /* Various uses */
+  --color-blue-300: #93c5fd; /* 44x text-blue-300, 58x via-blue-300 */
+  --color-blue-400: #60a5fa; /* 70x text-blue-400, 35x bg-blue-400, 66x border-blue-400, 49x from-blue-400 */
+  --color-blue-500: #3b82f6; /* 44x bg-blue-500, 121x from-blue-500, 131x focus:ring-blue-500 */
+  --color-blue-600: #2563eb; /* 142x text-blue-600, 136x bg-blue-600, 82x from-blue-600, 73x to-blue-600 */
+  --color-blue-700: #1d4ed8; /* 33x text-blue-700, 71x hover:bg-blue-700, 31x to-blue-700 */
+  --color-blue-800: #1e40af; /* 54x text-blue-800, 31x to-blue-800 */
+  --color-blue-900: #1e3a8a; /* Various uses */
+
+  /* Red - Error & Warning Colors */
+  --color-red-400: #f87171; /* 37x text-red-400 */
+  --color-red-500: #ef4444; /* Various uses */
+  --color-red-600: #dc2626; /* 54x text-red-600 */
+
+  /* Cyan - Accent Color */
+  --color-cyan-300: #67e8f9; /* Various gradient uses */
+  --color-cyan-400: #22d3ee; /* 50x to-cyan-400, 38x border-cyan-400 */
+  --color-cyan-500: #06b6d4; /* 40x to-cyan-500 */
+  --color-cyan-600: #0891b2; /* Various uses */
+
+  /* Shadow Colors */
+  --shadow-blue-500: #3b82f6; /* 55x shadow-blue-500 */
+
+  /* ==================================================
+     CUSTOM BRAND COLORS (sorted by frequency)
+     ================================================== */
+
+  /* Primary Brand Colors */
+  --color-brand-dark: #001038; /* 65x - Main dark brand color */
+  --color-brand-midnight: #191970; /* 20x - Midnight blue brand color */
+  --color-brand-navy: #001245; /* 5x - Navy variation */
+  --color-brand-deep: #000e30; /* 5x - Deep blue variation */
+  --color-brand-variant: #001248; /* 2x - Brand variant */
+  --color-brand-accent: #001458; /* 1x - Brand accent */
+
+  /* Interactive States */
+  --color-hover-blue: #1e40af; /* 5x - Hover state blue */
+  --color-focus-blue: #2563eb; /* Various focus states */
+
+  /* Utility Colors */
+  --color-surface: #f5f5f5; /* 5x - Surface background */
+  --color-muted: #25274d; /* 5x - Muted text */
+  --color-slate: #0b163a; /* 2x - Slate background */
+  --color-neutral: #f7fafc; /* 2x - Neutral background */
+
+  /* ==================================================
+     RGBA COLORS (with opacity)
+     ================================================== */
+
+  /* White with Opacity */
+  --color-white-10: rgba(255, 255, 255, 0.1); /* 16x - 10% white overlay */
+  --color-white-20: rgba(255, 255, 255, 0.2); /* 5x - 20% white overlay */
+  --color-white-30: rgba(255, 255, 255, 0.3); /* 5x - 30% white overlay */
+  --color-white-40: rgba(255, 255, 255, 0.4); /* 3x - 40% white overlay */
+  --color-white-50: rgba(255, 255, 255, 0.5); /* 4x - 50% white overlay */
+
+  /* Black with Opacity */
+  --color-black-10: rgb(0 0 0 / 0.1); /* 10x - 10% black overlay */
+  --color-black-25: rgb(0 0 0 / 0.25); /* 2x - 25% black overlay */
+  --color-black-80: rgba(0, 0, 0, 0.8); /* Various uses */
+
+  /* Blue with Opacity */
+  --color-blue-10: rgba(59, 130, 246, 0.1); /* 2x - 10% blue overlay */
+  --color-blue-15: rgba(59, 130, 246, 0.15); /* 3x - 15% blue overlay */
+  --color-blue-20: rgba(59, 130, 246, 0.2); /* Various blue overlays */
+  --color-blue-40: rgba(59, 130, 246, 0.4); /* 6x - 40% blue overlay */
+  --color-blue-50: rgba(59, 130, 246, 0.5); /* 4x - 50% blue overlay */
+  --color-blue-60: rgba(59, 130, 246, 0.6); /* 2x - 60% blue overlay */
+
+  /* Cyan with Opacity */
+  --color-cyan-20: rgba(6, 182, 212, 0.2); /* 1x - 20% cyan overlay */
+  --color-cyan-40: rgba(6, 182, 212, 0.4); /* 4x - 40% cyan overlay */
+  --color-cyan-50: rgba(6, 182, 212, 0.5); /* 2x - 50% cyan overlay */
+
+  /* Gray with Opacity */
+  --color-gray-50-alpha: rgba(
+    107,
+    114,
+    128,
+    0.1
+  ); /* 1x - Gray with 10% opacity */
+  --color-gray-100-alpha: rgba(
+    107,
+    114,
+    128,
+    0.15
+  ); /* 1x - Gray with 15% opacity */
+  --color-gray-200-alpha: rgba(
+    107,
+    114,
+    128,
+    0.2
+  ); /* 1x - Gray with 20% opacity */
+  --color-gray-300-alpha: rgba(
+    107,
+    114,
+    128,
+    0.3
+  ); /* 1x - Gray with 30% opacity */
+
+  /* ==================================================
+     TAILWIND HEX VALUES (for reference)
+     ================================================== */
+
+  /* Tailwind Blue Palette */
+  --tw-blue-50: #eff6ff;
+  --tw-blue-100: #dbeafe;
+  --tw-blue-200: #bfdbfe;
+  --tw-blue-300: #93c5fd;
+  --tw-blue-400: #60a5fa;
+  --tw-blue-500: #3b82f6;
+  --tw-blue-600: #2563eb;
+  --tw-blue-700: #1d4ed8;
+  --tw-blue-800: #1e40af;
+  --tw-blue-900: #1e3a8a;
+
+  /* Tailwind Gray Palette */
+  --tw-gray-50: #f9fafb;
+  --tw-gray-100: #f3f4f6;
+  --tw-gray-200: #e5e7eb;
+  --tw-gray-300: #d1d5db;
+  --tw-gray-400: #9ca3af;
+  --tw-gray-500: #6b7280;
+  --tw-gray-600: #4b5563;
+  --tw-gray-700: #374151;
+  --tw-gray-800: #1f2937;
+  --tw-gray-900: #111827;
+
+  /* Tailwind Red Palette */
+  --tw-red-100: #fee2e2;
+  --tw-red-400: #f87171;
+  --tw-red-500: #ef4444;
+  --tw-red-600: #dc2626;
+  --tw-red-700: #b91c1c;
+
+  /* Tailwind Cyan Palette */
+  --tw-cyan-300: #67e8f9;
+  --tw-cyan-400: #22d3ee;
+  --tw-cyan-500: #06b6d4;
+  --tw-cyan-600: #0891b2;
+  --tw-cyan-700: #0e7490;
+
+  /* Tailwind Green Palette */
+  --tw-green-100: #dcfce7;
+  --tw-green-500: #22c55e;
+  --tw-green-600: #16a34a;
+  --tw-green-700: #15803d;
+  --tw-green-800: #166534;
+
+  /* Tailwind Yellow Palette */
+  --tw-yellow-100: #fef3c7;
+  --tw-yellow-500: #eab308;
+  --tw-yellow-600: #ca8a04;
+  --tw-yellow-700: #a16207;
+
+  /* Tailwind Purple Palette */
+  --tw-purple-50: #faf5ff;
+  --tw-purple-100: #f3e8ff;
+  --tw-purple-200: #e9d5ff;
+  --tw-purple-300: #d8b4fe;
+  --tw-purple-400: #c084fc;
+  --tw-purple-500: #a855f7;
+  --tw-purple-600: #9333ea;
+  --tw-purple-700: #7e22ce;
+  --tw-purple-800: #6b21a8;
+  --tw-purple-900: #581c87;
+
+  /* ==================================================
+     SEMANTIC COLOR ALIASES
+     ================================================== */
+
+  /* Primary Brand */
+  --color-primary: var(--color-blue-600);
+  --color-primary-light: var(--color-blue-500);
+  --color-primary-dark: var(--color-blue-700);
+  --color-primary-bg: var(--color-blue-50);
+
+  /* Secondary Brand */
+  --color-secondary: var(--color-gray-600);
+  --color-secondary-light: var(--color-gray-500);
+  --color-secondary-dark: var(--color-gray-700);
+
+  /* Brand Identity */
+  --color-brand-midnight: #191970;
+  --color-brand-dark-navy: #001038;
+  --color-brand-primary: var(--color-brand-dark);
+  --color-brand-secondary: var(--color-brand-midnight);
+
+  /* Background Colors */
+  --color-background-dark: var(--color-gray-900);
+
+  /* Text Colors */
+  --color-text-primary: var(--color-gray-900);
+  --color-text-secondary: var(--color-gray-700);
+  --color-text-muted: var(--color-gray-500);
+  --color-text-light: var(--color-gray-400);
+  --color-text-inverse: var(--color-white);
+
+  /* Background Colors */
+  --color-bg-primary: var(--color-white);
+  --color-bg-secondary: var(--color-gray-50);
+  --color-bg-dark: var(--color-gray-900);
+  --color-bg-surface: var(--color-surface);
+
+  /* Border Colors */
+  --color-border-primary: var(--color-gray-200);
+  --color-border-secondary: var(--color-gray-300);
+  --color-border-light: var(--color-gray-100);
+
+  /* Status Colors */
+  --color-success: var(--tw-green-600);
+  --color-warning: var(--tw-yellow-600);
+  --color-error: var(--tw-red-600);
+  --color-info: var(--color-blue-600);
+
+  /* Interactive States */
+  --color-hover: var(--color-blue-700);
+  --color-focus: var(--color-blue-500);
+  --color-active: var(--color-blue-800);
+
+  /* Shadow Colors */
+  --color-shadow: var(--shadow-blue-500);
+  --color-shadow-light: var(--color-gray-200);
+}
+
+/* ==================================================
+   PURPLE THEME VARIANT
+   ================================================== */
+[data-theme="purple"] {
+  /* Override Blue Palette with Purple */
+  --tw-blue-50: var(--tw-purple-50);
+  --tw-blue-100: var(--tw-purple-100);
+  --tw-blue-200: var(--tw-purple-200);
+  --tw-blue-300: var(--tw-purple-300);
+  --tw-blue-400: var(--tw-purple-400);
+  --tw-blue-500: var(--tw-purple-500);
+  --tw-blue-600: var(--tw-purple-600);
+  --tw-blue-700: var(--tw-purple-700);
+  --tw-blue-800: var(--tw-purple-800);
+  --tw-blue-900: var(--tw-purple-900);
+
+  /* Override Color Blue Palette */
+  --color-blue-50: var(--tw-purple-50);
+  --color-blue-100: var(--tw-purple-100);
+  --color-blue-200: var(--tw-purple-200);
+  --color-blue-300: var(--tw-purple-300);
+  --color-blue-400: var(--tw-purple-400);
+  --color-blue-500: var(--tw-purple-500);
+  --color-blue-600: var(--tw-purple-600);
+  --color-blue-700: var(--tw-purple-700);
+  --color-blue-800: var(--tw-purple-800);
+  --color-blue-900: var(--tw-purple-900);
+
+  /* Override Semantic Aliases */
+  --color-primary: var(--tw-purple-600);
+  --color-primary-light: var(--tw-purple-500);
+  --color-primary-dark: var(--tw-purple-700);
+  --color-hover: var(--tw-purple-700);
+  --color-focus: var(--tw-purple-500);
+
+  /* Override Interactive States */
+  --color-active: var(--tw-purple-800);
+  --color-info: var(--tw-purple-600);
+
+  /* Override Shadow Colors */
+  --color-shadow: var(--shadow-purple-500);
+
+  /* Override Brand Colors with Purple Equivalents */
+  --color-brand-dark-navy: #2e004f; /* أغمق موف */
+  --color-brand-midnight: #4a0e4e; /* midnight purple equivalent */
+  --color-brand-variant: #3d006b; /* درجة أفتح شوية */
+  --color-brand-accent: #4b0082; /* موف متوسط */
+}
+
+/* ==================================================
+   SMOOTH THEME TRANSITIONS
+   ================================================== */
+[data-theme] *,
+[data-theme] *::before,
+[data-theme] *::after {
+  transition: background-color 0.6s ease, color 0.6s ease,
+    border-color 0.6s ease, box-shadow 0.6s ease !important;
+}
+
+/* ==================================================
+   USAGE EXAMPLES & THEME SWITCHING
+   ================================================== */
+/*
+  PURPLE THEME ACTIVATION:
+  Add data-theme="purple" to activate the purple theme:
+  
+  <html data-theme="purple">
+  or
+  <div data-theme="purple" className="app-container">
+  
+  This overrides all blue colors with purple equivalents:
+  - Primary buttons become purple instead of blue
+  - Links become purple instead of blue  
+  - Focus states become purple instead of blue
+  - All other colors (white, gray, etc.) remain unchanged
+  
+  JAVASCRIPT THEME SWITCHING:
+  document.documentElement.setAttribute('data-theme', 'purple');
+  document.documentElement.removeAttribute('data-theme'); // back to default
+*/

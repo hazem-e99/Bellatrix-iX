@@ -56,10 +56,10 @@ const FAQSection = ({ data, openFAQ, setOpenFAQ }) => {
         ogDescription="Find answers to frequently asked questions about Oracle NetSuite HR solutions, security, compliance, and implementation. Expert guidance available."
         ogImage="/images/netsuite-hr-faq.jpg"
       />
-      <section className="py-20 bg-white/90 animate-fade-in-up light-section">
+      <section className="py-20 bg-[var(--color-bg-primary)]/90 animate-fade-in-up light-section">
         <div className="max-w-4xl mx-auto px-4">
           <header className="text-center mb-10">
-            <h2 className="text-3xl font-bold text-blue-800">
+            <h2 className="text-3xl font-bold text-[var(--color-primary-dark)]">
               {displayData.faq.title}
             </h2>
           </header>
@@ -67,12 +67,12 @@ const FAQSection = ({ data, openFAQ, setOpenFAQ }) => {
             {displayData.faq.items.map((faq, idx) => (
               <article
                 key={idx}
-                className="border-b border-blue-100 pb-4"
+                className="border-b border-[var(--color-primary)]/20 pb-4"
                 role="article"
                 aria-label={`FAQ: ${faq.q || "Question"}`}
               >
                 <button
-                  className="w-full text-left flex justify-between items-center text-lg font-medium text-blue-900 focus:outline-none"
+                  className="w-full text-left flex justify-between items-center text-lg font-medium text-[var(--color-primary-dark)] focus:outline-none"
                   onClick={() => setOpenFAQ(openFAQ === idx ? null : idx)}
                   aria-expanded={openFAQ === idx}
                   aria-controls={`faq-answer-${idx}`}
@@ -90,7 +90,7 @@ const FAQSection = ({ data, openFAQ, setOpenFAQ }) => {
                 {openFAQ === idx && (
                   <div
                     id={`faq-answer-${idx}`}
-                    className="mt-2 text-gray-700 animate-fade-in-up"
+                    className="mt-2 text-[var(--color-text-secondary)] animate-fade-in-up"
                   >
                     {faq.a}
                   </div>

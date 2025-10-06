@@ -58,10 +58,10 @@ const PayrollFAQ = ({ faqData = {} }) => {
         ogDescription="Find answers to frequently asked questions about Oracle NetSuite payroll solutions, security, integration, and implementation. Expert guidance available."
         ogImage="/images/netsuite-payroll-faq.jpg"
       />
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-[var(--color-bg-secondary)]">
         <div className="container mx-auto px-6 max-w-4xl">
           <header className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
+            <h2 className="text-3xl md:text-4xl font-bold text-[var(--color-primary-dark)]">
               {displayFaqData.title}
             </h2>
           </header>
@@ -70,7 +70,7 @@ const PayrollFAQ = ({ faqData = {} }) => {
             {displayFaqData.items.map((item, index) => (
               <article
                 key={index}
-                className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden"
+                className="bg-[var(--color-bg-primary)] rounded-lg shadow-md border border-[var(--color-border-primary)] overflow-hidden"
                 role="article"
                 aria-label={`FAQ: ${item.question || item.q || "Question"}`}
               >
@@ -80,7 +80,7 @@ const PayrollFAQ = ({ faqData = {} }) => {
                   aria-expanded={openIndex === index}
                   aria-controls={`faq-answer-${index}`}
                 >
-                  <span className="text-lg font-medium text-gray-800">
+                  <span className="text-lg font-medium text-[var(--color-text-primary)]">
                     {item.question || item.q || "Question"}
                   </span>
                   <span className="ml-4 transform transition-transform duration-200">
@@ -90,7 +90,7 @@ const PayrollFAQ = ({ faqData = {} }) => {
 
                 {openIndex === index && (
                   <div id={`faq-answer-${index}`} className="px-6 pb-4">
-                    <p className="text-gray-600 leading-relaxed">
+                    <p className="text-[var(--color-text-secondary)] leading-relaxed">
                       {item.answer || item.a || "Answer"}
                     </p>
                   </div>

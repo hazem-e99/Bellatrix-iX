@@ -46,15 +46,16 @@ const PricingSection = ({ data = {} }) => {
       />
       <section
         className="py-12 relative"
-        style={{ backgroundColor: "#001038" }}
+        style={{ backgroundColor: "var(--color-brand-dark-navy)" }}
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/10 via-transparent to-blue-800/10 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-primary-dark)]/10 via-transparent to-[var(--color-primary)]/10 pointer-events-none"></div>
         <div className="container mx-auto px-6 relative z-10">
           <header className="text-center mb-10">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-              Implementation <span className="text-blue-400">Pricing</span>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--color-text-inverse)] mb-4">
+              Implementation{" "}
+              <span className="text-[var(--color-primary-light)]">Pricing</span>
             </h2>
-            <p className="text-lg text-gray-300 leading-relaxed max-w-3xl mx-auto">
+            <p className="text-lg text-[var(--color-text-light)] leading-relaxed max-w-3xl mx-auto">
               Choose the perfect implementation plan that fits your business
               needs and budget
             </p>
@@ -64,37 +65,39 @@ const PricingSection = ({ data = {} }) => {
             {pricing.map((plan, index) => (
               <article
                 key={index}
-                className={`bg-white/5 backdrop-blur-sm rounded-2xl p-8 border-2 ${
+                className={`bg-[var(--color-text-inverse)]/5 backdrop-blur-sm rounded-2xl p-8 border-2 ${
                   plan.isPopular
-                    ? "border-blue-400 hover:border-blue-600 transform scale-105"
-                    : "border-white/10 hover:border-blue-300"
+                    ? "border-[var(--color-primary-light)] hover:border-[var(--color-primary)] transform scale-105"
+                    : "border-[var(--color-text-inverse)]/10 hover:border-[var(--color-primary)]/30"
                 } transition-all duration-300 relative`}
                 role="article"
                 aria-label={`Pricing Plan: ${plan.name || "Plan"}`}
               >
                 {plan.isPopular && (
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-blue-500 text-white px-6 py-2 rounded-full text-sm font-semibold">
+                    <span className="bg-[var(--color-primary)] text-[var(--color-text-inverse)] px-6 py-2 rounded-full text-sm font-semibold">
                       Most Popular
                     </span>
                   </div>
                 )}
                 <header className="text-center">
-                  <h3 className="text-2xl font-bold text-white mb-2">
+                  <h3 className="text-2xl font-bold text-[var(--color-text-inverse)] mb-2">
                     {plan.name || "Plan"}
                   </h3>
-                  <p className="text-gray-300 mb-6">
+                  <p className="text-[var(--color-text-light)] mb-6">
                     {plan.description || "Plan description"}
                   </p>
                   <div className="mb-6">
                     <span
                       className={`text-4xl font-bold ${
-                        plan.isPopular ? "text-blue-400" : "text-white"
+                        plan.isPopular
+                          ? "text-[var(--color-primary-light)]"
+                          : "text-[var(--color-text-inverse)]"
                       }`}
                     >
                       {plan.price || "$0"}
                     </span>
-                    <span className="text-gray-300 ml-2">
+                    <span className="text-[var(--color-text-light)] ml-2">
                       {plan.period || ""}
                     </span>
                   </div>
@@ -103,7 +106,7 @@ const PricingSection = ({ data = {} }) => {
                   {(plan.features || []).map((feature, i) => (
                     <li key={i} className="flex items-center" role="listitem">
                       <svg
-                        className="w-5 h-5 text-green-400 mr-3"
+                        className="w-5 h-5 text-[var(--color-success)] mr-3"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -116,16 +119,18 @@ const PricingSection = ({ data = {} }) => {
                           d="M5 13l4 4L19 7"
                         />
                       </svg>
-                      <span className="text-gray-200">{feature}</span>
+                      <span className="text-[var(--color-text-light)]">
+                        {feature}
+                      </span>
                     </li>
                   ))}
                 </ul>
                 <button
                   className={`w-full ${
                     plan.isPopular
-                      ? "bg-blue-600 hover:bg-blue-700"
-                      : "bg-gray-600 hover:bg-gray-700"
-                  } text-white py-3 rounded-lg font-semibold transition-all duration-300`}
+                      ? "bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)]"
+                      : "bg-[var(--color-text-secondary)] hover:bg-[var(--color-text-primary)]"
+                  } text-[var(--color-text-inverse)] py-3 rounded-lg font-semibold transition-all duration-300`}
                 >
                   {plan.ctaText || "Get Started"}
                 </button>
@@ -134,12 +139,12 @@ const PricingSection = ({ data = {} }) => {
           </div>
           {/* Additional Info */}
           <footer className="text-center mt-12">
-            <p className="text-gray-300 mb-4">
+            <p className="text-[var(--color-text-light)] mb-4">
               All plans include free consultation and project scoping
             </p>
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-[var(--color-text-muted)]">
               Need a custom solution?{" "}
-              <span className="text-blue-400 font-semibold cursor-pointer hover:underline">
+              <span className="text-[var(--color-primary-light)] font-semibold cursor-pointer hover:underline">
                 Contact our team for personalized pricing
               </span>
             </p>

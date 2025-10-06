@@ -72,11 +72,11 @@ const PayrollStepper = ({ steps = [], title }) => {
         {/* Title */}
         {displayTitle && (
           <header className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-800 mb-2">
+            <h2 className="text-3xl font-bold text-[var(--color-text-primary)] mb-2">
               {displayTitle}
             </h2>
             {defaultData?.description && (
-              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              <p className="text-lg text-[var(--color-text-muted)] max-w-3xl mx-auto">
                 {defaultData.description}
               </p>
             )}
@@ -86,9 +86,9 @@ const PayrollStepper = ({ steps = [], title }) => {
         {/* Desktop Stepper */}
         <div className="hidden md:flex mb-12 relative">
           <div className="flex justify-between items-center w-full relative">
-            <div className="absolute top-7 left-7 right-7 h-2 bg-gray-200 rounded-full z-0"></div>
+            <div className="absolute top-7 left-7 right-7 h-2 bg-[var(--color-border-secondary)] rounded-full z-0"></div>
             <div
-              className="absolute top-7 left-7 h-2 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full z-0 transition-all duration-500"
+              className="absolute top-7 left-7 h-2 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] rounded-full z-0 transition-all duration-500"
               style={{
                 width: `${
                   7 + (current / (displaySteps.length - 1)) * (100 - 14)
@@ -106,15 +106,19 @@ const PayrollStepper = ({ steps = [], title }) => {
                   className={`w-14 h-14 rounded-full flex items-center justify-center mb-3 transition-all duration-300 border-2 shadow-lg
                   ${
                     idx <= current
-                      ? "bg-gradient-to-br from-blue-500 to-blue-600 text-white border-blue-600"
-                      : "bg-white text-gray-500 border-gray-300"
+                      ? "bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-dark)] text-[var(--color-text-inverse)] border-[var(--color-primary)]"
+                      : "bg-[var(--color-bg-primary)] text-[var(--color-text-muted)] border-[var(--color-border-secondary)]"
                   }`}
                 >
                   {idx + 1}
                 </button>
                 <span
                   className={`text-sm font-medium max-w-[120px] text-center absolute top-16
-                ${idx <= current ? "text-blue-700" : "text-gray-500"}`}
+                ${
+                  idx <= current
+                    ? "text-[var(--color-primary-dark)]"
+                    : "text-[var(--color-text-muted)]"
+                }`}
                 >
                   {step?.title?.split(" ")[0] || `Step ${idx + 1}`}
                 </span>
@@ -133,8 +137,8 @@ const PayrollStepper = ({ steps = [], title }) => {
                 className={`flex-shrink-0 px-4 py-2 rounded-lg border text-sm font-medium
                 ${
                   idx === current
-                    ? "bg-blue-600 text-white border-blue-600"
-                    : "bg-white text-gray-700 border-gray-200"
+                    ? "bg-[var(--color-primary)] text-[var(--color-text-inverse)] border-[var(--color-primary)]"
+                    : "bg-[var(--color-bg-primary)] text-[var(--color-text-secondary)] border-[var(--color-border-secondary)]"
                 }`}
               >
                 {step?.title?.split(" ")[0] || `Step ${idx + 1}`}
@@ -145,7 +149,7 @@ const PayrollStepper = ({ steps = [], title }) => {
 
         {/* Step Content */}
         <article
-          className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100"
+          className="bg-[var(--color-bg-primary)] rounded-2xl shadow-lg p-6 border border-[var(--color-border-primary)]"
           role="article"
           aria-label={`Payroll step: ${
             displaySteps[current]?.title || `Step ${current + 1}`
@@ -153,10 +157,10 @@ const PayrollStepper = ({ steps = [], title }) => {
         >
           <div className="flex flex-col lg:flex-row gap-8">
             <div className="lg:w-1/2">
-              <h3 className="text-2xl font-bold text-gray-800 mb-3">
+              <h3 className="text-2xl font-bold text-[var(--color-text-primary)] mb-3">
                 {displaySteps[current]?.title || `Step ${current + 1}`}
               </h3>
-              <p className="text-lg text-gray-700 mb-6">
+              <p className="text-lg text-[var(--color-text-secondary)] mb-6">
                 {displaySteps[current]?.desc ||
                   displaySteps[current]?.description ||
                   "No description available."}
@@ -166,16 +170,16 @@ const PayrollStepper = ({ steps = [], title }) => {
                 Array.isArray(displaySteps[current].benefits) &&
                 displaySteps[current].benefits.length > 0 && (
                   <div className="mb-6">
-                    <h4 className="text-sm font-semibold text-gray-600 uppercase mb-3">
+                    <h4 className="text-sm font-semibold text-[var(--color-text-muted)] uppercase mb-3">
                       Key Features
                     </h4>
                     <div className="space-y-2">
                       {displaySteps[current].benefits.map((detail, idx) => (
                         <div
                           key={idx}
-                          className="flex items-center text-sm text-gray-600"
+                          className="flex items-center text-sm text-[var(--color-text-muted)]"
                         >
-                          <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
+                          <span className="w-2 h-2 bg-[var(--color-primary)] rounded-full mr-3"></span>
                           {detail}
                         </div>
                       ))}
@@ -185,22 +189,22 @@ const PayrollStepper = ({ steps = [], title }) => {
             </div>
 
             <div className="lg:w-1/2">
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-100">
+              <div className="bg-gradient-to-br from-[var(--color-bg-secondary)] to-[var(--color-accent-light)] rounded-xl p-6 border border-[var(--color-border-secondary)]">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="bg-white rounded-lg p-4 border border-blue-100">
-                    <div className="flex items-center text-blue-600 mb-2">
+                  <div className="bg-[var(--color-bg-primary)] rounded-lg p-4 border border-[var(--color-border-secondary)]">
+                    <div className="flex items-center text-[var(--color-primary)] mb-2">
                       <span className="font-medium">Automated</span>
                     </div>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-[var(--color-text-muted)]">
                       Reduces manual work by 80%
                     </p>
                   </div>
 
-                  <div className="bg-white rounded-lg p-4 border border-blue-100">
-                    <div className="flex items-center text-green-600 mb-2">
+                  <div className="bg-[var(--color-bg-primary)] rounded-lg p-4 border border-[var(--color-border-secondary)]">
+                    <div className="flex items-center text-[var(--color-accent)] mb-2">
                       <span className="font-medium">Compliant</span>
                     </div>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-[var(--color-text-muted)]">
                       Built-in regulatory compliance
                     </p>
                   </div>

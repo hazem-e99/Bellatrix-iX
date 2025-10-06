@@ -46,15 +46,15 @@ const ModulesSection = ({ data = {} }) => {
       />
       <section
         className="py-20 animate-fade-in-up relative"
-        style={{ backgroundColor: "#001038" }}
+        style={{ backgroundColor: "var(--color-brand-dark-navy)" }}
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/10 via-transparent to-blue-800/10 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-primary-dark)]/10 via-transparent to-[var(--color-primary)]/10 pointer-events-none"></div>
         <div className="max-w-6xl mx-auto px-4 relative z-10">
           <header className="text-center mb-10">
-            <h2 className="text-3xl font-bold mb-6 text-white">
+            <h2 className="text-3xl font-bold mb-6 text-[var(--color-text-inverse)]">
               Product Modules
             </h2>
-            <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+            <p className="text-lg text-[var(--color-text-light)] max-w-2xl mx-auto">
               Our platform is built from modular components to cover every
               aspect of HR, payroll, and compliance—choose what fits your
               business best.
@@ -64,7 +64,7 @@ const ModulesSection = ({ data = {} }) => {
             {modules.map((m, idx) => (
               <article
                 key={idx}
-                className="bg-white/5 backdrop-blur-sm rounded-2xl shadow-2xl p-10 flex flex-col items-center text-center border border-white/10 hover:border-blue-500 hover:shadow-blue-500/20 hover:shadow-2xl transition-all duration-300 animate-fade-in-up"
+                className="bg-[var(--color-text-inverse)]/5 backdrop-blur-sm rounded-2xl shadow-2xl p-10 flex flex-col items-center text-center border border-[var(--color-text-inverse)]/10 hover:border-[var(--color-primary)] hover:shadow-[var(--color-primary)]/20 hover:shadow-2xl transition-all duration-300 animate-fade-in-up"
                 role="article"
                 aria-label={`HR Module: ${m.title || "Module"}`}
               >
@@ -75,10 +75,10 @@ const ModulesSection = ({ data = {} }) => {
                 >
                   {m.icon || "🔧"}
                 </div>
-                <h3 className="font-bold text-xl text-white mb-3">
+                <h3 className="font-bold text-xl text-[var(--color-text-inverse)] mb-3">
                   {m.title || "Module"}
                 </h3>
-                <p className="text-gray-300 text-base">
+                <p className="text-[var(--color-text-light)] text-base">
                   {m.desc || "Module description"}
                 </p>
               </article>

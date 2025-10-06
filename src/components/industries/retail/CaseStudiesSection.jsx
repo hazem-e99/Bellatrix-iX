@@ -11,8 +11,8 @@ const CaseStudiesSection = ({ data }) => {
   ) {
     return (
       <section
-        className="py-20 relative overflow-hidden"
-        style={{ backgroundColor: "#001038" }}
+        className="py-20 relative overflow-hidden theme-bg-primary"
+        style={{ backgroundColor: "var(--color-brand-dark-navy)" }}
       >
         <div className="container mx-auto px-6 relative z-10">
           <div className="text-center">
@@ -28,8 +28,8 @@ const CaseStudiesSection = ({ data }) => {
 
   return (
     <section
-      className="py-20 relative overflow-hidden"
-      style={{ backgroundColor: "#001038" }}
+      className="py-20 relative overflow-hidden theme-bg-primary"
+      style={{ backgroundColor: "var(--color-brand-dark-navy)" }}
     >
       <SEO
         title="Retail Success Stories | Oracle NetSuite E-commerce Case Studies"

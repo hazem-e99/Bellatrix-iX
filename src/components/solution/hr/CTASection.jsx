@@ -52,18 +52,18 @@ const CTASection = ({
         ).substring(0, 120)}... Professional ERP HR solutions and support.`}
         ogImage="/images/netsuite-hr-cta.jpg"
       />
-      <section className="py-16 bg-gray-50 text-center animate-fade-in-up light-section">
+      <section className="py-16 bg-[var(--color-bg-secondary)] text-center animate-fade-in-up light-section">
         <div className="max-w-2xl mx-auto px-4">
           <header className="mb-8">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-blue-800">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[var(--color-primary-dark)]">
               {finalData.title}
             </h2>
             {finalData.subtitle && (
-              <h3 className="text-lg md:text-xl text-blue-600 mb-4 leading-relaxed">
+              <h3 className="text-lg md:text-xl text-[var(--color-primary)] mb-4 leading-relaxed">
                 {finalData.subtitle}
               </h3>
             )}
-            <p className="text-lg md:text-xl text-gray-600">
+            <p className="text-lg md:text-xl text-[var(--color-text-secondary)]">
               {finalData.description}
             </p>
           </header>
@@ -71,14 +71,14 @@ const CTASection = ({
             {finalData.buttonLink ? (
               <a
                 href={finalData.buttonLink}
-                className="inline-block border-2 border-blue-700 hover:border-blue-400 text-blue-700 hover:text-blue-900 font-semibold rounded-lg px-8 py-4 transition-all duration-200 shadow-lg text-lg hover:bg-blue-100"
+                className="inline-block border-2 border-[var(--color-primary)] hover:border-[var(--color-primary-light)] text-[var(--color-primary)] hover:text-[var(--color-primary-dark)] font-semibold rounded-lg px-8 py-4 transition-all duration-200 shadow-lg text-lg hover:bg-[var(--color-primary)]/10"
               >
                 {finalData.buttonText}
               </a>
             ) : (
               <button
                 onClick={onCtaClick}
-                className="inline-block border-2 border-blue-700 hover:border-blue-400 text-blue-700 hover:text-blue-900 font-semibold rounded-lg px-8 py-4 transition-all duration-200 shadow-lg text-lg hover:bg-blue-100"
+                className="inline-block border-2 border-[var(--color-primary)] hover:border-[var(--color-primary-light)] text-[var(--color-primary)] hover:text-[var(--color-primary-dark)] font-semibold rounded-lg px-8 py-4 transition-all duration-200 shadow-lg text-lg hover:bg-[var(--color-primary)]/10"
               >
                 {finalData.buttonText}
               </button>

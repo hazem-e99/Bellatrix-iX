@@ -59,7 +59,7 @@ const DemoModal = ({
         aria-labelledby="demo-modal-title"
       >
         <article
-          className="bg-white rounded-2xl shadow-2xl p-8 max-w-3xl w-full relative animate-fade-in-up"
+          className="bg-[var(--color-bg-primary)] rounded-2xl shadow-2xl p-8 max-w-3xl w-full relative animate-fade-in-up"
           onClick={(e) => e.stopPropagation()}
           role="article"
           aria-label="HR Platform Demo"
@@ -70,7 +70,7 @@ const DemoModal = ({
             </h2>
             <button
               onClick={() => setShowDemo(false)}
-              className="absolute top-4 right-4 w-12 h-12 flex items-center justify-center rounded-full bg-white/70 hover:bg-red-100 shadow-md text-4xl text-gray-700 hover:text-red-600 font-bold transition-all duration-200 focus:outline-none border border-gray-200"
+              className="absolute top-4 right-4 w-12 h-12 flex items-center justify-center rounded-full bg-[var(--color-bg-primary)]/70 hover:bg-[var(--color-error)]/10 shadow-md text-4xl text-[var(--color-text-secondary)] hover:text-[var(--color-error)] font-bold transition-all duration-200 focus:outline-none border border-[var(--color-border-primary)]"
               aria-label="Close Demo Modal"
               tabIndex={0}
             >
@@ -110,7 +110,7 @@ const DemoModal = ({
             <div className="flex gap-6 items-center justify-center mt-2">
               <button
                 onClick={prevDemo}
-                className="bg-blue-100 hover:bg-blue-300 text-blue-700 font-bold rounded-full w-10 h-10 flex items-center justify-center shadow transition-all disabled:opacity-40"
+                className="bg-[var(--color-primary)]/10 hover:bg-[var(--color-primary)]/30 text-[var(--color-primary)] font-bold rounded-full w-10 h-10 flex items-center justify-center shadow transition-all disabled:opacity-40"
                 disabled={displayDemoImages.length <= 1}
                 aria-label="Previous image"
               >
@@ -129,12 +129,12 @@ const DemoModal = ({
                   />
                 </svg>
               </button>
-              <span className="text-gray-700 font-semibold">
+              <span className="text-[var(--color-text-secondary)] font-semibold">
                 {demoIdx + 1} / {displayDemoImages.length}
               </span>
               <button
                 onClick={nextDemo}
-                className="bg-blue-100 hover:bg-blue-300 text-blue-700 font-bold rounded-full w-10 h-10 flex items-center justify-center shadow transition-all disabled:opacity-40"
+                className="bg-[var(--color-primary)]/10 hover:bg-[var(--color-primary)]/30 text-[var(--color-primary)] font-bold rounded-full w-10 h-10 flex items-center justify-center shadow transition-all disabled:opacity-40"
                 disabled={displayDemoImages.length <= 1}
                 aria-label="Next image"
               >
@@ -162,8 +162,8 @@ const DemoModal = ({
                   onClick={() => handleDemoChange(idx)}
                   className={`w-3 h-3 rounded-full border-2 ${
                     demoIdx === idx
-                      ? "bg-blue-700 border-blue-700"
-                      : "bg-blue-100 border-blue-300"
+                      ? "bg-[var(--color-primary)] border-[var(--color-primary)]"
+                      : "bg-[var(--color-primary)]/10 border-[var(--color-primary)]/30"
                   } transition-all`}
                   aria-label={`Go to slide ${idx + 1}`}
                 />

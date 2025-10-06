@@ -4,8 +4,8 @@ import SEO from "../../SEO";
 const ChallengesSection = ({ data, activeChallenge, setActiveChallenge }) => {
   return (
     <section
-      className="py-20 relative overflow-hidden"
-      style={{ backgroundColor: "#001038" }}
+      className="py-20 relative overflow-hidden theme-bg-primary"
+      style={{ backgroundColor: "var(--color-brand-dark-navy)" }}
     >
       <SEO
         title="Retail Challenges | Oracle NetSuite Solutions for Modern Retail"

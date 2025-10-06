@@ -79,17 +79,17 @@ const ContactForm = ({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Left Column - Contact Info */}
           <fieldset className="space-y-3">
-            <legend className="text-base font-semibold text-blue-800 mb-2 border-b border-gray-200 pb-1">
+            <legend className="text-base font-semibold text-[var(--color-primary-dark)] mb-2 border-b border-[var(--color-border-primary)] pb-1">
               {contactInfoTitle}
             </legend>
             {contactFields.map((field, index) => (
               <div key={index}>
-                <label className="text-sm font-medium text-blue-900">
+                <label className="text-sm font-medium text-[var(--color-text-primary)]">
                   {field.label}
                 </label>
                 <input
                   type={field.type}
-                  className="w-full px-3 py-2 mt-1 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-200 focus:border-transparent outline-none transition-all duration-300 text-blue-900 placeholder-gray-400"
+                  className="w-full px-3 py-2 mt-1 bg-[var(--color-white)] border border-[var(--color-border-primary)] rounded-lg focus:ring-2 focus:ring-[var(--color-focus)] focus:border-transparent outline-none transition-all duration-300 text-[var(--color-text-primary)] placeholder-[var(--color-text-muted)]"
                   placeholder={field.placeholder}
                   required={field.required}
                 />
@@ -98,21 +98,21 @@ const ContactForm = ({
           </fieldset>
           {/* Right Column - Company Info */}
           <fieldset className="space-y-3">
-            <legend className="text-base font-semibold text-blue-800 mb-2 border-b border-gray-200 pb-1">
+            <legend className="text-base font-semibold text-[var(--color-primary-dark)] mb-2 border-b border-[var(--color-border-primary)] pb-1">
               {companyInfoTitle}
             </legend>
             {companyFields.map((field, index) => (
               <div key={index}>
-                <label className="text-sm font-medium text-blue-900">
+                <label className="text-sm font-medium text-[var(--color-text-primary)]">
                   {field.label}
                 </label>
                 {field.type === "select" ? (
-                  <select className="w-full px-3 py-2 mt-1 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-200 focus:border-transparent outline-none transition-all duration-300 text-blue-900">
+                  <select className="w-full px-3 py-2 mt-1 bg-[var(--color-white)] border border-[var(--color-border-primary)] rounded-lg focus:ring-2 focus:ring-[var(--color-focus)] focus:border-transparent outline-none transition-all duration-300 text-[var(--color-text-primary)]">
                     {field.options.map((option, i) => (
                       <option
                         key={i}
                         value={option.toLowerCase().replace(/\s+/g, "-")}
-                        className="bg-white text-blue-900"
+                        className="bg-[var(--color-white)] text-[var(--color-text-primary)]"
                       >
                         {option}
                       </option>
@@ -121,7 +121,7 @@ const ContactForm = ({
                 ) : (
                   <input
                     type={field.type}
-                    className="w-full px-3 py-2 mt-1 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-200 focus:border-transparent outline-none transition-all duration-300 text-blue-900 placeholder-gray-400"
+                    className="w-full px-3 py-2 mt-1 bg-[var(--color-white)] border border-[var(--color-border-primary)] rounded-lg focus:ring-2 focus:ring-[var(--color-focus)] focus:border-transparent outline-none transition-all duration-300 text-[var(--color-text-primary)] placeholder-[var(--color-text-muted)]"
                     placeholder={field.placeholder}
                   />
                 )}
@@ -131,21 +131,21 @@ const ContactForm = ({
         </div>
         {/* Message Section - Full Width */}
         <div>
-          <label className="text-sm font-medium text-blue-900">
+          <label className="text-sm font-medium text-[var(--color-text-primary)]">
             {messageLabel}
           </label>
           <textarea
             rows="3"
-            className="w-full px-3 py-2 mt-1 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-200 focus:border-transparent outline-none transition-all duration-300 resize-none text-blue-900 placeholder-gray-400"
+            className="w-full px-3 py-2 mt-1 bg-[var(--color-white)] border border-[var(--color-border-primary)] rounded-lg focus:ring-2 focus:ring-[var(--color-focus)] focus:border-transparent outline-none transition-all duration-300 resize-none text-[var(--color-text-primary)] placeholder-[var(--color-text-muted)]"
             placeholder={messagePlaceholder}
           ></textarea>
         </div>
         {/* Submit Section */}
-        <div className="flex items-center justify-between pt-3 border-t border-gray-200">
-          <p className="text-xs text-gray-500">{submitNote}</p>
+        <div className="flex items-center justify-between pt-3 border-t border-[var(--color-border-primary)]">
+          <p className="text-xs text-[var(--color-text-muted)]">{submitNote}</p>
           <button
             type="submit"
-            className="bg-blue-200 hover:bg-blue-300 text-blue-900 px-6 py-2 rounded-lg font-semibold transition-colors duration-300 shadow-sm"
+            className="bg-[var(--button-bg-primary)] hover:bg-[var(--button-bg-primary-hover)] text-[var(--button-text-primary)] px-6 py-2 rounded-lg font-semibold transition-colors duration-300 shadow-sm"
           >
             {submitText}
           </button>

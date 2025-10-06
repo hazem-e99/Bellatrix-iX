@@ -49,26 +49,26 @@ const PayrollHowItWorks = ({ data }) => {
       <section
         className="py-20 relative overflow-hidden animate-background-glow"
         style={{
-          backgroundColor: "#001038",
+          backgroundColor: "var(--color-brand-dark-navy)",
           animation: "background-glow 12s ease-in-out infinite",
         }}
       >
         {/* Decorative Background */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-900/10 via-transparent to-blue-800/10"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-primary-dark)]/10 via-transparent to-[var(--color-primary)]/10"></div>
         </div>
 
         <div className="container mx-auto px-6 max-w-6xl relative z-10">
           {/* Title */}
           {sectionData.title && (
             <header className="text-center mb-10">
-              <h2 className="text-3xl md:text-4xl font-bold text-white">
+              <h2 className="text-3xl md:text-4xl font-bold text-[var(--color-text-inverse)]">
                 {sectionData.title}
               </h2>
             </header>
           )}
 
-          <div className="bg-gradient-to-br from-gray-800/90 via-gray-700/80 to-gray-800/90 rounded-xl p-12 shadow-2xl max-w-6xl mx-auto border border-gray-600/50 backdrop-blur-sm hover:shadow-blue-500/20 hover:shadow-2xl transition-all duration-500 relative overflow-hidden group">
+          <div className="bg-gradient-to-br from-[var(--color-text-secondary)]/90 via-[var(--color-text-secondary)]/80 to-[var(--color-text-secondary)]/90 rounded-xl p-12 shadow-2xl max-w-6xl mx-auto border border-[var(--color-text-secondary)]/50 backdrop-blur-sm hover:shadow-[var(--color-primary)]/20 hover:shadow-2xl transition-all duration-500 relative overflow-hidden group">
             {/* Background Effects */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/30 to-cyan-500/30 rounded-full opacity-20 transform translate-x-16 -translate-y-16 group-hover:opacity-40 transition-opacity duration-500"></div>
             <div className="absolute bottom-0 left-0 w-20 h-20 bg-gradient-to-tr from-purple-500/30 to-blue-500/30 rounded-full opacity-20 transform -translate-x-10 translate-y-10 group-hover:opacity-40 transition-opacity duration-500"></div>
@@ -95,7 +95,7 @@ const PayrollHowItWorks = ({ data }) => {
             <div className="relative z-10">
               {/* Description */}
               {sectionData.description && (
-                <p className="text-xl text-gray-300 leading-relaxed mb-10">
+                <p className="text-xl text-[var(--color-text-light)] leading-relaxed mb-10">
                   {sectionData.description}
                 </p>
               )}
@@ -106,16 +106,16 @@ const PayrollHowItWorks = ({ data }) => {
                   {steps.map((step, idx) => (
                     <article
                       key={idx}
-                      className="bg-gray-900/70 border border-gray-700/50 p-6 rounded-lg shadow-md hover:shadow-blue-500/20 transition"
+                      className="bg-[var(--color-background-dark)]/70 border border-[var(--color-text-secondary)]/50 p-6 rounded-lg shadow-md hover:shadow-[var(--color-primary)]/20 transition"
                       role="article"
                       aria-label={`Payroll process step: ${
                         step.title || `Step ${idx + 1}`
                       }`}
                     >
-                      <h3 className="text-xl font-semibold text-white mb-2">
+                      <h3 className="text-xl font-semibold text-[var(--color-text-inverse)] mb-2">
                         {step.title || ""}
                       </h3>
-                      <p className="text-gray-300 text-base">
+                      <p className="text-[var(--color-text-light)] text-base">
                         {step.description || ""}
                       </p>
                     </article>

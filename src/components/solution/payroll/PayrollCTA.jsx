@@ -71,7 +71,7 @@ const PayrollCTA = ({
       />
       <section className="py-20 relative overflow-hidden">
         {/* Background Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-primary)] via-[var(--color-primary-dark)] to-[var(--color-accent)]"></div>
 
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
@@ -80,14 +80,14 @@ const PayrollCTA = ({
 
         {/* Floating Elements */}
         <div className="absolute top-10 left-10 w-20 h-20 bg-white/10 rounded-full blur-xl animate-pulse"></div>
-        <div className="absolute bottom-10 right-10 w-16 h-16 bg-purple-400/20 rounded-full blur-lg animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/4 w-12 h-12 bg-cyan-400/15 rounded-full blur-md animate-pulse delay-500"></div>
+        <div className="absolute bottom-10 right-10 w-16 h-16 bg-[var(--color-accent)]/20 rounded-full blur-lg animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/4 w-12 h-12 bg-[var(--color-accent-light)]/15 rounded-full blur-md animate-pulse delay-500"></div>
 
         <div className="container mx-auto px-6 max-w-4xl relative z-10">
           <header className="text-center">
             {/* Main Title - Fixed HTML rendering */}
             <h2
-              className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-white leading-tight"
+              className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-[var(--color-text-inverse)] leading-tight"
               {...(titleHTML
                 ? { dangerouslySetInnerHTML: titleHTML }
                 : { children: finalData.title })}
@@ -95,14 +95,14 @@ const PayrollCTA = ({
 
             {/* Subtitle */}
             {finalData.subtitle && (
-              <h3 className="text-lg md:text-xl text-blue-200 mb-4 leading-relaxed max-w-2xl mx-auto">
+              <h3 className="text-lg md:text-xl text-[var(--color-text-inverse)] opacity-80 mb-4 leading-relaxed max-w-2xl mx-auto">
                 {finalData.subtitle}
               </h3>
             )}
 
             {/* Description - Fixed HTML rendering */}
             <p
-              className="text-xl md:text-2xl text-blue-100 mb-10 leading-relaxed max-w-3xl mx-auto"
+              className="text-xl md:text-2xl text-[var(--color-text-inverse)] opacity-90 mb-10 leading-relaxed max-w-3xl mx-auto"
               {...(descriptionHTML
                 ? { dangerouslySetInnerHTML: descriptionHTML }
                 : { children: finalData.description })}
@@ -136,7 +136,7 @@ const PayrollCTA = ({
                 </span>
 
                 {/* Button hover effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-bg-secondary)] to-[var(--color-accent-light)] rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </a>
             ) : (
               <button
@@ -164,19 +164,19 @@ const PayrollCTA = ({
                 </span>
 
                 {/* Button hover effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-bg-secondary)] to-[var(--color-accent-light)] rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </button>
             )}
 
             {/* Additional Benefits - Dynamic from form data */}
-            <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 text-white/80">
+            <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 text-[var(--color-text-inverse)]/80">
               {finalData.features.map((feature, index) => (
                 <div
                   key={index}
                   className="flex items-center justify-center space-x-2"
                 >
                   <svg
-                    className="w-5 h-5 text-green-400"
+                    className="w-5 h-5 text-[var(--color-accent)]"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -194,13 +194,16 @@ const PayrollCTA = ({
             </div>
 
             {/* Trust indicators - Dynamic from form data */}
-            <div className="mt-8 pt-8 border-t border-white/20">
-              <p className="text-white/60 text-sm mb-4">
+            <div className="mt-8 pt-8 border-t border-[var(--color-text-inverse)]/20">
+              <p className="text-[var(--color-text-inverse)]/60 text-sm mb-4">
                 Trusted by thousands of businesses worldwide
               </p>
               <div className="flex justify-center items-center space-x-8 opacity-70">
                 {finalData.trustedBy.map((company, index) => (
-                  <div key={index} className="text-white/50 text-xs">
+                  <div
+                    key={index}
+                    className="text-[var(--color-text-inverse)]/50 text-xs"
+                  >
                     ✓ {company}
                   </div>
                 ))}
@@ -210,7 +213,7 @@ const PayrollCTA = ({
         </div>
 
         {/* Bottom gradient fade */}
-        <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-blue-700/50 to-transparent"></div>
+        <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-[var(--color-primary-dark)]/50 to-transparent"></div>
       </section>
     </>
   );

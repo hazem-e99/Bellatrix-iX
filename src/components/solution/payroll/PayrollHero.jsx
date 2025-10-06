@@ -90,7 +90,7 @@ const PayrollHero = ({
           <div className="text-center">
             <div className="flex flex-col items-center justify-center space-y-8">
               <h1
-                className="text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-black leading-[0.9] text-white drop-shadow-lg text-center"
+                className="text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-black leading-[0.9] text-[var(--color-text-inverse)] drop-shadow-lg text-center"
                 style={{
                   textShadow:
                     "0 0 20px rgba(255, 255, 255, 0.5), 0 0 40px rgba(255, 255, 255, 0.3)",
@@ -100,7 +100,7 @@ const PayrollHero = ({
               </h1>
               <div className="max-w-4xl mx-auto space-y-4">
                 <p
-                  className="text-lg md:text-xl lg:text-2xl text-gray-100 leading-relaxed font-medium drop-shadow-md text-center"
+                  className="text-lg md:text-xl lg:text-2xl text-[var(--color-text-light)] leading-relaxed font-medium drop-shadow-md text-center"
                   style={{
                     textShadow:
                       "0 0 15px rgba(255, 255, 255, 0.4), 0 0 30px rgba(255, 255, 255, 0.2)",
@@ -110,7 +110,7 @@ const PayrollHero = ({
                 </p>
                 {displayData.description && (
                   <p
-                    className="text-base md:text-lg text-gray-200 leading-relaxed drop-shadow-md text-center"
+                    className="text-base md:text-lg text-[var(--color-text-light)] leading-relaxed drop-shadow-md text-center"
                     style={{
                       textShadow:
                         "0 0 10px rgba(255, 255, 255, 0.3), 0 0 20px rgba(255, 255, 255, 0.1)",
@@ -127,7 +127,7 @@ const PayrollHero = ({
                         (() =>
                           (window.location.href = displayData.ctaButton.link))
                       }
-                      className="inline-flex items-center px-8 py-4 text-lg font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
+                      className="inline-flex items-center px-8 py-4 text-lg font-semibold text-[var(--color-text-inverse)] bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
                     >
                       {displayData.ctaButton.text}
                     </button>

@@ -55,7 +55,7 @@ const HeroSection = ({ data = {} }) => {
         ).substring(0, 120)}... Professional ERP HR solutions.`}
         ogImage="/images/netsuite-hr-hero.jpg"
       />
-      <header className="w-full min-h-screen bg-gradient-to-br from-[#191970] via-black to-blue-700 py-24 md:py-32 text-center flex flex-col items-center justify-center relative overflow-hidden">
+      <header className="w-full min-h-screen bg-gradient-to-br from-[var(--color-brand-midnight)] via-black to-[var(--color-primary)] py-24 md:py-32 text-center flex flex-col items-center justify-center relative overflow-hidden">
         {/* Background Video */}
         <div className="absolute inset-0 w-full h-full">
           <video
@@ -86,10 +86,10 @@ const HeroSection = ({ data = {} }) => {
         <div className="absolute inset-0 bg-black/40 z-0"></div>
         <div className="max-w-3xl mx-auto px-4 relative z-10 animate-fade-in-up">
           <div className="accent-bar mx-auto mb-4" aria-hidden="true"></div>
-          <h1 className="text-5xl md:text-6xl font-extrabold text-white mb-4 tracking-tight drop-shadow-2xl">
+          <h1 className="text-5xl md:text-6xl font-extrabold text-[var(--color-text-inverse)] mb-4 tracking-tight drop-shadow-2xl">
             {heroData.title}
           </h1>
-          <p className="text-xl md:text-2xl text-white mb-8 drop-shadow-lg">
+          <p className="text-xl md:text-2xl text-[var(--color-text-inverse)] mb-8 drop-shadow-lg">
             {heroData.subtitle}
           </p>
         </div>

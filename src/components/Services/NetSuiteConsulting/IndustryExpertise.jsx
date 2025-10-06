@@ -20,10 +20,10 @@ const IndustryExpertise = ({
       <section className="container mx-auto px-6 relative z-10">
         <header className="text-center mb-16">
           <h2
-            className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4"
+            className="text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--color-text-inverse)] mb-4"
             dangerouslySetInnerHTML={{ __html: title }}
           />
-          <p className="text-lg text-gray-300 leading-relaxed max-w-3xl mx-auto">
+          <p className="text-lg text-[var(--color-text-inverse)] opacity-80 leading-relaxed max-w-3xl mx-auto">
             {description}
           </p>
         </header>
@@ -33,7 +33,7 @@ const IndustryExpertise = ({
             <article
               key={index}
               onClick={() => handleIndustryClick(industry.link)}
-              className="bg-white/5 backdrop-blur-sm rounded-2xl overflow-hidden border border-white/10 hover:bg-white/10 transition-all duration-300 group cursor-pointer hover:scale-105"
+              className="bg-[var(--color-text-inverse)]/5 backdrop-blur-sm rounded-2xl overflow-hidden border border-[var(--color-text-inverse)]/10 hover:bg-[var(--color-text-inverse)]/10 transition-all duration-300 group cursor-pointer hover:scale-105"
             >
               <div className="relative h-48 overflow-hidden">
                 <img
@@ -41,24 +41,26 @@ const IndustryExpertise = ({
                   alt={`Oracle NetSuite ${industry.name} Industry Solutions`}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-brand-dark-navy)]/60 to-transparent"></div>
                 <div className="absolute bottom-4 left-4">
-                  <h3 className="text-xl font-bold text-white">
+                  <h3 className="text-xl font-bold text-[var(--color-text-inverse)]">
                     {industry.name}
                   </h3>
                 </div>
               </div>
               <div className="p-6">
-                <p className="text-gray-300 mb-4">{industry.description}</p>
+                <p className="text-[var(--color-text-inverse)] opacity-80 mb-4">
+                  {industry.description}
+                </p>
                 <div className="space-y-2">
-                  <h4 className="font-semibold text-white text-sm">
+                  <h4 className="font-semibold text-[var(--color-text-inverse)] text-sm">
                     Key Solutions:
                   </h4>
                   <div className="flex flex-wrap gap-2">
                     {industry.solutions.map((solution, i) => (
                       <span
                         key={i}
-                        className="bg-blue-600/20 text-blue-300 text-xs px-2 py-1 rounded-full"
+                        className="bg-[var(--color-primary)]/20 text-[var(--color-primary-light)] text-xs px-2 py-1 rounded-full"
                       >
                         {solution}
                       </span>

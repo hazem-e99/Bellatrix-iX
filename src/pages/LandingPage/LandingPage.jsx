@@ -11,7 +11,7 @@ function LandingPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
+      <div className="flex items-center justify-center min-h-screen bg-[var(--color-background-dark)] text-[var(--color-white)]">
         <div className="text-2xl font-bold animate-pulse">Loading...</div>
       </div>
     );
@@ -19,14 +19,14 @@ function LandingPage() {
 
   if (error) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-900 text-red-500">
+      <div className="flex items-center justify-center min-h-screen bg-[var(--color-background-dark)] text-[var(--color-error)]">
         <div className="text-2xl font-bold">Error: {error.message}</div>
       </div>
     );
   }
 
   return (
-    <div className="bg-gray-900 text-white">
+    <div className="bg-[var(--color-background-dark)] text-[var(--color-white)]">
       <SEO
         title="Bellatrix - Oracle NetSuite Consulting & Implementation Services"
         description="Transform your business with Bellatrix's expert Oracle NetSuite consulting, implementation, and training services. Streamline operations and drive growth."

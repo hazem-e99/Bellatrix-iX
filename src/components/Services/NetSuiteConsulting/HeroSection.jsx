@@ -15,10 +15,10 @@ const HeroSection = ({ title, description, ctaText, ctaIcon }) => {
       <header
         className="py-12 relative overflow-hidden animate-background-glow"
         style={{
-          backgroundColor: "#001038",
+          backgroundColor: "var(--color-brand-dark-navy)",
           padding: "200px 0 100px",
           width: "100%",
-          color: "white",
+          color: "var(--color-text-inverse)",
           fontSize: "15px",
           lineHeight: "24px",
           fontFamily: '"Gotham A", "Gotham B"',
@@ -27,10 +27,10 @@ const HeroSection = ({ title, description, ctaText, ctaIcon }) => {
       >
         {/* Decorative Background Elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-900/10 via-transparent to-blue-800/10"></div>
-          <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-gradient-to-r from-blue-600/20 via-cyan-500/30 to-blue-600/20 rounded-full blur-2xl opacity-30"></div>
-          <div className="absolute top-3/4 right-1/4 w-24 h-24 bg-gradient-to-r from-blue-500/15 via-purple-500/20 to-cyan-500/15 rounded-full blur-xl opacity-40"></div>
-          <div className="absolute top-1/2 left-1/3 w-16 h-16 bg-gradient-to-r from-white/10 via-blue-300/20 to-white/10 rounded-full blur-lg opacity-20"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-primary-dark)]/10 via-transparent to-[var(--color-primary)]/10"></div>
+          <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-gradient-to-r from-[var(--color-primary)]/20 via-[var(--color-accent-light)]/30 to-[var(--color-primary)]/20 rounded-full blur-2xl opacity-30"></div>
+          <div className="absolute top-3/4 right-1/4 w-24 h-24 bg-gradient-to-r from-[var(--color-primary-light)]/15 via-[var(--color-accent)]/20 to-[var(--color-accent-light)]/15 rounded-full blur-xl opacity-40"></div>
+          <div className="absolute top-1/2 left-1/3 w-16 h-16 bg-gradient-to-r from-[var(--color-text-inverse)]/10 via-[var(--color-primary-light)]/20 to-[var(--color-text-inverse)]/10 rounded-full blur-lg opacity-20"></div>
 
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-0 left-0 w-full h-full">
@@ -38,7 +38,7 @@ const HeroSection = ({ title, description, ctaText, ctaIcon }) => {
                 width="100%"
                 height="100%"
                 viewBox="0 0 100 100"
-                className="text-blue-300"
+                className="text-[var(--color-primary-light)]"
               >
                 <pattern
                   id="consultingGrid"
@@ -80,7 +80,7 @@ const HeroSection = ({ title, description, ctaText, ctaIcon }) => {
                 letterSpacing: "-1px",
                 margin: "0 0 13px",
               }}
-              className="text-white animate-slide-up"
+              className="text-[var(--color-text-inverse)] animate-slide-up"
             >
               {title}
             </h1>
@@ -92,7 +92,7 @@ const HeroSection = ({ title, description, ctaText, ctaIcon }) => {
                 textAlign: "center",
                 margin: 0,
               }}
-              className="text-gray-300 animate-fade-in"
+              className="text-[var(--color-text-inverse)] opacity-80 animate-fade-in"
             >
               {description}
             </p>
@@ -100,7 +100,7 @@ const HeroSection = ({ title, description, ctaText, ctaIcon }) => {
             <div style={{ textAlign: "center" }}>
               <a
                 href="#request-info"
-                className="group relative inline-block min-w-[180px] min-h-[56px] font-bold text-sm uppercase leading-5 rounded-md px-4 py-4 mt-8 mb-0 no-underline transition-all duration-300 transform hover:scale-105 bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white border-2 border-blue-500 hover:border-blue-400 hover:shadow-lg hover:shadow-blue-500/25"
+                className="group relative inline-block min-w-[180px] min-h-[56px] font-bold text-sm uppercase leading-5 rounded-md px-4 py-4 mt-8 mb-0 no-underline transition-all duration-300 transform hover:scale-105 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] hover:from-[var(--color-primary-light)] hover:to-[var(--color-primary)] text-[var(--color-text-inverse)] border-2 border-[var(--color-primary-light)] hover:border-[var(--color-primary)] hover:shadow-lg hover:shadow-[var(--color-primary)]/25"
               >
                 <span className="relative z-10 flex items-center justify-center">
                   <svg
@@ -118,7 +118,7 @@ const HeroSection = ({ title, description, ctaText, ctaIcon }) => {
                   </svg>
                   {ctaText}
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-700/20 to-blue-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-md"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-primary-dark)]/20 to-[var(--color-primary)]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-md"></div>
               </a>
             </div>
           </div>
@@ -128,16 +128,16 @@ const HeroSection = ({ title, description, ctaText, ctaIcon }) => {
           @keyframes background-glow {
             0%,
             100% {
-              background-color: #001038;
+              background-color: var(--color-brand-dark-navy);
             }
             25% {
-              background-color: #001245;
+              background-color: var(--color-brand-variant);
             }
             50% {
-              background-color: #001038;
+              background-color: var(--color-brand-accent);
             }
             75% {
-              background-color: #000e30;
+              background-color: var(--color-brand-variant);
             }
           }
 
