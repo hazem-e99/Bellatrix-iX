@@ -22,7 +22,6 @@ const HeroSection = ({ title, description, ctaText, ctaIcon }) => {
           fontSize: "15px",
           lineHeight: "24px",
           fontFamily: '"Gotham A", "Gotham B"',
-          animation: "background-glow 12s ease-in-out infinite",
         }}
       >
         {/* Decorative Background Elements */}
@@ -123,56 +122,6 @@ const HeroSection = ({ title, description, ctaText, ctaIcon }) => {
             </div>
           </div>
         </div>
-
-        <style jsx>{`
-          @keyframes background-glow {
-            0%,
-            100% {
-              background-color: var(--color-brand-dark-navy);
-            }
-            25% {
-              background-color: var(--color-brand-variant);
-            }
-            50% {
-              background-color: var(--color-brand-accent);
-            }
-            75% {
-              background-color: var(--color-brand-variant);
-            }
-          }
-
-          @keyframes slide-up {
-            from {
-              opacity: 0;
-              transform: translateY(30px);
-            }
-            to {
-              opacity: 1;
-              transform: translateY(0);
-            }
-          }
-
-          @keyframes fade-in {
-            from {
-              opacity: 0;
-            }
-            to {
-              opacity: 1;
-            }
-          }
-
-          .animate-slide-up {
-            animation: slide-up 0.8s ease-out;
-          }
-
-          .animate-fade-in {
-            animation: fade-in 1s ease-out 0.3s both;
-          }
-
-          .animate-background-glow {
-            animation: background-glow 12s ease-in-out infinite;
-          }
-        `}</style>
       </header>
     </>
   );

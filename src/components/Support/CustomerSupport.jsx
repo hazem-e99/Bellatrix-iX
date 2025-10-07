@@ -13,8 +13,8 @@ const CustomerSupport = () => {
         ogImage="https://i.pinimg.com/1200x/c4/3b/47/c43b47b28329114afa50028b00c829b8.jpg"
       />
       <section
-        className="py-20 relative overflow-hidden"
-        style={{ backgroundColor: "#001038" }}
+        className="py-20 relative overflow-hidden animate-background-glow theme-bg-animated"
+        style={{ backgroundColor: "var(--color-brand-dark-navy)" }}
       >
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">

@@ -48,40 +48,89 @@ const AboutCTA = ({
 
   console.log("✅ [AboutCTASection Fixed] Final data:", finalData);
   return (
-    <section className="bg-gray-50 py-20 light-section">
+    <section
+      className="py-20 light-section"
+      style={{
+        backgroundColor: "var(--color-bg-secondary)",
+        transition: "background-color 0.6s ease",
+      }}
+    >
       <div className="container mx-auto px-6">
-        <div className="bg-gradient-to-r from-gray-100 to-gray-200 rounded-3xl p-12 text-gray-800 text-center">
+        <div
+          className="rounded-3xl p-12 text-center"
+          style={{
+            background:
+              "linear-gradient(135deg, var(--color-bg-primary) 0%, var(--color-border-light) 100%)",
+            color: "var(--color-text-primary)",
+            transition: "all 0.6s ease",
+          }}
+        >
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
               {finalData.title}
             </h2>
-            <p className="text-xl mb-8 text-gray-600 leading-relaxed">
+            <p
+              className="text-xl mb-8 leading-relaxed"
+              style={{
+                color: "var(--color-text-secondary)",
+                transition: "color 0.6s ease",
+              }}
+            >
               {finalData.subtitle}
             </p>
             {finalData.description && (
-              <p className="text-base md:text-lg text-gray-500 mb-8 leading-relaxed max-w-2xl mx-auto">
+              <p
+                className="text-base md:text-lg mb-8 leading-relaxed max-w-2xl mx-auto"
+                style={{
+                  color: "var(--color-text-muted)",
+                  transition: "color 0.6s ease",
+                }}
+              >
                 {finalData.description}
               </p>
             )}
             <div className="grid md:grid-cols-3 gap-8 mb-12">
               {finalData.features.map((feature, index) => (
                 <div key={index} className="text-center">
-                  <h4 className="text-xl font-bold mb-2">{feature.title}</h4>
-                  <p className="text-gray-600">{feature.description}</p>
+                  <h4
+                    className="text-xl font-bold mb-2"
+                    style={{
+                      color: "var(--color-text-primary)",
+                      transition: "color 0.6s ease",
+                    }}
+                  >
+                    {feature.title}
+                  </h4>
+                  <p
+                    style={{
+                      color: "var(--color-text-secondary)",
+                      transition: "color 0.6s ease",
+                    }}
+                  >
+                    {feature.description}
+                  </p>
                 </div>
               ))}
             </div>
             {finalData.buttonLink ? (
               <a
                 href={finalData.buttonLink}
-                className="inline-block bg-blue-600 text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:bg-blue-700"
+                className="inline-block theme-cta-button text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                style={{
+                  background: "var(--color-primary)",
+                  borderColor: "var(--color-primary-dark)",
+                }}
               >
                 {finalData.buttonText}
               </a>
             ) : (
               <button
                 onClick={onOpenContactModal}
-                className="bg-blue-600 text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:bg-blue-700"
+                className="theme-cta-button text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                style={{
+                  background: "var(--color-primary)",
+                  borderColor: "var(--color-primary-dark)",
+                }}
               >
                 {finalData.buttonText}
               </button>

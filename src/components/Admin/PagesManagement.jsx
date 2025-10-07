@@ -33,7 +33,7 @@ const PagesManagement = () => {
   const [selectedPage, setSelectedPage] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  
+
   const [showViewModal, setShowViewModal] = useState(false);
   const [operationLoading, setOperationLoading] = useState(false);
   const [toast, setToast] = useState(null);
@@ -153,7 +153,11 @@ const PagesManagement = () => {
   const handleToggleSelectAll = () => {
     const pageIds = paginatedPages.map((p) => p.id);
     const allSelected = pageIds.every((id) => selectedIds.includes(id));
-    setSelectedIds(allSelected ? selectedIds.filter((id) => !pageIds.includes(id)) : Array.from(new Set([...selectedIds, ...pageIds])));
+    setSelectedIds(
+      allSelected
+        ? selectedIds.filter((id) => !pageIds.includes(id))
+        : Array.from(new Set([...selectedIds, ...pageIds]))
+    );
   };
 
   const handleBulkDelete = async () => {
@@ -205,8 +209,8 @@ const PagesManagement = () => {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="flex items-center space-x-2">
-          <ArrowPathIcon className="h-5 w-5 animate-spin text-blue-500" />
-          <span className="text-gray-600 dark:text-gray-400">
+          <ArrowPathIcon className="h-5 w-5 animate-spin text-[var(--color-primary)]" />
+          <span className="text-[var(--color-text-secondary)]">
             Loading pages...
           </span>
         </div>
@@ -218,11 +222,11 @@ const PagesManagement = () => {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
-          <ExclamationTriangleIcon className="h-12 w-12 text-red-500 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+          <ExclamationTriangleIcon className="h-12 w-12 text-[var(--tw-red-500)] mx-auto mb-4" />
+          <h3 className="text-lg font-medium text-[var(--color-text-inverse)] mb-2">
             Error Loading Pages
           </h3>
-          <p className="text-gray-600 dark:text-gray-400 mb-4">{error}</p>
+          <p className="text-[var(--color-text-secondary)] mb-4">{error}</p>
           <Button onClick={fetchPages} variant="outline">
             <ArrowPathIcon className="h-4 w-4 mr-2" />
             Retry
@@ -247,7 +251,6 @@ const PagesManagement = () => {
           >
             Enhanced Page Builder
           </Button>
-          
         </div>
       </div>
 
@@ -260,9 +263,7 @@ const PagesManagement = () => {
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-300">Total Pages</p>
-                <p className="text-2xl font-bold text-white">
-                  {pages.length}
-                </p>
+                <p className="text-2xl font-bold text-white">{pages.length}</p>
               </div>
             </div>
           </CardContent>
@@ -316,9 +317,13 @@ const PagesManagement = () => {
               <div className="w-9 h-9 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center">
                 <DocumentTextIcon className="h-4 w-4 text-white/90" />
               </div>
-              <CardTitle className="text-lg font-semibold text-white">All Pages</CardTitle>
-              <span className="text-xs px-2 py-1 rounded-full bg-white/10 text-white/90 border border-white/20">{filteredPages.length}</span>
-              </div>
+              <CardTitle className="text-lg font-semibold text-white">
+                All Pages
+              </CardTitle>
+              <span className="text-xs px-2 py-1 rounded-full bg-white/10 text-white/90 border border-white/20">
+                {filteredPages.length}
+              </span>
+            </div>
             <div className="flex items-center gap-2">
               <div className="relative">
                 <MagnifyingGlassIcon className="h-4 w-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
@@ -333,12 +338,21 @@ const PagesManagement = () => {
                   className="pl-9 pr-3 py-2 text-sm border border-white/20 bg-white/5 text-white placeholder:text-gray-400 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
-              <Button variant="outline" onClick={fetchPages} className="bg-white/10 border-white/20 text-white hover:bg-white/20">
+              <Button
+                variant="outline"
+                onClick={fetchPages}
+                className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+              >
                 <ArrowPathIcon className="h-4 w-4 mr-1" />
                 Refresh
               </Button>
               {selectedIds.length > 0 && (
-                <Button variant="destructive" onClick={handleBulkDelete} loading={operationLoading} className="bg-red-600 hover:bg-red-700">
+                <Button
+                  variant="destructive"
+                  onClick={handleBulkDelete}
+                  loading={operationLoading}
+                  className="bg-red-600 hover:bg-red-700"
+                >
                   <TrashIcon className="h-4 w-4 mr-1" />
                   Delete Selected ({selectedIds.length})
                 </Button>
@@ -348,7 +362,9 @@ const PagesManagement = () => {
         </CardHeader>
         <CardContent>
           {sortedPages.length === 0 ? (
-            <div className="text-center py-16 text-gray-300">No pages found</div>
+            <div className="text-center py-16 text-gray-300">
+              No pages found
+            </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="min-w-full text-sm">
@@ -358,22 +374,78 @@ const PagesManagement = () => {
                       <input
                         type="checkbox"
                         onChange={handleToggleSelectAll}
-                        checked={paginatedPages.length > 0 && paginatedPages.every((p) => selectedIds.includes(p.id))}
+                        checked={
+                          paginatedPages.length > 0 &&
+                          paginatedPages.every((p) =>
+                            selectedIds.includes(p.id)
+                          )
+                        }
                         className="rounded border-white/30 bg-white/10 text-blue-400 focus:ring-blue-500"
                       />
                     </th>
-                    <th className="px-4 py-3 text-left cursor-pointer select-none" onClick={() => handleToggleSort("title")}>
+                    <th
+                      className="px-4 py-3 text-left cursor-pointer select-none"
+                      onClick={() => handleToggleSort("title")}
+                    >
                       <div className="inline-flex items-center gap-1">
-                          <span className="text-white">Title</span>
-                        {sortBy === "title" && <span className="text-xs text-gray-400">{sortDir === "asc" ? "▲" : "▼"}</span>}
+                        <span className="text-white">Title</span>
+                        {sortBy === "title" && (
+                          <span className="text-xs text-gray-400">
+                            {sortDir === "asc" ? "▲" : "▼"}
+                          </span>
+                        )}
                       </div>
                     </th>
-                    <th className="px-4 py-3 text-left cursor-pointer select-none" onClick={() => handleToggleSort("slug")}> <span className="text-white">Slug</span> {sortBy === "slug" && <span className="text-xs text-gray-400">{sortDir === "asc" ? "▲" : "▼"}</span>}</th>
-                    <th className="px-4 py-3 text-left cursor-pointer select-none" onClick={() => handleToggleSort("categoryName")}> <span className="text-white">Category</span> {sortBy === "categoryName" && <span className="text-xs text-gray-400">{sortDir === "asc" ? "▲" : "▼"}</span>}</th>
-                    <th className="px-4 py-3 text-left text-white">Published</th>
+                    <th
+                      className="px-4 py-3 text-left cursor-pointer select-none"
+                      onClick={() => handleToggleSort("slug")}
+                    >
+                      {" "}
+                      <span className="text-white">Slug</span>{" "}
+                      {sortBy === "slug" && (
+                        <span className="text-xs text-gray-400">
+                          {sortDir === "asc" ? "▲" : "▼"}
+                        </span>
+                      )}
+                    </th>
+                    <th
+                      className="px-4 py-3 text-left cursor-pointer select-none"
+                      onClick={() => handleToggleSort("categoryName")}
+                    >
+                      {" "}
+                      <span className="text-white">Category</span>{" "}
+                      {sortBy === "categoryName" && (
+                        <span className="text-xs text-gray-400">
+                          {sortDir === "asc" ? "▲" : "▼"}
+                        </span>
+                      )}
+                    </th>
+                    <th className="px-4 py-3 text-left text-white">
+                      Published
+                    </th>
                     <th className="px-4 py-3 text-left text-white">Homepage</th>
-                    <th className="px-4 py-3 text-left cursor-pointer select-none" onClick={() => handleToggleSort("componentCount")}><span className="text-white">Components</span> {sortBy === "componentCount" && <span className="text-xs text-gray-400">{sortDir === "asc" ? "▲" : "▼"}</span>}</th>
-                    <th className="px-4 py-3 text-left cursor-pointer select-none" onClick={() => handleToggleSort("createdAt")}><span className="text-white">Created</span> {sortBy === "createdAt" && <span className="text-xs text-gray-400">{sortDir === "asc" ? "▲" : "▼"}</span>}</th>
+                    <th
+                      className="px-4 py-3 text-left cursor-pointer select-none"
+                      onClick={() => handleToggleSort("componentCount")}
+                    >
+                      <span className="text-white">Components</span>{" "}
+                      {sortBy === "componentCount" && (
+                        <span className="text-xs text-gray-400">
+                          {sortDir === "asc" ? "▲" : "▼"}
+                        </span>
+                      )}
+                    </th>
+                    <th
+                      className="px-4 py-3 text-left cursor-pointer select-none"
+                      onClick={() => handleToggleSort("createdAt")}
+                    >
+                      <span className="text-white">Created</span>{" "}
+                      {sortBy === "createdAt" && (
+                        <span className="text-xs text-gray-400">
+                          {sortDir === "asc" ? "▲" : "▼"}
+                        </span>
+                      )}
+                    </th>
                     <th className="px-4 py-3 text-right text-white">Actions</th>
                   </tr>
                 </thead>
@@ -391,48 +463,76 @@ const PagesManagement = () => {
                       <td className="px-4 py-2">
                         <div className="flex items-center gap-2 min-w-[12rem]">
                           <div className="w-7 h-7 rounded-md bg-white/10 border border-white/20 flex items-center justify-center">
-                                <DocumentTextIcon className="h-4 w-4 text-white/90" />
-                              </div>
+                            <DocumentTextIcon className="h-4 w-4 text-white/90" />
+                          </div>
                           <div className="truncate">
-                            <div className="font-medium text-white truncate">{page.title || page.slug}</div>
-                            <div className="text-xs text-gray-400 truncate">ID: {page.id}</div>
-                              </div>
+                            <div className="font-medium text-white truncate">
+                              {page.title || page.slug}
                             </div>
+                            <div className="text-xs text-gray-400 truncate">
+                              ID: {page.id}
+                            </div>
+                          </div>
+                        </div>
                       </td>
-                      <td className="px-4 py-2 text-gray-300 font-mono">/{page.slug}</td>
-                      <td className="px-4 py-2 text-gray-300">{page.categoryName || "Uncategorized"}</td>
+                      <td className="px-4 py-2 text-gray-300 font-mono">
+                        /{page.slug}
+                      </td>
+                      <td className="px-4 py-2 text-gray-300">
+                        {page.categoryName || "Uncategorized"}
+                      </td>
                       <td className="px-4 py-2">
-                            {page.isPublished ? (
-                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-white/10 text-white border border-white/20">Yes</span>
+                        {page.isPublished ? (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-white/10 text-white border border-white/20">
+                            Yes
+                          </span>
                         ) : (
-                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-white/5 text-gray-300 border border-white/10">No</span>
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-white/5 text-gray-300 border border-white/10">
+                            No
+                          </span>
                         )}
                       </td>
                       <td className="px-4 py-2">
-                            {page.isHomepage ? (
-                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-white/10 text-white border border-white/20">Yes</span>
+                        {page.isHomepage ? (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-white/10 text-white border border-white/20">
+                            Yes
+                          </span>
                         ) : (
                           <span className="text-xs text-gray-400">No</span>
                         )}
                       </td>
                       <td className="px-4 py-2">
-                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-white/10 text-white border border-white/20">{page.componentCount || 0}</span>
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-white/10 text-white border border-white/20">
+                          {page.componentCount || 0}
+                        </span>
                       </td>
                       <td className="px-4 py-2 text-gray-300">
-                                {formatDate(page.createdAt)}
+                        {formatDate(page.createdAt)}
                       </td>
                       <td className="px-4 py-2">
                         <div className="flex items-center justify-end gap-2">
-                          <button onClick={() => handleView(page)} className="p-2 rounded-md border border-white/20 hover:bg-white/10 text-white" title="View">
-                                <EyeIcon className="h-4 w-4" />
-                              </button>
-                          <button onClick={() => handleEdit(page)} className="p-2 rounded-md border border-white/20 hover:bg-white/10 text-white" title="Edit">
-                                <PencilIcon className="h-4 w-4" />
-                              </button>
-                          <button onClick={() => handleDelete(page)} className="p-2 rounded-md border border-white/20 hover:bg-white/10 text-red-400" title="Delete">
-                                <TrashIcon className="h-4 w-4" />
-                              </button>
-                            </div>
+                          <button
+                            onClick={() => handleView(page)}
+                            className="p-2 rounded-md border border-white/20 hover:bg-white/10 text-white"
+                            title="View"
+                          >
+                            <EyeIcon className="h-4 w-4" />
+                          </button>
+                          <button
+                            onClick={() => handleEdit(page)}
+                            className="p-2 rounded-md border border-white/20 hover:bg-white/10 text-white"
+                            title="Edit"
+                          >
+                            <PencilIcon className="h-4 w-4" />
+                          </button>
+                          <button
+                            onClick={() => handleDelete(page)}
+                            className="p-2 rounded-md border border-white/20 hover:bg-white/10 text-red-400"
+                            title="Delete"
+                          >
+                            <TrashIcon className="h-4 w-4" />
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -444,39 +544,50 @@ const PagesManagement = () => {
           {totalPages > 1 && (
             <div className="mt-4 flex items-center justify-between text-sm">
               <div className="text-gray-300">
-                Showing <span className="font-medium">{startIndex + 1}</span> to <span className="font-medium">{Math.min(startIndex + ITEMS_PER_PAGE, sortedPages.length)}</span> of <span className="font-medium">{sortedPages.length}</span>
-                </div>
+                Showing <span className="font-medium">{startIndex + 1}</span> to{" "}
+                <span className="font-medium">
+                  {Math.min(startIndex + ITEMS_PER_PAGE, sortedPages.length)}
+                </span>{" "}
+                of <span className="font-medium">{sortedPages.length}</span>
+              </div>
               <div className="flex items-center gap-2">
-                  <button
+                <button
                   onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                    disabled={currentPage === 1}
+                  disabled={currentPage === 1}
                   className="p-2 rounded-md border border-white/20 text-white disabled:opacity-50 disabled:text-gray-400"
-                  >
+                >
                   <ChevronLeftIcon className="h-4 w-4" />
-                  </button>
-                    {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                      let pageNum;
+                </button>
+                {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                  let pageNum;
                   if (totalPages <= 5) pageNum = i + 1;
                   else if (currentPage <= 3) pageNum = i + 1;
-                  else if (currentPage >= totalPages - 2) pageNum = totalPages - 4 + i;
+                  else if (currentPage >= totalPages - 2)
+                    pageNum = totalPages - 4 + i;
                   else pageNum = currentPage - 2 + i;
-                      return (
-                        <button
-                          key={pageNum}
-                          onClick={() => setCurrentPage(pageNum)}
-                      className={`px-3 py-1 rounded-md border ${currentPage === pageNum ? "bg-white/20 text-white border-white/30" : "border-white/20 text-white/80"}`}
-                        >
-                          {pageNum}
-                        </button>
-                      );
-                    })}
-                  <button
-                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                    disabled={currentPage === totalPages}
+                  return (
+                    <button
+                      key={pageNum}
+                      onClick={() => setCurrentPage(pageNum)}
+                      className={`px-3 py-1 rounded-md border ${
+                        currentPage === pageNum
+                          ? "bg-white/20 text-white border-white/30"
+                          : "border-white/20 text-white/80"
+                      }`}
+                    >
+                      {pageNum}
+                    </button>
+                  );
+                })}
+                <button
+                  onClick={() =>
+                    setCurrentPage((p) => Math.min(totalPages, p + 1))
+                  }
+                  disabled={currentPage === totalPages}
                   className="p-2 rounded-md border border-white/20 text-white disabled:opacity-50 disabled:text-gray-400"
-                  >
+                >
                   <ChevronRightIcon className="h-4 w-4" />
-                  </button>
+                </button>
               </div>
             </div>
           )}
@@ -498,8 +609,6 @@ const PagesManagement = () => {
         onSave={fetchPages}
         showToast={showToast}
       />
-
-      
 
       {/* Delete Confirmation Modal */}
       <Modal
@@ -559,15 +668,15 @@ const ViewPageModal = ({ isOpen, onClose, page }) => {
     <Modal isOpen={isOpen} onClose={onClose} title="" size="xl">
       <div className="relative bg-white/10 border-b border-white/10 px-6 py-4">
         <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-4">
-          <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center shadow">
-            <EyeIcon className="h-6 w-6 text-white" />
-          </div>
-          <div>
+          <div className="flex items-center space-x-4">
+            <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center shadow">
+              <EyeIcon className="h-6 w-6 text-white" />
+            </div>
+            <div>
               <h2 className="text-xl font-bold text-white">Page Preview</h2>
               <p className="text-sm text-gray-300">/{page.slug}</p>
+            </div>
           </div>
-        </div>
           <div className="flex items-center gap-2">
             <a
               href={`/${page.slug}`}
@@ -577,12 +686,12 @@ const ViewPageModal = ({ isOpen, onClose, page }) => {
             >
               Open in new tab
             </a>
-          <button
-            onClick={onClose}
+            <button
+              onClick={onClose}
               className="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 text-white hover:text-white rounded-xl font-semibold text-sm transition-all duration-200"
-          >
+            >
               Close
-          </button>
+            </button>
           </div>
         </div>
       </div>
@@ -603,5 +712,3 @@ const ViewPageModal = ({ isOpen, onClose, page }) => {
 // Quick Create modal removed
 
 export default PagesManagement;
-
-

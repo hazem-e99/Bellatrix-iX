@@ -134,7 +134,7 @@ export default BellatrixSupportSection;
 // === Styles ===
 const styles = {
   section: {
-    backgroundColor: "#001038",
+    backgroundColor: "var(--color-brand-dark-navy)",
     padding: "50px 0",
     color: "#ffffff",
     fontFamily: '"Gotham A", "Gotham B"',

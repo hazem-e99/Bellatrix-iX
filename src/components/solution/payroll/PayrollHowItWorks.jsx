@@ -50,7 +50,6 @@ const PayrollHowItWorks = ({ data }) => {
         className="py-20 relative overflow-hidden animate-background-glow"
         style={{
           backgroundColor: "var(--color-brand-dark-navy)",
-          animation: "background-glow 12s ease-in-out infinite",
         }}
       >
         {/* Decorative Background */}

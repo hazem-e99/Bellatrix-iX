@@ -18,7 +18,6 @@ const KeyModulesSection = ({ keyModulesSection, keyModules, renderIcon }) => {
         className="py-12 relative overflow-hidden animate-background-glow"
         style={{
           backgroundColor: "#001038",
-          animation: "background-glow 12s ease-in-out infinite",
         }}
       >
         {/* Background Effects */}

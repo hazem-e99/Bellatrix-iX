@@ -3,27 +3,7 @@
 @tailwind utilities;
 @import "tailwindcss";
 @import "./styles/theme-colors.css";
-
-/* Custom animations for background glow effect */
-@keyframes background-glow {
-  0%,
-  100% {
-    background-color: var(--color-brand-dark-navy);
-  }
-  25% {
-    background-color: var(--color-brand-variant);
-  }
-  50% {
-    background-color: var(--color-brand-accent);
-  }
-  75% {
-    background-color: var(--color-brand-variant);
-  }
-}
-
-.animate-background-glow {
-  animation: background-glow 12s ease-in-out infinite;
-}
+@import "./styles/animations.css";
 
 /* Image Input Styles for DynamicContentForm */
 .image-input-group {

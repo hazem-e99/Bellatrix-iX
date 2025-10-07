@@ -42,7 +42,16 @@ const ChallengesSection = ({ data, activeChallenge, setActiveChallenge }) => {
       <div className="container mx-auto px-6 relative z-10">
         <header className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-            Retail <span className="text-cyan-400">Challenges</span>
+            Retail{" "}
+            <span
+              className="theme-highlight-text"
+              style={{
+                color: "var(--color-cyan-400)",
+                transition: "color 0.6s ease",
+              }}
+            >
+              Challenges
+            </span>
           </h2>
           <p className="text-lg text-gray-300 leading-relaxed max-w-3xl mx-auto">
             Modern retail faces complex challenges that require integrated
@@ -56,7 +65,14 @@ const ChallengesSection = ({ data, activeChallenge, setActiveChallenge }) => {
           <div className="flex-1">
             <div className="bg-white/5 backdrop-blur-sm rounded-2xl shadow-xl p-8 border border-white/10">
               <div className="mb-6">
-                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl flex items-center justify-center mb-4">
+                <div
+                  className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 theme-icon-gradient"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, var(--color-brand-accent), var(--color-brand-variant))",
+                    transition: "background 0.6s ease",
+                  }}
+                >
                   <svg
                     className="w-8 h-8 text-white"
                     fill="none"
@@ -77,10 +93,24 @@ const ChallengesSection = ({ data, activeChallenge, setActiveChallenge }) => {
                 <p className="text-gray-300 mb-4">
                   {data.retailChallenges[activeChallenge].description}
                 </p>
-                <div className="bg-blue-900/20 border border-blue-400/30 rounded-lg p-4">
+                <div
+                  className="rounded-lg p-4 theme-impact-box"
+                  style={{
+                    backgroundColor: "var(--color-brand-deep)/0.2",
+                    borderWidth: "1px",
+                    borderStyle: "solid",
+                    borderColor: "var(--color-brand-accent)/0.3",
+                    transition:
+                      "background-color 0.6s ease, border-color 0.6s ease",
+                  }}
+                >
                   <div className="flex items-center space-x-2">
                     <svg
-                      className="w-5 h-5 text-blue-400"
+                      className="w-5 h-5 theme-icon-color"
+                      style={{
+                        color: "var(--color-brand-accent)",
+                        transition: "color 0.6s ease",
+                      }}
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -92,7 +122,13 @@ const ChallengesSection = ({ data, activeChallenge, setActiveChallenge }) => {
                         d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
                       />
                     </svg>
-                    <span className="text-blue-300 font-semibold">
+                    <span
+                      className="font-semibold theme-impact-text"
+                      style={{
+                        color: "var(--color-brand-variant)",
+                        transition: "color 0.6s ease",
+                      }}
+                    >
                       Impact: {data.retailChallenges[activeChallenge].impact}
                     </span>
                   </div>
@@ -106,9 +142,14 @@ const ChallengesSection = ({ data, activeChallenge, setActiveChallenge }) => {
                 <button
                   key={index}
                   onClick={() => setActiveChallenge(index)}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                    activeChallenge === index ? "bg-blue-400" : "bg-gray-500"
-                  }`}
+                  className="w-3 h-3 rounded-full transition-all duration-300 theme-nav-dot"
+                  style={{
+                    backgroundColor:
+                      activeChallenge === index
+                        ? "var(--color-brand-accent)"
+                        : "var(--color-gray-500)",
+                    transition: "background-color 0.6s ease",
+                  }}
                 />
               ))}
             </div>

@@ -95,7 +95,8 @@ const ChallengesSection = (props) => {
   return (
     <section
       className="manufacturing-challenges py-20 relative overflow-hidden"
-      style={{ backgroundColor: "#001038" }}
+      style={{ backgroundColor: "var(--color-brand-dark-navy)" }}
+      className="animate-background-glow theme-bg-animated"
     >
       <SEO
         title="Manufacturing Challenges | Oracle NetSuite Solutions for Complex Operations"

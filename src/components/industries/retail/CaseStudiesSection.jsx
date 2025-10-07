@@ -66,7 +66,16 @@ const CaseStudiesSection = ({ data }) => {
       <div className="container mx-auto px-6 relative z-10">
         <header className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-            Success <span className="text-cyan-400">Stories</span>
+            Success{" "}
+            <span
+              className="theme-highlight-text"
+              style={{
+                color: "var(--color-cyan-400)",
+                transition: "color 0.6s ease",
+              }}
+            >
+              Stories
+            </span>
           </h2>
           <p className="text-lg text-gray-300 leading-relaxed max-w-3xl mx-auto">
             Real retail companies achieving remarkable results with NetSuite
@@ -91,7 +100,15 @@ const CaseStudiesSection = ({ data }) => {
                   <h3 className="text-xl font-bold text-white">
                     {study.company}
                   </h3>
-                  <p className="text-cyan-300">{study.industry}</p>
+                  <p
+                    className="theme-accent-text"
+                    style={{
+                      color: "var(--color-cyan-300)",
+                      transition: "color 0.6s ease",
+                    }}
+                  >
+                    {study.industry}
+                  </p>
                 </div>
               </div>
 
@@ -112,7 +129,11 @@ const CaseStudiesSection = ({ data }) => {
                     {study.results.map((result, i) => (
                       <div key={i} className="flex items-center space-x-2">
                         <svg
-                          className="w-4 h-4 text-cyan-400"
+                          className="w-4 h-4 theme-check-icon"
+                          style={{
+                            color: "var(--color-cyan-400)",
+                            transition: "color 0.6s ease",
+                          }}
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"

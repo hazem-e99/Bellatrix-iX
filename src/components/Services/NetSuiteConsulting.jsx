@@ -2,15 +2,17 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ContactForm from "../ContactForm";
 import Modal from "../Modal";
-import { usePageData } from '../../hooks/useJsonServerData.jsx';
+import { usePageData } from "../../hooks/useJsonServerData.jsx";
 
 const NetSuiteConsulting = () => {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [activeService, setActiveService] = useState(0);
   const navigate = useNavigate();
-  
+
   // Fetch data from JSON Server
-  const { data, isLoading: loading, error } = usePageData('netsuite-consulting');
+  const { data, isLoading: loading, error } = usePageData(
+    "netsuite-consulting"
+  );
 
   const openContactModal = () => setIsContactModalOpen(true);
   const closeContactModal = () => setIsContactModalOpen(false);
@@ -54,14 +56,13 @@ const NetSuiteConsulting = () => {
       <div
         className="py-12 relative overflow-hidden animate-background-glow"
         style={{
-          backgroundColor: "#001038",
+          backgroundColor: "var(--color-brand-dark-navy)",
           padding: "200px 0 100px",
           width: "100%",
           color: "white",
           fontSize: "15px",
           lineHeight: "24px",
           fontFamily: '"Gotham A", "Gotham B"',
-          animation: "background-glow 12s ease-in-out infinite",
         }}
       >
         {/* Decorative Background Elements */}
@@ -162,56 +163,6 @@ const NetSuiteConsulting = () => {
             </div>
           </div>
         </div>
-
-        <style jsx>{`
-          @keyframes background-glow {
-            0%,
-            100% {
-              background-color: #001038;
-            }
-            25% {
-              background-color: #001245;
-            }
-            50% {
-              background-color: #001038;
-            }
-            75% {
-              background-color: #000e30;
-            }
-          }
-
-          @keyframes slide-up {
-            from {
-              opacity: 0;
-              transform: translateY(30px);
-            }
-            to {
-              opacity: 1;
-              transform: translateY(0);
-            }
-          }
-
-          @keyframes fade-in {
-            from {
-              opacity: 0;
-            }
-            to {
-              opacity: 1;
-            }
-          }
-
-          .animate-slide-up {
-            animation: slide-up 0.8s ease-out;
-          }
-
-          .animate-fade-in {
-            animation: fade-in 1s ease-out 0.3s both;
-          }
-
-          .animate-background-glow {
-            animation: background-glow 12s ease-in-out infinite;
-          }
-        `}</style>
       </div>
 
       {/* Consulting Services Section */}
@@ -288,7 +239,7 @@ const NetSuiteConsulting = () => {
       </section>
 
       {/* Industry Expertise Section */}
-      <section 
+      <section
         className="py-20 relative overflow-hidden"
         style={{ backgroundColor: "#001038" }}
       >

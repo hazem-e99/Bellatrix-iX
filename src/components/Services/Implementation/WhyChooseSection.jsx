@@ -52,7 +52,6 @@ const WhyChooseSection = ({ data = {} }) => {
         className="py-12 relative overflow-hidden animate-background-glow"
         style={{
           backgroundColor: "#001038",
-          animation: "background-glow 12s ease-in-out infinite",
         }}
       >
         <div className="container mx-auto px-6 relative z-10">

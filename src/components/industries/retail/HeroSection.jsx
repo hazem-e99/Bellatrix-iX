@@ -4,16 +4,13 @@ import SEO from "../../SEO";
 const HeroSection = ({ data, openContactModal }) => {
   return (
     <header
-      className="py-12 relative overflow-hidden animate-background-glow theme-bg-primary"
+      className="py-12 relative overflow-hidden animate-background-glow theme-bg-animated text-white"
       style={{
-        backgroundColor: "var(--color-brand-dark-navy)",
         padding: "200px 0 100px",
         width: "100%",
-        color: "white",
         fontSize: "15px",
         lineHeight: "24px",
         fontFamily: '"Gotham A", "Gotham B"',
-        animation: "background-glow 12s ease-in-out infinite",
       }}
     >
       <SEO
@@ -27,12 +24,12 @@ const HeroSection = ({ data, openContactModal }) => {
       {/* Decorative Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* Gradient overlays */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/10 via-transparent to-blue-800/10"></div>
+        <div className="absolute inset-0 theme-gradient-overlay"></div>
 
         {/* Floating elements */}
-        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-gradient-to-r from-blue-600/20 via-cyan-500/30 to-blue-600/20 rounded-full blur-2xl opacity-30"></div>
-        <div className="absolute top-3/4 right-1/4 w-24 h-24 bg-gradient-to-r from-blue-500/15 via-purple-500/20 to-cyan-500/15 rounded-full blur-xl opacity-40"></div>
-        <div className="absolute top-1/2 left-1/3 w-16 h-16 bg-gradient-to-r from-white/10 via-blue-300/20 to-white/10 rounded-full blur-lg opacity-20"></div>
+        <div className="absolute top-1/4 left-1/4 w-32 h-32 rounded-full blur-2xl opacity-30 theme-floating-element-1"></div>
+        <div className="absolute top-3/4 right-1/4 w-24 h-24 rounded-full blur-xl opacity-40 theme-floating-element-2"></div>
+        <div className="absolute top-1/2 left-1/3 w-16 h-16 rounded-full blur-lg opacity-20 theme-floating-element-3"></div>
 
         {/* Grid pattern */}
         <div className="absolute inset-0 opacity-10">
@@ -41,7 +38,11 @@ const HeroSection = ({ data, openContactModal }) => {
               width="100%"
               height="100%"
               viewBox="0 0 100 100"
-              className="text-blue-300"
+              className="theme-pattern-color"
+              style={{
+                color: "var(--color-cyan-300)",
+                transition: "color 0.6s ease",
+              }}
             >
               <pattern
                 id="retailGrid"
@@ -104,7 +105,7 @@ const HeroSection = ({ data, openContactModal }) => {
                 e.preventDefault();
                 openContactModal();
               }}
-              className="group relative inline-block min-w-[180px] min-h-[56px] font-bold text-sm uppercase leading-5 rounded-md px-4 py-4 mt-8 mb-0 no-underline transition-all duration-300 transform hover:scale-105 bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white border-2 border-blue-500 hover:border-blue-400 hover:shadow-lg hover:shadow-blue-500/25"
+              className="theme-cta-button"
             >
               <span className="relative z-10 flex items-center justify-center">
                 <svg
@@ -122,62 +123,17 @@ const HeroSection = ({ data, openContactModal }) => {
                 </svg>
                 {data.ctaText}
               </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-700/20 to-blue-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-md"></div>
+              <div
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-md"
+                style={{
+                  background:
+                    "linear-gradient(90deg, var(--color-brand-accent)/0.2, var(--color-brand-variant)/0.2)",
+                }}
+              ></div>
             </a>
           </div>
         </div>
       </div>
-
-      {/* Custom animations */}
-      <style jsx>{`
-        @keyframes background-glow {
-          0%,
-          100% {
-            background-color: var(--color-brand-dark-navy);
-          }
-          25% {
-            background-color: var(--color-brand-variant);
-          }
-          50% {
-            background-color: var(--color-brand-accent);
-          }
-          75% {
-            background-color: var(--color-brand-variant);
-          }
-        }
-
-        @keyframes slide-up {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes fade-in {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
-        }
-
-        .animate-slide-up {
-          animation: slide-up 0.8s ease-out;
-        }
-
-        .animate-fade-in {
-          animation: fade-in 1s ease-out 0.3s both;
-        }
-
-        .animate-background-glow {
-          animation: background-glow 12s ease-in-out infinite;
-        }
-      `}</style>
     </header>
   );
 };

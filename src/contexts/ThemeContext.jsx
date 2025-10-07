@@ -11,10 +11,17 @@ export const useTheme = () => {
 };
 
 export const ThemeProvider = ({ children }) => {
+  const [theme, setTheme] = useState("default");
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
+    const savedColorTheme = localStorage.getItem("colorTheme");
+    
+    if (savedColorTheme) {
+      setTheme(savedColorTheme);
+    }
+    
     if (savedTheme) {
       setIsDark(savedTheme === "dark");
     } else {
@@ -24,6 +31,7 @@ export const ThemeProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    // Handle dark/light mode
     if (isDark) {
       document.documentElement.classList.add("dark");
       localStorage.setItem("theme", "dark");
@@ -33,12 +41,38 @@ export const ThemeProvider = ({ children }) => {
     }
   }, [isDark]);
 
-  const toggleTheme = () => {
-    setIsDark(!isDark);
+  useEffect(() => {
+    // Handle color theme (default/purple)
+    if (theme === "purple") {
+      document.documentElement.setAttribute("data-theme", "purple");
+    } else {
+      document.documentElement.removeAttribute("data-theme");
+    }
+    localStorage.setItem("colorTheme", theme);
+  }, [theme]);
+
+  const toggleTheme = (newTheme) => {
+    if (typeof newTheme === "string") {
+      // Named theme switching (default/purple)
+      setTheme(newTheme);
+    } else {
+      // Legacy dark/light toggle
+      setIsDark(!isDark);
+    }
+  };
+
+  const toggleColorTheme = () => {
+    setTheme(theme === "default" ? "purple" : "default");
   };
 
   return (
-    <ThemeContext.Provider value={{ isDark, toggleTheme }}>
+    <ThemeContext.Provider value={{ 
+      isDark, 
+      theme, 
+      toggleTheme, 
+      toggleColorTheme,
+      setTheme 
+    }}>
       {children}
     </ThemeContext.Provider>
   );

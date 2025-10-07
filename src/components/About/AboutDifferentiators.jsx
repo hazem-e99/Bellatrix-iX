@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 
 const AboutDifferentiators = ({ differentiators = [] }) => {
   const [defaultData, setDefaultData] = useState(null);
@@ -7,16 +7,17 @@ const AboutDifferentiators = ({ differentiators = [] }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('/data/about.json');
+        const response = await fetch("/data/about.json");
         const jsonData = await response.json();
         setDefaultData(jsonData.differentiators);
       } catch (error) {
-        console.error('Failed to load About data:', error);
+        console.error("Failed to load About data:", error);
         // Fallback data
         setDefaultData({
           title: "What Sets Us Apart",
-          description: "Our unique combination of expertise, methodology, and commitment to excellence makes us the preferred choice for Oracle NetSuite implementations.",
-          items: []
+          description:
+            "Our unique combination of expertise, methodology, and commitment to excellence makes us the preferred choice for Oracle NetSuite implementations.",
+          items: [],
         });
       }
     };
@@ -26,42 +27,80 @@ const AboutDifferentiators = ({ differentiators = [] }) => {
   // Use props if provided, otherwise fall back to default data
   const displayData = defaultData || {
     title: "What Sets Us Apart",
-    description: "Our unique combination of expertise, methodology, and commitment to excellence makes us the preferred choice for Oracle NetSuite implementations.",
-    items: []
+    description:
+      "Our unique combination of expertise, methodology, and commitment to excellence makes us the preferred choice for Oracle NetSuite implementations.",
+    items: [],
   };
 
-  const displayDifferentiators = differentiators.length > 0 ? differentiators : displayData.items;
+  const displayDifferentiators =
+    differentiators.length > 0 ? differentiators : displayData.items;
   return (
-  <section className="bg-gray-50 py-20 light-section">
-    <div className="container mx-auto px-6">
-      <div className="text-center mb-16">
-        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
-          {displayData.title}
-        </h2>
-        <p className="text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto">
-          {displayData.description}
-        </p>
-      </div>
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-        {Array.isArray(displayDifferentiators) && displayDifferentiators.map((item, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
-            className="text-center p-8 bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 group"
+    <section className="bg-gray-50 py-20 light-section">
+      <div className="container mx-auto px-6">
+        <div className="text-center mb-16">
+          <h2
+            className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4"
+            style={{
+              color: "var(--color-text-primary)",
+              transition: "color 0.6s ease",
+            }}
           >
-            <h3 className="text-xl font-bold text-gray-800 mb-4">{item.title}</h3>
-            <p className="text-gray-600 leading-relaxed mb-4">{item.description}</p>
-            <div className="bg-blue-50 text-blue-600 font-bold py-2 px-4 rounded-full text-sm">
-              {item.stats}
-            </div>
-          </motion.div>
-        ))}
+            {displayData.title}
+          </h2>
+          <p
+            className="text-lg leading-relaxed max-w-3xl mx-auto"
+            style={{
+              color: "var(--color-text-secondary)",
+              transition: "color 0.6s ease",
+            }}
+          >
+            {displayData.description}
+          </p>
+        </div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {Array.isArray(displayDifferentiators) &&
+            displayDifferentiators.map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                className="text-center p-8 bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 group"
+              >
+                <h3
+                  className="text-xl font-bold mb-4"
+                  style={{
+                    color: "var(--color-text-primary)",
+                    transition: "color 0.6s ease",
+                  }}
+                >
+                  {item.title}
+                </h3>
+                <p
+                  className="leading-relaxed mb-4"
+                  style={{
+                    color: "var(--color-text-secondary)",
+                    transition: "color 0.6s ease",
+                  }}
+                >
+                  {item.description}
+                </p>
+                <div
+                  className="font-bold py-2 px-4 rounded-full text-sm"
+                  style={{
+                    backgroundColor: "var(--color-primary-bg)",
+                    color: "var(--color-primary)",
+                    transition: "all 0.6s ease",
+                  }}
+                >
+                  {item.stats}
+                </div>
+              </motion.div>
+            ))}
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
   );
 };
 
-export default AboutDifferentiators; 
+export default AboutDifferentiators;

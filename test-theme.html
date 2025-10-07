@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theme Test</title>
+    <link rel="stylesheet" href="./src/index.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Import our theme variables */
+        @import "./src/styles/theme-colors.css";
+    </style>
+</head>
+<body>
+    <div class="min-h-screen bg-[var(--color-brand-dark-navy)] text-[var(--color-text-inverse)] p-8">
+        <h1 class="text-4xl font-bold mb-6">Theme System Test</h1>
+        
+        <div class="space-y-4 mb-8">
+            <button id="toggle-purple" class="px-4 py-2 bg-[var(--color-primary)] text-[var(--color-text-inverse)] rounded hover:bg-[var(--color-primary-dark)] transition-colors">
+                Toggle Purple Theme
+            </button>
+            <button id="reset-theme" class="px-4 py-2 bg-[var(--color-text-secondary)] text-[var(--color-text-inverse)] rounded hover:bg-[var(--color-text-primary)] transition-colors">
+                Reset to Default
+            </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Card 1 -->
+            <div class="bg-[var(--color-white-10)] border border-[var(--color-white-20)] rounded-lg p-6">
+                <h3 class="text-[var(--color-primary)] text-lg font-semibold mb-2">Primary Color Test</h3>
+                <p class="text-[var(--color-text-secondary)] text-sm">This should change from blue to purple when toggling themes.</p>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="bg-[var(--color-white-10)] border border-[var(--color-white-20)] rounded-lg p-6">
+                <h3 class="text-[var(--color-text-inverse)] text-lg font-semibold mb-2">Text Colors</h3>
+                <p class="text-[var(--color-text-secondary)] text-sm mb-2">Secondary text</p>
+                <p class="text-[var(--color-text-muted)] text-xs">Muted text</p>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="bg-[var(--color-white-10)] border border-[var(--color-primary)]/30 rounded-lg p-6">
+                <h3 class="text-[var(--color-primary-light)] text-lg font-semibold mb-2">Border & Accent</h3>
+                <p class="text-[var(--color-text-secondary)] text-sm">Border should match the primary color theme.</p>
+            </div>
+        </div>
+
+        <div class="mt-8">
+            <p class="text-[var(--color-text-light)] text-sm">Current theme: <span id="current-theme">default</span></p>
+        </div>
+    </div>
+
+    <script>
+        const togglePurpleBtn = document.getElementById('toggle-purple');
+        const resetThemeBtn = document.getElementById('reset-theme');
+        const currentThemeSpan = document.getElementById('current-theme');
+
+        function updateThemeDisplay() {
+            const theme = document.documentElement.getAttribute('data-theme') || 'default';
+            currentThemeSpan.textContent = theme;
+        }
+
+        togglePurpleBtn.addEventListener('click', () => {
+            document.documentElement.setAttribute('data-theme', 'purple');
+            updateThemeDisplay();
+        });
+
+        resetThemeBtn.addEventListener('click', () => {
+            document.documentElement.removeAttribute('data-theme');
+            updateThemeDisplay();
+        });
+
+        // Initialize
+        updateThemeDisplay();
+    </script>
+</body>
+</html>

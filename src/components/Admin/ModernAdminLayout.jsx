@@ -27,7 +27,7 @@ import {
 } from "@heroicons/react/24/solid";
 import Button from "../ui/Button";
 import { Input } from "../ui/Input";
-import { useTheme } from "../../contexts/ThemeContext";
+import { useTheme } from "../../context/ThemeContext";
 import { useMessageNotifications } from "../../hooks/useMessageNotifications";
 import MessageNotification from "./MessageNotification";
 
@@ -37,9 +37,15 @@ const ModernAdminLayout = () => {
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { isDark, toggleTheme } = useTheme();
-  const isEnhancedCreate = location.pathname.startsWith("/admin/pages/enhanced-create");
-  const { notifications: messageNotifications, unreadCount, removeNotification } = useMessageNotifications();
+  const { isDark, theme, toggleTheme, toggleColorTheme } = useTheme();
+  const isEnhancedCreate = location.pathname.startsWith(
+    "/admin/pages/enhanced-create"
+  );
+  const {
+    notifications: messageNotifications,
+    unreadCount,
+    removeNotification,
+  } = useMessageNotifications();
 
   const menuItems = [
     {
@@ -106,7 +112,7 @@ const ModernAdminLayout = () => {
       time: "5m ago",
       unread: true,
     },
-    
+
     {
       id: 3,
       title: "Settings updated",
@@ -119,7 +125,7 @@ const ModernAdminLayout = () => {
   const legacyUnreadCount = legacyNotifications.filter((n) => n.unread).length;
 
   return (
-    <div className="flex min-h-screen" style={{ backgroundColor: '#001038' }}>
+    <div className="flex min-h-screen" style={{ backgroundColor: "var(--color-brand-dark-navy)" }}>
       {/* Mobile sidebar backdrop */}
       <AnimatePresence>
         {sidebarOpen && (
@@ -130,7 +136,7 @@ const ModernAdminLayout = () => {
             exit={{ opacity: 0 }}
             onClick={() => setSidebarOpen(false)}
           >
-            <div className="absolute inset-0 bg-gray-600 opacity-75" />
+            <div className="absolute inset-0 bg-[var(--color-text-secondary)] opacity-75" />
           </motion.div>
         )}
       </AnimatePresence>
@@ -140,23 +146,21 @@ const ModernAdminLayout = () => {
         className={`fixed inset-y-0 left-0 z-50 w-64 shadow-xl transform transition-transform duration-200 ease-in-out lg:relative lg:translate-x-0 lg:flex lg:flex-col ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
-        style={{ backgroundColor: '#0b1225' }}
+        style={{ backgroundColor: "var(--color-brand-variant)" }}
       >
         <div className="flex h-full flex-col">
           {/* Logo */}
-          <div className="flex h-16 items-center justify-between px-6 border-b border-white/10">
+          <div className="flex h-16 items-center justify-between px-6 border-b border-[var(--color-white-10)]">
             <div className="flex items-center space-x-3">
-              <div className="h-8 w-8 bg-blue-600 rounded-lg flex items-center justify-center shadow">
-                <span className="text-white font-bold text-sm">B</span>
+              <div className="h-8 w-8 bg-[var(--color-primary)] rounded-lg flex items-center justify-center shadow">
+                <span className="text-[var(--color-text-inverse)] font-bold text-sm">B</span>
               </div>
-              <span className="text-xl font-bold text-white">
-                Bellatrix
-              </span>
+              <span className="text-xl font-bold text-[var(--color-text-inverse)]">Bellatrix</span>
             </div>
             <Button
               variant="ghost"
               size="icon"
-              className="lg:hidden text-white hover:bg-white/10"
+              className="lg:hidden text-[var(--color-text-inverse)] hover:bg-[var(--color-white-10)]"
               onClick={() => setSidebarOpen(false)}
             >
               <XMarkIcon className="h-5 w-5" />
@@ -175,26 +179,22 @@ const ModernAdminLayout = () => {
                   onClick={() => handleNavigation(item.path)}
                   className={`w-full flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-all duration-200 group ${
                     isActive(item.path)
-                      ? "bg-blue-900/30 text-white border border-blue-400/30 shadow"
-                      : "text-gray-300 hover:bg-white/10 hover:text-white"
+                      ? "bg-[var(--color-primary)]/30 text-[var(--color-text-inverse)] border border-[var(--color-primary)]/30 shadow"
+                      : "text-[var(--color-text-secondary)] hover:bg-[var(--color-white-10)] hover:text-[var(--color-text-inverse)]"
                   }`}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
                   <IconComponent
                     className={`mr-3 h-5 w-5 ${
-                      isActive(item.path)
-                        ? "text-blue-300"
-                        : "text-gray-400"
+                      isActive(item.path) ? "text-[var(--color-primary-light)]" : "text-[var(--color-text-light)]"
                     }`}
                   />
                   <div className="flex-1 text-left">
                     <div className="font-medium">{item.name}</div>
                     <div
                       className={`text-xs ${
-                        isActive(item.path)
-                          ? "text-blue-200"
-                          : "text-gray-400"
+                        isActive(item.path) ? "text-[var(--color-primary-light)]" : "text-[var(--color-text-light)]"
                       }`}
                     >
                       {item.description}
@@ -206,9 +206,9 @@ const ModernAdminLayout = () => {
           </nav>
 
           {/* Bottom section */}
-          <div className="border-t border-white/10 p-4">
-            <div className="flex items-center space-x-3 text-sm text-gray-300">
-              <div className="h-2 w-2 bg-green-400 rounded-full animate-pulse"></div>
+          <div className="border-t border-[var(--color-white-10)] p-4">
+            <div className="flex items-center space-x-3 text-sm text-[var(--color-text-secondary)]">
+              <div className="h-2 w-2 bg-[var(--tw-green-400)] rounded-full animate-pulse"></div>
               <span>All systems operational</span>
             </div>
           </div>
@@ -218,7 +218,10 @@ const ModernAdminLayout = () => {
       {/* Main content */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Top navbar */}
-        <header className="sticky top-0 z-30 shadow border-b border-gray-800" style={{ backgroundColor: '#001038' }}>
+        <header
+          className="sticky top-0 z-30 shadow border-b border-[var(--color-border-secondary)]"
+          style={{ backgroundColor: "var(--color-brand-dark-navy)" }}
+        >
           <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
             <div className="flex items-center space-x-4">
               <Button
@@ -232,23 +235,23 @@ const ModernAdminLayout = () => {
 
               {/* Page title */}
               <div>
-                <h1 className="text-2xl font-bold text-white">
+                <h1 className="text-2xl font-bold text-[var(--color-text-inverse)]">
                   {getCurrentPageTitle()}
                 </h1>
-                <p className="text-sm text-gray-300">
+                <p className="text-sm text-[var(--color-text-secondary)]">
                   {menuItems.find((item) => isActive(item.path))?.description}
                 </p>
               </div>
             </div>
 
             <div className="flex items-center space-x-4">
-
-              {/* Theme toggle */}
+              {/* Dark/Light theme toggle */}
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={toggleTheme}
-                className="text-white hover:text-white hover:bg-white/10"
+                className="text-[var(--color-text-inverse)] hover:text-[var(--color-text-inverse)] hover:bg-[var(--color-white-10)]"
+                title="Toggle Dark/Light Mode"
               >
                 {isDark ? (
                   <SunIcon className="h-5 w-5" />
@@ -257,21 +260,38 @@ const ModernAdminLayout = () => {
                 )}
               </Button>
 
+              {/* Color theme toggle (Default/Purple) */}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleColorTheme}
+                className="text-[var(--color-text-inverse)] hover:text-[var(--color-text-inverse)] hover:bg-[var(--color-white-10)]"
+                title={`Switch to ${theme === "default" ? "Purple" : "Default"} Theme`}
+              >
+                <div className={`h-5 w-5 rounded-full border-2 border-current ${
+                  theme === "purple" 
+                    ? "bg-gradient-to-r from-purple-500 to-purple-700" 
+                    : "bg-gradient-to-r from-blue-500 to-blue-700"
+                }`} />
+              </Button>
+
               {/* Notifications */}
               <div className="relative">
                 <Button
                   variant="ghost"
                   size="icon"
                   onClick={() => setNotificationsOpen(!notificationsOpen)}
-                  className="text-white hover:text-white hover:bg-white/10"
+                  className="text-[var(--color-text-inverse)] hover:text-[var(--color-text-inverse)] hover:bg-[var(--color-white-10)]"
                 >
                   <BellIcon className="h-5 w-5" />
-                  {(unreadCount + legacyUnreadCount) > 0 && (
-                    <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-blue-500 ring-2 ring-white" />
+                  {unreadCount + legacyUnreadCount > 0 && (
+                    <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-[var(--color-primary)] ring-2 ring-[var(--color-text-inverse)]" />
                   )}
-                  {(unreadCount + legacyUnreadCount) > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                      {(unreadCount + legacyUnreadCount) > 9 ? '9+' : (unreadCount + legacyUnreadCount)}
+                  {unreadCount + legacyUnreadCount > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-[var(--tw-red-500)] text-[var(--color-text-inverse)] text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                      {unreadCount + legacyUnreadCount > 9
+                        ? "9+"
+                        : unreadCount + legacyUnreadCount}
                     </span>
                   )}
                 </Button>
@@ -280,13 +300,13 @@ const ModernAdminLayout = () => {
                 <AnimatePresence>
                   {notificationsOpen && (
                     <motion.div
-                      className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 z-50 border border-gray-200"
+                      className="absolute right-0 mt-2 w-80 bg-[var(--color-bg-primary)] rounded-lg shadow-lg ring-1 ring-[var(--color-black)] ring-opacity-5 z-50 border border-[var(--color-border-primary)]"
                       initial={{ opacity: 0, scale: 0.95, y: -10 }}
                       animate={{ opacity: 1, scale: 1, y: 0 }}
                       exit={{ opacity: 0, scale: 0.95, y: -10 }}
                     >
-                      <div className="p-4 border-b border-gray-200 bg-gray-50">
-                        <h3 className="text-lg font-semibold text-black">
+                      <div className="p-4 border-b border-[var(--color-border-primary)] bg-[var(--color-bg-secondary)]">
+                        <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">
                           Notifications
                         </h3>
                       </div>
@@ -294,24 +314,24 @@ const ModernAdminLayout = () => {
                         {legacyNotifications.map((notification) => (
                           <div
                             key={notification.id}
-                            className="p-4 border-b border-gray-200 last:border-b-0 hover:bg-blue-50 transition-colors duration-150"
+                            className="p-4 border-b border-[var(--color-border-primary)] last:border-b-0 hover:bg-[var(--color-primary-bg)] transition-colors duration-150"
                           >
                             <div className="flex items-start space-x-3">
                               <div
                                 className={`h-2 w-2 rounded-full mt-2 ${
                                   notification.unread
-                                    ? "bg-blue-600"
-                                    : "bg-gray-400"
+                                    ? "bg-[var(--color-primary)]"
+                                    : "bg-[var(--color-text-light)]"
                                 }`}
                               />
                               <div className="flex-1">
-                                <p className="text-sm font-semibold text-black">
+                                <p className="text-sm font-semibold text-[var(--color-text-primary)]">
                                   {notification.title}
                                 </p>
-                                <p className="text-sm text-gray-800 mt-1">
+                                <p className="text-sm text-[var(--color-text-secondary)] mt-1">
                                   {notification.message}
                                 </p>
-                                <p className="text-xs text-gray-600 mt-2">
+                                <p className="text-xs text-[var(--color-text-muted)] mt-2">
                                   {notification.time}
                                 </p>
                               </div>
@@ -329,7 +349,7 @@ const ModernAdminLayout = () => {
                 <Button
                   variant="ghost"
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
-                  className="flex items-center space-x-2 text-white hover:text-white hover:bg-white/10"
+                  className="flex items-center space-x-2 text-[var(--color-text-inverse)] hover:text-[var(--color-text-inverse)] hover:bg-[var(--color-white-10)]"
                 >
                   <UserCircleIcon className="h-6 w-6" />
                   <ChevronDownIcon className="h-4 w-4" />
@@ -339,16 +359,16 @@ const ModernAdminLayout = () => {
                 <AnimatePresence>
                   {userMenuOpen && (
                     <motion.div
-                      className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 z-50 border border-gray-200"
+                      className="absolute right-0 mt-2 w-48 bg-[var(--color-bg-primary)] rounded-lg shadow-lg ring-1 ring-[var(--color-black)] ring-opacity-5 z-50 border border-[var(--color-border-primary)]"
                       initial={{ opacity: 0, scale: 0.95, y: -10 }}
                       animate={{ opacity: 1, scale: 1, y: 0 }}
                       exit={{ opacity: 0, scale: 0.95, y: -10 }}
                     >
-                      <div className="p-4 border-b border-gray-200 bg-gray-50">
-                        <p className="text-sm font-semibold text-black">
+                      <div className="p-4 border-b border-[var(--color-border-primary)] bg-[var(--color-bg-secondary)]">
+                        <p className="text-sm font-semibold text-[var(--color-text-primary)]">
                           Admin User
                         </p>
-                        <p className="text-sm text-gray-800">
+                        <p className="text-sm text-[var(--color-text-secondary)]">
                           admin@bellatrix.com
                         </p>
                       </div>
@@ -360,7 +380,7 @@ const ModernAdminLayout = () => {
                             // Navigate to admin login page
                             navigate("/admin/login");
                           }}
-                          className="flex w-full items-center px-4 py-3 text-sm font-medium text-black hover:bg-blue-50 hover:text-blue-700 transition-colors duration-150"
+                          className="flex w-full items-center px-4 py-3 text-sm font-medium text-[var(--color-text-primary)] hover:bg-[var(--color-primary-bg)] hover:text-[var(--color-primary)] transition-colors duration-150"
                         >
                           <PowerIcon className="mr-3 h-4 w-4" />
                           Logout
@@ -375,7 +395,11 @@ const ModernAdminLayout = () => {
         </header>
 
         {/* Page content */}
-        <main className={`flex-1 ${isEnhancedCreate ? "p-0" : "p-4 sm:p-6 lg:p-8"} overflow-auto`}>
+        <main
+          className={`flex-1 ${
+            isEnhancedCreate ? "p-0" : "p-4 sm:p-6 lg:p-8"
+          } overflow-auto`}
+        >
           <Outlet />
         </main>
       </div>
@@ -397,8 +421,8 @@ const ModernAdminLayout = () => {
           key={notification.id}
           notification={notification}
           onClose={() => removeNotification(notification.id)}
-          onReply={(message) => navigate('/admin/messages')}
-          onView={(message) => navigate('/admin/messages')}
+          onReply={() => navigate("/admin/messages")}
+          onView={() => navigate("/admin/messages")}
         />
       ))}
     </div>

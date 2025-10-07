@@ -17,7 +17,13 @@ const IndustryStats = ({ data }) => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {data.map((stat, index) => (
             <article key={index} className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-blue-600 mb-2">
+              <div
+                className="text-4xl md:text-5xl font-bold mb-2 theme-stats-value"
+                style={{
+                  color: "var(--color-brand-accent)",
+                  transition: "color 0.6s ease",
+                }}
+              >
                 {stat.value}
               </div>
               <div className="text-lg font-semibold text-gray-800 mb-1">

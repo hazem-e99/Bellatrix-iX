@@ -15,8 +15,7 @@ const SherpaCareServices = () => {
       <section
         className="w-full py-16 relative overflow-hidden animate-background-glow"
         style={{
-          backgroundColor: "#001038",
-          animation: "background-glow 12s ease-in-out infinite",
+          backgroundColor: "var(--color-brand-dark-navy)",
         }}
       >
         {/* Ultra Creative Decorative Background */}

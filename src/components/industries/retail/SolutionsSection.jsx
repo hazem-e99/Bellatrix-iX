@@ -16,7 +16,16 @@ const SolutionsSection = ({ data, activeSolution, setActiveSolution }) => {
       <div className="container mx-auto px-6">
         <header className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
-            NetSuite <span className="text-blue-600">Solutions</span>
+            NetSuite{" "}
+            <span
+              className="theme-primary-text"
+              style={{
+                color: "var(--color-brand-accent)",
+                transition: "color 0.6s ease",
+              }}
+            >
+              Solutions
+            </span>
           </h2>
           <p className="text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto">
             Comprehensive retail solutions that unify your commerce operations,

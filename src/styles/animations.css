@@ -1,0 +1,141 @@
+/* 
+ * Global Animations using CSS Variables
+ * Theme-aware animations that respond to data-theme switching
+ */
+
+@keyframes background-glow {
+  0%,
+  100% {
+    background-color: var(--color-brand-dark-navy);
+  }
+  25%,
+  75% {
+    background-color: var(--color-brand-variant);
+  }
+  50% {
+    background-color: var(--color-brand-accent);
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 20px var(--color-brand-accent) / 0.3;
+  }
+  50% {
+    box-shadow: 0 0 40px var(--color-brand-accent) / 0.6;
+  }
+}
+
+/* Animation Classes */
+.animate-background-glow {
+  animation: background-glow 12s ease-in-out infinite;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.8s ease-out;
+}
+
+.animate-fade-in {
+  animation: fade-in 1s ease-out 0.3s both;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* Theme-aware transition classes */
+.theme-bg-animated {
+  background-color: var(--color-brand-dark-navy);
+  transition: background-color 0.6s ease;
+}
+
+.theme-gradient-overlay {
+  background: linear-gradient(
+    135deg,
+    var(--color-brand-deep) / 0.1 0%,
+    transparent 50%,
+    var(--color-brand-navy) / 0.1 100%
+  );
+  transition: background 0.6s ease;
+}
+
+.theme-floating-element-1 {
+  background: linear-gradient(
+    90deg,
+    var(--color-brand-variant) / 0.2 0%,
+    var(--color-cyan-500) / 0.3 50%,
+    var(--color-brand-variant) / 0.2 100%
+  );
+  transition: background 0.6s ease;
+}
+
+.theme-floating-element-2 {
+  background: linear-gradient(
+    90deg,
+    var(--color-brand-accent) / 0.15 0%,
+    var(--color-brand-variant) / 0.2 50%,
+    var(--color-cyan-500) / 0.15 100%
+  );
+  transition: background 0.6s ease;
+}
+
+.theme-floating-element-3 {
+  background: linear-gradient(
+    90deg,
+    var(--color-white) / 0.1 0%,
+    var(--color-brand-accent) / 0.2 50%,
+    var(--color-white) / 0.1 100%
+  );
+  transition: background 0.6s ease;
+}
+
+.theme-cta-button {
+  background: linear-gradient(
+    90deg,
+    var(--color-brand-variant),
+    var(--color-brand-dark-navy)
+  );
+  border-color: var(--color-brand-accent);
+  box-shadow: 0 4px 6px -1px var(--color-brand-accent) / 0.1;
+  transition: all 0.6s ease;
+}
+
+.theme-cta-button:hover {
+  background: linear-gradient(
+    90deg,
+    var(--color-brand-accent),
+    var(--color-brand-variant)
+  ) !important;
+  border-color: var(--color-brand-variant) !important;
+  box-shadow: 0 10px 15px -3px var(--color-brand-accent) / 0.25 !important;
+}
+
+.theme-cta-hover-overlay {
+  background: linear-gradient(
+    90deg,
+    var(--color-brand-accent) / 0.2,
+    var(--color-brand-variant) / 0.2
+  );
+  transition: opacity 0.3s ease;
+}

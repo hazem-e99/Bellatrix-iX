@@ -201,28 +201,28 @@ const ModernDashboard = () => {
   const getColorClasses = (color) => {
     const colors = {
       blue: {
-        bg: "bg-blue-100",
-        text: "text-blue-600",
-        border: "border-blue-200",
-        icon: "bg-blue-600",
+        bg: "bg-[var(--color-primary-bg)]",
+        text: "text-[var(--color-primary)]",
+        border: "border-[var(--color-border-primary)]",
+        icon: "bg-[var(--color-primary)]",
       },
       purple: {
-        bg: "bg-purple-100",
-        text: "text-purple-700",
-        border: "border-purple-300",
-        icon: "bg-purple-600",
+        bg: "bg-[var(--tw-purple-100)]",
+        text: "text-[var(--tw-purple-700)]",
+        border: "border-[var(--tw-purple-300)]",
+        icon: "bg-[var(--tw-purple-600)]",
       },
       green: {
-        bg: "bg-green-100",
-        text: "text-green-600",
-        border: "border-green-200",
-        icon: "bg-green-600",
+        bg: "bg-[var(--tw-green-100)]",
+        text: "text-[var(--tw-green-600)]",
+        border: "border-[var(--tw-green-100)]",
+        icon: "bg-[var(--tw-green-600)]",
       },
       orange: {
-        bg: "bg-orange-100",
-        text: "text-orange-600",
-        border: "border-orange-200",
-        icon: "bg-orange-600",
+        bg: "bg-[var(--tw-yellow-100)]",
+        text: "text-[var(--tw-yellow-600)]",
+        border: "border-[var(--tw-yellow-100)]",
+        icon: "bg-[var(--tw-yellow-600)]",
       },
     };
     return colors[color] || colors.blue;
@@ -231,19 +231,19 @@ const ModernDashboard = () => {
   const getActivityIcon = (type) => {
     switch (type) {
       case "create":
-        return <PlusIcon className="h-4 w-4 text-green-500" />;
+        return <PlusIcon className="h-4 w-4 text-[var(--tw-green-500)]" />;
       case "update":
-        return <DocumentTextIcon className="h-4 w-4 text-blue-500" />;
+        return <DocumentTextIcon className="h-4 w-4 text-[var(--color-primary)]" />;
       case "publish":
         return (
-          <ArrowTopRightOnSquareIcon className="h-4 w-4 text-purple-500" />
+          <ArrowTopRightOnSquareIcon className="h-4 w-4 text-[var(--tw-purple-500)]" />
         );
       case "message":
-        return <UsersIcon className="h-4 w-4 text-blue-500" />;
+        return <UsersIcon className="h-4 w-4 text-[var(--color-primary)]" />;
       case "settings":
-        return <ClockIcon className="h-4 w-4 text-orange-500" />;
+        return <ClockIcon className="h-4 w-4 text-[var(--tw-yellow-500)]" />;
       default:
-        return <DocumentTextIcon className="h-4 w-4 text-gray-500" />;
+        return <DocumentTextIcon className="h-4 w-4 text-[var(--color-text-muted)]" />;
     }
   };
 
@@ -252,10 +252,10 @@ const ModernDashboard = () => {
     return (
       <div className="space-y-6 text-white">
         <div className="mb-8">
-          <h2 className="text-3xl font-bold text-white mb-2">
+          <h2 className="text-3xl font-bold text-[var(--color-text-inverse)] mb-2">
             Welcome back! 👋
           </h2>
-          <p className="text-gray-300 text-lg">
+          <p className="text-[var(--color-text-secondary)] text-lg">
             Loading your dashboard...
           </p>
         </div>
@@ -263,15 +263,15 @@ const ModernDashboard = () => {
         {/* Loading skeleton */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {[1, 2, 3, 4].map((i) => (
-            <Card key={i} className="bg-white/10 border border-white/20 shadow animate-pulse">
+            <Card key={i} className="bg-[var(--color-white-10)] border border-[var(--color-white-20)] shadow animate-pulse">
               <CardContent>
                 <div className="flex items-center justify-between">
                   <div className="space-y-2">
-                    <div className="h-4 bg-white/20 rounded w-20"></div>
-                    <div className="h-8 bg-white/20 rounded w-16"></div>
-                    <div className="h-3 bg-white/20 rounded w-24"></div>
+                    <div className="h-4 bg-[var(--color-white-20)] rounded w-20"></div>
+                    <div className="h-8 bg-[var(--color-white-20)] rounded w-16"></div>
+                    <div className="h-3 bg-[var(--color-white-20)] rounded w-24"></div>
                   </div>
-                  <div className="h-12 w-12 bg-white/20 rounded-lg"></div>
+                  <div className="h-12 w-12 bg-[var(--color-white-20)] rounded-lg"></div>
                 </div>
               </CardContent>
             </Card>
@@ -286,24 +286,24 @@ const ModernDashboard = () => {
     return (
       <div className="space-y-6 text-white">
         <div className="mb-8">
-          <h2 className="text-3xl font-bold text-white mb-2">
+          <h2 className="text-3xl font-bold text-[var(--color-text-inverse)] mb-2">
             Welcome back! 👋
           </h2>
-          <p className="text-gray-300 text-lg">
+          <p className="text-[var(--color-text-secondary)] text-lg">
             There was an error loading your dashboard.
           </p>
         </div>
         
-        <Card className="bg-red-500/10 border border-red-500/20 shadow">
+        <Card className="bg-[var(--tw-red-500)]/10 border border-[var(--tw-red-500)]/20 shadow">
           <CardContent className="p-6">
             <div className="flex items-center space-x-3">
-              <ExclamationTriangleIcon className="h-6 w-6 text-red-400" />
+              <ExclamationTriangleIcon className="h-6 w-6 text-[var(--tw-red-400)]" />
               <div>
-                <h3 className="text-lg font-medium text-red-400">Error Loading Dashboard</h3>
-                <p className="text-red-300">{error}</p>
+                <h3 className="text-lg font-medium text-[var(--tw-red-400)]">Error Loading Dashboard</h3>
+                <p className="text-[var(--tw-red-300)]">{error}</p>
                 <Button 
                   onClick={() => window.location.reload()} 
-                  className="mt-3 bg-red-600 hover:bg-red-700 text-white"
+                  className="mt-3 bg-[var(--tw-red-600)] hover:bg-[var(--tw-red-700)] text-[var(--color-text-inverse)]"
                 >
                   Retry
                 </Button>
@@ -326,10 +326,10 @@ const ModernDashboard = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-3xl font-bold text-white mb-2">
+          <h2 className="text-3xl font-bold text-[var(--color-text-inverse)] mb-2">
             Welcome back! 👋
           </h2>
-          <p className="text-gray-300 text-lg">
+          <p className="text-[var(--color-text-secondary)] text-lg">
             Here's what's happening with your website today.
           </p>
         </motion.div>
@@ -352,41 +352,41 @@ const ModernDashboard = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <Card className="bg-white/10 border border-white/20 shadow transition-transform duration-200 hover:-translate-y-0.5">
+              <Card className="bg-[var(--color-white-10)] border border-[var(--color-white-20)] shadow transition-transform duration-200 hover:-translate-y-0.5">
                 <CardContent>
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm font-medium text-gray-300">
+                      <p className="text-sm font-medium text-[var(--color-text-secondary)]">
                         {stat.name}
                       </p>
-                      <p className="text-3xl font-bold text-white mt-2">
+                      <p className="text-3xl font-bold text-[var(--color-text-inverse)] mt-2">
                         {stat.value}
                       </p>
                       <div className="flex items-center mt-2">
                         <TrendIcon
                           className={`h-4 w-4 mr-1 ${
                             stat.changeType === "increase"
-                              ? "text-green-500"
-                              : "text-red-500"
+                              ? "text-[var(--tw-green-500)]"
+                              : "text-[var(--tw-red-500)]"
                           }`}
                         />
                         <span
                           className={`text-sm font-medium ${
                             stat.changeType === "increase"
-                              ? "text-green-400"
-                              : "text-red-400"
+                              ? "text-[var(--tw-green-400)]"
+                              : "text-[var(--tw-red-400)]"
                           }`}
                         >
                           {stat.change}
                         </span>
-                        <span className="text-sm text-gray-400 ml-2">
+                        <span className="text-sm text-[var(--color-text-light)] ml-2">
                           vs last month
                         </span>
                       </div>
                     </div>
-                    <div className={`p-3 rounded-lg bg-white/10 border border-white/20`}>
+                    <div className={`p-3 rounded-lg bg-[var(--color-white-10)] border border-[var(--color-white-20)]`}>
                       <IconComponent
-                        className={`h-6 w-6 text-white/90`}
+                        className={`h-6 w-6 text-[var(--color-text-inverse)]/90`}
                       />
                     </div>
                   </div>
@@ -406,9 +406,9 @@ const ModernDashboard = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
-          <Card className="bg-white/10 border border-white/20 shadow">
+          <Card className="bg-[var(--color-white-10)] border border-[var(--color-white-20)] shadow">
             <CardHeader>
-              <CardTitle className="text-white">Quick Actions</CardTitle>
+              <CardTitle className="text-[var(--color-text-inverse)]">Quick Actions</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -424,19 +424,19 @@ const ModernDashboard = () => {
                     >
                       <Button
                         variant="outline"
-                         className="h-auto p-4 flex-col items-start space-y-2 w-full bg-white/10 hover:bg-white/20 border-white/20 text-white transition-all duration-200"
+                         className="h-auto p-4 flex-col items-start space-y-2 w-full bg-[var(--color-white-10)] hover:bg-[var(--color-white-20)] border-[var(--color-white-20)] text-[var(--color-text-inverse)] transition-all duration-200"
                          onClick={() => handleQuickAction(action)}
                       >
-                        <div className={`p-2 rounded-lg bg-white/10 border border-white/20`}>
+                        <div className={`p-2 rounded-lg bg-[var(--color-white-10)] border border-[var(--color-white-20)]`}>
                           <IconComponent
-                            className={`h-5 w-5 text-white/90`}
+                            className={`h-5 w-5 text-[var(--color-text-inverse)]/90`}
                           />
                         </div>
                         <div className="text-left">
-                          <div className="font-medium text-white">
+                          <div className="font-medium text-[var(--color-text-inverse)]">
                             {action.name}
                           </div>
-                          <div className="text-sm text-gray-300">
+                          <div className="text-sm text-[var(--color-text-secondary)]">
                             {action.description}
                           </div>
                         </div>
@@ -455,37 +455,37 @@ const ModernDashboard = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.6 }}
         >
-          <Card className="bg-white/10 border border-white/20 shadow">
+          <Card className="bg-[var(--color-white-10)] border border-[var(--color-white-20)] shadow">
             <CardHeader>
-              <CardTitle className="text-white">Recent Activity</CardTitle>
+              <CardTitle className="text-[var(--color-text-inverse)]">Recent Activity</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 {recentActivity.map((activity) => (
                   <motion.div
                     key={activity.id}
-                    className="flex items-start space-x-3 p-3 rounded-lg hover:bg-white/10 transition-colors"
+                    className="flex items-start space-x-3 p-3 rounded-lg hover:bg-[var(--color-white-10)] transition-colors"
                     whileHover={{ scale: 1.01 }}
                   >
                     <div className="flex-shrink-0 mt-1">
                       {getActivityIcon(activity.type)}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-white">
+                      <p className="text-sm font-medium text-[var(--color-text-inverse)]">
                         {activity.action}
                       </p>
-                      <p className="text-sm text-gray-300">
+                      <p className="text-sm text-[var(--color-text-secondary)]">
                         {activity.item}
                       </p>
-                      <p className="text-xs text-gray-400 mt-1">
+                      <p className="text-xs text-[var(--color-text-light)] mt-1">
                         {activity.time} • by {activity.user}
                       </p>
                     </div>
                   </motion.div>
                 ))}
               </div>
-              <div className="mt-4 pt-4 border-t border-white/10">
-                <Button variant="ghost" className="w-full text-sm text-white hover:bg-white/10">
+              <div className="mt-4 pt-4 border-t border-[var(--color-white-10)]">
+                <Button variant="ghost" className="w-full text-sm text-[var(--color-text-inverse)] hover:bg-[var(--color-white-10)]">
                   View all activity
                 </Button>
               </div>
@@ -500,9 +500,9 @@ const ModernDashboard = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.8 }}
       >
-        <Card className="bg-white/10 border border-white/20 shadow">
+        <Card className="bg-[var(--color-white-10)] border border-[var(--color-white-20)] shadow">
           <CardHeader>
-            <CardTitle className="text-white">System Status</CardTitle>
+            <CardTitle className="text-[var(--color-text-inverse)]">System Status</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -513,13 +513,13 @@ const ModernDashboard = () => {
                   switch (status.status) {
                     case 'online':
                     case 'connected':
-                      return 'bg-green-500';
+                      return 'bg-[var(--tw-green-500)]';
                     case 'error':
-                      return 'bg-red-500';
+                      return 'bg-[var(--tw-red-500)]';
                     case 'unknown':
-                      return 'bg-yellow-500';
+                      return 'bg-[var(--tw-yellow-500)]';
                     default:
-                      return 'bg-gray-500';
+                      return 'bg-[var(--color-text-muted)]';
                   }
                 };
 
@@ -527,11 +527,11 @@ const ModernDashboard = () => {
                   switch (status.status) {
                     case 'online':
                     case 'connected':
-                      return <CheckCircleIcon className="h-4 w-4 text-green-400" />;
+                      return <CheckCircleIcon className="h-4 w-4 text-[var(--tw-green-400)]" />;
                     case 'error':
-                      return <ExclamationTriangleIcon className="h-4 w-4 text-red-400" />;
+                      return <ExclamationTriangleIcon className="h-4 w-4 text-[var(--tw-red-400)]" />;
                     default:
-                      return <ClockIcon className="h-4 w-4 text-yellow-400" />;
+                      return <ClockIcon className="h-4 w-4 text-[var(--tw-yellow-400)]" />;
                   }
                 };
 
@@ -539,10 +539,10 @@ const ModernDashboard = () => {
                   <div key={key} className="flex items-center space-x-3">
                     <div className={`h-3 w-3 ${getStatusColor(status)} rounded-full animate-pulse`}></div>
                 <div>
-                      <p className="text-sm font-medium text-white capitalize">
+                      <p className="text-sm font-medium text-[var(--color-text-inverse)] capitalize">
                         {key}
                   </p>
-                  <p className="text-xs text-gray-300">
+                  <p className="text-xs text-[var(--color-text-secondary)]">
                         {status.message}
                   </p>
                 </div>
@@ -551,8 +551,8 @@ const ModernDashboard = () => {
               })}
                 </div>
             {systemStatus?.lastChecked && (
-              <div className="mt-4 pt-4 border-t border-white/10">
-                <p className="text-xs text-gray-400">
+              <div className="mt-4 pt-4 border-t border-[var(--color-white-10)]">
+                <p className="text-xs text-[var(--color-text-light)]">
                   Last checked: {new Date(systemStatus.lastChecked).toLocaleString()}
                   </p>
                 </div>
