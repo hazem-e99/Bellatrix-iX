@@ -70,54 +70,67 @@ const pagesAPI = {
     try {
       // CRITICAL: Always use /Pages/with-components when components exist
       // This prevents duplicate DB key errors (IX_PageComponents_PageId_OrderIndex)
-      const hasComponents = pageData.components && Array.isArray(pageData.components) && pageData.components.length > 0;
+      const hasComponents =
+        pageData.components &&
+        Array.isArray(pageData.components) &&
+        pageData.components.length > 0;
       const endpoint = hasComponents ? "/Pages/with-components" : "/Pages";
 
       // Prepare the data to send - remove any id/pageId for new page creation
       let dataToSend = { ...pageData };
-      
+
       // Remove id fields for new page creation to avoid backend treating it as update
       delete dataToSend.id;
       delete dataToSend.pageId;
 
       // Ensure proper component data formatting for API
       if (dataToSend.components && dataToSend.components.length > 0) {
-        dataToSend.components = dataToSend.components.map((component, index) => {
-          // Remove any existing id or pageId from components for new creation
-          const cleanComponent = { ...component };
-          delete cleanComponent.id;
-          delete cleanComponent.pageId;
+        dataToSend.components = dataToSend.components.map(
+          (component, index) => {
+            // Remove any existing id or pageId from components for new creation
+            const cleanComponent = { ...component };
+            delete cleanComponent.id;
+            delete cleanComponent.pageId;
 
-          // Create properly formatted component object
-          const formattedComponent = {
-            componentType: cleanComponent.componentType || "Generic",
-            componentName: cleanComponent.componentName || `Component ${index + 1}`,
-            orderIndex: index + 1, // Always use sequential 1-based index to avoid duplicates
-            contentJson: "",
-          };
+            // Create properly formatted component object
+            const formattedComponent = {
+              componentType: cleanComponent.componentType || "Generic",
+              componentName:
+                cleanComponent.componentName || `Component ${index + 1}`,
+              orderIndex: index + 1, // Always use sequential 1-based index to avoid duplicates
+              contentJson: "",
+            };
 
-          // Handle contentJson serialization properly
-          if (cleanComponent.content && typeof cleanComponent.content === "object") {
-            // Convert content object to JSON string
-            formattedComponent.contentJson = JSON.stringify(cleanComponent.content);
-          } else if (cleanComponent.contentJson) {
-            // Use existing contentJson (ensure it's a string)
-            if (typeof cleanComponent.contentJson === "string") {
-              formattedComponent.contentJson = cleanComponent.contentJson;
+            // Handle contentJson serialization properly
+            if (
+              cleanComponent.content &&
+              typeof cleanComponent.content === "object"
+            ) {
+              // Convert content object to JSON string
+              formattedComponent.contentJson = JSON.stringify(
+                cleanComponent.content
+              );
+            } else if (cleanComponent.contentJson) {
+              // Use existing contentJson (ensure it's a string)
+              if (typeof cleanComponent.contentJson === "string") {
+                formattedComponent.contentJson = cleanComponent.contentJson;
+              } else {
+                formattedComponent.contentJson = JSON.stringify(
+                  cleanComponent.contentJson
+                );
+              }
             } else {
-              formattedComponent.contentJson = JSON.stringify(cleanComponent.contentJson);
+              // Default empty content
+              formattedComponent.contentJson = JSON.stringify({});
             }
-          } else {
-            // Default empty content
-            formattedComponent.contentJson = JSON.stringify({});
-          }
 
-          return formattedComponent;
-        });
+            return formattedComponent;
+          }
+        );
       }
 
       const response = await api.post(endpoint, dataToSend);
-      
+
       return response.data;
     } catch (error) {
       if (
@@ -152,14 +165,14 @@ const pagesAPI = {
         metaTitle: pageData.metaTitle || null,
         metaDescription: pageData.metaDescription || null,
         isHomepage: pageData.isHomepage || false,
-        isPublished: pageData.isPublished || false
+        isPublished: pageData.isPublished || false,
       };
 
       // Validate required fields
       if (!updateData.name || updateData.name.length < 2) {
         throw new Error("Page name must be at least 2 characters long");
       }
-      
+
       if (updateData.name.length > 100) {
         throw new Error("Page name must not exceed 100 characters");
       }
@@ -172,7 +185,10 @@ const pagesAPI = {
         throw new Error("Meta title must not exceed 60 characters");
       }
 
-      if (updateData.metaDescription && updateData.metaDescription.length > 160) {
+      if (
+        updateData.metaDescription &&
+        updateData.metaDescription.length > 160
+      ) {
         throw new Error("Meta description must not exceed 160 characters");
       }
 
@@ -218,11 +234,11 @@ const pagesAPI = {
     try {
       // Use the getPageById endpoint with includeComponents=true to get components
       const response = await api.get(`/Pages/${pageId}?includeComponents=true`);
-      
+
       // Extract components from the page data
       const pageData = response.data;
       const components = pageData?.components || [];
-      
+
       return Array.isArray(components) ? components : [];
     } catch (error) {
       throw error;
@@ -241,13 +257,29 @@ const pagesAPI = {
         pageId: pageId,
         componentType: componentData.componentType || "Generic",
         componentName: componentData.componentName || "",
-        contentJson: componentData.contentJson || JSON.stringify({}),
-        orderIndex: componentData.orderIndex || 1
+        contentJson: typeof componentData.contentJson === 'string' 
+          ? componentData.contentJson 
+          : JSON.stringify(componentData.contentJson || {}),
+        orderIndex: componentData.orderIndex !== undefined ? componentData.orderIndex : 1,
+        isVisible: componentData.isVisible !== undefined ? componentData.isVisible : true,
+        theme: componentData.theme !== undefined ? componentData.theme : 1,
       };
 
-      const response = await api.post(`/Pages/${pageId}/components`, createData);
+      console.log("🆕 [API CREATE] Creating component with data:", createData);
+
+      const response = await api.post(
+        `/Pages/${pageId}/components`,
+        createData
+      );
+      
+      console.log("✅ [API CREATE] Component created successfully:", response.data);
       return response.data;
     } catch (error) {
+      console.error("❌ [API CREATE] Component creation failed:", {
+        error: error.message,
+        response: error.response?.data,
+        status: error.response?.status
+      });
       throw error;
     }
   },
@@ -260,21 +292,38 @@ const pagesAPI = {
    */
   async updatePageComponent(componentId, componentData) {
     try {
+      // Prepare the complete component data structure as expected by the API
       const updateData = {
-        id: componentId,
+        id: componentId, // Include the component ID
+        pageId: componentData.pageId, // Include the page ID
         componentType: componentData.componentType || "Generic",
         componentName: componentData.componentName || "",
-        contentJson: componentData.contentJson || JSON.stringify({})
+        contentJson:
+          typeof componentData.contentJson === "string"
+            ? componentData.contentJson
+            : JSON.stringify(componentData.contentJson || {}),
+        orderIndex: componentData.orderIndex !== undefined ? componentData.orderIndex : 0,
+        isVisible: componentData.isVisible !== undefined ? componentData.isVisible : true,
+        theme: componentData.theme !== undefined ? componentData.theme : 1, // ThemeMode enum: 1 = light, 2 = dark
       };
 
-      // Only include orderIndex if it's explicitly provided
-      if (componentData.orderIndex !== undefined) {
-        updateData.orderIndex = componentData.orderIndex;
-      }
+      console.log("🔄 [API UPDATE] Sending component update:", {
+        componentId,
+        updateData,
+        originalData: componentData,
+      });
 
-      const response = await api.put(`/Pages/components/${componentId}`, updateData);
+      const response = await api.put(
+        `/Pages/components/${componentId}`,
+        updateData
+      );
+      console.log(
+        "✅ [API UPDATE] Component update successful:",
+        response.data
+      );
       return response.data;
     } catch (error) {
+      console.error("❌ [API UPDATE] Component update failed:", error);
       throw error;
     }
   },
@@ -287,16 +336,15 @@ const pagesAPI = {
   async deletePageComponent(componentId) {
     try {
       const response = await api.delete(`/Pages/components/${componentId}`);
-      
-      debugAPIResponse(response, 'DELETE_COMPONENT');
-      
+
+      debugAPIResponse(response, "DELETE_COMPONENT");
+
       return response.data;
-      
     } catch (error) {
       if (error.response) {
-        debugAPIResponse(error.response, 'DELETE_COMPONENT_ERROR');
+        debugAPIResponse(error.response, "DELETE_COMPONENT_ERROR");
       }
-      
+
       throw error;
     }
   },
@@ -317,26 +365,26 @@ const pagesAPI = {
           componentType: component.componentType,
           componentName: component.componentName,
           contentJson: component.contentJson,
-          orderIndex: tempOrderIndex
+          orderIndex: tempOrderIndex,
         };
         return await this.updatePageComponent(component.id, updateData);
       });
-      
+
       await Promise.all(tempOrderPromises);
-      
+
       // Now update each component to its final orderIndex sequentially
       for (let i = 0; i < components.length; i++) {
         const component = components[i];
         const finalOrderIndex = i + 1; // Start from 1
-        
+
         const updateData = {
           id: component.id,
           componentType: component.componentType,
           componentName: component.componentName,
           contentJson: component.contentJson,
-          orderIndex: finalOrderIndex
+          orderIndex: finalOrderIndex,
         };
-        
+
         await this.updatePageComponent(component.id, updateData);
       }
     } catch (error) {

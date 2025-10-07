@@ -40,7 +40,7 @@ import {
 
 const drawerWidth = 280;
 
-const AdminLayout = ({ theme = 1, isVisible = true, ...props }) => {
+const AdminLayout = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [notificationAnchor, setNotificationAnchor] = useState(null);

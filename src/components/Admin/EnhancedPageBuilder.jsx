@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import {
   PlusIcon,
   DocumentTextIcon,
@@ -18,6 +18,7 @@ import Button from "../UI/Button";
 import { Input } from "../UI/Input";
 import Card, { CardContent, CardHeader, CardTitle } from "../UI/Card";
 import Modal, { ModalFooter } from "../UI/Modal";
+import FancyToggle from "../UI/FancyToggle";
 import { validateVariant } from "../../utils/variantSystem";
 import Toast from "../UI/Toast";
 import SectionDataEditor from "./SectionDataEditor";
@@ -29,6 +30,8 @@ import api from "../../lib/api";
 
 const EnhancedPageBuilder = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { pageId } = useParams();
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [isPublishing, setIsPublishing] = useState(false);
@@ -53,6 +56,7 @@ const EnhancedPageBuilder = () => {
 
   // Page data
   const [pageData, setPageData] = useState({
+    id: null, // Add page ID to state
     name: "",
     categoryId: null,
     slug: "",
@@ -65,6 +69,56 @@ const EnhancedPageBuilder = () => {
 
   // Available components derived dynamically from component registry
   const [availableComponents, setAvailableComponents] = useState([]);
+
+  // Load existing page data if editing
+  useEffect(() => {
+    const loadExistingPage = async () => {
+      if (pageId && !isNaN(parseInt(pageId))) {
+        try {
+          setLoading(true);
+          console.log(`🔄 [PAGE LOAD] Loading existing page with ID: ${pageId}`);
+          
+          const pageData = await pagesAPI.getPageById(pageId);
+          const components = await pagesAPI.getPageComponents(pageId);
+          
+          console.log("✅ [PAGE LOAD] Loaded page data:", { pageData, components });
+          
+          setPageData({
+            id: pageData.id,
+            name: pageData.name || "",
+            categoryId: pageData.categoryId || null,
+            slug: pageData.slug || "",
+            metaTitle: pageData.metaTitle || "",
+            metaDescription: pageData.metaDescription || "",
+            isHomepage: pageData.isHomepage || false,
+            isPublished: pageData.isPublished || false,
+            components: components?.map((component, index) => ({
+              id: component.id,
+              componentType: component.componentType || "Generic",
+              componentName: component.componentName || "Component",
+              orderIndex: component.orderIndex ?? index + 1,
+              isVisible: component.isVisible ?? true,
+              theme: component.theme ?? 1,
+              contentJson: component.contentJson || JSON.stringify({})
+            })) || []
+          });
+          
+          // Set current step to component configuration if we have data
+          if (components && components.length > 0) {
+            setCurrentStep(2);
+          }
+          
+        } catch (error) {
+          console.error("❌ [PAGE LOAD] Failed to load existing page:", error);
+          showToast(`Failed to load page: ${error.message}`, "error");
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    loadExistingPage();
+  }, [pageId]);
 
   useEffect(() => {
     // Lazy import to prevent circular deps when builder imports registry that imports components directory
@@ -304,9 +358,12 @@ const EnhancedPageBuilder = () => {
         data.components?.map((component, index) => {
           // Create the component object with proper content handling
           const processedComponent = {
+            id: component.id, // Add the component ID from API
             componentType: component.componentType || "Generic",
             componentName: component.componentName || "New Component",
-            orderIndex: index + 1, // Auto-generate sequentially starting from 1
+            orderIndex: component.orderIndex ?? index + 1, // Use API orderIndex or auto-generate
+            isVisible: component.isVisible ?? true, // Default to visible (boolean from API)
+            theme: component.theme ?? 1, // Default to light theme (1=light, 2=dark from API)
           };
 
           // Handle contentJson string conversion for API
@@ -413,32 +470,151 @@ const EnhancedPageBuilder = () => {
     }
   };
 
-  const addComponent = (component) => {
-    // Always use schema-based default data for consistent pre-filling
-    const defaultContent = getDefaultDataForComponent(component.componentType);
+  const addComponent = async (component) => {
+    const MAX_RETRIES = 3;
+    const tempId = `temp-${Date.now()}`;
 
-    console.log(
-      `Adding component ${component.componentType} with default data:`,
-      defaultContent
-    );
+    try {
+      setLoading(true);
 
-    const newComponent = {
-      componentType: component.componentType || "Generic",
-      componentName: component.componentName || "New Component",
-      contentJson: JSON.stringify(defaultContent, null, 2),
-      orderIndex: pageData.components.length + 1,
-    };
+      // Always use schema-based default data for consistent pre-filling
+      const defaultContent = getDefaultDataForComponent(component.componentType);
 
-    setPageData((prev) => ({
-      ...prev,
-      components: [...prev.components, newComponent],
-    }));
+      console.log(
+        `🆕 [ADD COMPONENT] Adding ${component.componentType} with default data:`,
+        defaultContent
+      );
 
-    showToast(
-      (component.componentName || component.name || "Component") +
-        " added to page",
-      "success"
-    );
+      // If we're editing an existing page (have pageId), fetch latest components
+      let nextOrderIndex;
+      if (pageData.id) {
+        console.log("🔄 [ADD COMPONENT] Fetching latest components for existing page:", pageData.id);
+        const latestComponents = await pagesAPI.getPageComponents(pageData.id);
+        const maxOrderIndex = latestComponents.length 
+          ? Math.max(...latestComponents.map(c => c.orderIndex ?? 0))
+          : -1;
+        nextOrderIndex = maxOrderIndex + 1;
+        
+        console.log("🆕 [ADD COMPONENT] Calculated nextOrderIndex:", nextOrderIndex, "from", latestComponents.length, "existing components");
+      } else {
+        // For new pages, use local component count
+        nextOrderIndex = pageData.components.length + 1;
+        console.log("🆕 [ADD COMPONENT] Using local nextOrderIndex for new page:", nextOrderIndex);
+      }
+
+      const newComponent = {
+        id: tempId,
+        componentType: component.componentType || "Generic",
+        componentName: component.componentName || "New Component",
+        contentJson: JSON.stringify(defaultContent, null, 2),
+        orderIndex: nextOrderIndex,
+        isVisible: true, // Use boolean for API compatibility
+        theme: 1, // 1 = light, 2 = dark
+        pending: !pageData.id, // Mark as pending only if it's a new page
+      };
+
+      // Add to local state immediately (optimistic update)
+      setPageData((prev) => ({
+        ...prev,
+        components: [...prev.components, newComponent],
+      }));
+
+      // If this is an existing page, create the component via API
+      if (pageData.id) {
+        let created = null;
+        let attempt = 0;
+
+        while (attempt < MAX_RETRIES && !created) {
+          try {
+            const payload = {
+              pageId: pageData.id,
+              componentType: newComponent.componentType,
+              componentName: newComponent.componentName,
+              contentJson: newComponent.contentJson,
+              orderIndex: nextOrderIndex,
+              isVisible: newComponent.isVisible,
+              theme: newComponent.theme,
+            };
+
+            console.log(`🚀 [ADD COMPONENT] Attempt ${attempt + 1}/${MAX_RETRIES} with payload:`, payload);
+
+            created = await pagesAPI.createPageComponent(pageData.id, payload);
+            
+            // Replace temp component with real component
+            setPageData((prev) => ({
+              ...prev,
+              components: prev.components.map(comp => 
+                comp.id === tempId ? created : comp
+              ),
+            }));
+
+            console.log("✅ [ADD COMPONENT] Successfully created component:", created);
+
+          } catch (err) {
+            const errorMessage = err.response?.data?.message || err.message || JSON.stringify(err.response?.data);
+            const isDuplicateKey = 
+              errorMessage?.includes("IX_PageComponents_PageId_OrderIndex") || 
+              errorMessage?.includes("duplicate key") ||
+              err.response?.data?.errorCode === 2601;
+
+            console.error(`❌ [ADD COMPONENT] Attempt ${attempt + 1} failed:`, {
+              error: errorMessage,
+              isDuplicateKey,
+              nextOrderIndex,
+              response: err.response?.data
+            });
+
+            if (isDuplicateKey && attempt < MAX_RETRIES - 1) {
+              console.warn("🔄 [RETRY] Duplicate order index detected, refetching components...");
+              
+              // Refetch latest components and recalculate order index
+              const refreshedComponents = await pagesAPI.getPageComponents(pageData.id);
+              const refreshedMax = refreshedComponents.length 
+                ? Math.max(...refreshedComponents.map(c => c.orderIndex ?? 0))
+                : -1;
+              nextOrderIndex = refreshedMax + 1;
+              
+              console.log("🔄 [RETRY] Recalculated nextOrderIndex:", nextOrderIndex);
+              attempt++;
+              continue;
+            } else {
+              throw err;
+            }
+          }
+        }
+
+        if (!created) {
+          // Remove temp component if all retries failed
+          setPageData((prev) => ({
+            ...prev,
+            components: prev.components.filter(comp => comp.id !== tempId),
+          }));
+          
+          showToast("Unable to add component after multiple attempts. Please try again.", "error");
+          return;
+        }
+      }
+
+      showToast(
+        (component.componentName || component.name || "Component") +
+          " added to page",
+        "success"
+      );
+
+    } catch (error) {
+      console.error("❌ [ADD COMPONENT] Final error:", error);
+      
+      // Remove temp component on error
+      setPageData((prev) => ({
+        ...prev,
+        components: prev.components.filter(comp => comp.id !== tempId),
+      }));
+
+      const errorMessage = error.response?.data?.message || error.message;
+      showToast(`Error adding component: ${errorMessage}`, "error");
+    } finally {
+      setLoading(false);
+    }
   };
 
   // Function to update a specific component field
@@ -496,6 +672,18 @@ const EnhancedPageBuilder = () => {
         updatedComponents[index] = {
           ...currentComponent,
           contentJson: value,
+        };
+      } else if (
+        field === "isVisible" ||
+        field === "theme" ||
+        field === "componentType" ||
+        field === "componentName" ||
+        field === "orderIndex"
+      ) {
+        // Update component-level fields directly (not in contentJson)
+        updatedComponents[index] = {
+          ...currentComponent,
+          [field]: value,
         };
       } else {
         // Update specific field in content JSON
@@ -677,6 +865,113 @@ const EnhancedPageBuilder = () => {
         components: updatedComponents,
       };
     });
+
+    // Make API call to persist changes for isVisible, theme, contentJson, and other component-level fields
+    if (
+      field === "isVisible" ||
+      field === "theme" ||
+      field === "componentType" ||
+      field === "componentName" ||
+      field === "orderIndex" ||
+      field === "contentJson"
+    ) {
+      const component = pageData.components[index];
+      if (component?.id && pageData.id) {
+        // Prepare the complete component data structure as expected by the API
+        const updateData = {
+          id: component.id,
+          pageId: pageData.id, // Include the page ID from state
+          componentType: component.componentType,
+          componentName: component.componentName || "",
+          contentJson: field === "contentJson" ? value : (component.contentJson || JSON.stringify({})),
+          orderIndex: component.orderIndex !== undefined ? component.orderIndex : index,
+          isVisible:
+            field === "isVisible"
+              ? Boolean(value)
+              : Boolean(component.isVisible === true || component.isVisible === 1),
+          theme:
+            field === "theme"
+              ? value === 1
+                ? 1
+                : 2
+              : component.theme === 1
+              ? 1
+              : 2, // Convert to ThemeMode enum: 1=light, 2=dark
+        };
+
+        console.log(
+          `🔄 [API SYNC] Updating component ${component.id} field "${field}":`,
+          {
+            componentId: component.id,
+            field,
+            value,
+            updateData,
+          }
+        );
+
+        // Make async API call (don't await to keep UI responsive)
+        pagesAPI
+          .updatePageComponent(component.id, updateData)
+          .then(() => {
+            console.log(
+              `✅ [API SYNC] Component ${component.id} updated successfully with full data:`,
+              updateData
+            );
+            showToast(`${field} updated successfully`, "success");
+          })
+          .catch((error) => {
+            console.error(
+              `❌ [API SYNC] Failed to update component ${component.id}:`,
+              error,
+              "Request data:",
+              updateData
+            );
+            showToast(`Failed to update ${field}: ${error.message}`, "error");
+
+            // Revert the local change on API failure
+            setPageData((prevData) => {
+              const revertedComponents = [...prevData.components];
+              const originalComponent = component; // Store the original component state before update
+              
+              if (field === "isVisible") {
+                revertedComponents[index] = {
+                  ...revertedComponents[index],
+                  isVisible: !value, // Revert to opposite of the attempted value
+                };
+              } else if (field === "theme") {
+                revertedComponents[index] = {
+                  ...revertedComponents[index],
+                  theme: value === 1 ? 2 : 1, // Revert to opposite of the attempted value
+                };
+              } else {
+                // For other fields (contentJson, componentType, etc.), revert to original value
+                revertedComponents[index] = {
+                  ...revertedComponents[index],
+                  [field]: originalComponent[field], // Revert to original value
+                };
+              }
+              return {
+                ...prevData,
+                components: revertedComponents,
+              };
+            });
+          });
+      } else {
+        // Component doesn't have an ID yet (new component) or no page ID available
+        console.log(
+          `⚠️ [API SYNC] Skipping API update for component without ID:`,
+          {
+            componentId: component?.id,
+            pageId: pageData.id,
+            field,
+            value,
+            reason: !component?.id
+              ? "Component not saved to database yet"
+              : "No page ID available",
+          }
+        );
+      }
+    }
   };
 
   const getDefaultDataForComponent = (componentType) => {
@@ -2080,19 +2375,76 @@ const EnhancedPageBuilder = () => {
   const saveComponentData = (updatedData) => {
     const componentIndex = editingComponent.index;
     const updatedComponents = [...pageData.components];
+    const currentComponent = updatedComponents[componentIndex];
+    
+    // Update the component with new content data
     updatedComponents[componentIndex] = {
-      ...updatedComponents[componentIndex],
+      ...currentComponent,
       content: updatedData,
+      contentJson: JSON.stringify(updatedData, null, 2), // Update contentJson for API
     };
 
+    // Update local state immediately for responsive UI
     setPageData((prev) => ({
       ...prev,
       components: updatedComponents,
     }));
 
+    // Make API call to persist changes if component has ID
+    if (currentComponent?.id && pageData.id) {
+      const updateData = {
+        id: currentComponent.id,
+        pageId: pageData.id,
+        componentType: currentComponent.componentType,
+        componentName: currentComponent.componentName || "",
+        contentJson: JSON.stringify(updatedData, null, 2),
+        orderIndex: currentComponent.orderIndex !== undefined ? currentComponent.orderIndex : componentIndex,
+        isVisible: Boolean(currentComponent.isVisible === true || currentComponent.isVisible === 1),
+        theme: currentComponent.theme === 1 ? 1 : 2,
+      };
+
+      console.log(
+        `🔄 [EDIT SAVE] Updating component ${currentComponent.id} with edited data:`,
+        { componentId: currentComponent.id, updateData, originalData: updatedData }
+      );
+
+      // Make async API call
+      pagesAPI
+        .updatePageComponent(currentComponent.id, updateData)
+        .then(() => {
+          console.log(`✅ [EDIT SAVE] Component ${currentComponent.id} updated successfully`);
+          showToast("Section data saved successfully", "success");
+        })
+        .catch((error) => {
+          console.error(`❌ [EDIT SAVE] Failed to update component ${currentComponent.id}:`, error);
+          showToast(`Failed to save section data: ${error.message}`, "error");
+
+          // Revert the local changes on API failure
+          setPageData((prevData) => {
+            const revertedComponents = [...prevData.components];
+            revertedComponents[componentIndex] = currentComponent; // Revert to original component
+            return {
+              ...prevData,
+              components: revertedComponents,
+            };
+          });
+        });
+    } else {
+      console.log(
+        `⚠️ [EDIT SAVE] Skipping API update for component without ID:`,
+        {
+          componentId: currentComponent?.id,
+          pageId: pageData.id,
+          reason: !currentComponent?.id
+            ? "Component not saved to database yet"
+            : "No page ID available",
+        }
+      );
+      showToast("Section data updated locally (will be saved when page is published)", "info");
+    }
+
     setShowSectionEditor(false);
     setEditingComponent(null);
-    showToast("Section data updated successfully", "success");
   };
 
   // Function to handle delete confirmation
@@ -3187,7 +3539,7 @@ const SectionsStep = ({
                   </div>
 
                   {/* Component Form Fields */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {/* Component Type */}
                     <div>
                       <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -3252,8 +3604,62 @@ const SectionsStep = ({
                       </p>
                     </div>
 
+                    {/* Visibility Toggle */}
+                    <div className="p-3 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-200">
+                      <div className="flex items-center space-x-3">
+                        <div className="text-2xl">
+                          {(component.isVisible === true || component.isVisible === 1) ? "👁️" : "🚫"}
+                        </div>
+                        <div className="flex-1">
+                          <FancyToggle
+                            label="Component Visible"
+                            checked={component.isVisible === true || component.isVisible === 1}
+                            onChange={(val) =>
+                              handleComponentUpdate(
+                                index,
+                                "isVisible",
+                                val
+                              )
+                            }
+                            gradient="green"
+                            description={
+                              (component.isVisible === true || component.isVisible === 1)
+                                ? "👁️ Component is visible on page"
+                                : "🚫 Component is hidden from page"
+                            }
+                            size="normal"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Theme Toggle */}
+                    <div className="p-3 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-200">
+                      <div className="flex items-center space-x-3">
+                        <div className="text-2xl animate-pulse">
+                          {component.theme === 1 ? "🌞" : "🌙"}
+                        </div>
+                        <div className="flex-1">
+                          <FancyToggle
+                            label="Theme Mode"
+                            checked={component.theme === 1}
+                            onChange={(val) =>
+                              handleComponentUpdate(index, "theme", val ? 1 : 2)
+                            }
+                            gradient="blue"
+                            description={
+                              component.theme === 1
+                                ? "🌞 Light theme active"
+                                : "🌙 Dark theme active"
+                            }
+                            size="normal"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
                     {/* Content Configuration - Full Width */}
-                    <div className="md:col-span-2">
+                    <div className="md:col-span-2 lg:col-span-4">
                       <div className="flex items-center justify-between mb-3">
                         <label className="block text-sm font-medium text-gray-300">
                           Content Configuration

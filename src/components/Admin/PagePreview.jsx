@@ -417,125 +417,176 @@ const PagePreview = ({
     // Use normalizeProps to map the raw data to the correct component props
     const normalizedData = normalizeProps(component.componentType, rawData);
     console.log("🔄 [DEBUG] After normalizeProps:", normalizedData);
-    
+
     // Special debugging for TrainingProgramsSection image extraction
-    if (component.componentType === 'TrainingProgramsSection') {
-      console.log('🔍 [IMAGE EXTRACTION] TrainingProgramsSection extraction:', {
+    if (component.componentType === "TrainingProgramsSection") {
+      console.log("🔍 [IMAGE EXTRACTION] TrainingProgramsSection extraction:", {
         componentType: component.componentType,
         contentJson: component.contentJson,
-        parsedContent: component.contentJson ? JSON.parse(component.contentJson) : {},
+        parsedContent: component.contentJson
+          ? JSON.parse(component.contentJson)
+          : {},
         directContent: component.content,
         extractedRawData: rawData,
         finalImage: rawData.image || rawData.programsSection?.image,
         normalizedData: normalizedData,
-        programsSectionImage: normalizedData.programsSection?.image
+        programsSectionImage: normalizedData.programsSection?.image,
       });
     }
 
     // Special debugging for IntegrationTypesSection
-    if (component.componentType === 'IntegrationTypesSection') {
-      console.log('🔍 [INTEGRATION TYPES EXTRACTION] IntegrationTypesSection extraction:', {
-        componentType: component.componentType,
-        contentJson: component.contentJson,
-        parsedContent: component.contentJson ? JSON.parse(component.contentJson) : {},
-        directContent: component.content,
-        extractedRawData: rawData,
-        finalItems: rawData.items || rawData.integrationTypes?.items || rawData.types,
-        normalizedData: normalizedData,
-        normalizedItems: normalizedData.items
-      });
+    if (component.componentType === "IntegrationTypesSection") {
+      console.log(
+        "🔍 [INTEGRATION TYPES EXTRACTION] IntegrationTypesSection extraction:",
+        {
+          componentType: component.componentType,
+          contentJson: component.contentJson,
+          parsedContent: component.contentJson
+            ? JSON.parse(component.contentJson)
+            : {},
+          directContent: component.content,
+          extractedRawData: rawData,
+          finalItems:
+            rawData.items || rawData.integrationTypes?.items || rawData.types,
+          normalizedData: normalizedData,
+          normalizedItems: normalizedData.items,
+        }
+      );
     }
 
     // Special debugging for IntegrationBenefitsSection
-    if (component.componentType === 'IntegrationBenefitsSection') {
-      console.log('🔍 [INTEGRATION BENEFITS EXTRACTION] IntegrationBenefitsSection extraction:', {
-        componentType: component.componentType,
-        contentJson: component.contentJson,
-        parsedContent: component.contentJson ? JSON.parse(component.contentJson) : {},
-        directContent: component.content,
-        extractedRawData: rawData,
-        finalBenefits: rawData.benefits || rawData.items || rawData.benefits?.items,
-        normalizedData: normalizedData,
-        normalizedItems: normalizedData.items
-      });
+    if (component.componentType === "IntegrationBenefitsSection") {
+      console.log(
+        "🔍 [INTEGRATION BENEFITS EXTRACTION] IntegrationBenefitsSection extraction:",
+        {
+          componentType: component.componentType,
+          contentJson: component.contentJson,
+          parsedContent: component.contentJson
+            ? JSON.parse(component.contentJson)
+            : {},
+          directContent: component.content,
+          extractedRawData: rawData,
+          finalBenefits:
+            rawData.benefits || rawData.items || rawData.benefits?.items,
+          normalizedData: normalizedData,
+          normalizedItems: normalizedData.items,
+        }
+      );
     }
 
     // Special debugging for CustomizationServicesSection
-    if (component.componentType === 'CustomizationServicesSection') {
-      console.log('🔍 [CUSTOMIZATION SERVICES EXTRACTION] CustomizationServicesSection extraction:', {
-        componentType: component.componentType,
-        contentJson: component.contentJson,
-        parsedContent: component.contentJson ? JSON.parse(component.contentJson) : {},
-        directContent: component.content,
-        extractedRawData: rawData,
-        finalServices: rawData.services || rawData.items || rawData.customizationServices?.services,
-        normalizedData: normalizedData,
-        normalizedItems: normalizedData.items
-      });
+    if (component.componentType === "CustomizationServicesSection") {
+      console.log(
+        "🔍 [CUSTOMIZATION SERVICES EXTRACTION] CustomizationServicesSection extraction:",
+        {
+          componentType: component.componentType,
+          contentJson: component.contentJson,
+          parsedContent: component.contentJson
+            ? JSON.parse(component.contentJson)
+            : {},
+          directContent: component.content,
+          extractedRawData: rawData,
+          finalServices:
+            rawData.services ||
+            rawData.items ||
+            rawData.customizationServices?.services,
+          normalizedData: normalizedData,
+          normalizedItems: normalizedData.items,
+        }
+      );
     }
 
     // Special debugging for CustomizationProcessSection
-    if (component.componentType === 'CustomizationProcessSection') {
-      console.log('🔍 [CUSTOMIZATION PROCESS EXTRACTION] CustomizationProcessSection extraction:', {
-        componentType: component.componentType,
-        contentJson: component.contentJson,
-        parsedContent: component.contentJson ? JSON.parse(component.contentJson) : {},
-        directContent: component.content,
-        extractedRawData: rawData,
-        finalSteps: rawData.steps || rawData.customizationProcess?.steps,
-        normalizedData: normalizedData,
-        normalizedSteps: normalizedData.steps
-      });
+    if (component.componentType === "CustomizationProcessSection") {
+      console.log(
+        "🔍 [CUSTOMIZATION PROCESS EXTRACTION] CustomizationProcessSection extraction:",
+        {
+          componentType: component.componentType,
+          contentJson: component.contentJson,
+          parsedContent: component.contentJson
+            ? JSON.parse(component.contentJson)
+            : {},
+          directContent: component.content,
+          extractedRawData: rawData,
+          finalSteps: rawData.steps || rawData.customizationProcess?.steps,
+          normalizedData: normalizedData,
+          normalizedSteps: normalizedData.steps,
+        }
+      );
     }
 
     // Special debugging for Manufacturing Components
-    if (component.componentType === 'ManufacturingHeroSection') {
-      console.log('🔍 [MANUFACTURING EXTRACTION DEBUG]', {
+    if (component.componentType === "ManufacturingHeroSection") {
+      console.log("🔍 [MANUFACTURING EXTRACTION DEBUG]", {
         component: component,
         contentJson: component.contentJson,
-        parsedContent: component.contentJson ? JSON.parse(component.contentJson) : {},
+        parsedContent: component.contentJson
+          ? JSON.parse(component.contentJson)
+          : {},
         rawData: rawData,
-        normalizedData: normalizedData
+        normalizedData: normalizedData,
       });
     }
 
-    if (component.componentType === 'ManufacturingChallengesSection') {
-      console.log('🔍 [MANUFACTURING CHALLENGES EXTRACTION] ManufacturingChallengesSection extraction:', {
-        componentType: component.componentType,
-        contentJson: component.contentJson,
-        parsedContent: component.contentJson ? JSON.parse(component.contentJson) : {},
-        directContent: component.content,
-        extractedRawData: rawData,
-        finalChallenges: rawData.challenges || rawData.items || rawData.manufacturingChallenges?.challenges,
-        normalizedData: normalizedData,
-        normalizedChallenges: normalizedData.challenges
-      });
+    if (component.componentType === "ManufacturingChallengesSection") {
+      console.log(
+        "🔍 [MANUFACTURING CHALLENGES EXTRACTION] ManufacturingChallengesSection extraction:",
+        {
+          componentType: component.componentType,
+          contentJson: component.contentJson,
+          parsedContent: component.contentJson
+            ? JSON.parse(component.contentJson)
+            : {},
+          directContent: component.content,
+          extractedRawData: rawData,
+          finalChallenges:
+            rawData.challenges ||
+            rawData.items ||
+            rawData.manufacturingChallenges?.challenges,
+          normalizedData: normalizedData,
+          normalizedChallenges: normalizedData.challenges,
+        }
+      );
     }
 
-    if (component.componentType === 'ManufacturingSolutionsSection') {
-      console.log('🔍 [MANUFACTURING SOLUTIONS EXTRACTION] ManufacturingSolutionsSection extraction:', {
-        componentType: component.componentType,
-        contentJson: component.contentJson,
-        parsedContent: component.contentJson ? JSON.parse(component.contentJson) : {},
-        directContent: component.content,
-        extractedRawData: rawData,
-        finalSolutions: rawData.solutions || rawData.items || rawData.manufacturingSolutions?.solutions,
-        normalizedData: normalizedData,
-        normalizedSolutions: normalizedData.solutions
-      });
+    if (component.componentType === "ManufacturingSolutionsSection") {
+      console.log(
+        "🔍 [MANUFACTURING SOLUTIONS EXTRACTION] ManufacturingSolutionsSection extraction:",
+        {
+          componentType: component.componentType,
+          contentJson: component.contentJson,
+          parsedContent: component.contentJson
+            ? JSON.parse(component.contentJson)
+            : {},
+          directContent: component.content,
+          extractedRawData: rawData,
+          finalSolutions:
+            rawData.solutions ||
+            rawData.items ||
+            rawData.manufacturingSolutions?.solutions,
+          normalizedData: normalizedData,
+          normalizedSolutions: normalizedData.solutions,
+        }
+      );
     }
 
-    if (component.componentType === 'ManufacturingIndustryStatsSection') {
-      console.log('🔍 [MANUFACTURING STATS EXTRACTION] ManufacturingIndustryStatsSection extraction:', {
-        componentType: component.componentType,
-        contentJson: component.contentJson,
-        parsedContent: component.contentJson ? JSON.parse(component.contentJson) : {},
-        directContent: component.content,
-        extractedRawData: rawData,
-        finalStats: rawData.stats || rawData.items || rawData.industryStats?.stats,
-        normalizedData: normalizedData,
-        normalizedStats: normalizedData.stats
-      });
+    if (component.componentType === "ManufacturingIndustryStatsSection") {
+      console.log(
+        "🔍 [MANUFACTURING STATS EXTRACTION] ManufacturingIndustryStatsSection extraction:",
+        {
+          componentType: component.componentType,
+          contentJson: component.contentJson,
+          parsedContent: component.contentJson
+            ? JSON.parse(component.contentJson)
+            : {},
+          directContent: component.content,
+          extractedRawData: rawData,
+          finalStats:
+            rawData.stats || rawData.items || rawData.industryStats?.stats,
+          normalizedData: normalizedData,
+          normalizedStats: normalizedData.stats,
+        }
+      );
     }
 
     // Validate the normalized props
@@ -936,15 +987,15 @@ const PagePreview = ({
         `🏗️ [IMPLEMENTATION CHECK] CTAButton structure:`,
         propsToPass.data?.ctaButton
       );
-      
+
       // Add this debug check for ImplementationHeroSection
       console.log("🎯 [VARIANT DEBUG] ImplementationHeroSection CTA Data:", {
         rawVariant: propsToPass.data?.ctaButton?.variant,
         processedVariant: propsToPass.data?.ctaButton?.variant,
         variantType: typeof propsToPass.data?.ctaButton?.variant,
-        hasVariantObject: !!propsToPass.data?.ctaButton?.variant
+        hasVariantObject: !!propsToPass.data?.ctaButton?.variant,
       });
-      
+
       console.log(
         `🏗️ [IMPLEMENTATION CHECK] Full data structure:`,
         JSON.stringify(propsToPass.data, null, 2)
@@ -960,9 +1011,9 @@ const PagePreview = ({
         hasCtaButtonObject: !!propsToPass.ctaButton,
         title: propsToPass.title,
         subtitle: propsToPass.subtitle,
-        description: propsToPass.description
+        description: propsToPass.description,
       });
-      
+
       // Additional detailed debugging
       console.log("🔍 [CTA DEBUG] All button text sources:", {
         ctaButtonText: propsToPass.ctaButton?.text,
@@ -970,21 +1021,23 @@ const PagePreview = ({
         directButtonText: propsToPass.buttonText,
         allProps: Object.keys(propsToPass),
         ctaButtonObject: propsToPass.ctaButton,
-        buttonObject: propsToPass.button
+        buttonObject: propsToPass.button,
       });
-      
+
       // Check if form data is being passed correctly
       console.log("📋 [FORM DEBUG] ImplementationCTASection form data:", {
         contentJson: component.contentJson,
-        parsedContent: component.contentJson ? JSON.parse(component.contentJson) : {},
-        hasContentJson: !!component.contentJson
+        parsedContent: component.contentJson
+          ? JSON.parse(component.contentJson)
+          : {},
+        hasContentJson: !!component.contentJson,
       });
-      
+
       // Add this debug check for ImplementationCTASection features
       console.log("🎯 [FEATURES DEBUG] ImplementationCTASection Features:", {
         features: propsToPass.features,
         featuresCount: propsToPass.features?.length,
-        featuresData: propsToPass.features
+        featuresData: propsToPass.features,
       });
     }
 
@@ -995,154 +1048,154 @@ const PagePreview = ({
         buttonText: propsToPass.ctaButton?.text,
         buttonVariant: propsToPass.ctaButton?.variant,
         hasCtaButton: !!propsToPass.ctaButton,
-        allProps: Object.keys(propsToPass)
+        allProps: Object.keys(propsToPass),
       });
     }
 
     // Special debug for TrainingProgramsSection
-    if (component.componentType === 'TrainingProgramsSection') {
-      console.log('🎯 [TRAINING PROGRAMS IMAGE DEBUG]', {
+    if (component.componentType === "TrainingProgramsSection") {
+      console.log("🎯 [TRAINING PROGRAMS IMAGE DEBUG]", {
         componentData: component,
         normalizedProps: normalizedProps,
         safeProps: safeProps,
         mergedProps: mergedProps,
         finalImage: propsToPass.programsSection?.image,
-        imageFlow: 'Form → Normalize → Preview → Component',
+        imageFlow: "Form → Normalize → Preview → Component",
         allProps: Object.keys(propsToPass),
-        programsSection: propsToPass.programsSection
+        programsSection: propsToPass.programsSection,
       });
     }
 
     // Special debug for IntegrationTypesSection
-    if (component.componentType === 'IntegrationTypesSection') {
-      console.log('🎯 [INTEGRATION TYPES RENDER DEBUG]', {
+    if (component.componentType === "IntegrationTypesSection") {
+      console.log("🎯 [INTEGRATION TYPES RENDER DEBUG]", {
         componentData: component,
         normalizedProps: normalizedProps,
         safeProps: safeProps,
         mergedProps: mergedProps,
         finalItems: propsToPass.items,
         itemsCount: propsToPass.items?.length,
-        itemsFlow: 'Form → Normalize → Preview → Component',
+        itemsFlow: "Form → Normalize → Preview → Component",
         allProps: Object.keys(propsToPass),
-        title: propsToPass.title
+        title: propsToPass.title,
       });
     }
 
     // Special debug for IntegrationBenefitsSection
-    if (component.componentType === 'IntegrationBenefitsSection') {
-      console.log('🎯 [INTEGRATION BENEFITS RENDER DEBUG]', {
+    if (component.componentType === "IntegrationBenefitsSection") {
+      console.log("🎯 [INTEGRATION BENEFITS RENDER DEBUG]", {
         componentData: component,
         normalizedProps: normalizedProps,
         safeProps: safeProps,
         mergedProps: mergedProps,
         finalItems: propsToPass.items,
         itemsCount: propsToPass.items?.length,
-        benefitsFlow: 'Form → Normalize → Preview → Component',
+        benefitsFlow: "Form → Normalize → Preview → Component",
         allProps: Object.keys(propsToPass),
-        title: propsToPass.title
+        title: propsToPass.title,
       });
     }
 
     // Special debug for CustomizationServicesSection
-    if (component.componentType === 'CustomizationServicesSection') {
-      console.log('🎯 [CUSTOMIZATION SERVICES RENDER DEBUG]', {
+    if (component.componentType === "CustomizationServicesSection") {
+      console.log("🎯 [CUSTOMIZATION SERVICES RENDER DEBUG]", {
         componentData: component,
         normalizedProps: normalizedProps,
         safeProps: safeProps,
         mergedProps: mergedProps,
         finalItems: propsToPass.items,
         itemsCount: propsToPass.items?.length,
-        servicesFlow: 'Form → Normalize → Preview → Component',
+        servicesFlow: "Form → Normalize → Preview → Component",
         allProps: Object.keys(propsToPass),
-        title: propsToPass.title
+        title: propsToPass.title,
       });
     }
 
     // Special debug for CustomizationProcessSection
-    if (component.componentType === 'CustomizationProcessSection') {
-      console.log('🎯 [CUSTOMIZATION PROCESS RENDER DEBUG]', {
+    if (component.componentType === "CustomizationProcessSection") {
+      console.log("🎯 [CUSTOMIZATION PROCESS RENDER DEBUG]", {
         componentData: component,
         normalizedProps: normalizedProps,
         safeProps: safeProps,
         mergedProps: mergedProps,
         finalSteps: propsToPass.steps,
         stepsCount: propsToPass.steps?.length,
-        processFlow: 'Form → Normalize → Preview → Component',
+        processFlow: "Form → Normalize → Preview → Component",
         allProps: Object.keys(propsToPass),
-        title: propsToPass.title
+        title: propsToPass.title,
       });
     }
 
     // Special debug for Manufacturing Components
-    if (component.componentType === 'ManufacturingHeroSection') {
-      console.log('🎯 [MANUFACTURING RENDER DEBUG]', {
+    if (component.componentType === "ManufacturingHeroSection") {
+      console.log("🎯 [MANUFACTURING RENDER DEBUG]", {
         normalizedProps: normalizedProps,
         safeProps: safeProps,
         mergedProps: mergedProps,
         propsToPass: propsToPass,
         hasBackgroundImage: !!propsToPass.backgroundImage,
-        backgroundImage: propsToPass.backgroundImage
+        backgroundImage: propsToPass.backgroundImage,
       });
     }
 
     // Special debugging for About sections
-    if (component.componentType.includes('About')) {
+    if (component.componentType.includes("About")) {
       console.log(`🎯 [ABOUT SECTION DEBUG] ${component.componentType}:`, {
         inputData: component.contentJson,
         normalizedData: normalizedProps,
         finalProps: propsToPass,
         hasImage: !!propsToPass.backgroundImage || !!propsToPass.image,
-        imageUrl: propsToPass.backgroundImage || propsToPass.image
+        imageUrl: propsToPass.backgroundImage || propsToPass.image,
       });
     }
 
     // Special debugging for team member images
-    if (component.componentType === 'AboutTeamSection') {
-      console.log('👥 [TEAM MEMBERS DEBUG]:', {
+    if (component.componentType === "AboutTeamSection") {
+      console.log("👥 [TEAM MEMBERS DEBUG]:", {
         teamMembers: propsToPass.teamMembers,
-        memberImages: propsToPass.teamMembers?.map(m => m.image)
+        memberImages: propsToPass.teamMembers?.map((m) => m.image),
       });
     }
 
-    if (component.componentType === 'ManufacturingChallengesSection') {
-      console.log('🎯 [MANUFACTURING CHALLENGES RENDER DEBUG]', {
+    if (component.componentType === "ManufacturingChallengesSection") {
+      console.log("🎯 [MANUFACTURING CHALLENGES RENDER DEBUG]", {
         componentData: component,
         normalizedProps: normalizedProps,
         safeProps: safeProps,
         mergedProps: mergedProps,
         finalChallenges: propsToPass.challenges,
         challengesCount: propsToPass.challenges?.length,
-        challengesFlow: 'Form → Normalize → Preview → Component',
+        challengesFlow: "Form → Normalize → Preview → Component",
         allProps: Object.keys(propsToPass),
-        title: propsToPass.title
+        title: propsToPass.title,
       });
     }
 
-    if (component.componentType === 'ManufacturingSolutionsSection') {
-      console.log('🎯 [MANUFACTURING SOLUTIONS RENDER DEBUG]', {
+    if (component.componentType === "ManufacturingSolutionsSection") {
+      console.log("🎯 [MANUFACTURING SOLUTIONS RENDER DEBUG]", {
         componentData: component,
         normalizedProps: normalizedProps,
         safeProps: safeProps,
         mergedProps: mergedProps,
         finalSolutions: propsToPass.solutions,
         solutionsCount: propsToPass.solutions?.length,
-        solutionsFlow: 'Form → Normalize → Preview → Component',
+        solutionsFlow: "Form → Normalize → Preview → Component",
         allProps: Object.keys(propsToPass),
-        title: propsToPass.title
+        title: propsToPass.title,
       });
     }
 
-    if (component.componentType === 'ManufacturingIndustryStatsSection') {
-      console.log('🎯 [MANUFACTURING STATS RENDER DEBUG]', {
+    if (component.componentType === "ManufacturingIndustryStatsSection") {
+      console.log("🎯 [MANUFACTURING STATS RENDER DEBUG]", {
         componentData: component,
         normalizedProps: normalizedProps,
         safeProps: safeProps,
         mergedProps: mergedProps,
         finalStats: propsToPass.stats,
         statsCount: propsToPass.stats?.length,
-        statsFlow: 'Form → Normalize → Preview → Component',
+        statsFlow: "Form → Normalize → Preview → Component",
         allProps: Object.keys(propsToPass),
-        title: propsToPass.title
+        title: propsToPass.title,
       });
     }
 
@@ -1155,6 +1208,8 @@ const PagePreview = ({
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: index * 0.1 }}
         className="relative"
+        data-theme={component.theme === 1 ? "light" : "dark"}
+        style={{ display: (component.isVisible === true || component.isVisible === 1) ? "block" : "none" }}
       >
         {/* Component Header */}
         <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-t-lg p-3">
@@ -1169,7 +1224,9 @@ const PagePreview = ({
                 </h4>
                 <p className="text-xs text-blue-700 dark:text-blue-300">
                   Order: {component.orderIndex} | Type:{" "}
-                  {component.componentType}
+                  {component.componentType} |
+                  {(component.isVisible === true || component.isVisible === 1) ? " 👁️ Visible" : " 🚫 Hidden"} |
+                  {component.theme === 1 ? " ☀️ Light" : " 🌙 Dark"}
                 </p>
               </div>
             </div>

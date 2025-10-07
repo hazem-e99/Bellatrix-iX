@@ -25,9 +25,6 @@ const FileList = ({
   loading,
   error,
   onRefresh,
-  theme = 1,
-  isVisible = true,
-  ...props
 }) => {
   if (loading) {
     return (
@@ -56,12 +53,7 @@ const FileList = ({
   }
 
   return (
-    <div 
-      className="space-y-2"
-      style={{ display: isVisible ? "block" : "none" }}
-      data-theme={theme === 1 ? "light" : "dark"}
-      {...props}
-    >
+    <div className="space-y-2">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold text-white">Data Files</h2>
         <button
@@ -109,7 +101,7 @@ const FileList = ({
 };
 
 // Preview Component
-const DataPreview = ({ data, filename, theme = 1, isVisible = true, ...props }) => {
+const DataPreview = ({ data, filename }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   if (!data) {
@@ -126,12 +118,7 @@ const DataPreview = ({ data, filename, theme = 1, isVisible = true, ...props }) 
     : jsonString.slice(0, 500) + (jsonString.length > 500 ? "..." : "");
 
   return (
-    <div 
-      className="space-y-2"
-      style={{ display: isVisible ? "block" : "none" }}
-      data-theme={theme === 1 ? "light" : "dark"}
-      {...props}
-    >
+    <div className="space-y-2">
       <div className="flex items-center justify-between">
         <h3 className="text-md font-medium text-white">Preview: {filename}</h3>
         <button
@@ -149,7 +136,7 @@ const DataPreview = ({ data, filename, theme = 1, isVisible = true, ...props }) 
 };
 
 // Main Editor Component
-const DataEditor = ({ filename, data, onSave, loading, error, theme = 1, isVisible = true, ...props }) => {
+const DataEditor = ({ filename, data, onSave, loading, error }) => {
   const [editedData, setEditedData] = useState(null);
   const [hasChanges, setHasChanges] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -217,12 +204,7 @@ const DataEditor = ({ filename, data, onSave, loading, error, theme = 1, isVisib
   }
 
   return (
-    <div 
-      className="space-y-6"
-      style={{ display: isVisible ? "block" : "none" }}
-      data-theme={theme === 1 ? "light" : "dark"}
-      {...props}
-    >
+    <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold text-white">
@@ -285,7 +267,7 @@ const DataEditor = ({ filename, data, onSave, loading, error, theme = 1, isVisib
 };
 
 // Main Admin Dashboard Component
-export const AdminDashboard = ({ theme = 1, isVisible = true, ...props }) => {
+export const AdminDashboard = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [activeTab, setActiveTab] = useState("editor"); // 'editor' or 'preview'
 
@@ -409,13 +391,8 @@ export const AdminDashboard = ({ theme = 1, isVisible = true, ...props }) => {
   return (
     <div
       className="admin-component min-h-screen"
-      style={{ 
-        backgroundColor: "#001038",
-        display: isVisible ? "block" : "none"
-      }}
-      data-theme={theme === 1 ? "light" : "dark"}
+      style={{ backgroundColor: "#001038" }}
       data-dashboard="true"
-      {...props}
     >
       {/* Header */}
       <div
