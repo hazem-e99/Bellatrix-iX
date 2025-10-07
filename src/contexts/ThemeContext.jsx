@@ -17,11 +17,11 @@ export const ThemeProvider = ({ children }) => {
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
     const savedColorTheme = localStorage.getItem("colorTheme");
-    
+
     if (savedColorTheme) {
       setTheme(savedColorTheme);
     }
-    
+
     if (savedTheme) {
       setIsDark(savedTheme === "dark");
     } else {
@@ -66,13 +66,15 @@ export const ThemeProvider = ({ children }) => {
   };
 
   return (
-    <ThemeContext.Provider value={{ 
-      isDark, 
-      theme, 
-      toggleTheme, 
-      toggleColorTheme,
-      setTheme 
-    }}>
+    <ThemeContext.Provider
+      value={{
+        isDark,
+        theme,
+        toggleTheme,
+        toggleColorTheme,
+        setTheme,
+      }}
+    >
       {children}
     </ThemeContext.Provider>
   );

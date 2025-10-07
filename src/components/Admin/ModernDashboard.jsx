@@ -21,12 +21,12 @@ import toast from "react-hot-toast";
 
 const ModernDashboard = () => {
   const navigate = useNavigate();
-  
+
   // State for dashboard data
   const [dashboardData, setDashboardData] = useState({
     stats: null,
     recentActivity: [],
-    systemStatus: null
+    systemStatus: null,
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -39,33 +39,38 @@ const ModernDashboard = () => {
         setError(null);
 
         // Fetch all dashboard data in parallel
-        const [statsData, recentMessages, recentPages, systemStatus] = await Promise.all([
+        const [
+          statsData,
+          recentMessages,
+          recentPages,
+          systemStatus,
+        ] = await Promise.all([
           dashboardAPI.getDashboardStats(),
           dashboardAPI.getRecentContactMessages(5),
           dashboardAPI.getRecentPages(5),
-          dashboardAPI.getSystemStatus()
+          dashboardAPI.getSystemStatus(),
         ]);
 
         // Transform stats data into the format expected by the UI
-  const stats = [
-    {
-      id: 1,
-      name: "Total Pages",
+        const stats = [
+          {
+            id: 1,
+            name: "Total Pages",
             value: statsData.pages.total.toString(),
             change: "+12%", // This would need historical data to calculate
-      changeType: "increase",
-      icon: DocumentTextIcon,
-      color: "blue",
-    },
+            changeType: "increase",
+            icon: DocumentTextIcon,
+            color: "blue",
+          },
           {
             id: 2,
             name: "Published Pages",
             value: statsData.pages.published.toString(),
             change: "+8%",
-      changeType: "increase",
-      icon: EyeIcon,
-      color: "green",
-    },
+            changeType: "increase",
+            icon: EyeIcon,
+            color: "green",
+          },
           {
             id: 3,
             name: "Total Media",
@@ -75,19 +80,19 @@ const ModernDashboard = () => {
             icon: DocumentTextIcon,
             color: "purple",
           },
-    {
-      id: 4,
+          {
+            id: 4,
             name: "Contact Messages",
             value: statsData.contact.totalMessages?.toString() || "0",
             change: "+15%",
             changeType: "increase",
             icon: UsersIcon,
-      color: "orange",
-    },
-  ];
+            color: "orange",
+          },
+        ];
 
         // Transform recent activity from messages and pages
-  const recentActivity = [
+        const recentActivity = [
           ...recentMessages.map((message, index) => ({
             id: `msg-${message.id || index}`,
             action: "New message received",
@@ -100,7 +105,7 @@ const ModernDashboard = () => {
             id: `page-${page.id || index}`,
             action: page.isPublished ? "Page published" : "Page created",
             item: page.name || page.title || "Untitled Page",
-      user: "Admin",
+            user: "Admin",
             time: formatTimeAgo(page.createdAt || new Date()),
             type: page.isPublished ? "publish" : "create",
           })),
@@ -109,9 +114,8 @@ const ModernDashboard = () => {
         setDashboardData({
           stats,
           recentActivity,
-          systemStatus
+          systemStatus,
         });
-
       } catch (err) {
         console.error("Error fetching dashboard data:", err);
         setError(err.message || "Failed to load dashboard data");
@@ -132,7 +136,8 @@ const ModernDashboard = () => {
 
     if (diffInMinutes < 1) return "Just now";
     if (diffInMinutes < 60) return `${diffInMinutes} minutes ago`;
-    if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)} hours ago`;
+    if (diffInMinutes < 1440)
+      return `${Math.floor(diffInMinutes / 60)} hours ago`;
     return `${Math.floor(diffInMinutes / 1440)} days ago`;
   };
 
@@ -233,7 +238,9 @@ const ModernDashboard = () => {
       case "create":
         return <PlusIcon className="h-4 w-4 text-[var(--tw-green-500)]" />;
       case "update":
-        return <DocumentTextIcon className="h-4 w-4 text-[var(--color-primary)]" />;
+        return (
+          <DocumentTextIcon className="h-4 w-4 text-[var(--color-primary)]" />
+        );
       case "publish":
         return (
           <ArrowTopRightOnSquareIcon className="h-4 w-4 text-[var(--tw-purple-500)]" />
@@ -243,7 +250,9 @@ const ModernDashboard = () => {
       case "settings":
         return <ClockIcon className="h-4 w-4 text-[var(--tw-yellow-500)]" />;
       default:
-        return <DocumentTextIcon className="h-4 w-4 text-[var(--color-text-muted)]" />;
+        return (
+          <DocumentTextIcon className="h-4 w-4 text-[var(--color-text-muted)]" />
+        );
     }
   };
 
@@ -259,11 +268,14 @@ const ModernDashboard = () => {
             Loading your dashboard...
           </p>
         </div>
-        
+
         {/* Loading skeleton */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {[1, 2, 3, 4].map((i) => (
-            <Card key={i} className="bg-[var(--color-white-10)] border border-[var(--color-white-20)] shadow animate-pulse">
+            <Card
+              key={i}
+              className="bg-[var(--color-white-10)] border border-[var(--color-white-20)] shadow animate-pulse"
+            >
               <CardContent>
                 <div className="flex items-center justify-between">
                   <div className="space-y-2">
@@ -293,16 +305,18 @@ const ModernDashboard = () => {
             There was an error loading your dashboard.
           </p>
         </div>
-        
+
         <Card className="bg-[var(--tw-red-500)]/10 border border-[var(--tw-red-500)]/20 shadow">
           <CardContent className="p-6">
             <div className="flex items-center space-x-3">
               <ExclamationTriangleIcon className="h-6 w-6 text-[var(--tw-red-400)]" />
               <div>
-                <h3 className="text-lg font-medium text-[var(--tw-red-400)]">Error Loading Dashboard</h3>
+                <h3 className="text-lg font-medium text-[var(--tw-red-400)]">
+                  Error Loading Dashboard
+                </h3>
                 <p className="text-[var(--tw-red-300)]">{error}</p>
-                <Button 
-                  onClick={() => window.location.reload()} 
+                <Button
+                  onClick={() => window.location.reload()}
                   className="mt-3 bg-[var(--tw-red-600)] hover:bg-[var(--tw-red-700)] text-[var(--color-text-inverse)]"
                 >
                   Retry
@@ -318,7 +332,10 @@ const ModernDashboard = () => {
   const { stats, recentActivity, systemStatus } = dashboardData;
 
   return (
-    <div className="space-y-6 text-white">
+    <div
+      className="dashboard admin-dashboard space-y-6 text-white"
+      data-dashboard="true"
+    >
       {/* Welcome Section */}
       <div className="mb-8">
         <motion.div
@@ -384,7 +401,9 @@ const ModernDashboard = () => {
                         </span>
                       </div>
                     </div>
-                    <div className={`p-3 rounded-lg bg-[var(--color-white-10)] border border-[var(--color-white-20)]`}>
+                    <div
+                      className={`p-3 rounded-lg bg-[var(--color-white-10)] border border-[var(--color-white-20)]`}
+                    >
                       <IconComponent
                         className={`h-6 w-6 text-[var(--color-text-inverse)]/90`}
                       />
@@ -408,7 +427,9 @@ const ModernDashboard = () => {
         >
           <Card className="bg-[var(--color-white-10)] border border-[var(--color-white-20)] shadow">
             <CardHeader>
-              <CardTitle className="text-[var(--color-text-inverse)]">Quick Actions</CardTitle>
+              <CardTitle className="text-[var(--color-text-inverse)]">
+                Quick Actions
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -424,10 +445,12 @@ const ModernDashboard = () => {
                     >
                       <Button
                         variant="outline"
-                         className="h-auto p-4 flex-col items-start space-y-2 w-full bg-[var(--color-white-10)] hover:bg-[var(--color-white-20)] border-[var(--color-white-20)] text-[var(--color-text-inverse)] transition-all duration-200"
-                         onClick={() => handleQuickAction(action)}
+                        className="h-auto p-4 flex-col items-start space-y-2 w-full bg-[var(--color-white-10)] hover:bg-[var(--color-white-20)] border-[var(--color-white-20)] text-[var(--color-text-inverse)] transition-all duration-200"
+                        onClick={() => handleQuickAction(action)}
                       >
-                        <div className={`p-2 rounded-lg bg-[var(--color-white-10)] border border-[var(--color-white-20)]`}>
+                        <div
+                          className={`p-2 rounded-lg bg-[var(--color-white-10)] border border-[var(--color-white-20)]`}
+                        >
                           <IconComponent
                             className={`h-5 w-5 text-[var(--color-text-inverse)]/90`}
                           />
@@ -457,7 +480,9 @@ const ModernDashboard = () => {
         >
           <Card className="bg-[var(--color-white-10)] border border-[var(--color-white-20)] shadow">
             <CardHeader>
-              <CardTitle className="text-[var(--color-text-inverse)]">Recent Activity</CardTitle>
+              <CardTitle className="text-[var(--color-text-inverse)]">
+                Recent Activity
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -485,7 +510,10 @@ const ModernDashboard = () => {
                 ))}
               </div>
               <div className="mt-4 pt-4 border-t border-[var(--color-white-10)]">
-                <Button variant="ghost" className="w-full text-sm text-[var(--color-text-inverse)] hover:bg-[var(--color-white-10)]">
+                <Button
+                  variant="ghost"
+                  className="w-full text-sm text-[var(--color-text-inverse)] hover:bg-[var(--color-white-10)]"
+                >
                   View all activity
                 </Button>
               </div>
@@ -502,60 +530,74 @@ const ModernDashboard = () => {
       >
         <Card className="bg-[var(--color-white-10)] border border-[var(--color-white-20)] shadow">
           <CardHeader>
-            <CardTitle className="text-[var(--color-text-inverse)]">System Status</CardTitle>
+            <CardTitle className="text-[var(--color-text-inverse)]">
+              System Status
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {systemStatus && Object.entries(systemStatus).map(([key, status]) => {
-                if (key === 'lastChecked') return null;
-                
-                const getStatusColor = (status) => {
-                  switch (status.status) {
-                    case 'online':
-                    case 'connected':
-                      return 'bg-[var(--tw-green-500)]';
-                    case 'error':
-                      return 'bg-[var(--tw-red-500)]';
-                    case 'unknown':
-                      return 'bg-[var(--tw-yellow-500)]';
-                    default:
-                      return 'bg-[var(--color-text-muted)]';
-                  }
-                };
+              {systemStatus &&
+                Object.entries(systemStatus).map(([key, status]) => {
+                  if (key === "lastChecked") return null;
 
-                const getStatusIcon = (status) => {
-                  switch (status.status) {
-                    case 'online':
-                    case 'connected':
-                      return <CheckCircleIcon className="h-4 w-4 text-[var(--tw-green-400)]" />;
-                    case 'error':
-                      return <ExclamationTriangleIcon className="h-4 w-4 text-[var(--tw-red-400)]" />;
-                    default:
-                      return <ClockIcon className="h-4 w-4 text-[var(--tw-yellow-400)]" />;
-                  }
-                };
+                  const getStatusColor = (status) => {
+                    switch (status.status) {
+                      case "online":
+                      case "connected":
+                        return "bg-[var(--tw-green-500)]";
+                      case "error":
+                        return "bg-[var(--tw-red-500)]";
+                      case "unknown":
+                        return "bg-[var(--tw-yellow-500)]";
+                      default:
+                        return "bg-[var(--color-text-muted)]";
+                    }
+                  };
 
-                return (
-                  <div key={key} className="flex items-center space-x-3">
-                    <div className={`h-3 w-3 ${getStatusColor(status)} rounded-full animate-pulse`}></div>
-                <div>
-                      <p className="text-sm font-medium text-[var(--color-text-inverse)] capitalize">
-                        {key}
-                  </p>
-                  <p className="text-xs text-[var(--color-text-secondary)]">
-                        {status.message}
-                  </p>
-                </div>
-              </div>
-                );
-              })}
-                </div>
+                  const getStatusIcon = (status) => {
+                    switch (status.status) {
+                      case "online":
+                      case "connected":
+                        return (
+                          <CheckCircleIcon className="h-4 w-4 text-[var(--tw-green-400)]" />
+                        );
+                      case "error":
+                        return (
+                          <ExclamationTriangleIcon className="h-4 w-4 text-[var(--tw-red-400)]" />
+                        );
+                      default:
+                        return (
+                          <ClockIcon className="h-4 w-4 text-[var(--tw-yellow-400)]" />
+                        );
+                    }
+                  };
+
+                  return (
+                    <div key={key} className="flex items-center space-x-3">
+                      <div
+                        className={`h-3 w-3 ${getStatusColor(
+                          status
+                        )} rounded-full animate-pulse`}
+                      ></div>
+                      <div>
+                        <p className="text-sm font-medium text-[var(--color-text-inverse)] capitalize">
+                          {key}
+                        </p>
+                        <p className="text-xs text-[var(--color-text-secondary)]">
+                          {status.message}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
+            </div>
             {systemStatus?.lastChecked && (
               <div className="mt-4 pt-4 border-t border-[var(--color-white-10)]">
                 <p className="text-xs text-[var(--color-text-light)]">
-                  Last checked: {new Date(systemStatus.lastChecked).toLocaleString()}
-                  </p>
-                </div>
+                  Last checked:{" "}
+                  {new Date(systemStatus.lastChecked).toLocaleString()}
+                </p>
+              </div>
             )}
           </CardContent>
         </Card>

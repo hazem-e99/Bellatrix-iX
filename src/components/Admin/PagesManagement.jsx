@@ -207,7 +207,10 @@ const PagesManagement = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
+      <div
+        className="admin-component flex items-center justify-center h-64"
+        data-dashboard="true"
+      >
         <div className="flex items-center space-x-2">
           <ArrowPathIcon className="h-5 w-5 animate-spin text-[var(--color-primary)]" />
           <span className="text-[var(--color-text-secondary)]">
@@ -220,7 +223,10 @@ const PagesManagement = () => {
 
   if (error) {
     return (
-      <div className="flex items-center justify-center h-64">
+      <div
+        className="admin-component flex items-center justify-center h-64"
+        data-dashboard="true"
+      >
         <div className="text-center">
           <ExclamationTriangleIcon className="h-12 w-12 text-[var(--tw-red-500)] mx-auto mb-4" />
           <h3 className="text-lg font-medium text-[var(--color-text-inverse)] mb-2">
@@ -237,7 +243,7 @@ const PagesManagement = () => {
   }
 
   return (
-    <div className="space-y-6 text-white">
+    <div className="admin-component space-y-6 text-white" data-dashboard="true">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-2xl font-bold text-white">Pages Management</h2>

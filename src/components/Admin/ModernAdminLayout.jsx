@@ -125,7 +125,11 @@ const ModernAdminLayout = () => {
   const legacyUnreadCount = legacyNotifications.filter((n) => n.unread).length;
 
   return (
-    <div className="flex min-h-screen" style={{ backgroundColor: "var(--color-brand-dark-navy)" }}>
+    <div
+      className="admin-layout flex min-h-screen"
+      data-dashboard="true"
+      style={{ backgroundColor: "var(--color-brand-dark-navy)" }}
+    >
       {/* Mobile sidebar backdrop */}
       <AnimatePresence>
         {sidebarOpen && (
@@ -153,9 +157,13 @@ const ModernAdminLayout = () => {
           <div className="flex h-16 items-center justify-between px-6 border-b border-[var(--color-white-10)]">
             <div className="flex items-center space-x-3">
               <div className="h-8 w-8 bg-[var(--color-primary)] rounded-lg flex items-center justify-center shadow">
-                <span className="text-[var(--color-text-inverse)] font-bold text-sm">B</span>
+                <span className="text-[var(--color-text-inverse)] font-bold text-sm">
+                  B
+                </span>
               </div>
-              <span className="text-xl font-bold text-[var(--color-text-inverse)]">Bellatrix</span>
+              <span className="text-xl font-bold text-[var(--color-text-inverse)]">
+                Bellatrix
+              </span>
             </div>
             <Button
               variant="ghost"
@@ -187,14 +195,18 @@ const ModernAdminLayout = () => {
                 >
                   <IconComponent
                     className={`mr-3 h-5 w-5 ${
-                      isActive(item.path) ? "text-[var(--color-primary-light)]" : "text-[var(--color-text-light)]"
+                      isActive(item.path)
+                        ? "text-[var(--color-primary-light)]"
+                        : "text-[var(--color-text-light)]"
                     }`}
                   />
                   <div className="flex-1 text-left">
                     <div className="font-medium">{item.name}</div>
                     <div
                       className={`text-xs ${
-                        isActive(item.path) ? "text-[var(--color-primary-light)]" : "text-[var(--color-text-light)]"
+                        isActive(item.path)
+                          ? "text-[var(--color-primary-light)]"
+                          : "text-[var(--color-text-light)]"
                       }`}
                     >
                       {item.description}
@@ -266,13 +278,17 @@ const ModernAdminLayout = () => {
                 size="icon"
                 onClick={toggleColorTheme}
                 className="text-[var(--color-text-inverse)] hover:text-[var(--color-text-inverse)] hover:bg-[var(--color-white-10)]"
-                title={`Switch to ${theme === "default" ? "Purple" : "Default"} Theme`}
+                title={`Switch to ${
+                  theme === "default" ? "Purple" : "Default"
+                } Theme`}
               >
-                <div className={`h-5 w-5 rounded-full border-2 border-current ${
-                  theme === "purple" 
-                    ? "bg-gradient-to-r from-purple-500 to-purple-700" 
-                    : "bg-gradient-to-r from-blue-500 to-blue-700"
-                }`} />
+                <div
+                  className={`h-5 w-5 rounded-full border-2 border-current ${
+                    theme === "purple"
+                      ? "bg-gradient-to-r from-purple-500 to-purple-700"
+                      : "bg-gradient-to-r from-blue-500 to-blue-700"
+                  }`}
+                />
               </Button>
 
               {/* Notifications */}

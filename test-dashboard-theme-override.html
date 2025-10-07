@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="default">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard Theme Override Test</title>
+    <link rel="stylesheet" href="src/styles/theme-colors.css" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: var(--color-brand-dark-navy);
+        color: white;
+      }
+      .test-container {
+        margin: 20px 0;
+        padding: 20px;
+        border: 1px solid var(--color-white-20);
+        border-radius: 8px;
+      }
+      .regular-component {
+        background: var(--color-gray-800);
+        padding: 15px;
+        margin: 10px 0;
+        border-radius: 6px;
+      }
+      .dashboard-component {
+        background: var(--color-gray-800);
+        padding: 15px;
+        margin: 10px 0;
+        border-radius: 6px;
+      }
+      .text-secondary {
+        color: var(--color-text-secondary);
+        margin: 8px 0;
+      }
+      .theme-toggle {
+        margin: 20px 0;
+        padding: 10px 20px;
+        background: var(--color-primary);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Dashboard Theme Override Test</h1>
+
+    <button class="theme-toggle" onclick="toggleTheme()">
+      Toggle Theme (Current: <span id="current-theme">default</span>)
+    </button>
+
+    <div class="test-container">
+      <h2>Regular Component (NOT Dashboard)</h2>
+      <div class="regular-component">
+        <p class="text-secondary">
+          This text uses var(--color-text-secondary) and should be gray-700
+          color. It should NOT be affected by the Dashboard override.
+        </p>
+        <p>Regular text color for comparison</p>
+      </div>
+    </div>
+
+    <div class="test-container">
+      <h2>Dashboard Components</h2>
+
+      <div class="dashboard-component dashboard" data-dashboard="true">
+        <h3>Component with .dashboard class and data-dashboard="true"</h3>
+        <p class="text-secondary">
+          This text uses var(--color-text-secondary) but should display as WHITE
+          due to Dashboard override (--color-text-inverse).
+        </p>
+        <p>Regular text color for comparison</p>
+      </div>
+
+      <div class="dashboard-component admin-layout">
+        <h3>Component with .admin-layout class</h3>
+        <p class="text-secondary">
+          This text also uses var(--color-text-secondary) and should be WHITE.
+        </p>
+        <p>Regular text color for comparison</p>
+      </div>
+
+      <div class="dashboard-component admin-component">
+        <h3>Component with .admin-component class</h3>
+        <p class="text-secondary">
+          This text uses var(--color-text-secondary) and should be WHITE.
+        </p>
+        <p>Regular text color for comparison</p>
+      </div>
+    </div>
+
+    <div class="test-container">
+      <h2>Expected Results:</h2>
+      <ul>
+        <li>
+          Regular Component: gray text (--color-text-secondary = gray-700)
+        </li>
+        <li>
+          Dashboard Components: white text (--color-text-secondary = white due
+          to override)
+        </li>
+        <li>Theme switching should not affect the Dashboard override rule</li>
+        <li>
+          Dashboard text should always stay white regardless of default/purple
+          theme
+        </li>
+      </ul>
+    </div>
+
+    <script>
+      function toggleTheme() {
+        const html = document.documentElement;
+        const currentTheme = html.getAttribute("data-theme");
+        const newTheme = currentTheme === "purple" ? "default" : "purple";
+
+        html.setAttribute("data-theme", newTheme === "default" ? "" : newTheme);
+        document.getElementById("current-theme").textContent = newTheme;
+      }
+
+      // Initialize theme display
+      document.addEventListener("DOMContentLoaded", function () {
+        const currentTheme =
+          document.documentElement.getAttribute("data-theme") || "default";
+        document.getElementById("current-theme").textContent = currentTheme;
+      });
+    </script>
+  </body>
+</html>

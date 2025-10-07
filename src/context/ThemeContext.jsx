@@ -18,11 +18,11 @@ export const ThemeProvider = ({ children }) => {
   useEffect(() => {
     const savedTheme = localStorage.getItem("bellatrix-theme");
     const savedDarkMode = localStorage.getItem("bellatrix-dark-mode");
-    
+
     if (savedTheme && (savedTheme === "default" || savedTheme === "purple")) {
       setTheme(savedTheme);
     }
-    
+
     if (savedDarkMode) {
       setIsDark(savedDarkMode === "true");
     } else {
@@ -52,7 +52,10 @@ export const ThemeProvider = ({ children }) => {
   }, [isDark]);
 
   const toggleTheme = (newTheme) => {
-    if (typeof newTheme === "string" && (newTheme === "default" || newTheme === "purple")) {
+    if (
+      typeof newTheme === "string" &&
+      (newTheme === "default" || newTheme === "purple")
+    ) {
       setTheme(newTheme);
     } else {
       // Legacy toggle for dark/light mode

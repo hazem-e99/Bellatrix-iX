@@ -1,19 +1,34 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { 
-  DocumentTextIcon, 
-  PencilIcon, 
+import React, { useState, useEffect, useCallback } from "react";
+import {
+  DocumentTextIcon,
+  PencilIcon,
   EyeIcon,
   CheckIcon,
   XMarkIcon,
   ArrowPathIcon,
-  ExclamationTriangleIcon
-} from '@heroicons/react/24/outline';
-import { useDataFileList, useAdminJsonData, useRealTimeUpdates, useAdminSaveData } from '../../hooks/useAdminJsonServer.jsx';
-import { getCacheManager } from '../../utils/cacheManager.js';
-import { usePageDataSync } from '../../hooks/usePageDataSync.js';
+  ExclamationTriangleIcon,
+} from "@heroicons/react/24/outline";
+import {
+  useDataFileList,
+  useAdminJsonData,
+  useRealTimeUpdates,
+  useAdminSaveData,
+} from "../../hooks/useAdminJsonServer.jsx";
+import { getCacheManager } from "../../utils/cacheManager.js";
+import { usePageDataSync } from "../../hooks/usePageDataSync.js";
 
 // File List Component
-const FileList = ({ files, selectedFile, onFileSelect, loading, error, onRefresh }) => {
+const FileList = ({
+  files,
+  selectedFile,
+  onFileSelect,
+  loading,
+  error,
+  onRefresh,
+  theme = 1,
+  isVisible = true,
+  ...props
+}) => {
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
@@ -41,7 +56,12 @@ const FileList = ({ files, selectedFile, onFileSelect, loading, error, onRefresh
   }
 
   return (
-    <div className="space-y-2">
+    <div 
+      className="space-y-2"
+      style={{ display: isVisible ? "block" : "none" }}
+      data-theme={theme === 1 ? "light" : "dark"}
+      {...props}
+    >
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold text-white">Data Files</h2>
         <button
@@ -52,7 +72,7 @@ const FileList = ({ files, selectedFile, onFileSelect, loading, error, onRefresh
           <ArrowPathIcon className="w-4 h-4" />
         </button>
       </div>
-      
+
       {files.length === 0 ? (
         <p className="text-gray-300 text-center py-8">No JSON files found</p>
       ) : (
@@ -63,13 +83,18 @@ const FileList = ({ files, selectedFile, onFileSelect, loading, error, onRefresh
               onClick={() => onFileSelect(filename)}
               className={`flex items-center space-x-3 p-3 rounded-lg border transition-colors text-left w-full ${
                 selectedFile === filename
-                  ? 'border-blue-500 bg-blue-500/20 text-blue-300'
-                  : 'border-white/20 hover:border-white/30 hover:bg-white/5'
+                  ? "border-blue-500 bg-blue-500/20 text-blue-300"
+                  : "border-white/20 hover:border-white/30 hover:bg-white/5"
               }`}
             >
               <DocumentTextIcon className="w-5 h-5 flex-shrink-0 text-white/90" />
               <div className="flex-1 min-w-0">
-                <p className="font-medium truncate text-white">{filename.replace('.json', '').replace(/([A-Z])/g, ' $1').trim()}</p>
+                <p className="font-medium truncate text-white">
+                  {filename
+                    .replace(".json", "")
+                    .replace(/([A-Z])/g, " $1")
+                    .trim()}
+                </p>
                 <p className="text-sm text-gray-400 truncate">{filename}</p>
               </div>
               {selectedFile === filename && (
@@ -84,7 +109,7 @@ const FileList = ({ files, selectedFile, onFileSelect, loading, error, onRefresh
 };
 
 // Preview Component
-const DataPreview = ({ data, filename }) => {
+const DataPreview = ({ data, filename, theme = 1, isVisible = true, ...props }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   if (!data) {
@@ -96,17 +121,24 @@ const DataPreview = ({ data, filename }) => {
   }
 
   const jsonString = JSON.stringify(data, null, 2);
-  const preview = isExpanded ? jsonString : jsonString.slice(0, 500) + (jsonString.length > 500 ? '...' : '');
+  const preview = isExpanded
+    ? jsonString
+    : jsonString.slice(0, 500) + (jsonString.length > 500 ? "..." : "");
 
   return (
-    <div className="space-y-2">
+    <div 
+      className="space-y-2"
+      style={{ display: isVisible ? "block" : "none" }}
+      data-theme={theme === 1 ? "light" : "dark"}
+      {...props}
+    >
       <div className="flex items-center justify-between">
         <h3 className="text-md font-medium text-white">Preview: {filename}</h3>
         <button
           onClick={() => setIsExpanded(!isExpanded)}
           className="text-sm text-blue-400 hover:text-blue-300"
         >
-          {isExpanded ? 'Show Less' : 'Show More'}
+          {isExpanded ? "Show Less" : "Show More"}
         </button>
       </div>
       <pre className="bg-gray-900 text-green-400 p-4 rounded-md text-sm overflow-auto max-h-96">
@@ -117,7 +149,7 @@ const DataPreview = ({ data, filename }) => {
 };
 
 // Main Editor Component
-const DataEditor = ({ filename, data, onSave, loading, error }) => {
+const DataEditor = ({ filename, data, onSave, loading, error, theme = 1, isVisible = true, ...props }) => {
   const [editedData, setEditedData] = useState(null);
   const [hasChanges, setHasChanges] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -185,20 +217,25 @@ const DataEditor = ({ filename, data, onSave, loading, error }) => {
   }
 
   return (
-    <div className="space-y-6">
+    <div 
+      className="space-y-6"
+      style={{ display: isVisible ? "block" : "none" }}
+      data-theme={theme === 1 ? "light" : "dark"}
+      {...props}
+    >
       {/* Header */}
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold text-white">
           Editing: {filename}
         </h2>
-        
+
         <div className="flex items-center space-x-2">
           {hasChanges && (
             <span className="px-2 py-1 text-xs bg-yellow-500/20 text-yellow-300 rounded-full border border-yellow-500/30">
               Unsaved changes
             </span>
           )}
-          
+
           <button
             onClick={handleReset}
             disabled={!hasChanges || saving}
@@ -207,7 +244,7 @@ const DataEditor = ({ filename, data, onSave, loading, error }) => {
             <XMarkIcon className="w-4 h-4" />
             <span>Reset</span>
           </button>
-          
+
           <button
             onClick={handleSave}
             disabled={!hasChanges || saving}
@@ -218,14 +255,16 @@ const DataEditor = ({ filename, data, onSave, loading, error }) => {
             ) : (
               <CheckIcon className="w-4 h-4" />
             )}
-            <span>{saving ? 'Saving...' : 'Save Changes'}</span>
+            <span>{saving ? "Saving..." : "Save Changes"}</span>
           </button>
         </div>
       </div>
 
       {/* Editor */}
       <div className="bg-white/10 border border-white/20 rounded-lg shadow p-6">
-        <h3 className="text-lg font-semibold text-white mb-4">{filename} Configuration</h3>
+        <h3 className="text-lg font-semibold text-white mb-4">
+          {filename} Configuration
+        </h3>
         <textarea
           value={JSON.stringify(editedData, null, 2)}
           onChange={(e) => {
@@ -246,118 +285,143 @@ const DataEditor = ({ filename, data, onSave, loading, error }) => {
 };
 
 // Main Admin Dashboard Component
-export const AdminDashboard = () => {
+export const AdminDashboard = ({ theme = 1, isVisible = true, ...props }) => {
   const [selectedFile, setSelectedFile] = useState(null);
-  const [activeTab, setActiveTab] = useState('editor'); // 'editor' or 'preview'
-  
-  const { files, loading: filesLoading, error: filesError, refetch: refetchFiles } = useDataFileList();
-  const { 
-    data: selectedData, 
-    loading: dataLoading, 
-    error: dataError, 
-    refetch: refetchData 
+  const [activeTab, setActiveTab] = useState("editor"); // 'editor' or 'preview'
+
+  const {
+    files,
+    loading: filesLoading,
+    error: filesError,
+    refetch: refetchFiles,
+  } = useDataFileList();
+  const {
+    data: selectedData,
+    loading: dataLoading,
+    error: dataError,
+    refetch: refetchData,
   } = useAdminJsonData(selectedFile);
-  
+
   const saveDataMutation = useAdminSaveData();
   const { syncAllPageData, syncPageData } = usePageDataSync();
 
   // Real-time updates
-  useRealTimeUpdates(useCallback((update) => {
-    console.log('Received real-time update:', update);
-    
-    // If the updated file is currently selected, refetch it
-    if (selectedFile && update.filename === selectedFile) {
-      refetchData();
-    }
-    
-    // Refresh file list to update any metadata
-    refetchFiles();
-  }, [selectedFile, refetchData, refetchFiles]));
+  useRealTimeUpdates(
+    useCallback(
+      (update) => {
+        console.log("Received real-time update:", update);
+
+        // If the updated file is currently selected, refetch it
+        if (selectedFile && update.filename === selectedFile) {
+          refetchData();
+        }
+
+        // Refresh file list to update any metadata
+        refetchFiles();
+      },
+      [selectedFile, refetchData, refetchFiles]
+    )
+  );
 
   const handleFileSelect = useCallback((filename) => {
     setSelectedFile(filename);
-    setActiveTab('editor');
+    setActiveTab("editor");
   }, []);
 
-  const handleSave = useCallback(async (newData) => {
-    if (!selectedFile) return false;
-    
-    try {
-      console.log('💾 Saving data...', { selectedFile, data: newData });
-      
-      // Save to JSON Server
-      await saveDataMutation.mutateAsync({ 
-        filename: selectedFile, 
-        data: newData 
-      });
-      
-      console.log('✅ Data saved successfully');
-      
-      // Immediately sync the corresponding page data
-      const endpointMap = {
-        'hr.json': 'hr',
-        'payroll.json': 'payroll',
-        'homeData.json': 'home',
-        'Implementation.json': 'Implementation',
-        'training.json': 'training',
-        'netSuiteConsulting.json': 'netsuite-consulting',
-        'customization.json': 'customization',
-        'integration-data.json': 'integration',
-        'manufacturing-data.json': 'manufacturing',
-        'retail-data.json': 'retail'
-      };
-      
-      const endpoint = endpointMap[selectedFile];
-      if (endpoint) {
-        console.log(`🔄 Syncing page data for endpoint: ${endpoint}`);
-        await syncPageData(endpoint);
-        console.log(`✅ Page data synced for: ${endpoint}`);
+  const handleSave = useCallback(
+    async (newData) => {
+      if (!selectedFile) return false;
+
+      try {
+        console.log("💾 Saving data...", { selectedFile, data: newData });
+
+        // Save to JSON Server
+        await saveDataMutation.mutateAsync({
+          filename: selectedFile,
+          data: newData,
+        });
+
+        console.log("✅ Data saved successfully");
+
+        // Immediately sync the corresponding page data
+        const endpointMap = {
+          "hr.json": "hr",
+          "payroll.json": "payroll",
+          "homeData.json": "home",
+          "Implementation.json": "Implementation",
+          "training.json": "training",
+          "netSuiteConsulting.json": "netsuite-consulting",
+          "customization.json": "customization",
+          "integration-data.json": "integration",
+          "manufacturing-data.json": "manufacturing",
+          "retail-data.json": "retail",
+        };
+
+        const endpoint = endpointMap[selectedFile];
+        if (endpoint) {
+          console.log(`🔄 Syncing page data for endpoint: ${endpoint}`);
+          await syncPageData(endpoint);
+          console.log(`✅ Page data synced for: ${endpoint}`);
+        }
+
+        return true;
+      } catch (error) {
+        console.error("❌ Error saving data:", error);
+        return false;
       }
-      
-      return true;
-    } catch (error) {
-      console.error('❌ Error saving data:', error);
-      return false;
-    }
-  }, [selectedFile, saveDataMutation, syncPageData]);
+    },
+    [selectedFile, saveDataMutation, syncPageData]
+  );
 
   const handleForceRefresh = useCallback(async () => {
     try {
-      console.log('🔄 Starting force refresh...');
-      
+      console.log("🔄 Starting force refresh...");
+
       // Method 1: Use new sync system
       const syncSuccess = await syncAllPageData();
-      
+
       // Method 2: Use cache manager as backup
       try {
         const cacheManager = getCacheManager();
         await cacheManager.forceRefreshAll();
       } catch (cacheError) {
-        console.warn('Cache manager failed:', cacheError);
+        console.warn("Cache manager failed:", cacheError);
       }
-      
+
       // Method 3: Refetch current admin data
       if (selectedFile) {
         refetchData();
       }
-      
+
       if (syncSuccess) {
-        console.log('✅ Force refresh completed successfully');
-        alert('تم تحديث البيانات بنجاح! جرب الآن فتح الصفحات لرؤية التغييرات.');
+        console.log("✅ Force refresh completed successfully");
+        alert("تم تحديث البيانات بنجاح! جرب الآن فتح الصفحات لرؤية التغييرات.");
       } else {
-        console.warn('⚠️ Some data may not have refreshed properly');
-        alert('تم التحديث لكن قد تحتاج لإعادة تحميل الصفحة يدوياً.');
+        console.warn("⚠️ Some data may not have refreshed properly");
+        alert("تم التحديث لكن قد تحتاج لإعادة تحميل الصفحة يدوياً.");
       }
     } catch (error) {
-      console.error('❌ Force refresh failed:', error);
-      alert('حدث خطأ في التحديث. تأكد من أن الخوادم تعمل بشكل صحيح.');
+      console.error("❌ Force refresh failed:", error);
+      alert("حدث خطأ في التحديث. تأكد من أن الخوادم تعمل بشكل صحيح.");
     }
   }, [selectedFile, refetchData, syncAllPageData]);
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#001038' }}>
+    <div
+      className="admin-component min-h-screen"
+      style={{ 
+        backgroundColor: "#001038",
+        display: isVisible ? "block" : "none"
+      }}
+      data-theme={theme === 1 ? "light" : "dark"}
+      data-dashboard="true"
+      {...props}
+    >
       {/* Header */}
-      <div className="border-b border-white/10" style={{ backgroundColor: '#001038' }}>
+      <div
+        className="border-b border-white/10"
+        style={{ backgroundColor: "#001038" }}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <h1 className="text-2xl font-bold text-white">Admin Dashboard</h1>
@@ -404,22 +468,22 @@ export const AdminDashboard = () => {
                   <div className="border-b border-white/10">
                     <nav className="-mb-px flex space-x-8 px-6">
                       <button
-                        onClick={() => setActiveTab('editor')}
+                        onClick={() => setActiveTab("editor")}
                         className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                          activeTab === 'editor'
-                            ? 'border-blue-500 text-blue-400'
-                            : 'border-transparent text-gray-300 hover:text-white hover:border-white/30'
+                          activeTab === "editor"
+                            ? "border-blue-500 text-blue-400"
+                            : "border-transparent text-gray-300 hover:text-white hover:border-white/30"
                         }`}
                       >
                         <PencilIcon className="w-4 h-4 inline mr-2" />
                         Editor
                       </button>
                       <button
-                        onClick={() => setActiveTab('preview')}
+                        onClick={() => setActiveTab("preview")}
                         className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                          activeTab === 'preview'
-                            ? 'border-blue-500 text-blue-400'
-                            : 'border-transparent text-gray-300 hover:text-white hover:border-white/30'
+                          activeTab === "preview"
+                            ? "border-blue-500 text-blue-400"
+                            : "border-transparent text-gray-300 hover:text-white hover:border-white/30"
                         }`}
                       >
                         <EyeIcon className="w-4 h-4 inline mr-2" />
@@ -429,7 +493,7 @@ export const AdminDashboard = () => {
                   </div>
 
                   <div className="p-6">
-                    {activeTab === 'editor' ? (
+                    {activeTab === "editor" ? (
                       <DataEditor
                         filename={selectedFile}
                         data={selectedData}
@@ -455,7 +519,8 @@ export const AdminDashboard = () => {
                   Welcome to Admin Dashboard
                 </h3>
                 <p className="text-gray-300">
-                  Select a JSON file from the sidebar to start editing your content.
+                  Select a JSON file from the sidebar to start editing your
+                  content.
                 </p>
               </div>
             )}

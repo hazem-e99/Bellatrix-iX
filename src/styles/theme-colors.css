@@ -52,7 +52,7 @@
   /* Shadow Colors */
   --shadow-blue-500: #3b82f6; /* 55x shadow-blue-500 */
   --shadow-purple-500: #a855f7; /* Purple equivalent for shadow */
-  
+
   /* Additional color variables for purple theme */
   --tw-red-300: #fca5a5;
   --tw-red-400: #f87171;
@@ -318,6 +318,18 @@
   --color-cyan-400: #c084fc; /* Medium purple equivalent */
   --color-cyan-500: #a855f7; /* Main purple equivalent */
   --color-cyan-600: #9333ea; /* Dark purple equivalent */
+}
+
+/* ==================================================
+   DASHBOARD-SPECIFIC OVERRIDES
+   ================================================== */
+/* Override text-secondary with text-inverse for Dashboard components only */
+.dashboard,
+[data-dashboard="true"],
+.admin-layout,
+.admin-dashboard,
+.admin-component {
+  --color-text-secondary: var(--color-text-inverse) !important;
 }
 
 /* ==================================================

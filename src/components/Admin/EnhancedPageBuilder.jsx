@@ -39,15 +39,15 @@ const EnhancedPageBuilder = () => {
 
   // Step navigation handler
   const handleStepClick = (stepId) => {
-    console.log('🎯 [STEP NAVIGATION] Clicked step:', stepId);
-    
+    console.log("🎯 [STEP NAVIGATION] Clicked step:", stepId);
+
     if (stepId < currentStep) {
       setCurrentStep(stepId);
       console.log(`✅ [STEP NAVIGATION] Navigated back to step ${stepId}`);
     } else if (stepId === currentStep) {
-      console.log('ℹ️ [STEP NAVIGATION] Already on this step');
+      console.log("ℹ️ [STEP NAVIGATION] Already on this step");
     } else {
-      console.log('❌ [STEP NAVIGATION] Cannot skip ahead to future steps');
+      console.log("❌ [STEP NAVIGATION] Cannot skip ahead to future steps");
     }
   };
 
@@ -443,205 +443,235 @@ const EnhancedPageBuilder = () => {
 
   // Function to update a specific component field
   const updateComponent = (index, field, value) => {
-    console.log('🔄 [MANUFACTURING UPDATE CRITICAL]', {
+    console.log("🔄 [MANUFACTURING UPDATE CRITICAL]", {
       index: index,
       field: field,
       value: value,
       componentType: pageData.components[index]?.componentType,
-      currentContentJson: pageData.components[index]?.contentJson
+      currentContentJson: pageData.components[index]?.contentJson,
     });
-    
+
     // Special handling for image fields
-    if (field === 'image' || field === 'contentJson') {
-      console.log('🖼️ [IMAGE FLOW] Image change detected:', {
+    if (field === "image" || field === "contentJson") {
+      console.log("🖼️ [IMAGE FLOW] Image change detected:", {
         componentIndex: index,
         componentType: pageData.components[index]?.componentType,
         field: field,
-        value: field === 'contentJson' ? (() => {
-          try {
-            const parsed = JSON.parse(value);
-            return {
-              rawValue: value,
-              parsedValue: parsed,
-              imageInJson: parsed.image,
-              programsSectionImage: parsed.programsSection?.image
-            };
-          } catch (e) {
-            return { rawValue: value, parseError: e.message };
-          }
-        })() : value
+        value:
+          field === "contentJson"
+            ? (() => {
+                try {
+                  const parsed = JSON.parse(value);
+                  return {
+                    rawValue: value,
+                    parsedValue: parsed,
+                    imageInJson: parsed.image,
+                    programsSectionImage: parsed.programsSection?.image,
+                  };
+                } catch (e) {
+                  return { rawValue: value, parseError: e.message };
+                }
+              })()
+            : value,
       });
     }
-    
+
     setPageData((prev) => {
       const updatedComponents = [...prev.components];
       const currentComponent = updatedComponents[index];
-      
+
       // Parse existing contentJson or create new
       let contentData = {};
       if (currentComponent.contentJson) {
         try {
           contentData = JSON.parse(currentComponent.contentJson);
         } catch (e) {
-          console.error('❌ JSON Parse Error:', e);
+          console.error("❌ JSON Parse Error:", e);
         }
       }
-      
+
       // Update the specific field in contentData
-      if (field === 'contentJson') {
+      if (field === "contentJson") {
         // Direct JSON update
         updatedComponents[index] = {
           ...currentComponent,
-          contentJson: value
+          contentJson: value,
         };
       } else {
         // Update specific field in content JSON
         const updatedContentData = {
           ...contentData,
-          [field]: value
+          [field]: value,
         };
-        
+
         updatedComponents[index] = {
           ...currentComponent,
-          contentJson: JSON.stringify(updatedContentData, null, 2)
+          contentJson: JSON.stringify(updatedContentData, null, 2),
         };
       }
-      
+
       // Additional debugging for TrainingProgramsSection
-        if (updatedComponents[index]?.componentType === 'TrainingProgramsSection') {
-          console.log('🖼️ [TRAINING PROGRAMS UPDATE] After update:', {
-            componentType: updatedComponents[index].componentType,
-            contentJson: updatedComponents[index].contentJson,
-            parsedContentJson: (() => {
-              try {
-                return JSON.parse(updatedComponents[index].contentJson || '{}');
-              } catch (e) {
-                return { parseError: e.message };
-              }
-            })()
-          });
-        }
+      if (
+        updatedComponents[index]?.componentType === "TrainingProgramsSection"
+      ) {
+        console.log("🖼️ [TRAINING PROGRAMS UPDATE] After update:", {
+          componentType: updatedComponents[index].componentType,
+          contentJson: updatedComponents[index].contentJson,
+          parsedContentJson: (() => {
+            try {
+              return JSON.parse(updatedComponents[index].contentJson || "{}");
+            } catch (e) {
+              return { parseError: e.message };
+            }
+          })(),
+        });
+      }
 
-        if (updatedComponents[index]?.componentType === 'IntegrationTypesSection') {
-          console.log('🔗 [INTEGRATION TYPES UPDATE] After update:', {
-            componentType: updatedComponents[index].componentType,
-            contentJson: updatedComponents[index].contentJson,
-            parsedContentJson: (() => {
-              try {
-                return JSON.parse(updatedComponents[index].contentJson || '{}');
-              } catch (e) {
-                return { parseError: e.message };
-              }
-            })()
-          });
-        }
+      if (
+        updatedComponents[index]?.componentType === "IntegrationTypesSection"
+      ) {
+        console.log("🔗 [INTEGRATION TYPES UPDATE] After update:", {
+          componentType: updatedComponents[index].componentType,
+          contentJson: updatedComponents[index].contentJson,
+          parsedContentJson: (() => {
+            try {
+              return JSON.parse(updatedComponents[index].contentJson || "{}");
+            } catch (e) {
+              return { parseError: e.message };
+            }
+          })(),
+        });
+      }
 
-        if (updatedComponents[index]?.componentType === 'IntegrationBenefitsSection') {
-          console.log('🔗 [INTEGRATION BENEFITS UPDATE] After update:', {
-            componentType: updatedComponents[index].componentType,
-            contentJson: updatedComponents[index].contentJson,
-            parsedContentJson: (() => {
-              try {
-                return JSON.parse(updatedComponents[index].contentJson || '{}');
-              } catch (e) {
-                return { parseError: e.message };
-              }
-            })()
-          });
-        }
+      if (
+        updatedComponents[index]?.componentType === "IntegrationBenefitsSection"
+      ) {
+        console.log("🔗 [INTEGRATION BENEFITS UPDATE] After update:", {
+          componentType: updatedComponents[index].componentType,
+          contentJson: updatedComponents[index].contentJson,
+          parsedContentJson: (() => {
+            try {
+              return JSON.parse(updatedComponents[index].contentJson || "{}");
+            } catch (e) {
+              return { parseError: e.message };
+            }
+          })(),
+        });
+      }
 
-        if (updatedComponents[index]?.componentType === 'ManufacturingChallengesSection') {
-          console.log('🏭 [MANUFACTURING CHALLENGES UPDATE] After update:', {
-            componentType: updatedComponents[index].componentType,
-            contentJson: updatedComponents[index].contentJson,
-            parsedContentJson: (() => {
-              try {
-                return JSON.parse(updatedComponents[index].contentJson || '{}');
-              } catch (e) {
-                return { parseError: e.message };
-              }
-            })()
-          });
-        }
+      if (
+        updatedComponents[index]?.componentType ===
+        "ManufacturingChallengesSection"
+      ) {
+        console.log("🏭 [MANUFACTURING CHALLENGES UPDATE] After update:", {
+          componentType: updatedComponents[index].componentType,
+          contentJson: updatedComponents[index].contentJson,
+          parsedContentJson: (() => {
+            try {
+              return JSON.parse(updatedComponents[index].contentJson || "{}");
+            } catch (e) {
+              return { parseError: e.message };
+            }
+          })(),
+        });
+      }
 
-        if (updatedComponents[index]?.componentType === 'CustomizationServicesSection') {
-          console.log('🔧 [CUSTOMIZATION SERVICES UPDATE] After update:', {
-            componentType: updatedComponents[index].componentType,
-            contentJson: updatedComponents[index].contentJson,
-            parsedContentJson: (() => {
-              try {
-                return JSON.parse(updatedComponents[index].contentJson || '{}');
-              } catch (e) {
-                return { parseError: e.message };
-              }
-            })()
-          });
-        }
+      if (
+        updatedComponents[index]?.componentType ===
+        "CustomizationServicesSection"
+      ) {
+        console.log("🔧 [CUSTOMIZATION SERVICES UPDATE] After update:", {
+          componentType: updatedComponents[index].componentType,
+          contentJson: updatedComponents[index].contentJson,
+          parsedContentJson: (() => {
+            try {
+              return JSON.parse(updatedComponents[index].contentJson || "{}");
+            } catch (e) {
+              return { parseError: e.message };
+            }
+          })(),
+        });
+      }
 
-        if (updatedComponents[index]?.componentType === 'CustomizationProcessSection') {
-          console.log('🔧 [CUSTOMIZATION PROCESS UPDATE] After update:', {
-            componentType: updatedComponents[index].componentType,
-            contentJson: updatedComponents[index].contentJson,
-            parsedContentJson: (() => {
-              try {
-                return JSON.parse(updatedComponents[index].contentJson || '{}');
-              } catch (e) {
-                return { parseError: e.message };
-              }
-            })()
-          });
-        }
+      if (
+        updatedComponents[index]?.componentType ===
+        "CustomizationProcessSection"
+      ) {
+        console.log("🔧 [CUSTOMIZATION PROCESS UPDATE] After update:", {
+          componentType: updatedComponents[index].componentType,
+          contentJson: updatedComponents[index].contentJson,
+          parsedContentJson: (() => {
+            try {
+              return JSON.parse(updatedComponents[index].contentJson || "{}");
+            } catch (e) {
+              return { parseError: e.message };
+            }
+          })(),
+        });
+      }
 
-        if (updatedComponents[index]?.componentType === 'ManufacturingHeroSection') {
-          console.log('✅ [MANUFACTURING UPDATE COMPLETE]', {
-            newContentJson: updatedComponents[index].contentJson,
-            parsed: updatedComponents[index].contentJson ? 
-              JSON.parse(updatedComponents[index].contentJson) : {}
-          });
-        }
+      if (
+        updatedComponents[index]?.componentType === "ManufacturingHeroSection"
+      ) {
+        console.log("✅ [MANUFACTURING UPDATE COMPLETE]", {
+          newContentJson: updatedComponents[index].contentJson,
+          parsed: updatedComponents[index].contentJson
+            ? JSON.parse(updatedComponents[index].contentJson)
+            : {},
+        });
+      }
 
-        if (updatedComponents[index]?.componentType === 'ManufacturingChallengesSection') {
-          console.log('🏭 [MANUFACTURING CHALLENGES UPDATE] After update:', {
-            componentType: updatedComponents[index].componentType,
-            contentJson: updatedComponents[index].contentJson,
-            parsedContentJson: (() => {
-              try {
-                return JSON.parse(updatedComponents[index].contentJson || '{}');
-              } catch (e) {
-                return { parseError: e.message };
-              }
-            })()
-          });
-        }
+      if (
+        updatedComponents[index]?.componentType ===
+        "ManufacturingChallengesSection"
+      ) {
+        console.log("🏭 [MANUFACTURING CHALLENGES UPDATE] After update:", {
+          componentType: updatedComponents[index].componentType,
+          contentJson: updatedComponents[index].contentJson,
+          parsedContentJson: (() => {
+            try {
+              return JSON.parse(updatedComponents[index].contentJson || "{}");
+            } catch (e) {
+              return { parseError: e.message };
+            }
+          })(),
+        });
+      }
 
-        if (updatedComponents[index]?.componentType === 'ManufacturingSolutionsSection') {
-          console.log('🏭 [MANUFACTURING SOLUTIONS UPDATE] After update:', {
-            componentType: updatedComponents[index].componentType,
-            contentJson: updatedComponents[index].contentJson,
-            parsedContentJson: (() => {
-              try {
-                return JSON.parse(updatedComponents[index].contentJson || '{}');
-              } catch (e) {
-                return { parseError: e.message };
-              }
-            })()
-          });
-        }
+      if (
+        updatedComponents[index]?.componentType ===
+        "ManufacturingSolutionsSection"
+      ) {
+        console.log("🏭 [MANUFACTURING SOLUTIONS UPDATE] After update:", {
+          componentType: updatedComponents[index].componentType,
+          contentJson: updatedComponents[index].contentJson,
+          parsedContentJson: (() => {
+            try {
+              return JSON.parse(updatedComponents[index].contentJson || "{}");
+            } catch (e) {
+              return { parseError: e.message };
+            }
+          })(),
+        });
+      }
 
-        if (updatedComponents[index]?.componentType === 'ManufacturingIndustryStatsSection') {
-          console.log('🏭 [MANUFACTURING STATS UPDATE] After update:', {
-            componentType: updatedComponents[index].componentType,
-            contentJson: updatedComponents[index].contentJson,
-            parsedContentJson: (() => {
-              try {
-                return JSON.parse(updatedComponents[index].contentJson || '{}');
-              } catch (e) {
-                return { parseError: e.message };
-              }
-            })()
-          });
-        }
-      
+      if (
+        updatedComponents[index]?.componentType ===
+        "ManufacturingIndustryStatsSection"
+      ) {
+        console.log("🏭 [MANUFACTURING STATS UPDATE] After update:", {
+          componentType: updatedComponents[index].componentType,
+          contentJson: updatedComponents[index].contentJson,
+          parsedContentJson: (() => {
+            try {
+              return JSON.parse(updatedComponents[index].contentJson || "{}");
+            } catch (e) {
+              return { parseError: e.message };
+            }
+          })(),
+        });
+      }
+
       return {
         ...prev,
         components: updatedComponents,
@@ -714,7 +744,7 @@ const EnhancedPageBuilder = () => {
           text: "Start Learning Today",
           link: "/training",
           variant: "primary",
-        }
+        },
       },
 
       IntegrationHeroSection: {
@@ -1134,7 +1164,8 @@ const EnhancedPageBuilder = () => {
 
       ImplementationCTASection: {
         title: "Ready for a Seamless NetSuite Implementation?",
-        subtitle: "Transform your business operations with our expert NetSuite implementation services. Let's turn your vision into reality with proven methodologies and dedicated support.",
+        subtitle:
+          "Transform your business operations with our expert NetSuite implementation services. Let's turn your vision into reality with proven methodologies and dedicated support.",
         description: "Get started with your NetSuite implementation today",
         ctaButton: {
           text: "Get Started Today",
@@ -1143,7 +1174,7 @@ const EnhancedPageBuilder = () => {
         },
         // Also include alternative structures
         button: {
-          text: "Get Started Today", 
+          text: "Get Started Today",
           link: "/implementation/contact",
           variant: "primary",
         },
@@ -1164,7 +1195,8 @@ const EnhancedPageBuilder = () => {
           {
             title: "Expert Support",
             description: "Dedicated team of certified professionals",
-            icon: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z",
+            icon:
+              "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z",
           },
         ],
       },
@@ -2065,40 +2097,41 @@ const EnhancedPageBuilder = () => {
 
   // Function to handle delete confirmation
   const handleDeleteClick = async (componentIndex) => {
-    console.log('🗑️ [DELETE CLICK] Component to delete:', componentIndex);
+    console.log("🗑️ [DELETE CLICK] Component to delete:", componentIndex);
     const component = pageData.components[componentIndex];
-    
+
     try {
       setLoading(true);
-      console.log('🚀 [DELETE API] Deleting component:', component);
+      console.log("🚀 [DELETE API] Deleting component:", component);
 
       // Create updated components array without the deleted component
-      const updatedComponents = pageData.components.filter((_, index) => index !== componentIndex);
-      
+      const updatedComponents = pageData.components.filter(
+        (_, index) => index !== componentIndex
+      );
+
       // Update order indices for remaining components
       const reorderedComponents = updatedComponents.map((comp, index) => ({
         ...comp,
-        orderIndex: index + 1
+        orderIndex: index + 1,
       }));
 
       // Update page data
       const updatedPageData = {
         ...pageData,
-        components: reorderedComponents
+        components: reorderedComponents,
       };
 
       setPageData(updatedPageData);
       showToast("Component deleted successfully", "success");
-      
-      console.log('✅ [DELETE API] Component deleted successfully');
+
+      console.log("✅ [DELETE API] Component deleted successfully");
     } catch (error) {
-      console.error('❌ [DELETE API] Error deleting component:', error);
+      console.error("❌ [DELETE API] Error deleting component:", error);
       showToast("Failed to delete component", "error");
     } finally {
       setLoading(false);
     }
   };
-
 
   // Legacy removeComponent function for backward compatibility
   const removeComponent = (componentIndex) => {
@@ -2349,23 +2382,26 @@ const EnhancedPageBuilder = () => {
 
   return (
     <MediaInputDetector>
-      <div className="min-h-screen bg-[#001038] relative overflow-hidden">
+      <div
+        className="admin-component min-h-screen bg-[var(--color-brand-dark-navy)] relative overflow-hidden"
+        data-dashboard="true"
+      >
         <div className="relative z-10 p-6">
           {/* Header */}
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-white mb-4 tracking-tight">
+            <h1 className="text-4xl font-bold text-[var(--color-text-inverse)] mb-4 tracking-tight">
               Enhanced Page Builder
             </h1>
-            <p className="text-lg text-gray-300 leading-relaxed">
+            <p className="text-lg text-[var(--color-text-secondary)] leading-relaxed">
               Create dynamic pages with customizable sections and rich content
             </p>
           </div>
 
-          {/* Creative full-width process bar */}
+          {/* Progress Bar */}
           <div className="mb-10">
-            <div className="w-full h-2 bg-gray-700 rounded-full overflow-hidden">
+            <div className="w-full h-2 bg-[var(--color-text-secondary)] rounded-full overflow-hidden">
               <div
-                className="h-full bg-blue-500 transition-all duration-500"
+                className="h-full bg-[var(--color-primary)] transition-all duration-500"
                 style={{
                   width: `${
                     ((currentStep - 1) / (steps.length - 1)) * 100 || 0
@@ -2385,7 +2421,10 @@ const EnhancedPageBuilder = () => {
                 const isFuture = step.id > currentStep;
 
                 return (
-                  <div key={step.id} className="flex items-start space-x-3 group">
+                  <div
+                    key={step.id}
+                    className="flex items-start space-x-3 group"
+                  >
                     {/* Interactive Step Circle */}
                     <button
                       onClick={() => handleStepClick(step.id)}
@@ -2393,17 +2432,18 @@ const EnhancedPageBuilder = () => {
                       className={`
                         flex items-center justify-center w-9 h-9 rounded-full border-2 
                         transition-all duration-200 transform
-                        ${isCompleted 
-                          ? 'bg-green-500 border-green-500 text-white cursor-pointer hover:bg-green-600 hover:border-green-600 hover:scale-110 shadow-lg shadow-green-500/25' 
-                          : isCurrent
-                          ? 'bg-blue-500 border-blue-500 text-white cursor-default shadow-lg shadow-blue-500/25'
-                          : 'bg-transparent border-gray-600 text-gray-400 cursor-not-allowed'
+                        ${
+                          isCompleted
+                            ? "bg-[var(--tw-green-500)] border-[var(--tw-green-500)] text-[var(--color-text-inverse)] cursor-pointer hover:bg-[var(--tw-green-600)] hover:border-[var(--tw-green-600)] hover:scale-110 shadow-lg shadow-[var(--tw-green-500)]/25"
+                            : isCurrent
+                            ? "bg-[var(--color-primary)] border-[var(--color-primary)] text-[var(--color-text-inverse)] cursor-default shadow-lg shadow-[var(--color-primary)]/25"
+                            : "bg-transparent border-[var(--color-text-secondary)] text-[var(--color-text-light)] cursor-not-allowed"
                         }
                         group-hover:shadow-lg
                       `}
                       title={
-                        isCompleted 
-                          ? `Go back to ${step.title}` 
+                        isCompleted
+                          ? `Go back to ${step.title}`
                           : isCurrent
                           ? `Current step: ${step.title}`
                           : `Complete current steps first`
@@ -2415,17 +2455,18 @@ const EnhancedPageBuilder = () => {
                         <span className="text-xs font-semibold">{step.id}</span>
                       )}
                     </button>
-                    
+
                     {/* Step Info with Enhanced Styling */}
                     <div className="flex-1 min-w-0 transition-all duration-200">
                       <div
                         className={`
                           text-sm font-semibold transition-colors duration-200
-                          ${isCompleted 
-                            ? 'text-green-400 group-hover:text-green-300' 
-                            : isCurrent
-                            ? 'text-blue-400'
-                            : 'text-gray-400'
+                          ${
+                            isCompleted
+                              ? "text-[var(--tw-green-400)] group-hover:text-[var(--tw-green-300)]"
+                              : isCurrent
+                              ? "text-[var(--color-primary-light)]"
+                              : "text-[var(--color-text-light)]"
                           }
                         `}
                       >
@@ -2434,11 +2475,12 @@ const EnhancedPageBuilder = () => {
                       <div
                         className={`
                           text-xs transition-colors duration-200
-                          ${isCompleted 
-                            ? 'text-green-300' 
-                            : isCurrent
-                            ? 'text-blue-300'
-                            : 'text-gray-500'
+                          ${
+                            isCompleted
+                              ? "text-[var(--tw-green-300)]"
+                              : isCurrent
+                              ? "text-[var(--color-primary-light)]"
+                              : "text-[var(--color-text-muted)]"
                           }
                         `}
                       >
@@ -2460,7 +2502,7 @@ const EnhancedPageBuilder = () => {
               variant="outline"
               onClick={handlePrevious}
               disabled={currentStep === 1}
-              className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20 hover:border-white/30 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-[var(--color-text-inverse)] hover:bg-[var(--color-white-20)] hover:border-[var(--color-white-30)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Previous
             </Button>
@@ -2469,7 +2511,7 @@ const EnhancedPageBuilder = () => {
               <Button
                 variant="outline"
                 onClick={() => navigate("/admin/pages")}
-                className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20 hover:border-white/30 transition-all duration-200"
+                className="bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-[var(--color-text-inverse)] hover:bg-[var(--color-white-20)] hover:border-[var(--color-white-30)] transition-all duration-200"
               >
                 Cancel
               </Button>
@@ -2478,7 +2520,7 @@ const EnhancedPageBuilder = () => {
                 <Button
                   variant="outline"
                   onClick={() => setShowPagePreview(true)}
-                  className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-purple-500/20 hover:border-purple-400 transition-all duration-200"
+                  className="bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-[var(--color-text-inverse)] hover:bg-[var(--color-primary)]/20 hover:border-[var(--color-primary-light)] transition-all duration-200"
                 >
                   <EyeIcon className="h-4 w-4 mr-2" />
                   Preview Page
@@ -2489,7 +2531,7 @@ const EnhancedPageBuilder = () => {
                 <Button
                   onClick={handleNext}
                   disabled={!isStepValid(currentStep)}
-                  className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg shadow-blue-500/25 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] hover:from-[var(--color-primary-dark)] hover:to-[var(--color-active)] text-[var(--color-text-inverse)] shadow-lg shadow-[var(--color-primary)]/25 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Next
                 </Button>
@@ -2502,7 +2544,7 @@ const EnhancedPageBuilder = () => {
                     disabled={
                       !isStepValid(currentStep) || isPublishing || loading
                     }
-                    className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20 hover:border-white/30 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-[var(--color-text-inverse)] hover:bg-[var(--color-white-20)] hover:border-[var(--color-white-30)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {loading && !isPublishing ? "Saving..." : "Save as Draft"}
                   </Button>
@@ -2512,7 +2554,7 @@ const EnhancedPageBuilder = () => {
                     disabled={
                       !isStepValid(currentStep) || isPublishing || loading
                     }
-                    className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-lg shadow-green-500/25 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="bg-gradient-to-r from-[var(--tw-green-500)] to-[var(--tw-green-600)] hover:from-[var(--tw-green-600)] hover:to-[var(--tw-green-700)] text-[var(--color-text-inverse)] shadow-lg shadow-[var(--tw-green-500)]/25 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isPublishing ? "Publishing..." : "Publish Page"}
                   </Button>
@@ -2551,7 +2593,6 @@ const EnhancedPageBuilder = () => {
           pageData={pageData}
           availableComponents={availableComponents}
         />
-
 
         {/* Toast Notification */}
         {toast && (
@@ -2617,13 +2658,17 @@ const CategorySelector = ({ value, onChange }) => {
           onClick={() => onChange(c.id)}
           className={`text-left p-4 rounded-lg border transition ${
             value === c.id
-              ? "border-blue-400 bg-blue-500/10"
-              : "border-white/10 hover:border-white/20 bg-white/5"
+              ? "border-[var(--color-primary-light)] bg-[var(--color-primary)]/10"
+              : "border-[var(--color-white-10)] hover:border-[var(--color-white-20)] bg-[var(--color-white)]/5"
           }`}
         >
-          <div className="text-white font-semibold">{c.name}</div>
+          <div className="text-[var(--color-text-inverse)] font-semibold">
+            {c.name}
+          </div>
           {c.description && (
-            <div className="text-white/70 text-sm mt-1">{c.description}</div>
+            <div className="text-[var(--color-text-inverse)]/70 text-sm mt-1">
+              {c.description}
+            </div>
           )}
         </button>
       ))}
@@ -2634,28 +2679,28 @@ const CategorySelector = ({ value, onChange }) => {
 // Step 1: Page Details
 const PageDetailsStep = ({ pageData, onDataChange }) => {
   return (
-    <Card className="bg-white/5 backdrop-blur-sm border border-white/10 shadow-xl">
+    <Card className="bg-[var(--color-white)]/5 backdrop-blur-sm border border-[var(--color-white-10)] shadow-xl">
       <CardHeader>
-        <CardTitle className="text-white text-xl font-bold">
+        <CardTitle className="text-[var(--color-text-inverse)] text-xl font-bold">
           Page Details
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label className="block text-sm font-semibold text-white mb-2">
+            <label className="block text-sm font-semibold text-[var(--color-text-inverse)] mb-2">
               Page Name *
             </label>
             <Input
               value={pageData.name}
               onChange={(e) => onDataChange("name", e.target.value)}
               placeholder="Enter page name"
-              className="w-full bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder-white/50 focus:border-blue-400 focus:ring-blue-400/20"
+              className="w-full bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-[var(--color-text-inverse)] placeholder-[var(--color-text-inverse)]/50 focus:border-[var(--color-primary-light)] focus:ring-[var(--color-primary-light)]/20"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-white mb-2">
+            <label className="block text-sm font-semibold text-[var(--color-text-inverse)] mb-2">
               URL Slug *
             </label>
             <Input
@@ -2665,12 +2710,12 @@ const PageDetailsStep = ({ pageData, onDataChange }) => {
               placeholder="page-url-slug"
               pattern="[a-z0-9-]+"
               title="Slug must only contain lowercase letters, numbers, and dashes."
-              className="w-full bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder-white/50 focus:border-blue-400 focus:ring-blue-400/20"
+              className="w-full bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-[var(--color-text-inverse)] placeholder-[var(--color-text-inverse)]/50 focus:border-[var(--color-primary-light)] focus:ring-[var(--color-primary-light)]/20"
             />
-            <p className="text-sm text-gray-300 mt-2">
+            <p className="text-sm text-[var(--color-text-secondary)] mt-2">
               URL: /{pageData.slug || "page-url-slug"}
             </p>
-            <p className="text-xs text-gray-400 mt-1">
+            <p className="text-xs text-[var(--color-text-light)] mt-1">
               Slug must only contain lowercase letters, numbers, and dashes.
             </p>
           </div>
@@ -2678,21 +2723,21 @@ const PageDetailsStep = ({ pageData, onDataChange }) => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label className="block text-sm font-semibold text-white mb-2">
+            <label className="block text-sm font-semibold text-[var(--color-text-inverse)] mb-2">
               SEO Meta Title
             </label>
             <Input
               value={pageData.metaTitle}
               onChange={(e) => onDataChange("metaTitle", e.target.value)}
               placeholder="SEO title for search engines"
-              className="w-full bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder-white/50 focus:border-blue-400 focus:ring-blue-400/20"
+              className="w-full bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-[var(--color-text-inverse)] placeholder-[var(--color-text-inverse)]/50 focus:border-[var(--color-primary-light)] focus:ring-[var(--color-primary-light)]/20"
             />
           </div>
           <div></div>
         </div>
 
         <div>
-          <label className="block text-sm font-semibold text-white mb-2">
+          <label className="block text-sm font-semibold text-[var(--color-text-inverse)] mb-2">
             SEO Meta Description
           </label>
           <textarea
@@ -2700,7 +2745,7 @@ const PageDetailsStep = ({ pageData, onDataChange }) => {
             onChange={(e) => onDataChange("metaDescription", e.target.value)}
             placeholder="SEO description for search engines"
             rows={3}
-            className="block w-full rounded-lg bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder-white/50 focus:border-blue-400 focus:ring-blue-400/20 shadow-sm resize-none"
+            className="block w-full rounded-lg bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-[var(--color-text-inverse)] placeholder-[var(--color-text-inverse)]/50 focus:border-[var(--color-primary-light)] focus:ring-[var(--color-primary-light)]/20 shadow-sm resize-none"
           />
         </div>
 
@@ -2710,9 +2755,11 @@ const PageDetailsStep = ({ pageData, onDataChange }) => {
               type="checkbox"
               checked={pageData.isHomepage}
               onChange={(e) => onDataChange("isHomepage", e.target.checked)}
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              className="h-4 w-4 text-[var(--color-primary)] focus:ring-[var(--color-primary)] border-[var(--color-border-secondary)] rounded"
             />
-            <span className="ml-2 text-sm text-white">Set as Homepage</span>
+            <span className="ml-2 text-sm text-[var(--color-text-inverse)]">
+              Set as Homepage
+            </span>
           </label>
         </div>
       </CardContent>
@@ -2883,7 +2930,7 @@ const SectionsStep = ({
                 placeholder="Search components..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg text-white placeholder-white/50 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 focus:outline-none transition-all duration-200"
+                className="w-full pl-10 pr-4 py-3 bg-[var(--color-white-10)] backdrop-blur-sm border border-[var(--color-white-20)] rounded-lg text-[var(--color-text-inverse)] placeholder-[var(--color-text-inverse)]/50 focus:border-[var(--color-primary-light)] focus:ring-2 focus:ring-[var(--color-primary-light)]/20 focus:outline-none transition-all duration-200"
               />
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <svg
