@@ -232,15 +232,26 @@ const pagesAPI = {
    */
   async getPageComponents(pageId) {
     try {
-      // Use the getPageById endpoint with includeComponents=true to get components
-      const response = await api.get(`/Pages/${pageId}?includeComponents=true`);
+      // Use the direct components endpoint as requested
+      const response = await api.get(`/Pages/${pageId}/components`);
 
-      // Extract components from the page data
-      const pageData = response.data;
-      const components = pageData?.components || [];
+      // The response should already be unwrapped by the interceptor
+      const components = Array.isArray(response.data) ? response.data : [];
 
-      return Array.isArray(components) ? components : [];
+      console.log("📦 [PAGES API] Fetched components from direct endpoint:", {
+        pageId,
+        componentsCount: components.length,
+        components: components.map((c) => ({
+          id: c.id,
+          componentType: c.componentType,
+          theme: c.theme,
+          isVisible: c.isVisible,
+        })),
+      });
+
+      return components;
     } catch (error) {
+      console.error("❌ [PAGES API] Error fetching components:", error);
       throw error;
     }
   },
@@ -257,11 +268,16 @@ const pagesAPI = {
         pageId: pageId,
         componentType: componentData.componentType || "Generic",
         componentName: componentData.componentName || "",
-        contentJson: typeof componentData.contentJson === 'string' 
-          ? componentData.contentJson 
-          : JSON.stringify(componentData.contentJson || {}),
-        orderIndex: componentData.orderIndex !== undefined ? componentData.orderIndex : 1,
-        isVisible: componentData.isVisible !== undefined ? componentData.isVisible : true,
+        contentJson:
+          typeof componentData.contentJson === "string"
+            ? componentData.contentJson
+            : JSON.stringify(componentData.contentJson || {}),
+        orderIndex:
+          componentData.orderIndex !== undefined ? componentData.orderIndex : 1,
+        isVisible:
+          componentData.isVisible !== undefined
+            ? componentData.isVisible
+            : true,
         theme: componentData.theme !== undefined ? componentData.theme : 1,
       };
 
@@ -271,14 +287,17 @@ const pagesAPI = {
         `/Pages/${pageId}/components`,
         createData
       );
-      
-      console.log("✅ [API CREATE] Component created successfully:", response.data);
+
+      console.log(
+        "✅ [API CREATE] Component created successfully:",
+        response.data
+      );
       return response.data;
     } catch (error) {
       console.error("❌ [API CREATE] Component creation failed:", {
         error: error.message,
         response: error.response?.data,
-        status: error.response?.status
+        status: error.response?.status,
       });
       throw error;
     }
@@ -302,8 +321,12 @@ const pagesAPI = {
           typeof componentData.contentJson === "string"
             ? componentData.contentJson
             : JSON.stringify(componentData.contentJson || {}),
-        orderIndex: componentData.orderIndex !== undefined ? componentData.orderIndex : 0,
-        isVisible: componentData.isVisible !== undefined ? componentData.isVisible : true,
+        orderIndex:
+          componentData.orderIndex !== undefined ? componentData.orderIndex : 0,
+        isVisible:
+          componentData.isVisible !== undefined
+            ? componentData.isVisible
+            : true,
         theme: componentData.theme !== undefined ? componentData.theme : 1, // ThemeMode enum: 1 = light, 2 = dark
       };
 

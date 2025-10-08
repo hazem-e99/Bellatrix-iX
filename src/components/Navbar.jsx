@@ -12,6 +12,7 @@ import ContactForm from "./ContactForm";
 import Modal from "./Modal";
 import { Link } from "react-router-dom";
 import { useTheme } from "../context/ThemeContext";
+import { setupSectionThemeDetection } from "../utils/sectionThemeDetection";
 
 const Navbar = ({ industries = [] }) => {
   const { theme, toggleTheme } = useTheme();
@@ -23,8 +24,6 @@ const Navbar = ({ industries = [] }) => {
   const [scrolled, setScrolled] = useState(false);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const timeoutRef = useRef(null);
-  const [isLightSection, setIsLightSection] = useState(false);
-
   useEffect(() => {
     const handleScroll = () => {
       const isScrolled = window.scrollY > 10;
@@ -38,56 +37,12 @@ const Navbar = ({ industries = [] }) => {
   }, [scrolled]);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const navbarHeight = 60;
-      const checkY = navbarHeight + 1;
-      const sections = Array.from(document.querySelectorAll("[data-theme]"));
-      let foundTheme = "dark";
-      for (let section of sections) {
-        const rect = section.getBoundingClientRect();
-        if (rect.top <= checkY && rect.bottom > checkY) {
-          foundTheme = section.getAttribute("data-theme") || "dark";
-          break;
-        }
-      }
-      setNavbarTheme(foundTheme);
-    };
+    // Set up section theme detection with improved logic
+    const cleanup = setupSectionThemeDetection((newTheme) => {
+      setNavbarTheme(newTheme);
+    }, 60); // 60px navbar height
 
-    window.addEventListener("scroll", handleScroll);
-    window.addEventListener("resize", handleScroll);
-    handleScroll();
-
-    const observer = new MutationObserver((mutationsList) => {
-      let themeChanged = false;
-      for (const mutation of mutationsList) {
-        if (
-          mutation.type === "attributes" &&
-          mutation.attributeName === "data-theme"
-        ) {
-          themeChanged = true;
-          break;
-        }
-        if (mutation.type === "childList") {
-          themeChanged = true;
-          break;
-        }
-      }
-      if (themeChanged) {
-        handleScroll();
-      }
-    });
-    observer.observe(document.body, {
-      attributes: true,
-      subtree: true,
-      attributeFilter: ["data-theme"],
-      childList: true,
-    });
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleScroll);
-      observer.disconnect();
-    };
+    return cleanup;
   }, []);
   // Contact form modal functions
   const openContactModal = () => setIsContactModalOpen(true);
@@ -198,41 +153,7 @@ const Navbar = ({ industries = [] }) => {
     { title: "Retail & E-commerce", link: "/industries/retail" },
   ];
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const isScrolled = window.scrollY > 10;
-      if (isScrolled !== scrolled) {
-        setScrolled(isScrolled);
-      }
-    };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [scrolled]);
-
-  // حل scrollY + getBoundingClientRect
-  useEffect(() => {
-    const handleScroll = () => {
-      const navbar = document.querySelector("nav");
-      const navbarHeight = navbar ? navbar.offsetHeight : 0;
-      const scrollPosition = window.scrollY + navbarHeight + 1;
-      const sections = Array.from(document.querySelectorAll(".light-section"));
-      let isLight = false;
-      for (let section of sections) {
-        const rect = section.getBoundingClientRect();
-        const sectionTop = window.scrollY + rect.top;
-        const sectionBottom = sectionTop + section.offsetHeight;
-        if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
-          isLight = true;
-          break;
-        }
-      }
-      setIsLightSection(isLight);
-    };
-    window.addEventListener("scroll", handleScroll);
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   const handleMenuEnter = (dropdown) => {
     if (timeoutRef.current) {
@@ -375,10 +296,10 @@ const Navbar = ({ industries = [] }) => {
               {/* Home Link */}
               <Link
                 to="/"
-                className={`px-5 py-3 text-sm font-medium rounded-xl transition-all duration-300 border border-transparent hover:border-white/20 ${
-                  isLightSection
-                    ? "text-black hover:text-black"
-                    : "text-white/90 hover:text-white"
+                className={`px-5 py-3 text-sm font-medium rounded-xl transition-colors duration-300 border border-transparent hover:border-white/20 ${
+                  navbarTheme === "light"
+                    ? "text-[var(--color-text-dark)] hover:text-[var(--color-primary)]"
+                    : "text-[var(--color-text-light)] hover:text-[var(--color-primary-light)]"
                 }`}
               >
                 Home
@@ -391,17 +312,17 @@ const Navbar = ({ industries = [] }) => {
                 onMouseLeave={handleMenuLeave}
               >
                 <button
-                  className={`flex items-center px-5 py-3 text-sm font-medium rounded-xl transition-all duration-300 border ${
+                  className={`flex items-center px-5 py-3 text-sm font-medium rounded-xl transition-colors duration-300 border ${
                     openDropdown === "support"
                       ? `${
-                          isLightSection
-                            ? "text-black border-blue-400/20 shadow"
-                            : "text-white border-blue-400/30 shadow"
+                          navbarTheme === "light"
+                            ? "text-[var(--color-text-dark)] border-blue-400/20 shadow"
+                            : "text-[var(--color-text-light)] border-blue-400/30 shadow"
                         }`
                       : `${
-                          isLightSection
-                            ? "text-black/90 hover:text-black border-transparent hover:border-black/20"
-                            : "text-white/90 hover:text-white border-transparent hover:border-white/20"
+                          navbarTheme === "light"
+                            ? "text-[var(--color-text-dark)]/90 hover:text-[var(--color-primary)] border-transparent hover:border-black/20"
+                            : "text-[var(--color-text-light)]/90 hover:text-[var(--color-primary-light)] border-transparent hover:border-white/20"
                         }`
                   }`}
                   onClick={() => toggleDropdown("support")}
@@ -451,17 +372,17 @@ const Navbar = ({ industries = [] }) => {
                 onMouseLeave={handleMenuLeave}
               >
                 <button
-                  className={`flex items-center px-5 py-3 text-sm font-medium rounded-xl transition-all duration-300 border ${
+                  className={`flex items-center px-5 py-3 text-sm font-medium rounded-xl transition-colors duration-300 border ${
                     openDropdown === "consultation"
                       ? `${
-                          isLightSection
-                            ? "text-black border-blue-400/20 shadow"
-                            : "text-white border-blue-400/30 shadow"
+                          navbarTheme === "light"
+                            ? "text-[var(--color-text-dark)] border-blue-400/20 shadow"
+                            : "text-[var(--color-text-light)] border-blue-400/30 shadow"
                         }`
                       : `${
-                          isLightSection
-                            ? "text-black/90 hover:text-black border-transparent hover:border-black/20"
-                            : "text-white/90 hover:text-white border-transparent hover:border-white/20"
+                          navbarTheme === "light"
+                            ? "text-[var(--color-text-dark)]/90 hover:text-[var(--color-primary)] border-transparent hover:border-black/20"
+                            : "text-[var(--color-text-light)]/90 hover:text-[var(--color-primary-light)] border-transparent hover:border-white/20"
                         }`
                   }`}
                   onClick={() => toggleDropdown("consultation")}
@@ -513,17 +434,17 @@ const Navbar = ({ industries = [] }) => {
                 onMouseLeave={handleMenuLeave}
               >
                 <button
-                  className={`flex items-center px-5 py-3 text-sm font-medium rounded-xl transition-all duration-300 border ${
+                  className={`flex items-center px-5 py-3 text-sm font-medium rounded-xl transition-colors duration-300 border ${
                     openDropdown === "solutions"
                       ? `${
-                          isLightSection
-                            ? "text-black border-blue-400/20 shadow"
-                            : "text-white border-blue-400/30 shadow"
+                          navbarTheme === "light"
+                            ? "text-[var(--color-text-dark)] border-blue-400/20 shadow"
+                            : "text-[var(--color-text-light)] border-blue-400/30 shadow"
                         }`
                       : `${
-                          isLightSection
-                            ? "text-black/90 hover:text-black border-transparent hover:border-black/20"
-                            : "text-white/90 hover:text-white border-transparent hover:border-white/20"
+                          navbarTheme === "light"
+                            ? "text-[var(--color-text-dark)]/90 hover:text-[var(--color-primary)] border-transparent hover:border-black/20"
+                            : "text-[var(--color-text-light)]/90 hover:text-[var(--color-primary-light)] border-transparent hover:border-white/20"
                         }`
                   }`}
                   onClick={() => toggleDropdown("solutions")}
@@ -573,17 +494,17 @@ const Navbar = ({ industries = [] }) => {
                 onMouseLeave={handleMenuLeave}
               >
                 <button
-                  className={`flex items-center px-5 py-3 text-sm font-medium rounded-xl transition-all duration-300 border ${
+                  className={`flex items-center px-5 py-3 text-sm font-medium rounded-xl transition-colors duration-300 border ${
                     openDropdown === "industries"
                       ? `${
-                          isLightSection
-                            ? "text-black border-blue-400/20 shadow"
-                            : "text-white border-blue-400/30 shadow"
+                          navbarTheme === "light"
+                            ? "text-[var(--color-text-dark)] border-blue-400/20 shadow"
+                            : "text-[var(--color-text-light)] border-blue-400/30 shadow"
                         }`
                       : `${
-                          isLightSection
-                            ? "text-black/90 hover:text-black border-transparent hover:border-black/20"
-                            : "text-white/90 hover:text-white border-transparent hover:border-white/20"
+                          navbarTheme === "light"
+                            ? "text-[var(--color-text-dark)]/90 hover:text-[var(--color-primary)] border-transparent hover:border-black/20"
+                            : "text-[var(--color-text-light)]/90 hover:text-[var(--color-primary-light)] border-transparent hover:border-white/20"
                         }`
                   }`}
                   onClick={() => toggleDropdown("industries")}
@@ -625,10 +546,10 @@ const Navbar = ({ industries = [] }) => {
 
               <Link
                 to="/about"
-                className={`px-5 py-3 text-sm font-medium rounded-xl transition-all duration-300 border border-transparent hover:border-white/20 ${
-                  isLightSection
-                    ? "text-black hover:text-black"
-                    : "text-white/90 hover:text-white"
+                className={`px-5 py-3 text-sm font-medium rounded-xl transition-colors duration-300 border border-transparent hover:border-white/20 ${
+                  navbarTheme === "light"
+                    ? "text-[var(--color-text-dark)] hover:text-[var(--color-primary)]"
+                    : "text-[var(--color-text-light)] hover:text-[var(--color-primary-light)]"
                 }`}
               >
                 About
@@ -662,7 +583,11 @@ const Navbar = ({ industries = [] }) => {
             <div className="md:hidden flex items-center">
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="inline-flex items-center justify-center p-3 rounded-xl text-white/90 hover:text-white hover:bg-white/10 focus:outline-none border border-white/10 backdrop-blur-sm transition-all duration-300"
+                className={`inline-flex items-center justify-center p-3 rounded-xl hover:bg-white/10 focus:outline-none border border-white/10 backdrop-blur-sm transition-colors duration-300 ${
+                  navbarTheme === "light"
+                    ? "text-[var(--color-text-dark)]/90 hover:text-[var(--color-primary)]"
+                    : "text-[var(--color-text-light)]/90 hover:text-[var(--color-text-light)]"
+                }`}
               >
                 {mobileMenuOpen ? (
                   <XMarkIcon className="block h-6 w-6" />
@@ -686,7 +611,11 @@ const Navbar = ({ industries = [] }) => {
               {/* Mobile Home Link */}
               <Link
                 to="/"
-                className="block px-4 py-3 text-base font-medium text-white/90 rounded-xl hover:bg-white/10 hover:text-white border border-white/10 transition-all duration-300"
+                className={`block px-4 py-3 text-base font-medium rounded-xl hover:bg-white/10 border border-white/10 transition-colors duration-300 ${
+                  navbarTheme === "light"
+                    ? "text-[var(--color-text-dark)]/90 hover:text-[var(--color-primary)]"
+                    : "text-[var(--color-text-light)]/90 hover:text-[var(--color-text-light)]"
+                }`}
               >
                 Home
               </Link>
@@ -695,7 +624,11 @@ const Navbar = ({ industries = [] }) => {
               <div className="relative">
                 <button
                   onClick={() => toggleDropdown("mobileSupport")}
-                  className="w-full flex justify-between items-center px-4 py-3 text-base font-medium text-white/90 rounded-xl hover:bg-white/10 hover:text-white transition-all duration-300 border border-white/10"
+                  className={`w-full flex justify-between items-center px-4 py-3 text-base font-medium rounded-xl hover:bg-white/10 transition-colors duration-300 border border-white/10 ${
+                    navbarTheme === "light"
+                      ? "text-[var(--color-text-dark)]/90 hover:text-[var(--color-primary)]"
+                      : "text-[var(--color-text-light)]/90 hover:text-[var(--color-text-light)]"
+                  }`}
                 >
                   <span>Support Service</span>
                   <ChevronDownIcon className="h-4 w-4" />
@@ -723,7 +656,11 @@ const Navbar = ({ industries = [] }) => {
               <div className="relative">
                 <button
                   onClick={() => toggleDropdown("mobileConsultation")}
-                  className="w-full flex justify-between items-center px-4 py-3 text-base font-medium text-white/90 rounded-xl hover:bg-white/10 hover:text-white transition-all duration-300 border border-white/10"
+                  className={`w-full flex justify-between items-center px-4 py-3 text-base font-medium rounded-xl hover:bg-white/10 transition-colors duration-300 border border-white/10 ${
+                    navbarTheme === "light"
+                      ? "text-[var(--color-text-dark)]/90 hover:text-[var(--color-primary)]"
+                      : "text-[var(--color-text-light)]/90 hover:text-[var(--color-text-light)]"
+                  }`}
                 >
                   <span>Consultation Service</span>
                   <ChevronDownIcon className="h-4 w-4" />
@@ -751,7 +688,11 @@ const Navbar = ({ industries = [] }) => {
               <div className="relative">
                 <button
                   onClick={() => toggleDropdown("mobileSolutions")}
-                  className="w-full flex justify-between items-center px-4 py-3 text-base font-medium text-white/90 rounded-xl hover:bg-white/10 hover:text-white transition-all duration-300 border border-white/10"
+                  className={`w-full flex justify-between items-center px-4 py-3 text-base font-medium rounded-xl hover:bg-white/10 transition-colors duration-300 border border-white/10 ${
+                    navbarTheme === "light"
+                      ? "text-[var(--color-text-dark)]/90 hover:text-[var(--color-primary)]"
+                      : "text-[var(--color-text-light)]/90 hover:text-[var(--color-text-light)]"
+                  }`}
                 >
                   <span>Solutions</span>
                   <ChevronDownIcon className="h-4 w-4" />
@@ -782,7 +723,11 @@ const Navbar = ({ industries = [] }) => {
               <div className="relative">
                 <button
                   onClick={() => toggleDropdown("mobileIndustries")}
-                  className="w-full flex justify-between items-center px-4 py-3 text-base font-medium text-white/90 rounded-xl hover:bg-white/10 hover:text-white transition-all duration-300 border border-white/10"
+                  className={`w-full flex justify-between items-center px-4 py-3 text-base font-medium rounded-xl hover:bg-white/10 transition-colors duration-300 border border-white/10 ${
+                    navbarTheme === "light"
+                      ? "text-[var(--color-text-dark)]/90 hover:text-[var(--color-primary)]"
+                      : "text-[var(--color-text-light)]/90 hover:text-[var(--color-text-light)]"
+                  }`}
                 >
                   <span>Industries</span>
                   <ChevronDownIcon className="h-4 w-4" />
@@ -808,7 +753,11 @@ const Navbar = ({ industries = [] }) => {
 
               <Link
                 to="/about"
-                className="block px-4 py-3 text-base font-medium text-white/90 rounded-xl hover:bg-white/10 hover:text-white border border-white/10 transition-all duration-300"
+                className={`block px-4 py-3 text-base font-medium rounded-xl hover:bg-white/10 border border-white/10 transition-colors duration-300 ${
+                  navbarTheme === "light"
+                    ? "text-[var(--color-text-dark)]/90 hover:text-[var(--color-primary)]"
+                    : "text-[var(--color-text-light)]/90 hover:text-[var(--color-text-light)]"
+                }`}
               >
                 About
               </Link>

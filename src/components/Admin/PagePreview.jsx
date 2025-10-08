@@ -12,6 +12,7 @@ import Card, { CardContent, CardHeader, CardTitle } from "../UI/Card";
 import { getComponentPathFromId, loadComponent } from "../componentMap";
 import { normalizeProps, validateProps } from "../../utils/normalizeProps";
 import { validateVariant } from "../../utils/variantSystem";
+import { mapThemeValue } from "../../utils/sectionThemeDetection";
 
 // Default mock data for training components
 const trainingDefaultData = {
@@ -1207,9 +1208,12 @@ const PagePreview = ({
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: index * 0.1 }}
-        className="relative"
+        className={`relative ${
+          !(component.isVisible === true || component.isVisible === 1)
+            ? "opacity-75 border-2 border-dashed border-red-300"
+            : ""
+        }`}
         data-theme={component.theme === 1 ? "light" : "dark"}
-        style={{ display: (component.isVisible === true || component.isVisible === 1) ? "block" : "none" }}
       >
         {/* Component Header */}
         <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-t-lg p-3">
@@ -1225,8 +1229,10 @@ const PagePreview = ({
                 <p className="text-xs text-blue-700 dark:text-blue-300">
                   Order: {component.orderIndex} | Type:{" "}
                   {component.componentType} |
-                  {(component.isVisible === true || component.isVisible === 1) ? " 👁️ Visible" : " 🚫 Hidden"} |
-                  {component.theme === 1 ? " ☀️ Light" : " 🌙 Dark"}
+                  {component.isVisible === true || component.isVisible === 1
+                    ? " 👁️ Visible"
+                    : " 🚫 Hidden"}{" "}
+                  |{component.theme === 1 ? " ☀️ Light" : " 🌙 Dark"}
                 </p>
               </div>
             </div>
@@ -1242,45 +1248,48 @@ const PagePreview = ({
         {/* Component Content */}
         <div className="bg-white dark:bg-gray-900 border-l border-r border-b border-gray-200 dark:border-gray-700 rounded-b-lg">
           <div className="min-h-[200px]">
-            <ErrorBoundary
-              componentType={component.componentType}
-              fallback={
-                <div className="p-4 text-sm text-red-700 bg-red-50 border-t border-r border-b border-red-200 rounded-b-lg">
-                  <h3 className="font-bold mb-2">
-                    Failed to render {component.componentType}
-                  </h3>
-                  <p>Please check the component data and props.</p>
-                  <details className="mt-2">
-                    <summary className="cursor-pointer">Props Debug</summary>
-                    <pre className="text-xs bg-white p-2 rounded mt-1 overflow-auto max-h-40">
-                      {JSON.stringify(propsToPass, null, 2)}
-                    </pre>
-                  </details>
-                </div>
-              }
-            >
-              {(() => {
-                console.log(
-                  `🎭 [RENDER] About to render ${component.componentType} component`
-                );
-                console.log(`🎭 [RENDER] Component function:`, Component);
-                console.log(`🎭 [RENDER] Props being passed:`, propsToPass);
-
-                try {
-                  const renderedComponent = <Component {...propsToPass} />;
-                  console.log(
-                    `🎭 [RENDER SUCCESS] ${component.componentType} rendered successfully`
-                  );
-                  return renderedComponent;
-                } catch (renderError) {
-                  console.error(
-                    `🎭 [RENDER ERROR] Failed to render ${component.componentType}:`,
-                    renderError
-                  );
-                  throw renderError;
+            {/* Wrap component in section with theme attribute for Navbar detection */}
+            <section data-theme={mapThemeValue(component.theme)}>
+              <ErrorBoundary
+                componentType={component.componentType}
+                fallback={
+                  <div className="p-4 text-sm text-red-700 bg-red-50 border-t border-r border-b border-red-200 rounded-b-lg">
+                    <h3 className="font-bold mb-2">
+                      Failed to render {component.componentType}
+                    </h3>
+                    <p>Please check the component data and props.</p>
+                    <details className="mt-2">
+                      <summary className="cursor-pointer">Props Debug</summary>
+                      <pre className="text-xs bg-white p-2 rounded mt-1 overflow-auto max-h-40">
+                        {JSON.stringify(propsToPass, null, 2)}
+                      </pre>
+                    </details>
+                  </div>
                 }
-              })()}
-            </ErrorBoundary>
+              >
+                {(() => {
+                  console.log(
+                    `🎭 [RENDER] About to render ${component.componentType} component`
+                  );
+                  console.log(`🎭 [RENDER] Component function:`, Component);
+                  console.log(`🎭 [RENDER] Props being passed:`, propsToPass);
+
+                  try {
+                    const renderedComponent = <Component {...propsToPass} />;
+                    console.log(
+                      `🎭 [RENDER SUCCESS] ${component.componentType} rendered successfully`
+                    );
+                    return renderedComponent;
+                  } catch (renderError) {
+                    console.error(
+                      `🎭 [RENDER ERROR] Failed to render ${component.componentType}:`,
+                      renderError
+                    );
+                    throw renderError;
+                  }
+                })()}
+              </ErrorBoundary>
+            </section>
 
             {/* Enhanced Debug info for all components */}
             <div className="p-2 text-xs text-gray-500 bg-gray-50 border-t">
@@ -1481,11 +1490,16 @@ const PagePreview = ({
                     pageData.components.map((c) => c.componentType)
                   );
 
-                  return pageData.components.map((component, index) => {
+                  // In PagePreview (admin context), show all components including hidden ones
+                  // This allows admins to see and manage all components regardless of visibility
+                  const componentsToRender = pageData.components;
+                  console.log("🔧 [ADMIN PREVIEW] Showing all components including hidden ones for admin management");
+                  
+                  return componentsToRender.map((component, index) => {
                     console.log(
                       `📋 [RENDER LIST] Processing component ${index + 1}/${
-                        pageData.components.length
-                      }: ${component.componentType}`
+                        componentsToRender.length
+                      }: ${component.componentType} (isVisible: ${component.isVisible})`
                     );
                     const result = renderComponent(component, index);
                     console.log(

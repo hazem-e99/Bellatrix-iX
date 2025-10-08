@@ -18,7 +18,7 @@ import Button from "../UI/Button";
 import { Input } from "../UI/Input";
 import Card, { CardContent, CardHeader, CardTitle } from "../UI/Card";
 import Modal, { ModalFooter } from "../UI/Modal";
-import FancyToggle from "../UI/FancyToggle";
+import FancyToggle, { ComponentToggles } from "../UI/FancyToggle";
 import { validateVariant } from "../../utils/variantSystem";
 import Toast from "../UI/Toast";
 import SectionDataEditor from "./SectionDataEditor";
@@ -76,13 +76,18 @@ const EnhancedPageBuilder = () => {
       if (pageId && !isNaN(parseInt(pageId))) {
         try {
           setLoading(true);
-          console.log(`🔄 [PAGE LOAD] Loading existing page with ID: ${pageId}`);
-          
+          console.log(
+            `🔄 [PAGE LOAD] Loading existing page with ID: ${pageId}`
+          );
+
           const pageData = await pagesAPI.getPageById(pageId);
           const components = await pagesAPI.getPageComponents(pageId);
-          
-          console.log("✅ [PAGE LOAD] Loaded page data:", { pageData, components });
-          
+
+          console.log("✅ [PAGE LOAD] Loaded page data:", {
+            pageData,
+            components,
+          });
+
           setPageData({
             id: pageData.id,
             name: pageData.name || "",
@@ -92,22 +97,22 @@ const EnhancedPageBuilder = () => {
             metaDescription: pageData.metaDescription || "",
             isHomepage: pageData.isHomepage || false,
             isPublished: pageData.isPublished || false,
-            components: components?.map((component, index) => ({
-              id: component.id,
-              componentType: component.componentType || "Generic",
-              componentName: component.componentName || "Component",
-              orderIndex: component.orderIndex ?? index + 1,
-              isVisible: component.isVisible ?? true,
-              theme: component.theme ?? 1,
-              contentJson: component.contentJson || JSON.stringify({})
-            })) || []
+            components:
+              components?.map((component, index) => ({
+                id: component.id,
+                componentType: component.componentType || "Generic",
+                componentName: component.componentName || "Component",
+                orderIndex: component.orderIndex ?? index + 1,
+                isVisible: component.isVisible ?? true,
+                theme: component.theme ?? 1,
+                contentJson: component.contentJson || JSON.stringify({}),
+              })) || [],
           });
-          
+
           // Set current step to component configuration if we have data
           if (components && components.length > 0) {
             setCurrentStep(2);
           }
-          
         } catch (error) {
           console.error("❌ [PAGE LOAD] Failed to load existing page:", error);
           showToast(`Failed to load page: ${error.message}`, "error");
@@ -478,7 +483,9 @@ const EnhancedPageBuilder = () => {
       setLoading(true);
 
       // Always use schema-based default data for consistent pre-filling
-      const defaultContent = getDefaultDataForComponent(component.componentType);
+      const defaultContent = getDefaultDataForComponent(
+        component.componentType
+      );
 
       console.log(
         `🆕 [ADD COMPONENT] Adding ${component.componentType} with default data:`,
@@ -488,18 +495,30 @@ const EnhancedPageBuilder = () => {
       // If we're editing an existing page (have pageId), fetch latest components
       let nextOrderIndex;
       if (pageData.id) {
-        console.log("🔄 [ADD COMPONENT] Fetching latest components for existing page:", pageData.id);
+        console.log(
+          "🔄 [ADD COMPONENT] Fetching latest components for existing page:",
+          pageData.id
+        );
         const latestComponents = await pagesAPI.getPageComponents(pageData.id);
-        const maxOrderIndex = latestComponents.length 
-          ? Math.max(...latestComponents.map(c => c.orderIndex ?? 0))
+        const maxOrderIndex = latestComponents.length
+          ? Math.max(...latestComponents.map((c) => c.orderIndex ?? 0))
           : -1;
         nextOrderIndex = maxOrderIndex + 1;
-        
-        console.log("🆕 [ADD COMPONENT] Calculated nextOrderIndex:", nextOrderIndex, "from", latestComponents.length, "existing components");
+
+        console.log(
+          "🆕 [ADD COMPONENT] Calculated nextOrderIndex:",
+          nextOrderIndex,
+          "from",
+          latestComponents.length,
+          "existing components"
+        );
       } else {
         // For new pages, use local component count
         nextOrderIndex = pageData.components.length + 1;
-        console.log("🆕 [ADD COMPONENT] Using local nextOrderIndex for new page:", nextOrderIndex);
+        console.log(
+          "🆕 [ADD COMPONENT] Using local nextOrderIndex for new page:",
+          nextOrderIndex
+        );
       }
 
       const newComponent = {
@@ -536,24 +555,34 @@ const EnhancedPageBuilder = () => {
               theme: newComponent.theme,
             };
 
-            console.log(`🚀 [ADD COMPONENT] Attempt ${attempt + 1}/${MAX_RETRIES} with payload:`, payload);
+            console.log(
+              `🚀 [ADD COMPONENT] Attempt ${
+                attempt + 1
+              }/${MAX_RETRIES} with payload:`,
+              payload
+            );
 
             created = await pagesAPI.createPageComponent(pageData.id, payload);
-            
+
             // Replace temp component with real component
             setPageData((prev) => ({
               ...prev,
-              components: prev.components.map(comp => 
+              components: prev.components.map((comp) =>
                 comp.id === tempId ? created : comp
               ),
             }));
 
-            console.log("✅ [ADD COMPONENT] Successfully created component:", created);
-
+            console.log(
+              "✅ [ADD COMPONENT] Successfully created component:",
+              created
+            );
           } catch (err) {
-            const errorMessage = err.response?.data?.message || err.message || JSON.stringify(err.response?.data);
-            const isDuplicateKey = 
-              errorMessage?.includes("IX_PageComponents_PageId_OrderIndex") || 
+            const errorMessage =
+              err.response?.data?.message ||
+              err.message ||
+              JSON.stringify(err.response?.data);
+            const isDuplicateKey =
+              errorMessage?.includes("IX_PageComponents_PageId_OrderIndex") ||
               errorMessage?.includes("duplicate key") ||
               err.response?.data?.errorCode === 2601;
 
@@ -561,20 +590,27 @@ const EnhancedPageBuilder = () => {
               error: errorMessage,
               isDuplicateKey,
               nextOrderIndex,
-              response: err.response?.data
+              response: err.response?.data,
             });
 
             if (isDuplicateKey && attempt < MAX_RETRIES - 1) {
-              console.warn("🔄 [RETRY] Duplicate order index detected, refetching components...");
-              
+              console.warn(
+                "🔄 [RETRY] Duplicate order index detected, refetching components..."
+              );
+
               // Refetch latest components and recalculate order index
-              const refreshedComponents = await pagesAPI.getPageComponents(pageData.id);
-              const refreshedMax = refreshedComponents.length 
-                ? Math.max(...refreshedComponents.map(c => c.orderIndex ?? 0))
+              const refreshedComponents = await pagesAPI.getPageComponents(
+                pageData.id
+              );
+              const refreshedMax = refreshedComponents.length
+                ? Math.max(...refreshedComponents.map((c) => c.orderIndex ?? 0))
                 : -1;
               nextOrderIndex = refreshedMax + 1;
-              
-              console.log("🔄 [RETRY] Recalculated nextOrderIndex:", nextOrderIndex);
+
+              console.log(
+                "🔄 [RETRY] Recalculated nextOrderIndex:",
+                nextOrderIndex
+              );
               attempt++;
               continue;
             } else {
@@ -587,10 +623,13 @@ const EnhancedPageBuilder = () => {
           // Remove temp component if all retries failed
           setPageData((prev) => ({
             ...prev,
-            components: prev.components.filter(comp => comp.id !== tempId),
+            components: prev.components.filter((comp) => comp.id !== tempId),
           }));
-          
-          showToast("Unable to add component after multiple attempts. Please try again.", "error");
+
+          showToast(
+            "Unable to add component after multiple attempts. Please try again.",
+            "error"
+          );
           return;
         }
       }
@@ -600,14 +639,13 @@ const EnhancedPageBuilder = () => {
           " added to page",
         "success"
       );
-
     } catch (error) {
       console.error("❌ [ADD COMPONENT] Final error:", error);
-      
+
       // Remove temp component on error
       setPageData((prev) => ({
         ...prev,
-        components: prev.components.filter(comp => comp.id !== tempId),
+        components: prev.components.filter((comp) => comp.id !== tempId),
       }));
 
       const errorMessage = error.response?.data?.message || error.message;
@@ -883,12 +921,18 @@ const EnhancedPageBuilder = () => {
           pageId: pageData.id, // Include the page ID from state
           componentType: component.componentType,
           componentName: component.componentName || "",
-          contentJson: field === "contentJson" ? value : (component.contentJson || JSON.stringify({})),
-          orderIndex: component.orderIndex !== undefined ? component.orderIndex : index,
+          contentJson:
+            field === "contentJson"
+              ? value
+              : component.contentJson || JSON.stringify({}),
+          orderIndex:
+            component.orderIndex !== undefined ? component.orderIndex : index,
           isVisible:
             field === "isVisible"
               ? Boolean(value)
-              : Boolean(component.isVisible === true || component.isVisible === 1),
+              : Boolean(
+                  component.isVisible === true || component.isVisible === 1
+                ),
           theme:
             field === "theme"
               ? value === 1
@@ -932,7 +976,7 @@ const EnhancedPageBuilder = () => {
             setPageData((prevData) => {
               const revertedComponents = [...prevData.components];
               const originalComponent = component; // Store the original component state before update
-              
+
               if (field === "isVisible") {
                 revertedComponents[index] = {
                   ...revertedComponents[index],
@@ -2376,7 +2420,7 @@ const EnhancedPageBuilder = () => {
     const componentIndex = editingComponent.index;
     const updatedComponents = [...pageData.components];
     const currentComponent = updatedComponents[componentIndex];
-    
+
     // Update the component with new content data
     updatedComponents[componentIndex] = {
       ...currentComponent,
@@ -2398,25 +2442,40 @@ const EnhancedPageBuilder = () => {
         componentType: currentComponent.componentType,
         componentName: currentComponent.componentName || "",
         contentJson: JSON.stringify(updatedData, null, 2),
-        orderIndex: currentComponent.orderIndex !== undefined ? currentComponent.orderIndex : componentIndex,
-        isVisible: Boolean(currentComponent.isVisible === true || currentComponent.isVisible === 1),
+        orderIndex:
+          currentComponent.orderIndex !== undefined
+            ? currentComponent.orderIndex
+            : componentIndex,
+        isVisible: Boolean(
+          currentComponent.isVisible === true ||
+            currentComponent.isVisible === 1
+        ),
         theme: currentComponent.theme === 1 ? 1 : 2,
       };
 
       console.log(
         `🔄 [EDIT SAVE] Updating component ${currentComponent.id} with edited data:`,
-        { componentId: currentComponent.id, updateData, originalData: updatedData }
+        {
+          componentId: currentComponent.id,
+          updateData,
+          originalData: updatedData,
+        }
       );
 
       // Make async API call
       pagesAPI
         .updatePageComponent(currentComponent.id, updateData)
         .then(() => {
-          console.log(`✅ [EDIT SAVE] Component ${currentComponent.id} updated successfully`);
+          console.log(
+            `✅ [EDIT SAVE] Component ${currentComponent.id} updated successfully`
+          );
           showToast("Section data saved successfully", "success");
         })
         .catch((error) => {
-          console.error(`❌ [EDIT SAVE] Failed to update component ${currentComponent.id}:`, error);
+          console.error(
+            `❌ [EDIT SAVE] Failed to update component ${currentComponent.id}:`,
+            error
+          );
           showToast(`Failed to save section data: ${error.message}`, "error");
 
           // Revert the local changes on API failure
@@ -2440,7 +2499,10 @@ const EnhancedPageBuilder = () => {
             : "No page ID available",
         }
       );
-      showToast("Section data updated locally (will be saved when page is published)", "info");
+      showToast(
+        "Section data updated locally (will be saved when page is published)",
+        "info"
+      );
     }
 
     setShowSectionEditor(false);
@@ -3130,6 +3192,7 @@ const SectionsStep = ({
 }) => {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
+  const [isEditMode, setIsEditMode] = useState(true);
 
   // Dynamic category generation based on available components
   const categories = React.useMemo(() => {
@@ -3469,6 +3532,18 @@ const SectionsStep = ({
               <Button
                 size="sm"
                 variant="outline"
+                onClick={() => setIsEditMode(!isEditMode)}
+                className={`backdrop-blur-sm transition-all duration-200 mr-2 ${
+                  isEditMode
+                    ? "bg-blue-500/20 border-blue-400 text-blue-300 hover:bg-blue-500/30"
+                    : "bg-gray-500/20 border-gray-400 text-gray-300 hover:bg-gray-500/30"
+                }`}
+              >
+                {isEditMode ? "👁️ View Mode" : "✏️ Edit Mode"}
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
                 onClick={() =>
                   onAddComponent({
                     componentType: "Generic",
@@ -3501,275 +3576,258 @@ const SectionsStep = ({
             </div>
           ) : (
             <div className="flex-1 overflow-y-auto space-y-6 pr-2 scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent hover:scrollbar-thumb-white/30">
-              {pageData.components.map((component, index) => (
-                <div
-                  key={index}
-                  className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20"
-                >
-                  {/* Component Header */}
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center space-x-3">
-                      <div className="text-xl">
-                        {availableComponents.find(
-                          (c) => c.componentType === component.componentType
-                        )?.icon || "📄"}
-                      </div>
-                      <h4 className="text-lg font-semibold text-white">
-                        Component #{index + 1}
-                      </h4>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => onDuplicateComponent(index)}
-                        className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-green-500/20 hover:border-green-400 transition-all duration-200"
-                      >
-                        <DocumentDuplicateIcon className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => onRemoveComponent(index)}
-                        className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-red-500/20 hover:border-red-400 transition-all duration-200"
-                      >
-                        <TrashIcon className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
+              {pageData.components.map((component, index) => {
+                // Determine visibility
+                const isVisible =
+                  component.isVisible === true || component.isVisible === 1;
+                const themeClass = component.theme === 1 ? "light" : "dark";
 
-                  {/* Component Form Fields */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {/* Component Type */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-2">
-                        Component Type
-                      </label>
-                      <input
-                        type="text"
-                        value={component.componentType || ""}
-                        onChange={(e) =>
-                          handleComponentUpdate(
-                            index,
-                            "componentType",
-                            e.target.value
-                          )
-                        }
-                        placeholder="e.g., HeroSection, CtaButton"
-                        className="block w-full rounded-lg bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder-white/50 focus:border-blue-400 focus:ring-blue-400/20 shadow-sm"
-                      />
-                    </div>
-
-                    {/* Component Name */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-2">
-                        Component Name
-                      </label>
-                      <input
-                        type="text"
-                        value={component.componentName || ""}
-                        onChange={(e) =>
-                          handleComponentUpdate(
-                            index,
-                            "componentName",
-                            e.target.value
-                          )
-                        }
-                        placeholder="e.g., Main Hero, Footer CTA"
-                        className="block w-full rounded-lg bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder-white/50 focus:border-blue-400 focus:ring-blue-400/20 shadow-sm"
-                      />
-                    </div>
-
-                    {/* Order Index */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-2">
-                        Order Index
-                      </label>
-                      <input
-                        type="number"
-                        min="0"
-                        value={component.orderIndex ?? ""}
-                        onChange={(e) =>
-                          handleComponentUpdate(
-                            index,
-                            "orderIndex",
-                            e.target.value
-                          )
-                        }
-                        placeholder="Auto-generated if empty"
-                        className="block w-full rounded-lg bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder-white/50 focus:border-blue-400 focus:ring-blue-400/20 shadow-sm"
-                      />
-                      <p className="text-xs text-gray-400 mt-1">
-                        Leave empty for auto-increment ({index})
-                      </p>
-                    </div>
-
-                    {/* Visibility Toggle */}
-                    <div className="p-3 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-200">
+                return (
+                  <div
+                    key={index}
+                    className={`bg-white/10 backdrop-blur-sm rounded-xl p-6 border transition-all duration-500 ${
+                      !isVisible
+                        ? "border-red-400/40 bg-red-500/5 opacity-60 scale-95"
+                        : component.theme === 1
+                        ? "border-yellow-400/30 bg-yellow-500/5 border-white/20"
+                        : "border-purple-400/30 bg-purple-500/5 border-white/20"
+                    }`}
+                    style={{
+                      display: isVisible ? "block" : "none",
+                    }}
+                    data-theme={themeClass}
+                    data-component-visible={isVisible}
+                  >
+                    {/* Component Header */}
+                    <div className="flex items-center justify-between mb-6">
                       <div className="flex items-center space-x-3">
-                        <div className="text-2xl">
-                          {(component.isVisible === true || component.isVisible === 1) ? "👁️" : "🚫"}
+                        <div className="text-xl">
+                          {availableComponents.find(
+                            (c) => c.componentType === component.componentType
+                          )?.icon || "📄"}
                         </div>
-                        <div className="flex-1">
-                          <FancyToggle
-                            label="Component Visible"
-                            checked={component.isVisible === true || component.isVisible === 1}
-                            onChange={(val) =>
-                              handleComponentUpdate(
-                                index,
-                                "isVisible",
-                                val
-                              )
-                            }
-                            gradient="green"
-                            description={
-                              (component.isVisible === true || component.isVisible === 1)
-                                ? "👁️ Component is visible on page"
-                                : "🚫 Component is hidden from page"
-                            }
-                            size="normal"
-                          />
-                        </div>
+                        <h4 className="text-lg font-semibold text-white">
+                          Component #{index + 1}
+                        </h4>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => onDuplicateComponent(index)}
+                          className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-green-500/20 hover:border-green-400 transition-all duration-200"
+                        >
+                          <DocumentDuplicateIcon className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => onRemoveComponent(index)}
+                          className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-red-500/20 hover:border-red-400 transition-all duration-200"
+                        >
+                          <TrashIcon className="h-4 w-4" />
+                        </Button>
                       </div>
                     </div>
 
-                    {/* Theme Toggle */}
-                    <div className="p-3 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-200">
-                      <div className="flex items-center space-x-3">
-                        <div className="text-2xl animate-pulse">
-                          {component.theme === 1 ? "🌞" : "🌙"}
-                        </div>
-                        <div className="flex-1">
-                          <FancyToggle
-                            label="Theme Mode"
-                            checked={component.theme === 1}
-                            onChange={(val) =>
-                              handleComponentUpdate(index, "theme", val ? 1 : 2)
-                            }
-                            gradient="blue"
-                            description={
-                              component.theme === 1
-                                ? "🌞 Light theme active"
-                                : "🌙 Dark theme active"
-                            }
-                            size="normal"
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Content Configuration - Full Width */}
-                    <div className="md:col-span-2 lg:col-span-4">
-                      <div className="flex items-center justify-between mb-3">
-                        <label className="block text-sm font-medium text-gray-300">
-                          Content Configuration
+                    {/* Component Form Fields */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                      {/* Component Type */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                          Component Type
                         </label>
-                        <div className="flex bg-white/10 rounded-lg p-1">
-                          <button
-                            type="button"
-                            onClick={() => {
-                              if (!component.viewMode) {
-                                handleComponentUpdate(
-                                  index,
-                                  "viewMode",
-                                  "form"
-                                );
-                              } else if (component.viewMode === "json") {
-                                handleComponentUpdate(
-                                  index,
-                                  "viewMode",
-                                  "form"
-                                );
-                              }
-                            }}
-                            className={`px-3 py-1 text-xs rounded-md transition-all ${
-                              !component.viewMode ||
-                              component.viewMode === "form"
-                                ? "bg-blue-500 text-white"
-                                : "text-gray-400 hover:text-white"
-                            }`}
-                          >
-                            Form View
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() =>
-                              handleComponentUpdate(index, "viewMode", "json")
-                            }
-                            className={`px-3 py-1 text-xs rounded-md transition-all ${
-                              component.viewMode === "json"
-                                ? "bg-blue-500 text-white"
-                                : "text-gray-400 hover:text-white"
-                            }`}
-                          >
-                            JSON View
-                          </button>
-                        </div>
+                        <input
+                          type="text"
+                          value={component.componentType || ""}
+                          onChange={(e) =>
+                            handleComponentUpdate(
+                              index,
+                              "componentType",
+                              e.target.value
+                            )
+                          }
+                          placeholder="e.g., HeroSection, CtaButton"
+                          className="block w-full rounded-lg bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder-white/50 focus:border-blue-400 focus:ring-blue-400/20 shadow-sm"
+                        />
                       </div>
 
-                      {/* Dynamic Form View */}
-                      {(!component.viewMode ||
-                        component.viewMode === "form") && (
-                        <div className="bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 p-4">
-                          <DynamicContentForm
-                            contentJson={component.contentJson || "{}"}
-                            componentType={component.componentType}
-                            onChange={(jsonString) =>
-                              handleComponentUpdate(
-                                index,
-                                "contentJson",
-                                jsonString
-                              )
-                            }
-                            className="text-white [&_label]:text-gray-300 [&_input]:bg-white/10 [&_input]:border-white/20 [&_input]:text-white [&_input::placeholder]:text-white/50 [&_input:focus]:border-blue-400 [&_button]:bg-white/10 [&_button]:border-white/20 [&_button]:text-white [&_button:hover]:bg-white/20"
-                          />
-                        </div>
-                      )}
+                      {/* Component Name */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                          Component Name
+                        </label>
+                        <input
+                          type="text"
+                          value={component.componentName || ""}
+                          onChange={(e) =>
+                            handleComponentUpdate(
+                              index,
+                              "componentName",
+                              e.target.value
+                            )
+                          }
+                          placeholder="e.g., Main Hero, Footer CTA"
+                          className="block w-full rounded-lg bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder-white/50 focus:border-blue-400 focus:ring-blue-400/20 shadow-sm"
+                        />
+                      </div>
 
-                      {/* Raw JSON View */}
-                      {component.viewMode === "json" && (
-                        <>
-                          <textarea
-                            rows={6}
-                            value={component.contentJson || "{}"}
-                            onChange={(e) =>
-                              handleComponentUpdate(
-                                index,
-                                "contentJson",
-                                e.target.value
-                              )
-                            }
-                            placeholder='{"title": "Example Title", "description": "Example Description"}'
-                            className="block w-full rounded-lg bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder-white/50 focus:border-blue-400 focus:ring-blue-400/20 shadow-sm font-mono text-sm resize-none"
-                          />
-                          <div className="flex items-center justify-between mt-2">
-                            <p className="text-xs text-gray-400">
-                              Enter valid JSON data for this component
-                            </p>
-                            <Button
-                              size="sm"
-                              variant="outline"
+                      {/* Order Index */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                          Order Index
+                        </label>
+                        <input
+                          type="number"
+                          min="0"
+                          value={component.orderIndex ?? ""}
+                          onChange={(e) =>
+                            handleComponentUpdate(
+                              index,
+                              "orderIndex",
+                              e.target.value
+                            )
+                          }
+                          placeholder="Auto-generated if empty"
+                          className="block w-full rounded-lg bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder-white/50 focus:border-blue-400 focus:ring-blue-400/20 shadow-sm"
+                        />
+                        <p className="text-xs text-gray-400 mt-1">
+                          Leave empty for auto-increment ({index})
+                        </p>
+                      </div>
+
+                      {/* Component Toggles */}
+                      <div className="md:col-span-2 p-4 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-200">
+                        <ComponentToggles
+                          isVisible={
+                            component.isVisible === true ||
+                            component.isVisible === 1
+                          }
+                          theme={component.theme || 1}
+                          onVisibilityChange={(val) =>
+                            handleComponentUpdate(index, "isVisible", val)
+                          }
+                          onThemeChange={(val) =>
+                            handleComponentUpdate(index, "theme", val)
+                          }
+                          size="normal"
+                          layout="horizontal"
+                        />
+                      </div>
+
+                      {/* Content Configuration - Full Width */}
+                      <div className="col-span-full">
+                        <div className="flex items-center justify-between mb-3">
+                          <label className="block text-sm font-medium text-gray-300">
+                            Content Configuration
+                          </label>
+                          <div className="flex bg-white/10 rounded-lg p-1">
+                            <button
+                              type="button"
                               onClick={() => {
-                                const formatted = validateAndFormatJSON(
-                                  component.contentJson || "{}"
-                                );
+                                if (!component.viewMode) {
+                                  handleComponentUpdate(
+                                    index,
+                                    "viewMode",
+                                    "form"
+                                  );
+                                } else if (component.viewMode === "json") {
+                                  handleComponentUpdate(
+                                    index,
+                                    "viewMode",
+                                    "form"
+                                  );
+                                }
+                              }}
+                              className={`px-3 py-1 text-xs rounded-md transition-all ${
+                                !component.viewMode ||
+                                component.viewMode === "form"
+                                  ? "bg-blue-500 text-white"
+                                  : "text-gray-400 hover:text-white"
+                              }`}
+                            >
+                              Form View
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() =>
+                                handleComponentUpdate(index, "viewMode", "json")
+                              }
+                              className={`px-3 py-1 text-xs rounded-md transition-all ${
+                                component.viewMode === "json"
+                                  ? "bg-blue-500 text-white"
+                                  : "text-gray-400 hover:text-white"
+                              }`}
+                            >
+                              JSON View
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Dynamic Form View */}
+                        {(!component.viewMode ||
+                          component.viewMode === "form") && (
+                          <div className="bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 p-4">
+                            <DynamicContentForm
+                              contentJson={component.contentJson || "{}"}
+                              componentType={component.componentType}
+                              onChange={(jsonString) =>
                                 handleComponentUpdate(
                                   index,
                                   "contentJson",
-                                  formatted
-                                );
-                              }}
-                              className="bg-white/5 backdrop-blur-sm border-white/20 text-white hover:bg-blue-500/20 hover:border-blue-400 transition-all duration-200 text-xs px-2 py-1"
-                            >
-                              Format JSON
-                            </Button>
+                                  jsonString
+                                )
+                              }
+                              className="text-white [&_label]:text-gray-300 [&_input]:bg-white/10 [&_input]:border-white/20 [&_input]:text-white [&_input::placeholder]:text-white/50 [&_input:focus]:border-blue-400 [&_button]:bg-white/10 [&_button]:border-white/20 [&_button]:text-white [&_button:hover]:bg-white/20"
+                            />
                           </div>
-                        </>
-                      )}
+                        )}
+
+                        {/* Raw JSON View */}
+                        {component.viewMode === "json" && (
+                          <>
+                            <textarea
+                              rows={6}
+                              value={component.contentJson || "{}"}
+                              onChange={(e) =>
+                                handleComponentUpdate(
+                                  index,
+                                  "contentJson",
+                                  e.target.value
+                                )
+                              }
+                              placeholder='{"title": "Example Title", "description": "Example Description"}'
+                              className="block w-full rounded-lg bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder-white/50 focus:border-blue-400 focus:ring-blue-400/20 shadow-sm font-mono text-sm resize-none"
+                            />
+                            <div className="flex items-center justify-between mt-2">
+                              <p className="text-xs text-gray-400">
+                                Enter valid JSON data for this component
+                              </p>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => {
+                                  const formatted = validateAndFormatJSON(
+                                    component.contentJson || "{}"
+                                  );
+                                  handleComponentUpdate(
+                                    index,
+                                    "contentJson",
+                                    formatted
+                                  );
+                                }}
+                                className="bg-white/5 backdrop-blur-sm border-white/20 text-white hover:bg-blue-500/20 hover:border-blue-400 transition-all duration-200 text-xs px-2 py-1"
+                              >
+                                Format JSON
+                              </Button>
+                            </div>
+                          </>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </CardContent>
@@ -3780,6 +3838,7 @@ const SectionsStep = ({
 
 // Step 3: Review
 const ReviewStep = ({ pageData }) => {
+  const [isEditMode, setIsEditMode] = useState(true);
   const [availableComponents] = useState([
     { componentType: "HeroSection", icon: "🎯" },
     { componentType: "HRHeroSection", icon: "👥" },
@@ -3793,6 +3852,22 @@ const ReviewStep = ({ pageData }) => {
     { componentType: "AboutMissionSection", icon: "🎯" },
     { componentType: "AboutTeamSection", icon: "👥" },
   ]);
+
+  // Helper function to filter components based on mode and visibility
+  const getVisibleComponents = (components, isEditing = isEditMode) => {
+    if (!Array.isArray(components)) return [];
+
+    return components.filter((component) => {
+      // In edit mode, show all components
+      if (isEditing) {
+        return true;
+      }
+
+      // In view mode, only show visible components
+      // Handle both boolean and integer values for isVisible
+      return component.isVisible === true || component.isVisible === 1;
+    });
+  };
 
   const getComponentIcon = (componentType) => {
     return (
@@ -3863,9 +3938,27 @@ const ReviewStep = ({ pageData }) => {
       {/* Components Summary */}
       <Card className="bg-white/5 backdrop-blur-sm border border-white/10 shadow-xl">
         <CardHeader>
-          <CardTitle className="text-white text-xl font-bold">
-            Components ({pageData.components.length})
-          </CardTitle>
+          <div className="flex justify-between items-center">
+            <CardTitle className="text-white text-xl font-bold">
+              Components ({getVisibleComponents(pageData.components).length}
+              {!isEditMode &&
+              pageData.components.length >
+                getVisibleComponents(pageData.components).length
+                ? ` of ${pageData.components.length}`
+                : ""}
+              )
+            </CardTitle>
+            <button
+              onClick={() => setIsEditMode(!isEditMode)}
+              className={`px-3 py-1 rounded text-sm transition-all duration-200 ${
+                isEditMode
+                  ? "bg-blue-500/20 text-blue-300 border border-blue-400 hover:bg-blue-500/30"
+                  : "bg-gray-500/20 text-gray-300 border border-gray-400 hover:bg-gray-500/30"
+              }`}
+            >
+              {isEditMode ? "👁️ View Mode" : "✏️ Edit Mode"}
+            </button>
+          </div>
         </CardHeader>
         <CardContent>
           {pageData.components.length === 0 ? (
@@ -3877,27 +3970,43 @@ const ReviewStep = ({ pageData }) => {
             </div>
           ) : (
             <div className="space-y-3">
-              {pageData.components.map((component, index) => (
-                <div
-                  key={index}
-                  className="flex items-center space-x-3 p-3 bg-white/5 rounded-lg border border-white/10"
-                >
-                  <div className="text-xl">
-                    {getComponentIcon(component.componentType)}
+              {pageData.components.map((component, index) => {
+                const isVisible =
+                  component.isVisible === true || component.isVisible === 1;
+                const themeClass = component.theme === 1 ? "light" : "dark";
+
+                return (
+                  <div
+                    key={index}
+                    className={`flex items-center space-x-3 p-3 rounded-lg border transition-all duration-300 ${
+                      !isVisible
+                        ? "bg-red-500/10 border-red-400/30 opacity-60"
+                        : component.theme === 1
+                        ? "bg-yellow-500/10 border-yellow-400/30"
+                        : "bg-purple-500/10 border-purple-400/30"
+                    }`}
+                    style={{
+                      display: isVisible ? "flex" : "none",
+                    }}
+                    data-theme={themeClass}
+                  >
+                    <div className="text-xl">
+                      {getComponentIcon(component.componentType)}
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="text-white font-medium">
+                        {component.componentName}
+                      </h4>
+                      <p className="text-gray-400 text-sm">
+                        {component.componentType}
+                      </p>
+                    </div>
+                    <div className="text-gray-400 text-sm">
+                      Order: {component.orderIndex}
+                    </div>
                   </div>
-                  <div className="flex-1">
-                    <h4 className="text-white font-medium">
-                      {component.componentName}
-                    </h4>
-                    <p className="text-gray-400 text-sm">
-                      {component.componentType}
-                    </p>
-                  </div>
-                  <div className="text-gray-400 text-sm">
-                    Order: {component.orderIndex}
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </CardContent>

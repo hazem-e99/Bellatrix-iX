@@ -99,7 +99,12 @@ const FancyToggle = ({
                 className="absolute inset-0 rounded-full"
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1.4, opacity: [0, 0.5, 0] }}
-                transition={{ duration: 0.8, ease: "easeOut", repeat: Infinity, repeatDelay: 2 }}
+                transition={{
+                  duration: 0.8,
+                  ease: "easeOut",
+                  repeat: Infinity,
+                  repeatDelay: 2,
+                }}
                 style={{
                   background:
                     gradient === "purple"
@@ -159,6 +164,173 @@ const FancyToggle = ({
           {description}
         </motion.p>
       )}
+    </div>
+  );
+};
+
+// Modern visibility toggle with smooth animations and glow effects
+export const VisibilityToggle = ({
+  isVisible,
+  onChange,
+  disabled = false,
+  size = "normal",
+  className = "",
+}) => {
+  return (
+    <div className={`flex flex-col items-center space-y-2 ${className}`}>
+      {/* Toggle Switch */}
+      <div className="flex items-center space-x-3">
+        <span
+          className={`text-lg transition-all duration-300 ${
+            !isVisible ? "opacity-100 scale-110" : "opacity-50 scale-95"
+          }`}
+        >
+          ❌
+        </span>
+        <div className="relative">
+          <FancyToggle
+            checked={isVisible}
+            onChange={onChange}
+            disabled={disabled}
+            size={size}
+            gradient={isVisible ? "green" : "red"}
+            className="min-w-0"
+          />
+          {/* Glow effect when visible */}
+          {isVisible && (
+            <div className="absolute inset-0 bg-green-400 rounded-full blur-md opacity-30 animate-pulse pointer-events-none"></div>
+          )}
+        </div>
+        <span
+          className={`text-lg transition-all duration-300 ${
+            isVisible ? "opacity-100 scale-110" : "opacity-50 scale-95"
+          }`}
+        >
+          👁️
+        </span>
+      </div>
+
+      {/* Status Label */}
+      <div
+        className={`text-xs font-medium transition-all duration-300 ${
+          isVisible
+            ? "text-green-400 drop-shadow-sm"
+            : "text-red-400 drop-shadow-sm"
+        }`}
+      >
+        {isVisible ? "👁️ Visible" : "❌ Hidden"}
+      </div>
+    </div>
+  );
+};
+
+// Modern theme toggle with sun/moon icons and dynamic glow effects
+export const ThemeToggle = ({
+  theme,
+  onChange,
+  disabled = false,
+  size = "normal",
+  className = "",
+}) => {
+  const isLight = theme === 1;
+
+  return (
+    <div className={`flex flex-col items-center space-y-2 ${className}`}>
+      {/* Toggle Switch */}
+      <div className="flex items-center space-x-3">
+        <span
+          className={`text-lg transition-all duration-500 transform ${
+            !isLight
+              ? "opacity-100 scale-110 text-blue-300 drop-shadow-lg"
+              : "opacity-50 scale-95 text-gray-400"
+          }`}
+        >
+          🌙
+        </span>
+        <div className="relative">
+          <FancyToggle
+            checked={isLight}
+            onChange={() => onChange(isLight ? 2 : 1)}
+            disabled={disabled}
+            size={size}
+            gradient={isLight ? "blue" : "purple"}
+            className="min-w-0"
+          />
+          {/* Dynamic glow effect */}
+          {isLight ? (
+            <div className="absolute inset-0 bg-yellow-300 rounded-full blur-lg opacity-20 animate-pulse pointer-events-none"></div>
+          ) : (
+            <div className="absolute inset-0 bg-purple-500 rounded-full blur-md opacity-25 animate-pulse pointer-events-none"></div>
+          )}
+        </div>
+        <span
+          className={`text-lg transition-all duration-500 transform ${
+            isLight
+              ? "opacity-100 scale-110 text-yellow-300 drop-shadow-lg"
+              : "opacity-50 scale-95 text-gray-400"
+          }`}
+        >
+          🌞
+        </span>
+      </div>
+
+      {/* Theme Label */}
+      <div
+        className={`text-xs font-medium transition-all duration-300 ${
+          isLight
+            ? "text-yellow-400 drop-shadow-sm"
+            : "text-purple-400 drop-shadow-sm"
+        }`}
+      >
+        {isLight ? "🌞 Light" : "🌙 Dark"}
+      </div>
+    </div>
+  );
+};
+
+// Combined component for both toggles with enhanced layout
+export const ComponentToggles = ({
+  isVisible,
+  theme,
+  onVisibilityChange,
+  onThemeChange,
+  disabled = false,
+  size = "normal",
+  layout = "horizontal", // "horizontal" or "vertical"
+  className = "",
+}) => {
+  const containerClass =
+    layout === "horizontal"
+      ? "flex items-start justify-center space-x-8"
+      : "flex flex-col space-y-6";
+
+  return (
+    <div className={`${containerClass} ${className}`}>
+      {/* Visibility Section */}
+      <div className="flex flex-col items-center space-y-2">
+        <label className="text-xs font-semibold text-gray-300 uppercase tracking-wider">
+          Visibility
+        </label>
+        <VisibilityToggle
+          isVisible={isVisible}
+          onChange={onVisibilityChange}
+          disabled={disabled}
+          size={size}
+        />
+      </div>
+
+      {/* Theme Section */}
+      <div className="flex flex-col items-center space-y-2">
+        <label className="text-xs font-semibold text-gray-300 uppercase tracking-wider">
+          Theme Mode
+        </label>
+        <ThemeToggle
+          theme={theme}
+          onChange={onThemeChange}
+          disabled={disabled}
+          size={size}
+        />
+      </div>
     </div>
   );
 };

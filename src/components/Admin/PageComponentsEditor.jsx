@@ -62,14 +62,13 @@ const PageComponentsEditor = ({
   );
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingComponent, setEditingComponent] = useState(null);
-  const [errors, setErrors] = useState({});
 
   // Load components and available components on mount
   useEffect(() => {
     console.log("PageComponentsEditor mounted with pageId:", pageId);
     loadComponents();
     loadAvailableComponents();
-  }, [pageId]);
+  }, [pageId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Add validation for component IDs
   useEffect(() => {
@@ -416,7 +415,8 @@ const PageComponentsEditor = ({
           componentName: component.componentName,
           contentJson: component.contentJson,
           orderIndex: change.to,
-          isVisible: component.isVisible !== undefined ? component.isVisible : true,
+          isVisible:
+            component.isVisible !== undefined ? component.isVisible : true,
           theme: component.theme !== undefined ? component.theme : 1,
         });
       }
@@ -487,21 +487,30 @@ const PageComponentsEditor = ({
   const handleAddComponent = async (componentData) => {
     const MAX_RETRIES = 3;
     const tempId = `temp-${Date.now()}`;
-    
+
     try {
       setSaving(true);
 
       // Always fetch the latest components to avoid stale data
-      console.log("🔄 [ADD COMPONENT] Fetching latest components for page:", pageId);
+      console.log(
+        "🔄 [ADD COMPONENT] Fetching latest components for page:",
+        pageId
+      );
       const latestComponents = await pagesAPI.getPageComponents(pageId);
-      
+
       // Calculate safe next order index
-      const maxOrderIndex = latestComponents.length 
-        ? Math.max(...latestComponents.map(c => c.orderIndex ?? 0))
+      const maxOrderIndex = latestComponents.length
+        ? Math.max(...latestComponents.map((c) => c.orderIndex ?? 0))
         : -1;
       let nextOrderIndex = maxOrderIndex + 1;
 
-      console.log("🆕 [ADD COMPONENT] Calculated nextOrderIndex:", nextOrderIndex, "from", latestComponents.length, "existing components");
+      console.log(
+        "🆕 [ADD COMPONENT] Calculated nextOrderIndex:",
+        nextOrderIndex,
+        "from",
+        latestComponents.length,
+        "existing components"
+      );
 
       // Create optimistic UI item
       const optimisticItem = {
@@ -509,7 +518,9 @@ const PageComponentsEditor = ({
         pageId: parseInt(pageId),
         componentType: componentData.componentType || "Generic",
         componentName: componentData.componentName || "New Component",
-        contentJson: componentData.contentJson || JSON.stringify({ title: "", content: "" }),
+        contentJson:
+          componentData.contentJson ||
+          JSON.stringify({ title: "", content: "" }),
         orderIndex: nextOrderIndex,
         isVisible: componentData.isVisible ?? true,
         theme: componentData.theme ?? 1,
@@ -519,7 +530,7 @@ const PageComponentsEditor = ({
       };
 
       // Add optimistic item to UI immediately
-      setComponents(prev => [...prev, optimisticItem]);
+      setComponents((prev) => [...prev, optimisticItem]);
 
       let created = null;
       let attempt = 0;
@@ -537,21 +548,31 @@ const PageComponentsEditor = ({
             theme: optimisticItem.theme,
           };
 
-          console.log(`🚀 [ADD COMPONENT] Attempt ${attempt + 1}/${MAX_RETRIES} with payload:`, payload);
+          console.log(
+            `🚀 [ADD COMPONENT] Attempt ${
+              attempt + 1
+            }/${MAX_RETRIES} with payload:`,
+            payload
+          );
 
           created = await pagesAPI.createPageComponent(pageId, payload);
-          
+
           // Replace optimistic item with real component
-          setComponents(prev => prev.map(item => 
-            item.id === tempId ? created : item
-          ));
+          setComponents((prev) =>
+            prev.map((item) => (item.id === tempId ? created : item))
+          );
 
-          console.log("✅ [ADD COMPONENT] Successfully created component:", created);
-
+          console.log(
+            "✅ [ADD COMPONENT] Successfully created component:",
+            created
+          );
         } catch (err) {
-          const errorMessage = err.response?.data?.message || err.message || JSON.stringify(err.response?.data);
-          const isDuplicateKey = 
-            errorMessage?.includes("IX_PageComponents_PageId_OrderIndex") || 
+          const errorMessage =
+            err.response?.data?.message ||
+            err.message ||
+            JSON.stringify(err.response?.data);
+          const isDuplicateKey =
+            errorMessage?.includes("IX_PageComponents_PageId_OrderIndex") ||
             errorMessage?.includes("duplicate key") ||
             err.response?.data?.errorCode === 2601;
 
@@ -559,20 +580,27 @@ const PageComponentsEditor = ({
             error: errorMessage,
             isDuplicateKey,
             nextOrderIndex,
-            response: err.response?.data
+            response: err.response?.data,
           });
 
           if (isDuplicateKey && attempt < MAX_RETRIES - 1) {
-            console.warn("🔄 [RETRY] Duplicate order index detected, refetching components...");
-            
+            console.warn(
+              "🔄 [RETRY] Duplicate order index detected, refetching components..."
+            );
+
             // Refetch latest components and recalculate order index
-            const refreshedComponents = await pagesAPI.getPageComponents(pageId);
-            const refreshedMax = refreshedComponents.length 
-              ? Math.max(...refreshedComponents.map(c => c.orderIndex ?? 0))
+            const refreshedComponents = await pagesAPI.getPageComponents(
+              pageId
+            );
+            const refreshedMax = refreshedComponents.length
+              ? Math.max(...refreshedComponents.map((c) => c.orderIndex ?? 0))
               : -1;
             nextOrderIndex = refreshedMax + 1;
-            
-            console.log("🔄 [RETRY] Recalculated nextOrderIndex:", nextOrderIndex);
+
+            console.log(
+              "🔄 [RETRY] Recalculated nextOrderIndex:",
+              nextOrderIndex
+            );
             attempt++;
             continue;
           } else {
@@ -583,20 +611,22 @@ const PageComponentsEditor = ({
 
       if (!created) {
         // Remove optimistic item if all retries failed
-        setComponents(prev => prev.filter(item => item.id !== tempId));
-        showToast("Unable to add component after multiple attempts. Please try again.", "error");
+        setComponents((prev) => prev.filter((item) => item.id !== tempId));
+        showToast(
+          "Unable to add component after multiple attempts. Please try again.",
+          "error"
+        );
         return;
       }
 
       setShowAddModal(false);
       showToast("Component added successfully", "success");
-
     } catch (error) {
       console.error("❌ [ADD COMPONENT] Final error:", error);
-      
+
       // Remove optimistic item on error
-      setComponents(prev => prev.filter(item => item.id !== tempId));
-      
+      setComponents((prev) => prev.filter((item) => item.id !== tempId));
+
       const errorMessage = error.response?.data?.message || error.message;
       showToast(`Error adding component: ${errorMessage}`, "error");
     } finally {
@@ -652,12 +682,20 @@ const PageComponentsEditor = ({
       const updateData = {
         id: componentId, // Include component ID
         pageId: pageId, // Include page ID from props
-        componentType: componentData.componentType || currentComponent.componentType,
-        componentName: componentData.componentName || currentComponent.componentName,
+        componentType:
+          componentData.componentType || currentComponent.componentType,
+        componentName:
+          componentData.componentName || currentComponent.componentName,
         contentJson: componentData.contentJson || currentComponent.contentJson,
         orderIndex: finalOrderIndex, // Always include orderIndex to ensure consistency
-        isVisible: componentData.isVisible !== undefined ? componentData.isVisible : (currentComponent?.isVisible ?? true),
-        theme: componentData.theme !== undefined ? componentData.theme : (currentComponent?.theme ?? 1),
+        isVisible:
+          componentData.isVisible !== undefined
+            ? componentData.isVisible
+            : currentComponent?.isVisible ?? true,
+        theme:
+          componentData.theme !== undefined
+            ? componentData.theme
+            : currentComponent?.theme ?? 1,
       };
 
       console.log("Updating component with data:", updateData);
@@ -830,6 +868,102 @@ const PageComponentsEditor = ({
     }
   };
 
+  // Instant update functions for theme and visibility
+  const handleInstantVisibilityToggle = async (componentId, newVisibility) => {
+    try {
+      // Find the current component
+      const currentComponent = components.find(
+        (comp) => comp.id === componentId
+      );
+      if (!currentComponent) {
+        showToast("Component not found", "error");
+        return;
+      }
+
+      // Optimistically update UI first
+      setComponents((prev) =>
+        prev.map((comp) =>
+          comp.id === componentId ? { ...comp, isVisible: newVisibility } : comp
+        )
+      );
+
+      // Prepare complete update data
+      const updateData = {
+        ...currentComponent,
+        isVisible: newVisibility,
+      };
+
+      // Send update to backend
+      await pagesAPI.updatePageComponent(componentId, updateData);
+
+      console.log("✅ [INSTANT UPDATE] Visibility updated:", {
+        componentId,
+        newVisibility,
+        componentName: currentComponent.componentName,
+      });
+    } catch (error) {
+      console.error("❌ [INSTANT UPDATE ERROR] Visibility:", error);
+
+      // Revert the optimistic update on error
+      setComponents((prev) =>
+        prev.map((comp) =>
+          comp.id === componentId
+            ? { ...comp, isVisible: !newVisibility }
+            : comp
+        )
+      );
+
+      showToast("Failed to update visibility: " + error.message, "error");
+    }
+  };
+
+  const handleInstantThemeToggle = async (componentId, newTheme) => {
+    try {
+      // Find the current component
+      const currentComponent = components.find(
+        (comp) => comp.id === componentId
+      );
+      if (!currentComponent) {
+        showToast("Component not found", "error");
+        return;
+      }
+
+      // Optimistically update UI first
+      setComponents((prev) =>
+        prev.map((comp) =>
+          comp.id === componentId ? { ...comp, theme: newTheme } : comp
+        )
+      );
+
+      // Prepare complete update data
+      const updateData = {
+        ...currentComponent,
+        theme: newTheme,
+      };
+
+      // Send update to backend
+      await pagesAPI.updatePageComponent(componentId, updateData);
+
+      console.log("✅ [INSTANT UPDATE] Theme updated:", {
+        componentId,
+        newTheme: newTheme === 1 ? "light" : "dark",
+        componentName: currentComponent.componentName,
+      });
+    } catch (error) {
+      console.error("❌ [INSTANT UPDATE ERROR] Theme:", error);
+
+      // Revert the optimistic update on error
+      const revertTheme = newTheme === 1 ? 2 : 1;
+      setComponents((prev) =>
+        prev.map((comp) =>
+          comp.id === componentId ? { ...comp, theme: revertTheme } : comp
+        )
+      );
+
+      showToast("Failed to update theme: " + error.message, "error");
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -929,6 +1063,8 @@ const PageComponentsEditor = ({
                     index={index}
                     onEdit={() => setEditingComponent(component)}
                     onDelete={() => handleDeleteComponent(component.id)}
+                    onVisibilityToggle={handleInstantVisibilityToggle}
+                    onThemeToggle={handleInstantThemeToggle}
                     isReordering={saving}
                   />
                 );
@@ -966,6 +1102,8 @@ const ComponentCard = ({
   onEdit,
   onDelete,
   isReordering = false,
+  onVisibilityToggle,
+  onThemeToggle,
 }) => {
   const [contentPreview, setContentPreview] = useState([]);
   const [expandedPreview, setExpandedPreview] = useState(false);
@@ -1101,6 +1239,81 @@ const ComponentCard = ({
                 <span className="text-gray-400 text-xs">No content fields</span>
               </div>
             )}
+          </div>
+
+          {/* Quick Controls for Theme and Visibility */}
+          <div className="flex items-center justify-between mt-3 pt-2 border-t border-white/10">
+            <div className="flex items-center space-x-3">
+              {/* Visibility Toggle */}
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() =>
+                    onVisibilityToggle &&
+                    onVisibilityToggle(
+                      component.id,
+                      !(
+                        component.isVisible === true ||
+                        component.isVisible === 1
+                      )
+                    )
+                  }
+                  disabled={isReordering}
+                  className={`w-4 h-4 rounded border transition-colors ${
+                    component.isVisible === true || component.isVisible === 1
+                      ? "bg-green-500 border-green-500 text-white"
+                      : "bg-gray-600 border-gray-500 text-gray-400"
+                  } ${
+                    isReordering
+                      ? "cursor-not-allowed opacity-50"
+                      : "cursor-pointer hover:scale-110"
+                  }`}
+                  title={`Component is ${
+                    component.isVisible === true || component.isVisible === 1
+                      ? "visible"
+                      : "hidden"
+                  }`}
+                >
+                  {component.isVisible === true || component.isVisible === 1
+                    ? "✓"
+                    : "✗"}
+                </button>
+                <span className="text-xs text-gray-400">
+                  {component.isVisible === true || component.isVisible === 1
+                    ? "Visible"
+                    : "Hidden"}
+                </span>
+              </div>
+
+              {/* Theme Toggle */}
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() =>
+                    onThemeToggle &&
+                    onThemeToggle(component.id, component.theme === 1 ? 2 : 1)
+                  }
+                  disabled={isReordering}
+                  className={`w-6 h-4 rounded-full border transition-colors flex items-center ${
+                    component.theme === 1
+                      ? "bg-yellow-400 border-yellow-500 justify-end"
+                      : "bg-gray-600 border-gray-500 justify-start"
+                  } ${
+                    isReordering
+                      ? "cursor-not-allowed opacity-50"
+                      : "cursor-pointer hover:scale-105"
+                  }`}
+                  title={`Theme: ${component.theme === 1 ? "Light" : "Dark"}`}
+                >
+                  <div
+                    className={`w-3 h-3 rounded-full transition-all ${
+                      component.theme === 1 ? "bg-white" : "bg-gray-300"
+                    }`}
+                  />
+                </button>
+                <span className="text-xs text-gray-400">
+                  {component.theme === 1 ? "☀️ Light" : "🌙 Dark"}
+                </span>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -1662,7 +1875,10 @@ const AddComponentModal = ({
                         <div>
                           <FancyToggle
                             label="Component Visible"
-                            checked={formData.isVisible === true || formData.isVisible === 1}
+                            checked={
+                              formData.isVisible === true ||
+                              formData.isVisible === 1
+                            }
                             onChange={(val) =>
                               setFormData((prev) => ({
                                 ...prev,
@@ -2062,11 +2278,13 @@ const EditComponentModal = ({
               <div className="space-y-3 p-4 rounded-lg bg-white/5 border border-white/10">
                 <FancyToggle
                   label="Component Visible"
-                  checked={formData.isVisible === 1}
+                  checked={
+                    formData.isVisible === true || formData.isVisible === 1
+                  }
                   onChange={(val) =>
                     setFormData((prev) => ({
                       ...prev,
-                      isVisible: val ? 1 : 0,
+                      isVisible: val, // Use boolean values for API compatibility
                     }))
                   }
                   gradient="green"
@@ -2076,7 +2294,7 @@ const EditComponentModal = ({
                 />
                 <div className="mt-2 text-xs text-gray-300 bg-white/5 rounded p-2">
                   <span className="font-medium">Preview: </span>
-                  {formData.isVisible === 1 ? (
+                  {formData.isVisible === true || formData.isVisible === 1 ? (
                     <span className="text-green-400">
                       ✓ Component will be shown
                     </span>
@@ -2096,7 +2314,7 @@ const EditComponentModal = ({
                   onChange={(val) =>
                     setFormData((prev) => ({
                       ...prev,
-                      theme: val ? 1 : 0,
+                      theme: val ? 1 : 2, // 1=light, 2=dark per ThemeMode enum
                     }))
                   }
                   gradient="blue"
