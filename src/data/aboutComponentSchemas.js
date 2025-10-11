@@ -406,79 +406,63 @@ export const aboutComponentSchemas = {
     category: "about",
     icon: "🛤️",
     displayName: "About Journey",
-    description: "Company journey and history section",
+    description: "Company journey and history section with static content",
     schema: {
       type: "object",
       properties: {
-        title: {
+        beginningTitle: {
           type: "string",
-          label: "Journey Title",
-          placeholder: "Our Journey",
-          required: true,
+          label: "Beginning Section Title",
+          placeholder: "The Beginning",
           formField: "text"
         },
-        description: {
+        beginningText: {
           type: "string",
-          label: "Journey Description",
-          placeholder: "From humble beginnings to becoming a trusted partner...",
-          required: true,
+          label: "Beginning Section Text",
+          placeholder: "Founded in 2008 with a vision to bridge the gap...",
           formField: "textarea"
         },
-        timeline: {
-          type: "array",
-          label: "Timeline Events",
-          items: {
-            type: "object",
-            properties: {
-              year: {
-                type: "string",
-                label: "Year",
-                placeholder: "2024",
-                required: true,
-                formField: "text"
-              },
-              title: {
-                type: "string",
-                label: "Event Title",
-                placeholder: "Company Founded",
-                required: true,
-                formField: "text"
-              },
-              description: {
-                type: "string",
-                label: "Event Description",
-                placeholder: "Bellatrix was established with a vision...",
-                required: true,
-                formField: "textarea"
-              }
-            }
-          },
-          formField: "array",
-          minItems: 1,
-          maxItems: 10
+        growthTitle: {
+          type: "string",
+          label: "Growth Section Title",
+          placeholder: "Growth & Evolution",
+          formField: "text"
+        },
+        growthText: {
+          type: "string",
+          label: "Growth Section Text",
+          placeholder: "Over the years, we've evolved from a small consulting firm...",
+          formField: "textarea"
+        },
+        todayTitle: {
+          type: "string",
+          label: "Today Section Title",
+          placeholder: "Today",
+          formField: "text"
+        },
+        todayText: {
+          type: "string",
+          label: "Today Section Text",
+          placeholder: "We continue to innovate and expand our services...",
+          formField: "textarea"
+        },
+        imageUrl: {
+          type: "string",
+          label: "Journey Image URL",
+          placeholder: "/images/solution.jpg",
+          formField: "media",
+          mediaType: "image"
         }
       }
     },
     defaultData: {
-      title: "Our Journey",
-      description: "From humble beginnings to becoming a trusted Oracle NetSuite partner, our journey has been marked by innovation, growth, and unwavering commitment to excellence.",
-      timeline: [
-        {
-          year: "2008",
-          title: "Company Founded",
-          description: "Bellatrix was established with a vision to transform businesses through technology."
-        },
-        {
-          year: "2012",
-          title: "First 100 Clients",
-          description: "Reached our first major milestone of serving 100 satisfied clients."
-        },
-        {
-          year: "2016",
-          title: "NetSuite Gold Partner",
-          description: "Achieved NetSuite Gold Partner status, recognizing our expertise."
-        }
-      ]
+      beginningTitle: "The Beginning",
+      beginningText: "Founded in 2008 with a vision to bridge the gap between complex enterprise software and real business needs. Our founders recognized that many businesses were struggling to fully leverage their technology investments.",
+      growthTitle: "Growth & Evolution",
+      growthText: "Over the years, we've evolved from a small consulting firm to a comprehensive digital transformation partner, helping hundreds of organizations across various industries unlock their full potential.",
+      todayTitle: "Today",
+      todayText: "We continue to innovate and expand our services, staying at the forefront of technology trends while maintaining our core values of excellence and integrity.",
+      imageUrl: "/images/solution.jpg"
     }
   },
 

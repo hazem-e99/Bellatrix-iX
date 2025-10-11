@@ -10,6 +10,7 @@ const PayrollHero = ({
   bgColor,
   bgVideo,
   onCtaClick,
+  data,
 }) => {
   const [defaultData, setDefaultData] = useState(null);
 
@@ -32,22 +33,32 @@ const PayrollHero = ({
     fetchData();
   }, []);
 
-  // Use props if provided, otherwise fall back to default data
+  // PRIORITIZE props data over default data for real-time preview
   const displayData = {
-    title: title || defaultData?.title || "Transform Your Payroll Process",
+    title: title || data?.title || defaultData?.title || "Transform Your Payroll Process",
     subtitle:
       subtitle ||
+      data?.subtitle ||
       defaultData?.subtitle ||
       "Streamline operations with our intelligent, automated payroll system",
-    description: description || defaultData?.description,
-    ctaButton: ctaButton || defaultData?.ctaButton,
+    description: description || data?.description || defaultData?.description,
+    ctaButton: ctaButton || data?.ctaButton || defaultData?.ctaButton,
     backgroundImage:
       backgroundImage ||
+      data?.backgroundImage ||
       defaultData?.backgroundImage ||
       "/images/payrollFinal.jpeg",
-    bgColor: bgColor || defaultData?.bgColor,
-    bgVideo: bgVideo || defaultData?.bgVideo,
+    bgColor: bgColor || data?.bgColor || defaultData?.bgColor,
+    bgVideo: bgVideo || data?.bgVideo || defaultData?.bgVideo,
   };
+
+  console.log("🎯 [PayrollHero] Component received data:", {
+    hasPropsData: !!(data && Object.keys(data).length > 0),
+    propsData: data,
+    hasDefaultData: !!defaultData,
+    finalData: displayData,
+    timestamp: new Date().toISOString()
+  });
 
   return (
     <>

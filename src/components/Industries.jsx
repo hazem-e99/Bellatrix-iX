@@ -19,7 +19,23 @@ const iconMap = {
   Package: <Package className="w-7 h-7" />,
 };
 
-const Industries = ({ industries = [], sectionHeader = {} }) => {
+const Industries = ({ industries: propsIndustries = [], sectionHeader: propsSectionHeader = {}, data }) => {
+  // PRIORITIZE props data over default data for real-time preview
+  const industries = propsIndustries.length > 0 ? propsIndustries : (data?.industries || []);
+  const sectionHeader = Object.keys(propsSectionHeader).length > 0 ? propsSectionHeader : (data?.sectionHeader || {});
+
+  // Debug logging for real-time updates
+  console.log("🎯 [Industries] Component received data:", {
+    hasPropsIndustries: propsIndustries.length > 0,
+    propsIndustries: propsIndustries,
+    hasPropsSectionHeader: Object.keys(propsSectionHeader).length > 0,
+    propsSectionHeader: propsSectionHeader,
+    hasData: !!data,
+    data: data,
+    finalIndustries: industries,
+    finalSectionHeader: sectionHeader,
+    timestamp: new Date().toISOString()
+  });
   const [selectedIndustry, setSelectedIndustry] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalIndustry, setModalIndustry] = useState(null);

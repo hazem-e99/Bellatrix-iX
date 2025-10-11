@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from "react";
 
-const Customization = () => {
+const Customization = ({ data: propsData = null }) => {
   const [pageData, setPageData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    // PRIORITIZE props data over fetched data for real-time preview
+    if (propsData) {
+      setPageData(propsData);
+      setLoading(false);
+      console.log("🎯 [Customization] Using props data:", propsData);
+      return;
+    }
+
     const fetchData = async () => {
       try {
         const response = await fetch("./data/customization.json");
@@ -14,6 +22,7 @@ const Customization = () => {
         }
         const data = await response.json();
         setPageData(data);
+        console.log("🎯 [Customization] Using fetched data:", data);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -22,7 +31,7 @@ const Customization = () => {
     };
 
     fetchData();
-  }, []);
+  }, [propsData]);
 
   if (loading) {
     return (

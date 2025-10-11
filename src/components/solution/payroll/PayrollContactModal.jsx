@@ -23,12 +23,21 @@ const PayrollContactModal = ({ title, subtitle, onClose, isOpen }) => {
     fetchData();
   }, []);
 
-  // Use props if provided, otherwise fall back to default data
+  // PRIORITIZE props data over default data for real-time preview
   const displayData = {
     title: title || defaultData?.title || "Contact Us",
     subtitle:
       subtitle || defaultData?.subtitle || "Let's discuss your payroll needs",
   };
+
+  // Debug logging for real-time updates
+  console.log("🎯 [PayrollContactModal] Component received data:", {
+    hasPropsData: !!(title || subtitle),
+    propsData: { title, subtitle },
+    hasDefaultData: !!defaultData,
+    finalData: displayData,
+    timestamp: new Date().toISOString()
+  });
 
   if (!isOpen) return null;
 

@@ -3,7 +3,34 @@ import React from "react";
 import SEO from "../../SEO";
 import { getVariantClasses } from "../../../utils/variantSystem";
 
-const HeroSection = ({ heroContent, backgroundVideo, ctaButton }) => {
+const HeroSection = ({ heroContent: propsHeroContent, backgroundVideo: propsBackgroundVideo, ctaButton: propsCtaButton, data }) => {
+  // PRIORITIZE props data over default data for real-time preview
+  const heroContent = propsHeroContent || data?.heroContent || {
+    title: "Transform Your Career with Oracle NetSuite Training",
+    subtitle: "Professional ERP Education & Skills Development",
+    description: "Master Oracle NetSuite with comprehensive training programs designed for professionals at all levels."
+  };
+  const backgroundVideo = propsBackgroundVideo || data?.backgroundVideo || "/Videos/training-hero.mp4";
+  const ctaButton = propsCtaButton || data?.ctaButton || {
+    text: "Start Learning",
+    variant: "primary"
+  };
+
+  // Debug logging for real-time updates
+  console.log("🎯 [TrainingHeroSection] Component received data:", {
+    hasPropsHeroContent: !!propsHeroContent,
+    propsHeroContent: propsHeroContent,
+    hasPropsBackgroundVideo: !!propsBackgroundVideo,
+    propsBackgroundVideo: propsBackgroundVideo,
+    hasPropsCtaButton: !!propsCtaButton,
+    propsCtaButton: propsCtaButton,
+    hasData: !!data,
+    data: data,
+    finalHeroContent: heroContent,
+    finalBackgroundVideo: backgroundVideo,
+    finalCtaButton: ctaButton,
+    timestamp: new Date().toISOString()
+  });
   // Debug logging for CTA button variant
   console.log("🎨 [TrainingHeroSection] CTA Button Debug:", {
     ctaButton,

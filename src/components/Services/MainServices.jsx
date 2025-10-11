@@ -49,7 +49,7 @@ function getServiceFromPath(pathname) {
   return serviceConfig.find((svc) => lower.includes(svc.slug));
 }
 
-const MainServices = () => {
+const MainServices = ({ data: propsData = null }) => {
   const location = useLocation();
   const [serviceData, setServiceData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -58,6 +58,13 @@ const MainServices = () => {
   const service = getServiceFromPath(location.pathname);
 
   useEffect(() => {
+    if (propsData) {
+      setServiceData(propsData);
+      setLoading(false);
+      console.log("🎯 [MainServices] Using props data:", propsData);
+      return;
+    }
+
     let ignore = false;
     setLoading(true);
     setError(null);
@@ -93,7 +100,7 @@ const MainServices = () => {
     return () => {
       ignore = true;
     };
-  }, [location.pathname, service]);
+  }, [location.pathname, service, propsData]);
 
   if (loading) {
     return (

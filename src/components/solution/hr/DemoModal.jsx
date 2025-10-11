@@ -32,13 +32,21 @@ const DemoModal = ({
     fetchData();
   }, []);
 
-  // Use props if provided, otherwise fall back to default data
-  const displayDemoImages = demoImages ||
-    defaultData || [
-      "/images/Hr/hr-dashboard-1.png",
-      "/images/Hr/hr-analytics-2.png",
-      "/images/Hr/hr-onboarding-3.png",
-    ];
+  // PRIORITIZE props data over default data for real-time preview
+  const displayDemoImages = demoImages || defaultData || [
+    "/images/Hr/hr-dashboard-1.png",
+    "/images/Hr/hr-analytics-2.png",
+    "/images/Hr/hr-onboarding-3.png",
+  ];
+
+  // Debug logging for real-time updates
+  console.log("🎯 [HRDemoModal] Component received data:", {
+    hasPropsData: !!demoImages,
+    propsData: demoImages,
+    hasDefaultData: !!defaultData,
+    finalData: displayDemoImages,
+    timestamp: new Date().toISOString()
+  });
   if (!showDemo) return null;
 
   return (

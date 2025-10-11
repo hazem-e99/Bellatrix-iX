@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 const AboutTeam = ({
   teamMembers = [],
+  data = {},
   cardsPerScreen = 3,
   slideOffset = 0,
   isHovering = false,
@@ -29,13 +30,23 @@ const AboutTeam = ({
     fetchData();
   }, []);
 
-  // Use default data from JSON
-  const displayData = defaultData || {
+  // PRIORITIZE props data over default data for real-time preview
+  const displayData = data || defaultData || {
     title: "Meet Our Team",
     description:
       "Our diverse team of experts brings together decades of experience in enterprise software, business consulting, and digital transformation.",
     members: [],
   };
+
+  // Debug logging for real-time updates
+  console.log("🎯 [AboutTeam] Component received data:", {
+    hasPropsData: !!data,
+    propsData: data,
+    hasDefaultData: !!defaultData,
+    finalData: displayData,
+    teamMembersFromProps: teamMembers,
+    timestamp: new Date().toISOString()
+  });
 
   // Default team members if none provided
   const defaultTeamMembers = [

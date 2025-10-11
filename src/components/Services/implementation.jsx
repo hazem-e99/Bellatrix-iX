@@ -1,18 +1,27 @@
 import React, { useState, useEffect } from "react";
 import ContactForm from "../ContactForm";
 
-const Implementation = () => {
+const Implementation = ({ data: propsData = null }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // PRIORITIZE props data over fetched data for real-time preview
+    if (propsData) {
+      setData(propsData);
+      setLoading(false);
+      console.log("🎯 [Implementation] Using props data:", propsData);
+      return;
+    }
+
     const fetchData = async () => {
       try {
         const response = await fetch("data/Implementation.json");
         const jsonData = await response.json();
         setData(jsonData);
         setLoading(false);
+        console.log("🎯 [Implementation] Using fetched data:", jsonData);
       } catch (error) {
         console.error("Error fetching data:", error);
         setLoading(false);
@@ -20,7 +29,7 @@ const Implementation = () => {
     };
 
     fetchData();
-  }, []);
+  }, [propsData]);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);

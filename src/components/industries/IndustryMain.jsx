@@ -4,13 +4,20 @@ import MainManufacturing from "./Manufacturing/MainManufacturing";
 import Retail from "./retail/Retail";
 // import Healthcare from "./healthcare/Healthcare"; // Uncomment and import when Healthcare is available
 
-const IndustryMain = () => {
+const IndustryMain = ({ data: propsData = null }) => {
   const location = useLocation();
   const [industryData, setIndustryData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    if (propsData) {
+      setIndustryData(propsData);
+      setLoading(false);
+      console.log("🎯 [IndustryMain] Using props data:", propsData);
+      return;
+    }
+
     // Determine which industry to fetch based on the route
     let dataFile = null;
     if (location.pathname.toLowerCase().includes("manufacturing")) {
@@ -38,7 +45,7 @@ const IndustryMain = () => {
       .then((data) => setIndustryData(data))
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
-  }, [location.pathname]);
+  }, [location.pathname, propsData]);
 
   if (loading) {
     return (

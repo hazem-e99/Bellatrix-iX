@@ -4,15 +4,16 @@ import ContactForm from "../ContactForm";
 import Modal from "../Modal";
 import { usePageData } from "../../hooks/useJsonServerData.jsx";
 
-const NetSuiteConsulting = () => {
+const NetSuiteConsulting = ({ data: propsData = null }) => {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [activeService, setActiveService] = useState(0);
   const navigate = useNavigate();
 
-  // Fetch data from JSON Server
-  const { data, isLoading: loading, error } = usePageData(
+  // PRIORITIZE props data over fetched data for real-time preview
+  const { data: fetchedData, isLoading: loading, error } = usePageData(
     "netsuite-consulting"
   );
+  const data = propsData || fetchedData;
 
   const openContactModal = () => setIsContactModalOpen(true);
   const closeContactModal = () => setIsContactModalOpen(false);

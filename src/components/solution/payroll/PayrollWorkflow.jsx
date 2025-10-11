@@ -24,7 +24,7 @@ const PayrollWorkflow = ({ workflowData = {} }) => {
     fetchData();
   }, []);
 
-  // Use provided data or default data
+  // PRIORITIZE props data over default data for real-time preview
   const displayData = {
     title: workflowData?.title || defaultData?.title || "Workflow",
     description:
@@ -33,6 +33,15 @@ const PayrollWorkflow = ({ workflowData = {} }) => {
       "Workflow description",
     steps: workflowData?.steps || defaultData?.steps || [],
   };
+
+  // Debug logging for real-time updates
+  console.log("🎯 [PayrollWorkflow] Component received data:", {
+    hasPropsData: !!(workflowData && Object.keys(workflowData).length > 0),
+    propsData: workflowData,
+    hasDefaultData: !!defaultData,
+    finalData: displayData,
+    timestamp: new Date().toISOString()
+  });
 
   return (
     <>

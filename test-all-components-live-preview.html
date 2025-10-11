@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test All Components Live Preview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .test-title {
+            color: #333;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .component-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .component-card {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            transition: all 0.3s ease;
+        }
+        .component-card:hover {
+            border-color: #007bff;
+            box-shadow: 0 4px 8px rgba(0,123,255,0.1);
+        }
+        .component-card h4 {
+            margin: 0 0 10px 0;
+            color: #007bff;
+            font-size: 16px;
+        }
+        .component-card .status {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        .status-success { background-color: #28a745; }
+        .status-warning { background-color: #ffc107; }
+        .status-error { background-color: #dc3545; }
+        .status-pending { background-color: #6c757d; }
+        .component-card .fields {
+            font-size: 12px;
+            color: #666;
+            margin: 8px 0;
+        }
+        .component-card .fields ul {
+            margin: 0;
+            padding-left: 15px;
+        }
+        .test-step {
+            background: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .test-step h4 {
+            margin: 0 0 10px 0;
+            color: #0066cc;
+        }
+        .test-step ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .test-step li {
+            margin: 5px 0;
+        }
+        .expected-result {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .debug-info {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+        .stat-card h3 {
+            margin: 0 0 10px 0;
+            color: #007bff;
+            font-size: 24px;
+        }
+        .stat-card p {
+            margin: 0;
+            color: #666;
+            font-size: 14px;
+        }
+        .category-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .category-section h3 {
+            margin: 0 0 15px 0;
+            color: #007bff;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h2 class="test-title">🧪 Test: All Components Live Preview</h2>
+        
+        <div class="summary-stats">
+            <div class="stat-card">
+                <h3 id="total-components">0</h3>
+                <p>Total Components</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="about-components">0</h3>
+                <p>About Components</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="general-components">0</h3>
+                <p>General Components</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="ready-components">0</h3>
+                <p>Ready to Test</p>
+            </div>
+        </div>
+
+        <div class="category-section">
+            <h3>📋 About Components</h3>
+            <div class="component-grid" id="about-components-grid">
+                <!-- About components will be populated here -->
+            </div>
+        </div>
+
+        <div class="category-section">
+            <h3>🔧 General Components</h3>
+            <div class="component-grid" id="general-components-grid">
+                <!-- General components will be populated here -->
+            </div>
+        </div>
+
+        <div class="test-step">
+            <h4>🔧 Steps to Test All Components</h4>
+            <ol>
+                <li>Open the admin dashboard</li>
+                <li>Navigate to "Available Components" page</li>
+                <li>Select any component from the list below</li>
+                <li>Edit the form fields on the left</li>
+                <li>Check the live preview on the right</li>
+                <li>Verify that changes appear immediately</li>
+                <li>Test different field types (text, textarea, arrays)</li>
+                <li>Check browser console for debug logs</li>
+                <li>Repeat for all components</li>
+            </ol>
+        </div>
+
+        <div class="expected-result">
+            <strong>✅ Expected Results for All Components:</strong>
+            <ul>
+                <li><span class="status status-success"></span>Changes appear immediately in live preview</li>
+                <li><span class="status status-success"></span>All form fields update correctly</li>
+                <li><span class="status status-success"></span>Data flow works correctly</li>
+                <li><span class="status status-success"></span>Console shows detailed debug logs</li>
+                <li><span class="status status-success"></span>No delays in preview updates</li>
+                <li><span class="status status-success"></span>All components render properly</li>
+            </ul>
+        </div>
+
+        <div class="debug-info">
+            <strong>🔍 Debug Information to Look For:</strong><br>
+            • Console logs starting with "📝 [DynamicFormGenerator] handleChange"<br>
+            • Console logs starting with "🎯 [FIELD CHANGE]"<br>
+            • Console logs starting with "🔄 [PAGE DATA UPDATE]"<br>
+            • Console logs starting with "🔄 [LIVE PREVIEW] ContentJson changed"<br>
+            • Console logs starting with "🔄 [LIVE PREVIEW] Triggering refresh"<br>
+            • Console logs starting with "🎯 [COMPONENT TRANSFORM]"<br>
+            • Console logs starting with "✅ [COMPONENT TRANSFORM]"<br>
+        </div>
+
+        <div class="test-step">
+            <h4>🐛 Troubleshooting</h4>
+            <p>If live preview is not updating for any component:</p>
+            <ol>
+                <li>Check browser console for error messages</li>
+                <li>Verify that pageData is being updated</li>
+                <li>Check if LivePreview is receiving updated components</li>
+                <li>Ensure ComponentPreview is transforming data correctly</li>
+                <li>Verify that component is receiving correct props</li>
+                <li>Check if refreshKey is being updated</li>
+                <li>Ensure no caching issues</li>
+                <li>Verify component is in componentRegistry</li>
+            </ol>
+        </div>
+
+        <div class="test-step">
+            <h4>📊 Test Results</h4>
+            <p><strong>Last Updated:</strong> <span id="last-updated">2024-01-01 00:00:00</span></p>
+            <p><strong>Test Status:</strong> <span id="test-status">Ready to test</span></p>
+        </div>
+    </div>
+
+    <script>
+        // Component definitions
+        const aboutComponents = [
+            {
+                name: "AboutHeroSection",
+                displayName: "About Hero",
+                fields: ["title", "subtitle", "description", "backgroundVideo", "stats"],
+                status: "pending"
+            },
+            {
+                name: "AboutMissionSection", 
+                displayName: "About Mission",
+                fields: ["title", "description", "vision", "image", "stats"],
+                status: "pending"
+            },
+            {
+                name: "AboutTeamSection",
+                displayName: "About Team", 
+                fields: ["title", "description", "members"],
+                status: "pending"
+            },
+            {
+                name: "AboutValuesSection",
+                displayName: "About Values",
+                fields: ["title", "description", "items"],
+                status: "pending"
+            },
+            {
+                name: "AboutJourneySection",
+                displayName: "About Journey",
+                fields: ["beginningTitle", "beginningText", "growthTitle", "growthText", "todayTitle", "todayText", "imageUrl"],
+                status: "pending"
+            },
+            {
+                name: "AboutMilestonesSection",
+                displayName: "About Milestones",
+                fields: ["title", "description", "items"],
+                status: "pending"
+            },
+            {
+                name: "AboutDifferentiatorsSection",
+                displayName: "About Differentiators",
+                fields: ["title", "description", "items"],
+                status: "pending"
+            },
+            {
+                name: "AboutCTASection",
+                displayName: "About CTA",
+                fields: ["title", "subtitle", "description", "ctaButton", "features"],
+                status: "pending"
+            }
+        ];
+
+        const generalComponents = [
+            {
+                name: "PayrollHeroSection",
+                displayName: "Payroll Hero",
+                fields: ["title", "subtitle", "description", "ctaButton", "backgroundImage"],
+                status: "pending"
+            },
+            {
+                name: "PayrollWorkflowSection",
+                displayName: "Payroll Workflow",
+                fields: ["title", "description", "steps"],
+                status: "pending"
+            },
+            {
+                name: "PayrollStepperSection",
+                displayName: "Payroll Stepper",
+                fields: ["title", "steps"],
+                status: "pending"
+            },
+            {
+                name: "PayrollPainPointsSection",
+                displayName: "Payroll Pain Points",
+                fields: ["title", "description", "items"],
+                status: "pending"
+            },
+            {
+                name: "PayrollFAQSection",
+                displayName: "Payroll FAQ",
+                fields: ["title", "items"],
+                status: "pending"
+            },
+            {
+                name: "PayrollCTASection",
+                displayName: "Payroll CTA",
+                fields: ["title", "subtitle", "ctaButton"],
+                status: "pending"
+            },
+            {
+                name: "HRHeroSection",
+                displayName: "HR Hero",
+                fields: ["title", "subtitle", "bgVideo", "bgColor"],
+                status: "pending"
+            },
+            {
+                name: "HRModulesSection",
+                displayName: "HR Modules",
+                fields: ["modules"],
+                status: "pending"
+            },
+            {
+                name: "HRBenefitsSection",
+                displayName: "HR Benefits",
+                fields: ["features"],
+                status: "pending"
+            },
+            {
+                name: "HRUseCasesSection",
+                displayName: "HR Use Cases",
+                fields: ["useCases"],
+                status: "pending"
+            },
+            {
+                name: "HRPricingSection",
+                displayName: "HR Pricing",
+                fields: ["pricing"],
+                status: "pending"
+            },
+            {
+                name: "HRFAQSection",
+                displayName: "HR FAQ",
+                fields: ["faq"],
+                status: "pending"
+            },
+            {
+                name: "HRCTASection",
+                displayName: "HR CTA",
+                fields: ["title", "subtitle", "ctaButton"],
+                status: "pending"
+            }
+        ];
+
+        // Render component cards
+        function renderComponentCard(component) {
+            return `
+                <div class="component-card" data-component="${component.name}">
+                    <h4>${component.displayName}</h4>
+                    <div class="status-indicator">
+                        <span class="status status-${component.status}"></span>
+                        ${component.status.charAt(0).toUpperCase() + component.status.slice(1)}
+                    </div>
+                    <div class="fields">
+                        <strong>Fields:</strong>
+                        <ul>
+                            ${component.fields.map(field => `<li>${field}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Populate grids
+        function populateGrids() {
+            const aboutGrid = document.getElementById('about-components-grid');
+            const generalGrid = document.getElementById('general-components-grid');
+            
+            aboutGrid.innerHTML = aboutComponents.map(renderComponentCard).join('');
+            generalGrid.innerHTML = generalComponents.map(renderComponentCard).join('');
+            
+            // Update stats
+            document.getElementById('total-components').textContent = aboutComponents.length + generalComponents.length;
+            document.getElementById('about-components').textContent = aboutComponents.length;
+            document.getElementById('general-components').textContent = generalComponents.length;
+            document.getElementById('ready-components').textContent = aboutComponents.length + generalComponents.length;
+        }
+
+        // Update component status
+        function updateComponentStatus(componentName, status) {
+            const component = [...aboutComponents, ...generalComponents].find(c => c.name === componentName);
+            if (component) {
+                component.status = status;
+                const card = document.querySelector(`[data-component="${componentName}"]`);
+                if (card) {
+                    const statusElement = card.querySelector('.status');
+                    statusElement.className = `status status-${status}`;
+                    const statusText = card.querySelector('.status-indicator');
+                    statusText.innerHTML = `<span class="status status-${status}"></span>${status.charAt(0).toUpperCase() + status.slice(1)}`;
+                }
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            populateGrids();
+            document.getElementById('last-updated').textContent = new Date().toLocaleString();
+        });
+
+        // Example usage for testing:
+        // updateComponentStatus('AboutHeroSection', 'success');
+        // updateComponentStatus('AboutMissionSection', 'error');
+        // updateComponentStatus('PayrollHeroSection', 'warning');
+    </script>
+</body>
+</html>

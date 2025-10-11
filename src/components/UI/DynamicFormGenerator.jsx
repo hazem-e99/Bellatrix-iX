@@ -10,6 +10,7 @@ const DynamicFormGenerator = ({
   schema,
   data = {},
   onChange,
+  onFieldChange,
   componentType,
   className = ""
 }) => {
@@ -17,10 +18,45 @@ const DynamicFormGenerator = ({
   const [expandedSections, setExpandedSections] = useState({});
 
   useEffect(() => {
-    setFormData(data);
-  }, [data]);
+    console.log("🔄 [DynamicFormGenerator] Data prop changed:", {
+      componentType,
+      dataKeys: Object.keys(data),
+      dataChanged: JSON.stringify(data) !== JSON.stringify(formData),
+      currentFormData: formData,
+      newData: data,
+      dataType: typeof data,
+      isEmpty: !data || Object.keys(data).length === 0
+    });
+    
+    // Only update if data is actually different and not empty
+    if (data && Object.keys(data).length > 0 && JSON.stringify(data) !== JSON.stringify(formData)) {
+      console.log("🔄 [DynamicFormGenerator] Updating form data from:", formData, "to:", data);
+      setFormData(data);
+    } else if (!data || Object.keys(data).length === 0) {
+      console.log("⚠️ [DynamicFormGenerator] Empty or no data received:", {
+        componentType,
+        data,
+        formData
+      });
+    } else {
+      console.log("🔄 [DynamicFormGenerator] Data unchanged:", {
+        componentType,
+        dataKeys: Object.keys(data),
+        formDataKeys: Object.keys(formData)
+      });
+    }
+  }, [data, componentType]);
 
   const handleChange = (path, value) => {
+    console.log("📝 [DynamicFormGenerator] handleChange:", {
+      componentType,
+      path,
+      value,
+      valueType: typeof value,
+      isArray: Array.isArray(value),
+      currentFormData: formData
+    });
+    
     const updatedData = { ...formData };
     
     // Handle nested path updates (e.g., "ctaButton.text")
@@ -36,8 +72,20 @@ const DynamicFormGenerator = ({
     
     current[pathArray[pathArray.length - 1]] = value;
     
+    console.log("📝 [DynamicFormGenerator] Updated data:", {
+      path,
+      updatedData,
+      changedField: current[pathArray[pathArray.length - 1]]
+    });
+    
     setFormData(updatedData);
     onChange(updatedData);
+    
+    // Also trigger field-specific change for immediate preview updates
+    if (onFieldChange) {
+      console.log("📝 [DynamicFormGenerator] Calling onFieldChange:", { path, value });
+      onFieldChange(path, value);
+    }
   };
 
   const handleArrayAdd = (path, defaultItem = {}) => {
@@ -130,6 +178,17 @@ const DynamicFormGenerator = ({
     const value = getValueByPath(formData, fullPath);
     const isRequired = fieldSchema.required;
     const fieldType = fieldSchema.formField || fieldSchema.type;
+    
+    console.log("🔧 [RENDER FIELD] Field details:", {
+      key,
+      basePath,
+      fullPath,
+      value,
+      fieldType,
+      isRequired,
+      level,
+      componentType
+    });
 
     // Base classes for form fields
     const inputClasses = "block w-full rounded-lg bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder-white/50 focus:border-blue-400 focus:ring-blue-400/20 shadow-sm";
@@ -145,7 +204,15 @@ const DynamicFormGenerator = ({
             <input
               type="text"
               value={value || ""}
-              onChange={(e) => handleChange(fullPath, e.target.value)}
+              onChange={(e) => {
+                console.log("📝 [TEXT INPUT CHANGE]", {
+                  fullPath,
+                  oldValue: value,
+                  newValue: e.target.value,
+                  componentType
+                });
+                handleChange(fullPath, e.target.value);
+              }}
               placeholder={fieldSchema.placeholder}
               className={inputClasses}
             />
@@ -160,7 +227,15 @@ const DynamicFormGenerator = ({
             </label>
             <textarea
               value={value || ""}
-              onChange={(e) => handleChange(fullPath, e.target.value)}
+              onChange={(e) => {
+                console.log("📝 [TEXTAREA CHANGE]", {
+                  fullPath,
+                  oldValue: value,
+                  newValue: e.target.value,
+                  componentType
+                });
+                handleChange(fullPath, e.target.value);
+              }}
               placeholder={fieldSchema.placeholder}
               rows={3}
               className={inputClasses}
@@ -361,9 +436,17 @@ const DynamicFormGenerator = ({
                           placeholder={`${fieldSchema.label} item`}
                         />
                       ) : itemSchema.properties ? (
-                        Object.entries(itemSchema.properties).map(([propKey, propSchema]) =>
-                          renderField(propKey, propSchema, `${fullPath}.${index}`, level + 1)
-                        )
+                        Object.entries(itemSchema.properties).map(([propKey, propSchema]) => {
+                          const itemFieldPath = `${fullPath}.${index}.${propKey}`;
+                          console.log("🔧 [ARRAY ITEM FIELD] Rendering field:", {
+                            itemIndex: index,
+                            propKey,
+                            itemFieldPath,
+                            currentValue: getValueByPath(formData, itemFieldPath),
+                            itemSchema: itemSchema.properties[propKey]
+                          });
+                          return renderField(propKey, propSchema, `${fullPath}.${index}`, level + 1);
+                        })
                       ) : null}
                     </div>
                   </div>
@@ -398,9 +481,24 @@ const DynamicFormGenerator = ({
   };
 
   if (!schema || !schema.properties) {
+    console.log("⚠️ [DynamicFormGenerator] No schema or properties:", {
+      componentType,
+      hasSchema: !!schema,
+      hasProperties: !!(schema && schema.properties),
+      schema: schema
+    });
     return (
       <div className="p-4 text-center text-gray-400">
-        No schema defined for this component
+        <div className="mb-2">No schema defined for this component</div>
+        <div className="text-xs text-gray-500">
+          Component: {componentType}
+        </div>
+        <div className="text-xs text-gray-500">
+          Schema: {schema ? 'exists' : 'missing'}
+        </div>
+        <div className="text-xs text-gray-500">
+          Properties: {schema && schema.properties ? 'exists' : 'missing'}
+        </div>
       </div>
     );
   }
@@ -417,9 +515,25 @@ const DynamicFormGenerator = ({
       </div>
       
       <div className="space-y-6">
-        {Object.entries(schema.properties).map(([key, fieldSchema]) =>
-          renderField(key, fieldSchema)
-        )}
+        {(() => {
+          const fieldEntries = Object.entries(schema.properties);
+          console.log("🔧 [DynamicFormGenerator] Rendering fields:", {
+            componentType,
+            fieldCount: fieldEntries.length,
+            fieldKeys: fieldEntries.map(([key]) => key),
+            schemaProperties: schema.properties
+          });
+          
+          return fieldEntries.map(([key, fieldSchema]) => {
+            console.log("🔧 [DynamicFormGenerator] Rendering field:", {
+              componentType,
+              fieldKey: key,
+              fieldSchema,
+              fieldValue: getValueByPath(formData, key)
+            });
+            return renderField(key, fieldSchema);
+          });
+        })()}
       </div>
     </div>
   );

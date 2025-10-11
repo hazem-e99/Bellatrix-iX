@@ -27,7 +27,7 @@ function getSolutionFromPath(pathname) {
   return solutionConfig.find((sol) => lower.includes(sol.slug));
 }
 
-const SolutionMain = () => {
+const SolutionMain = ({ data: propsData = null }) => {
   const location = useLocation();
   const [solutionData, setSolutionData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -36,6 +36,13 @@ const SolutionMain = () => {
   const solution = getSolutionFromPath(location.pathname);
 
   useEffect(() => {
+    if (propsData) {
+      setSolutionData(propsData);
+      setLoading(false);
+      console.log("🎯 [SolutionMain] Using props data:", propsData);
+      return;
+    }
+
     let ignore = false;
     setLoading(true);
     setError(null);
@@ -71,7 +78,7 @@ const SolutionMain = () => {
     return () => {
       ignore = true;
     };
-  }, [location.pathname, solution]);
+  }, [location.pathname, solution, propsData]);
 
   if (loading) {
     return (

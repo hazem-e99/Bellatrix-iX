@@ -31,21 +31,29 @@ const AboutHero = ({ data }) => {
     fetchData();
   }, []);
 
-  // Use props if provided, otherwise fall back to default data
-  const heroData = data ||
-    defaultData || {
-      title: "About Bellatrix",
-      subtitle: "Your trusted partner in digital transformation",
-      description:
-        "We are a leading consultancy firm specializing in NetSuite implementations, business process optimization, and technology solutions that drive growth and efficiency.",
-      backgroundVideo: "/Videos/about-hero.mp4",
-      stats: [
-        { value: "500+", label: "Projects Completed" },
-        { value: "15+", label: "Years Experience" },
-        { value: "98%", label: "Client Satisfaction" },
-        { value: "200+", label: "Happy Clients" },
-      ],
-    };
+  // PRIORITIZE props data over default data for real-time preview
+  const heroData = data || defaultData || {
+    title: "About Bellatrix",
+    subtitle: "Your trusted partner in digital transformation",
+    description:
+      "We are a leading consultancy firm specializing in NetSuite implementations, business process optimization, and technology solutions that drive growth and efficiency.",
+    backgroundVideo: "/Videos/about-hero.mp4",
+    stats: [
+      { value: "500+", label: "Projects Completed" },
+      { value: "15+", label: "Years Experience" },
+      { value: "98%", label: "Client Satisfaction" },
+      { value: "200+", label: "Happy Clients" },
+    ],
+  };
+
+  // Debug logging for real-time updates
+  console.log("🎯 [AboutHero] Component received data:", {
+    hasPropsData: !!data,
+    propsData: data,
+    hasDefaultData: !!defaultData,
+    finalData: heroData,
+    timestamp: new Date().toISOString()
+  });
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">

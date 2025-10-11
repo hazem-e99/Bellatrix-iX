@@ -7,7 +7,18 @@ import PopularIntegrations from "./PopularIntegrations";
 import CtaSection from "./CtaSection";
 import { integrationData } from "../../../data/integrationData";
 
-const IntegrationMain = () => {
+const IntegrationMain = ({ data: propsData = null }) => {
+  // PRIORITIZE props data over default data for real-time preview
+  const displayData = propsData || integrationData;
+  
+  console.log("🎯 [IntegrationMain] Component received data:", {
+    hasPropsData: !!(propsData && Object.keys(propsData).length > 0),
+    propsData: propsData,
+    hasDefaultData: !!integrationData,
+    finalData: displayData,
+    timestamp: new Date().toISOString()
+  });
+
   return (
     <>
       <SEO
@@ -21,29 +32,29 @@ const IntegrationMain = () => {
       <main className="bg-gradient-to-br from-blue-50 to-white min-h-screen text-slate-800">
         <section data-theme="dark">
           <HeroSection
-            title={integrationData.hero.title}
-            subtitle={integrationData.hero.subtitle}
+            title={displayData.hero?.title || integrationData.hero.title}
+            subtitle={displayData.hero?.subtitle || integrationData.hero.subtitle}
           />
         </section>
 
         <section data-theme="light" className="py-20 bg-white">
           <IntegrationTypes
-            title={integrationData.integrationTypes.title}
-            items={integrationData.integrationTypes.items}
+            title={displayData.integrationTypes?.title || integrationData.integrationTypes.title}
+            items={displayData.integrationTypes?.items || integrationData.integrationTypes.items}
           />
         </section>
 
         <section data-theme="light" className="py-20 bg-gray-50">
           <BenefitsSection
-            title={integrationData.benefits.title}
-            items={integrationData.benefits.items}
+            title={displayData.benefits?.title || integrationData.benefits.title}
+            items={displayData.benefits?.items || integrationData.benefits.items}
           />
         </section>
 
         <section data-theme="light" className="py-20 bg-white">
           <PopularIntegrations
-            title={integrationData.popularIntegrations.title}
-            platforms={integrationData.popularIntegrations.platforms}
+            title={displayData.popularIntegrations?.title || integrationData.popularIntegrations.title}
+            platforms={displayData.popularIntegrations?.platforms || integrationData.popularIntegrations.platforms}
           />
         </section>
 

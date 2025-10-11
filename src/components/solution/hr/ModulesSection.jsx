@@ -32,8 +32,17 @@ const ModulesSection = ({ data = {} }) => {
     fetchData();
   }, []);
 
-  // Use props if provided, otherwise fall back to default data
+  // PRIORITIZE props data over default data for real-time preview
   const modules = data.modules || defaultData || [];
+
+  // Debug logging for real-time updates
+  console.log("🎯 [HRModulesSection] Component received data:", {
+    hasPropsData: !!(data && data.modules),
+    propsData: data,
+    hasDefaultData: !!defaultData,
+    finalData: modules,
+    timestamp: new Date().toISOString()
+  });
   return (
     <>
       <SEO

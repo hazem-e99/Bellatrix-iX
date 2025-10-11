@@ -95,9 +95,76 @@ const ContactForm = ({
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
+  
+  const messageMaxLength = 500;
+  const messageCharCount = formData.message.length;
+  const isSubmitting = submitting;
+  
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: '' }));
+    }
+  };
+  
+  const handleFieldBlur = (e) => {
+    const { name } = e.target;
+    setTouched(prev => ({ ...prev, [name]: true }));
+    
+    // Validate field on blur
+    validateField(name, formData[name]);
+  };
+  
+  const validateField = (name, value) => {
+    let error = '';
+    
+    switch (name) {
+      case 'fullName':
+        if (!value.trim()) error = 'Full name is required';
+        break;
+      case 'email':
+        if (!value.trim()) {
+          error = 'Email is required';
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+          error = 'Please enter a valid email';
+        }
+        break;
+      case 'industry':
+        if (!value || value === 'Select Industry') error = 'Please select an industry';
+        break;
+      case 'country':
+        if (!value || value === 'Select Country') error = 'Please select a country';
+        break;
+      case 'message':
+        if (!value.trim()) {
+          error = 'Message is required';
+        } else if (value.trim().length < 10) {
+          error = 'Message must be at least 10 characters';
+        }
+        break;
+    }
+    
+    setErrors(prev => ({ ...prev, [name]: error }));
+  };
+  
+  const isFormValid = () => {
+    return (
+      formData.fullName.trim() &&
+      formData.email.trim() &&
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) &&
+      formData.industry && formData.industry !== 'Select Industry' &&
+      formData.country && formData.country !== 'Select Country' &&
+      formData.message.trim() && formData.message.trim().length >= 10
+    );
+  };
 
   const handleChange = (key) => (e) => {
-    setForm((prev) => ({ ...prev, [key]: e.target.value }));
+    setFormData((prev) => ({ ...prev, [key]: e.target.value }));
   };
 
   const industryToEnum = (label) => {
@@ -139,13 +206,13 @@ const ContactForm = ({
     if (onSubmit) return onSubmit(e);
 
     const payload = {
-      fullName: form.fullName.trim(),
-      email: form.email.trim(),
-      phoneNumber: form.phoneNumber.trim() || null,
-      companyName: form.companyName.trim() || null,
-      industry: industryToEnum(form.industry),
-      country: countryToEnum(form.country),
-      message: form.message.trim(),
+      fullName: formData.fullName.trim(),
+      email: formData.email.trim(),
+      phoneNumber: formData.phone.trim() || null,
+      companyName: formData.companyName.trim() || null,
+      industry: industryToEnum(formData.industry),
+      country: countryToEnum(formData.country),
+      message: formData.message.trim(),
     };
 
     if (!payload.fullName || !payload.email || !payload.message || payload.message.length < 10 || payload.industry === 0) {
@@ -164,10 +231,10 @@ const ContactForm = ({
       if (typeof onSuccess === "function") {
         onSuccess();
       }
-      setForm({
+      setFormData({
         fullName: "",
         email: "",
-        phoneNumber: "",
+        phone: "",
         companyName: "",
         industry: "Select Industry",
         country: "Select Country",
@@ -214,9 +281,8 @@ const ContactForm = ({
                 <input
                   type={field.type}
                   name={field.name}
-                  value={formData[field.name] || ""}
-                  onChange={handleInputChange}
-                  onBlur={handleFieldBlur}
+                  value={index === 0 ? formData.fullName : index === 1 ? formData.email : formData.phone}
+                  onChange={index === 0 ? handleChange("fullName") : index === 1 ? handleChange("email") : handleChange("phoneNumber")}
                   className={`w-full px-3 py-2 mt-1 bg-[var(--color-white)] border rounded-lg focus:ring-2 focus:ring-[var(--color-focus)] focus:border-transparent outline-none transition-all duration-300 text-[var(--color-text-primary)] placeholder-[var(--color-text-muted)] ${
                     errors[field.name] && touched[field.name]
                       ? "border-red-500 focus:ring-red-500"
@@ -224,8 +290,6 @@ const ContactForm = ({
                   }`}
                   placeholder={field.placeholder}
                   required={field.required}
-                  value={index === 0 ? form.fullName : index === 1 ? form.email : form.phoneNumber}
-                  onChange={index === 0 ? handleChange("fullName") : index === 1 ? handleChange("email") : handleChange("phoneNumber")}
                 />
                 {errors[field.name] && touched[field.name] && (
                   <p className="text-red-500 text-xs mt-1 flex items-center">
@@ -272,17 +336,14 @@ const ContactForm = ({
                   <input
                     type={field.type}
                     name={field.name}
-                    value={formData[field.name] || ""}
-                    onChange={handleInputChange}
-                    onBlur={handleFieldBlur}
+                    value={formData.companyName}
+                    onChange={handleChange("companyName")}
                     className={`w-full px-3 py-2 mt-1 bg-[var(--color-white)] border rounded-lg focus:ring-2 focus:ring-[var(--color-focus)] focus:border-transparent outline-none transition-all duration-300 text-[var(--color-text-primary)] placeholder-[var(--color-text-muted)] ${
                       errors[field.name] && touched[field.name]
                         ? "border-red-500 focus:ring-red-500"
                         : "border-[var(--color-border-primary)]"
                     }`}
                     placeholder={field.placeholder}
-                    value={form.companyName}
-                    onChange={handleChange("companyName")}
                     maxLength={field.name === "companyName" ? 100 : undefined}
                   />
                 )}

@@ -13,7 +13,8 @@ const TrainingModals = ({
     closeFeatureModal,
     isContactModalOpen,
     closeContactModal,
-    renderIcon
+    renderIcon,
+    onClose
 }) => {
     return (
         <>

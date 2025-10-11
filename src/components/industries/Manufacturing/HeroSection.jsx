@@ -4,9 +4,7 @@ import Button from "../../UI/Button";
 import { motion } from "framer-motion";
 
 const HeroSection = (props) => {
-  console.log("🏭 [ManufacturingHero] All Props:", props);
-
-  // Handle multiple data structure formats
+  // PRIORITIZE props data over default data for real-time preview
   const ctaButton = props.ctaButton || props.data?.ctaButton;
   const title = props.title || props.data?.title;
   const subtitle = props.subtitle || props.data?.subtitle;
@@ -14,23 +12,11 @@ const HeroSection = (props) => {
   const backgroundImage = props.backgroundImage || props.data?.backgroundImage;
   const backgroundVideo = props.backgroundVideo || props.data?.backgroundVideo;
 
-  console.log("🏭 [ManufacturingHero] Resolved CTA:", ctaButton);
-  console.log("🏭 [ManufacturingHero] CTA Variant:", ctaButton?.variant);
-  console.log("🏭 [ManufacturingHero] Data structure analysis:", {
-    hasDataProp: !!props.data,
-    hasFlatProps: !!(props.title || props.subtitle),
-    hasCtaButton: !!ctaButton,
-    ctaButtonVariant: ctaButton?.variant,
-    ctaButtonType: typeof ctaButton?.variant,
-  });
-
   // Use form data directly with fallbacks
   const finalData = {
     title: title || "Manufacturing Solutions",
     subtitle: subtitle || "Streamline your manufacturing operations",
-    description:
-      description ||
-      "Comprehensive NetSuite solutions for manufacturing businesses",
+    description: description || "Comprehensive NetSuite solutions for manufacturing businesses",
     backgroundImage: backgroundImage || "/images/manufacturing-hero.jpg",
     backgroundVideo: backgroundVideo || "",
     ctaButton: ctaButton || {
@@ -40,12 +26,13 @@ const HeroSection = (props) => {
     },
   };
 
-  console.log("🏭 [ManufacturingHero] Final data:", finalData);
-  console.log("🔴 [ManufacturingHero] CTA Button:", finalData.ctaButton);
-  console.log(
-    "🔴 [ManufacturingHero] CTA Variant:",
-    finalData.ctaButton?.variant
-  );
+  // Debug logging for real-time updates
+  console.log("🎯 [ManufacturingHeroSection] Component received data:", {
+    hasPropsData: !!(props.title || props.subtitle || props.data),
+    props: props,
+    finalData: finalData,
+    timestamp: new Date().toISOString()
+  });
 
   return (
     <header className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">

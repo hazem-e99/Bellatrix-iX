@@ -1,16 +1,25 @@
 import React, { useEffect, useState } from 'react';
 
-const Integration = () => {
+const Integration = ({ data: propsData = null }) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // PRIORITIZE props data over fetched data for real-time preview
+    if (propsData) {
+      setData(propsData);
+      setLoading(false);
+      console.log("🎯 [Integration] Using props data:", propsData);
+      return;
+    }
+
     const fetchData = async () => {
       try {
         const response = await fetch('/data/integration-data.json');
         const jsonData = await response.json();
         setData(jsonData);
         setLoading(false);
+        console.log("🎯 [Integration] Using fetched data:", jsonData);
       } catch (error) {
         console.error('Error fetching data:', error);
         setLoading(false);
@@ -18,7 +27,7 @@ const Integration = () => {
     };
 
     fetchData();
-  }, []);
+  }, [propsData]);
 
   if (loading) {
     return <div className="min-h-screen flex items-center justify-center">Loading...</div>;

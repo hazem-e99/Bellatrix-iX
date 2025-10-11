@@ -1,7 +1,21 @@
 import React from "react";
 import SEO from "../../SEO";
 
-const HeroSection = ({ data, openContactModal }) => {
+const HeroSection = ({ data: propsData, openContactModal }) => {
+  // PRIORITIZE props data over default data for real-time preview
+  const data = propsData || {
+    title: "Retail Solutions",
+    subtitle: "Transform your retail operations",
+    description: "Comprehensive NetSuite solutions for retail businesses"
+  };
+
+  // Debug logging for real-time updates
+  console.log("🎯 [RetailHeroSection] Component received data:", {
+    hasPropsData: !!propsData,
+    propsData: propsData,
+    finalData: data,
+    timestamp: new Date().toISOString()
+  });
   return (
     <header
       className="py-12 relative overflow-hidden animate-background-glow theme-bg-animated text-white"

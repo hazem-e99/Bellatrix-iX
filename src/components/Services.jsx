@@ -25,10 +25,31 @@ const iconMap = {
 };
 
 const Services = ({
-  services = [],
-  sectionHeader = {},
-  viewAllButton = {},
+  services: propsServices = [],
+  sectionHeader: propsSectionHeader = {},
+  viewAllButton: propsViewAllButton = {},
+  data,
 }) => {
+  // PRIORITIZE props data over default data for real-time preview
+  const services = propsServices.length > 0 ? propsServices : (data?.services || []);
+  const sectionHeader = Object.keys(propsSectionHeader).length > 0 ? propsSectionHeader : (data?.sectionHeader || {});
+  const viewAllButton = Object.keys(propsViewAllButton).length > 0 ? propsViewAllButton : (data?.viewAllButton || {});
+
+  // Debug logging for real-time updates
+  console.log("🎯 [Services] Component received data:", {
+    hasPropsServices: propsServices.length > 0,
+    propsServices: propsServices,
+    hasPropsSectionHeader: Object.keys(propsSectionHeader).length > 0,
+    propsSectionHeader: propsSectionHeader,
+    hasPropsViewAllButton: Object.keys(propsViewAllButton).length > 0,
+    propsViewAllButton: propsViewAllButton,
+    hasData: !!data,
+    data: data,
+    finalServices: services,
+    finalSectionHeader: sectionHeader,
+    finalViewAllButton: viewAllButton,
+    timestamp: new Date().toISOString()
+  });
   const [showAllServices, setShowAllServices] = useState(false);
   const [isServiceModalOpen, setIsServiceModalOpen] = useState(false);
   const [selectedService, setSelectedService] = useState(null);

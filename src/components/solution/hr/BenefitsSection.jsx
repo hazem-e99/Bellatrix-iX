@@ -24,16 +24,24 @@ const BenefitsSection = ({ data, activeBenefitIdx, onShowDemo }) => {
     fetchData();
   }, []);
 
-  // Use props if provided, otherwise fall back to default data
+  // PRIORITIZE props data over default data for real-time preview
   const displayData = {
-    features: data?.features ||
-      defaultData || {
-        title: "Why Choose Our HR Solution?",
-        description:
-          "Discover the key advantages that make our HR platform the smart choice for modern businesses of all sizes and industries.",
-        items: [],
-      },
+    features: data?.features || defaultData || {
+      title: "Why Choose Our HR Solution?",
+      description:
+        "Discover the key advantages that make our HR platform the smart choice for modern businesses of all sizes and industries.",
+      items: [],
+    },
   };
+
+  // Debug logging for real-time updates
+  console.log("🎯 [HRBenefitsSection] Component received data:", {
+    hasPropsData: !!(data && data.features),
+    propsData: data,
+    hasDefaultData: !!defaultData,
+    finalData: displayData,
+    timestamp: new Date().toISOString()
+  });
   return (
     <>
       <SEO

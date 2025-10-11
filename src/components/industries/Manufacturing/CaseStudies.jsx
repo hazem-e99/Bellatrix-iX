@@ -17,9 +17,8 @@ const CaseStudies = ({ data }) => {
 
   return (
     <section
-      className="py-20 relative overflow-hidden"
+      className="py-20 relative overflow-hidden animate-background-glow theme-bg-animated"
       style={{ backgroundColor: "var(--color-brand-dark-navy)" }}
-      className="animate-background-glow theme-bg-animated"
     >
       <SEO
         title="Manufacturing Success Stories | Oracle NetSuite Case Studies"

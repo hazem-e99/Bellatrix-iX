@@ -9,7 +9,7 @@ import KeyModulesSection from "./KeyModulesSection";
 import WhyChooseSection from "./WhyChooseSection";
 import TrainingModals from "./TrainingModals";
 
-const Training = () => {
+const Training = ({ data: propsData = null }) => {
   const [isProgramModalOpen, setIsProgramModalOpen] = useState(false);
   const [selectedProgram, setSelectedProgram] = useState(null);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
@@ -19,19 +19,28 @@ const Training = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // PRIORITIZE props data over fetched data for real-time preview
+    if (propsData) {
+      setData(propsData);
+      setLoading(false);
+      console.log("🎯 [Training] Using props data:", propsData);
+      return;
+    }
+
     const fetchData = async () => {
       try {
         const response = await fetch("data/training.json");
         const jsonData = await response.json();
         setData(jsonData);
         setLoading(false);
+        console.log("🎯 [Training] Using fetched data:", jsonData);
       } catch (error) {
         console.error("Error fetching data:", error);
         setLoading(false);
       }
     };
     fetchData();
-  }, []);
+  }, [propsData]);
 
   // Video protection handlers (same as original)
   useEffect(() => {
@@ -172,6 +181,7 @@ const Training = () => {
           isContactModalOpen={isContactModalOpen}
           closeContactModal={closeContactModal}
           renderIcon={renderIcon}
+          onClose={closeContactModal}
         />
       </main>
     </>

@@ -24,7 +24,7 @@ const PayrollPainPoints = ({ painPoints }) => {
     fetchData();
   }, []);
 
-  // Use provided data or default data
+  // PRIORITIZE props data over default data for real-time preview
   const displayData = {
     title:
       defaultData?.title ||
@@ -34,6 +34,15 @@ const PayrollPainPoints = ({ painPoints }) => {
       "Our system addresses the most common payroll challenges faced by businesses:",
     items: painPoints || defaultData?.items || [],
   };
+
+  // Debug logging for real-time updates
+  console.log("🎯 [PayrollPainPoints] Component received data:", {
+    hasPropsData: !!painPoints,
+    propsData: painPoints,
+    hasDefaultData: !!defaultData,
+    finalData: displayData,
+    timestamp: new Date().toISOString()
+  });
 
   return (
     <>

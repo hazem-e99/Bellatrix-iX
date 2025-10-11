@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
-const AboutDifferentiators = ({ differentiators = [] }) => {
+const AboutDifferentiators = ({ differentiators = [], data = {} }) => {
   const [defaultData, setDefaultData] = useState(null);
 
   useEffect(() => {
@@ -24,13 +24,23 @@ const AboutDifferentiators = ({ differentiators = [] }) => {
     fetchData();
   }, []);
 
-  // Use props if provided, otherwise fall back to default data
-  const displayData = defaultData || {
+  // PRIORITIZE props data over default data for real-time preview
+  const displayData = data || defaultData || {
     title: "What Sets Us Apart",
     description:
       "Our unique combination of expertise, methodology, and commitment to excellence makes us the preferred choice for Oracle NetSuite implementations.",
     items: [],
   };
+
+  // Debug logging for real-time updates
+  console.log("🎯 [AboutDifferentiators] Component received data:", {
+    hasPropsData: !!data,
+    propsData: data,
+    hasDefaultData: !!defaultData,
+    finalData: displayData,
+    differentiatorsFromProps: differentiators,
+    timestamp: new Date().toISOString()
+  });
 
   const displayDifferentiators =
     differentiators.length > 0 ? differentiators : displayData.items;

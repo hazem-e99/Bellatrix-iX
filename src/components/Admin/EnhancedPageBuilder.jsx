@@ -28,6 +28,7 @@ import DynamicContentForm from "../UI/DynamicContentForm";
 import DynamicFormGenerator from "../UI/DynamicFormGenerator";
 import { LivePreview, SplitScreenPreview } from "../UI/LivePreview";
 import { getAboutComponentSchema } from "../../data/aboutComponentSchemas";
+import { getGeneralComponentSchema } from "../../data/generalComponentSchemas";
 import pagesAPI from "../../lib/pagesAPI";
 import api from "../../lib/api";
 
@@ -358,6 +359,23 @@ const EnhancedPageBuilder = () => {
             };
           }
 
+          // Check if this is a general component with enhanced schema
+          const generalSchema = getGeneralComponentSchema(componentType);
+          if (generalSchema) {
+            return {
+              id: componentType,
+              name: generalSchema.displayName,
+              description: generalSchema.description,
+              icon: generalSchema.icon,
+              componentType,
+              componentName: generalSchema.componentName,
+              category: generalSchema.category,
+              hasEnhancedSchema: true,
+              schema: generalSchema.schema,
+              defaultData: generalSchema.defaultData,
+            };
+          }
+
           return {
             id: componentType,
             name: componentType.replace(/([A-Z])/g, " $1").trim(), // Add spaces before capital letters
@@ -396,6 +414,22 @@ const EnhancedPageBuilder = () => {
             schemas[compType] = getAboutComponentSchema(compType);
           } catch (error) {
             console.warn(`⚠️ [SCHEMA LOAD] Failed to load schema for ${compType}:`, error);
+          }
+        });
+
+        // Pre-load schemas for general components
+        const generalComponents = [
+          'PayrollHeroSection', 'PayrollHowItWorksSection', 'PayrollWorkflowSection',
+          'PayrollStepperSection', 'PayrollPainPointsSection', 'PayrollFAQSection', 'PayrollCTASection',
+          'HRHeroSection', 'HRModulesSection', 'HRBenefitsSection', 'HRUseCasesSection',
+          'HRPricingSection', 'HRFAQSection', 'HRCTASection'
+        ];
+        
+        generalComponents.forEach(compType => {
+          try {
+            schemas[compType] = getGeneralComponentSchema(compType);
+          } catch (error) {
+            console.warn(`⚠️ [SCHEMA LOAD] Failed to load general schema for ${compType}:`, error);
           }
         });
         
@@ -1057,6 +1091,15 @@ const EnhancedPageBuilder = () => {
           timestamp: new Date().toISOString()
         });
       }
+
+      console.log("🔄 [PAGE DATA UPDATE] Updating pageData:", {
+        componentIndex: index,
+        componentType: updatedComponents[index]?.componentType,
+        field: field,
+        value: field === "contentJson" ? "JSON Object" : value,
+        contentJson: updatedComponents[index]?.contentJson,
+        totalComponents: updatedComponents.length
+      });
 
       return {
         ...prev,
@@ -3959,9 +4002,19 @@ const SectionsStep = ({
                             {(() => {
                               // Check if component has enhanced schema (use preloaded or fallback)
                               const componentSchema = componentSchemas[component.componentType] || 
-                                                      getAboutComponentSchema(component.componentType);
+                                                      getAboutComponentSchema(component.componentType) ||
+                                                      getGeneralComponentSchema(component.componentType);
                               
                               console.log("🔍 [SCHEMA CHECK]", component.componentType, "has schema:", !!componentSchema, "preloaded:", !!componentSchemas[component.componentType]);
+                              console.log("🔍 [SCHEMA DETAILS]", {
+                                componentType: component.componentType,
+                                hasAboutSchema: !!getAboutComponentSchema(component.componentType),
+                                hasGeneralSchema: !!getGeneralComponentSchema(component.componentType),
+                                hasPreloadedSchema: !!componentSchemas[component.componentType],
+                                finalSchema: componentSchema,
+                                contentJson: component.contentJson,
+                                hasContentJson: !!component.contentJson
+                              });
 
                               if (componentSchema) {
                                 // Use enhanced dynamic form generator
@@ -3972,14 +4025,106 @@ const SectionsStep = ({
                                   currentData: component.contentJson ? JSON.parse(component.contentJson) : componentSchema.defaultData
                                 });
 
+                                // For components without contentJson, try to get actual data from JSON files
+                                const actualData = component.contentJson
+                                  ? JSON.parse(component.contentJson)
+                                  : (() => {
+                                      // Try to get actual data from about.json for About components
+                                      if (component.componentType.includes('About')) {
+                                        // Return the actual data structure that matches the component
+                                        const aboutDataMap = {
+                                          AboutHeroSection: {
+                                            title: "About Bellatrix",
+                                            subtitle: "Your trusted partner in digital transformation",
+                                            description: "We are a leading consultancy firm specializing in NetSuite implementations, business process optimization, and technology solutions that drive growth and efficiency.",
+                                            backgroundVideo: "/Videos/about-hero.mp4",
+                                            stats: [
+                                              { value: "500+", label: "Projects Completed" },
+                                              { value: "15+", label: "Years Experience" },
+                                              { value: "98%", label: "Client Satisfaction" },
+                                              { value: "200+", label: "Happy Clients" }
+                                            ]
+                                          },
+                                          AboutJourneySection: {
+                                            beginningTitle: "The Beginning",
+                                            beginningText: "Founded in 2008 with a vision to bridge the gap between complex enterprise software and real business needs. Our founders recognized that many businesses were struggling to fully leverage their technology investments.",
+                                            growthTitle: "Growth & Evolution",
+                                            growthText: "Over the years, we've evolved from a small consulting firm to a comprehensive digital transformation partner, helping hundreds of organizations across various industries unlock their full potential.",
+                                            todayTitle: "Today",
+                                            todayText: "We continue to innovate and expand our services, staying at the forefront of technology trends while maintaining our core values of excellence and integrity.",
+                                            imageUrl: "/images/solution.jpg"
+                                          },
+                                          AboutMissionSection: {
+                                            title: "Our Mission",
+                                            description: "To empower businesses with innovative technology solutions that transform operations, enhance productivity, and drive sustainable growth.",
+                                            vision: "To be the global leader in business transformation consulting, helping organizations achieve their full potential through technology excellence.",
+                                            image: "/images/ourProServices.png",
+                                            stats: []
+                                          },
+                                          AboutTeamSection: {
+                                            title: "Meet Our Team",
+                                            description: "Our diverse team of experts brings together decades of experience in enterprise software, business consulting, and digital transformation.",
+                                            members: []
+                                          },
+                                          AboutValuesSection: {
+                                            title: "Our Values",
+                                            description: "These core values guide everything we do and shape how we interact with our clients, partners, and each other.",
+                                            items: []
+                                          },
+                                          AboutMilestonesSection: {
+                                            title: "Our Milestones",
+                                            description: "Key achievements and milestones that mark our journey of growth, innovation, and commitment to excellence.",
+                                            items: []
+                                          },
+                                          AboutDifferentiatorsSection: {
+                                            title: "What Sets Us Apart",
+                                            description: "Our unique combination of expertise, methodology, and commitment to excellence makes us the preferred choice for Oracle NetSuite implementations.",
+                                            items: []
+                                          },
+                                          AboutCTASection: {
+                                            title: "Ready to Build Something Great?",
+                                            subtitle: "Let's collaborate to transform your business with innovative Oracle NetSuite solutions that drive growth, efficiency, and success.",
+                                            description: "Contact us today to discuss how we can help you optimize your operations and drive growth.",
+                                            ctaButton: { text: "Start Consultation", link: "/contact", variant: "primary" },
+                                            features: [
+                                              { title: "Quick Start", description: "Get started our consultation" },
+                                              { title: "Expert Team", description: "Work with certified professionals" },
+                                              { title: "Proven Results", description: "Join our success stories" }
+                                            ]
+                                          }
+                                        };
+                                        
+                                        return aboutDataMap[component.componentType] || componentSchema.defaultData;
+                                      }
+                                      
+                                      // For other components, use empty data structure
+                                      const emptyData = {};
+                                      if (componentSchema.schema && componentSchema.schema.properties) {
+                                        Object.keys(componentSchema.schema.properties).forEach(key => {
+                                          const prop = componentSchema.schema.properties[key];
+                                          if (prop.type === 'string') {
+                                            emptyData[key] = '';
+                                          } else if (prop.type === 'array') {
+                                            emptyData[key] = [];
+                                          } else if (prop.type === 'object') {
+                                            emptyData[key] = {};
+                                          }
+                                        });
+                                      }
+                                      return emptyData;
+                                    })();
+
+                                console.log("📊 [DATA EXTRACTION]", {
+                                  componentType: component.componentType,
+                                  hasContentJson: !!component.contentJson,
+                                  extractedData: actualData,
+                                  defaultData: componentSchema.defaultData
+                                });
+
                                 return (
                                   <DynamicFormGenerator
                                     schema={componentSchema.schema}
-                                    data={
-                                      component.contentJson
-                                        ? JSON.parse(component.contentJson)
-                                        : componentSchema.defaultData
-                                    }
+                                    data={actualData}
                                     onChange={(formData) => {
                                       console.log("📝 [FORM CHANGE] New form data:", formData);
                                       // Update the entire contentJson with new form data
@@ -3994,12 +4139,26 @@ const SectionsStep = ({
                                       // Update individual field for immediate feedback
                                       const currentContentData = component.contentJson 
                                         ? JSON.parse(component.contentJson) 
-                                        : componentSchema.defaultData;
+                                        : actualData;
                                       
-                                      const updatedContentData = {
-                                        ...currentContentData,
-                                        [field]: value,
-                                      };
+                                      // Handle nested field updates (e.g., "features.0.title")
+                                      const updatedContentData = { ...currentContentData };
+                                      const fieldPath = field.split('.');
+                                      
+                                      if (fieldPath.length === 1) {
+                                        // Simple field update
+                                        updatedContentData[field] = value;
+                                      } else {
+                                        // Nested field update
+                                        let current = updatedContentData;
+                                        for (let i = 0; i < fieldPath.length - 1; i++) {
+                                          if (!current[fieldPath[i]]) {
+                                            current[fieldPath[i]] = {};
+                                          }
+                                          current = current[fieldPath[i]];
+                                        }
+                                        current[fieldPath[fieldPath.length - 1]] = value;
+                                      }
                                       
                                       handleComponentUpdate(
                                         index,
@@ -4089,6 +4248,7 @@ const SectionsStep = ({
         previewMode="desktop"
         showDebugInfo={false}
         className="mt-6"
+        key={`preview-${pageData.components.map(c => c.contentJson).join('|').slice(0, 100)}`}
       />
     </div>
   );

@@ -21,10 +21,19 @@ const PayrollHowItWorks = ({ data }) => {
     fetchData();
   }, []);
 
-  // Use props if provided, otherwise fall back to default data
+  // PRIORITIZE props data over default data for real-time preview
   const sectionData =
     data && typeof data === "object" ? data : defaultData || {};
   const steps = Array.isArray(sectionData.steps) ? sectionData.steps : [];
+
+  // Debug logging for real-time updates
+  console.log("🎯 [PayrollHowItWorks] Component received data:", {
+    hasPropsData: !!(data && typeof data === "object"),
+    propsData: data,
+    hasDefaultData: !!defaultData,
+    finalData: sectionData,
+    timestamp: new Date().toISOString()
+  });
 
   return (
     <>

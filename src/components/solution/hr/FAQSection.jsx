@@ -34,14 +34,22 @@ const FAQSection = ({ data, openFAQ, setOpenFAQ }) => {
     fetchData();
   }, []);
 
-  // Use props if provided, otherwise fall back to default data
+  // PRIORITIZE props data over default data for real-time preview
   const displayData = {
-    faq: data?.faq ||
-      defaultData || {
-        title: "Frequently Asked Questions",
-        items: [],
-      },
+    faq: data?.faq || defaultData || {
+      title: "Frequently Asked Questions",
+      items: [],
+    },
   };
+
+  // Debug logging for real-time updates
+  console.log("🎯 [HRFAQSection] Component received data:", {
+    hasPropsData: !!(data && data.faq),
+    propsData: data,
+    hasDefaultData: !!defaultData,
+    finalData: displayData,
+    timestamp: new Date().toISOString()
+  });
   return (
     <>
       <SEO

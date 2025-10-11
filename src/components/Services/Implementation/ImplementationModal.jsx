@@ -24,14 +24,22 @@ const ImplementationModal = ({ isOpen, onClose, data }) => {
     fetchData();
   }, []);
 
-  // Use props if provided, otherwise fall back to default data
-  const displayData =
-    data && Object.keys(data).length > 0
-      ? data
-      : defaultData || {
-          title: "Contact Us",
-          subtitle: "Let's discuss your project",
-        };
+  // PRIORITIZE props data over default data for real-time preview
+  const displayData = data && Object.keys(data).length > 0
+    ? data
+    : defaultData || {
+        title: "Contact Us",
+        subtitle: "Let's discuss your project",
+      };
+
+  // Debug logging for real-time updates
+  console.log("🎯 [ImplementationModal] Component received data:", {
+    hasPropsData: !!(data && Object.keys(data).length > 0),
+    propsData: data,
+    hasDefaultData: !!defaultData,
+    finalData: displayData,
+    timestamp: new Date().toISOString()
+  });
   if (!isOpen) return null;
 
   return (

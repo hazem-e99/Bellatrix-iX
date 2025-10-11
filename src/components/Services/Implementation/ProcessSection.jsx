@@ -26,17 +26,25 @@ const ProcessSection = ({ data = {} }) => {
     fetchData();
   }, []);
 
-  // Use props if provided, otherwise fall back to default data
-  const displayData =
-    data && Object.keys(data).length > 0
-      ? data
-      : defaultData || {
-          title: "Our Implementation Process",
-          subtitle: "A proven methodology for seamless business transformation",
-          image: "/Videos/implementation/implementProcess.jpg",
-          steps: [],
-          ctaButton: "Start Your Journey",
-        };
+  // PRIORITIZE props data over default data for real-time preview
+  const displayData = data && Object.keys(data).length > 0
+    ? data
+    : defaultData || {
+        title: "Our Implementation Process",
+        subtitle: "A proven methodology for seamless business transformation",
+        image: "/Videos/implementation/implementProcess.jpg",
+        steps: [],
+        ctaButton: "Start Your Journey",
+      };
+
+  // Debug logging for real-time updates
+  console.log("🎯 [ImplementationProcessSection] Component received data:", {
+    hasPropsData: !!(data && Object.keys(data).length > 0),
+    propsData: data,
+    hasDefaultData: !!defaultData,
+    finalData: displayData,
+    timestamp: new Date().toISOString()
+  });
 
   return (
     <>

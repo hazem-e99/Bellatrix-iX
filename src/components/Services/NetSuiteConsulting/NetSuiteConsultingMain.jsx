@@ -10,7 +10,7 @@ import ConsultingProcess from "./ConsultingProcess";
 import BenefitsSection from "./BenefitsSection";
 import CtaSection from "./CtaSection";
 
-const NetSuiteConsultingMain = () => {
+const NetSuiteConsultingMain = ({ data: propsData = null }) => {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [activeService, setActiveService] = useState(0);
   const [data, setData] = useState(null);
@@ -19,6 +19,14 @@ const NetSuiteConsultingMain = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // PRIORITIZE props data over fetched data for real-time preview
+    if (propsData) {
+      setData(propsData);
+      setLoading(false);
+      console.log("🎯 [NetSuiteConsultingMain] Using props data:", propsData);
+      return;
+    }
+
     const fetchData = async () => {
       try {
         const response = await fetch("./data/netSuiteConsulting.json");
@@ -27,6 +35,7 @@ const NetSuiteConsultingMain = () => {
         }
         const jsonData = await response.json();
         setData(jsonData);
+        console.log("🎯 [NetSuiteConsultingMain] Using fetched data:", jsonData);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -35,7 +44,7 @@ const NetSuiteConsultingMain = () => {
     };
 
     fetchData();
-  }, []);
+  }, [propsData]);
 
   const openContactModal = () => setIsContactModalOpen(true);
   const closeContactModal = () => setIsContactModalOpen(false);

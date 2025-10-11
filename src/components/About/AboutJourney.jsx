@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const AboutJourney = () => {
+const AboutJourney = ({ data = {} }) => {
   const [defaultData, setDefaultData] = useState(null);
 
   useEffect(() => {
@@ -23,13 +23,22 @@ const AboutJourney = () => {
     fetchData();
   }, []);
 
-  // Use default data from JSON
-  const displayData = defaultData || {
+  // PRIORITIZE props data over default data for real-time preview
+  const displayData = data || defaultData || {
     title: "Our Journey",
     description:
       "From humble beginnings to becoming a trusted Oracle NetSuite partner, our journey has been marked by innovation, growth, and unwavering commitment to excellence.",
     timeline: [],
   };
+
+  // Debug logging for real-time updates
+  console.log("🎯 [AboutJourney] Component received data:", {
+    hasPropsData: !!data,
+    propsData: data,
+    hasDefaultData: !!defaultData,
+    finalData: displayData,
+    timestamp: new Date().toISOString()
+  });
   return (
     <section
       className="py-20 relative overflow-hidden animate-background-glow theme-bg-animated"
@@ -71,21 +80,17 @@ const AboutJourney = () => {
         </div>
         <div className="flex flex-col lg:flex-row items-center gap-12">
           <div className="flex-1 space-y-6">
-            <h3 className="text-3xl font-bold text-white">The Beginning</h3>
-            <p className="text-gray-300 leading-relaxed text-lg">
-              Founded in 2008 with a vision to bridge the gap between complex
-              enterprise software and real business needs. Our founders
-              recognized that many businesses were struggling to fully leverage
-              their technology investments.
-            </p>
             <h3 className="text-3xl font-bold text-white">
-              Growth & Evolution
+              {displayData.beginningTitle || "The Beginning"}
             </h3>
             <p className="text-gray-300 leading-relaxed text-lg">
-              Over the years, we've evolved from a small consulting firm to a
-              comprehensive digital transformation partner, helping hundreds of
-              organizations across various industries unlock their full
-              potential.
+              {displayData.beginningText || "Founded in 2008 with a vision to bridge the gap between complex enterprise software and real business needs. Our founders recognized that many businesses were struggling to fully leverage their technology investments."}
+            </p>
+            <h3 className="text-3xl font-bold text-white">
+              {displayData.growthTitle || "Growth & Evolution"}
+            </h3>
+            <p className="text-gray-300 leading-relaxed text-lg">
+              {displayData.growthText || "Over the years, we've evolved from a small consulting firm to a comprehensive digital transformation partner, helping hundreds of organizations across various industries unlock their full potential."}
             </p>
             <div
               className="p-6 rounded-xl backdrop-blur-sm"
@@ -103,12 +108,10 @@ const AboutJourney = () => {
                   transition: "color 0.6s ease",
                 }}
               >
-                Today
+                {displayData.todayTitle || "Today"}
               </h4>
               <p className="text-gray-300">
-                We continue to innovate and expand our services, staying at the
-                forefront of technology trends while maintaining our core values
-                of excellence and integrity.
+                {displayData.todayText || "We continue to innovate and expand our services, staying at the forefront of technology trends while maintaining our core values of excellence and integrity."}
               </p>
             </div>
           </div>
@@ -116,7 +119,7 @@ const AboutJourney = () => {
             <div className="relative group">
               <div className="relative bg-gradient-to-br from-white/10 to-white/5 rounded-2xl p-4 backdrop-blur-sm border border-white/20 shadow-2xl">
                 <img
-                  src="/images/solution.jpg"
+                  src={displayData.imageUrl || "/images/solution.jpg"}
                   alt="Our Journey - Digital Innovation"
                   className="w-full h-auto lg:max-w-md rounded-xl shadow-lg brightness-110 contrast-110 saturate-110 group-hover:scale-105 transition-all duration-500"
                 />

@@ -34,11 +34,20 @@ const PayrollFAQ = ({ faqData = {} }) => {
     fetchData();
   }, []);
 
-  // Use provided data or default data
+  // PRIORITIZE props data over default data for real-time preview
   const displayFaqData = {
     title: faqData.title || defaultData?.title || "Frequently Asked Questions",
     items: faqData.items || defaultData?.items || [],
   };
+
+  // Debug logging for real-time updates
+  console.log("🎯 [PayrollFAQ] Component received data:", {
+    hasPropsData: !!(faqData && Object.keys(faqData).length > 0),
+    propsData: faqData,
+    hasDefaultData: !!defaultData,
+    finalData: displayFaqData,
+    timestamp: new Date().toISOString()
+  });
 
   const toggleFAQ = (index) => {
     setOpenIndex(openIndex === index ? null : index);

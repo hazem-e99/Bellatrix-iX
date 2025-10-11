@@ -1,7 +1,23 @@
 import React, { useRef, useEffect } from "react";
 import SEO from "./SEO";
 
-const Testimonials = ({ testimonials = [], sectionHeader = {} }) => {
+const Testimonials = ({ testimonials: propsTestimonials = [], sectionHeader: propsSectionHeader = {}, data }) => {
+  // PRIORITIZE props data over default data for real-time preview
+  const testimonials = propsTestimonials.length > 0 ? propsTestimonials : (data?.testimonials || []);
+  const sectionHeader = Object.keys(propsSectionHeader).length > 0 ? propsSectionHeader : (data?.sectionHeader || {});
+
+  // Debug logging for real-time updates
+  console.log("🎯 [Testimonials] Component received data:", {
+    hasPropsTestimonials: propsTestimonials.length > 0,
+    propsTestimonials: propsTestimonials,
+    hasPropsSectionHeader: Object.keys(propsSectionHeader).length > 0,
+    propsSectionHeader: propsSectionHeader,
+    hasData: !!data,
+    data: data,
+    finalTestimonials: testimonials,
+    finalSectionHeader: sectionHeader,
+    timestamp: new Date().toISOString()
+  });
   const videoRef = useRef(null);
   useEffect(() => {
     const setupVideo = async () => {

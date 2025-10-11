@@ -30,21 +30,29 @@ const PricingSection = ({ data = {} }) => {
     fetchData();
   }, []);
 
-  // Use props if provided, otherwise fall back to default data
-  const displayData =
-    data && Object.keys(data).length > 0
-      ? data
-      : defaultData || {
-          title: "Implementation Pricing",
-          subtitle:
-            "Choose the perfect implementation plan that fits your business needs and budget",
-          plans: [],
-          additionalInfo: {
-            note: "All plans include free consultation and project scoping",
-            contactText:
-              "Need a custom solution? Contact our team for personalized pricing",
-          },
-        };
+  // PRIORITIZE props data over default data for real-time preview
+  const displayData = data && Object.keys(data).length > 0
+    ? data
+    : defaultData || {
+        title: "Implementation Pricing",
+        subtitle:
+          "Choose the perfect implementation plan that fits your business needs and budget",
+        plans: [],
+        additionalInfo: {
+          note: "All plans include free consultation and project scoping",
+          contactText:
+            "Need a custom solution? Contact our team for personalized pricing",
+        },
+      };
+
+  // Debug logging for real-time updates
+  console.log("🎯 [ImplementationPricingSection] Component received data:", {
+    hasPropsData: !!(data && Object.keys(data).length > 0),
+    propsData: data,
+    hasDefaultData: !!defaultData,
+    finalData: displayData,
+    timestamp: new Date().toISOString()
+  });
 
   return (
     <>

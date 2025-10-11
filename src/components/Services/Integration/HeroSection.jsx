@@ -3,27 +3,29 @@ import SEO from "../../SEO";
 import { integrationData } from "../../../data/integrationData";
 import { mergeStringData } from "../../../utils/dataMerger";
 
-const HeroSection = ({ title, subtitle }) => {
-  // Fallback data for when no data is available
+const HeroSection = ({ title: propsTitle, subtitle: propsSubtitle, data }) => {
+  // PRIORITIZE props data over default data for real-time preview
   const fallbackData = {
     title: "NetSuite Integration Services",
-    subtitle:
-      "Connect NetSuite with your existing systems for seamless data flow",
+    subtitle: "Connect NetSuite with your existing systems for seamless data flow",
   };
 
-  // Merge data with priority: props > defaultData > fallbackData
   const displayData = {
-    title: mergeStringData(
-      title,
-      integrationData.hero.title,
-      fallbackData.title
-    ),
-    subtitle: mergeStringData(
-      subtitle,
-      integrationData.hero.subtitle,
-      fallbackData.subtitle
-    ),
+    title: propsTitle || data?.title || integrationData.hero.title || fallbackData.title,
+    subtitle: propsSubtitle || data?.subtitle || integrationData.hero.subtitle || fallbackData.subtitle,
   };
+
+  // Debug logging for real-time updates
+  console.log("🎯 [IntegrationHeroSection] Component received data:", {
+    hasPropsTitle: !!propsTitle,
+    propsTitle: propsTitle,
+    hasPropsSubtitle: !!propsSubtitle,
+    propsSubtitle: propsSubtitle,
+    hasData: !!data,
+    data: data,
+    finalDisplayData: displayData,
+    timestamp: new Date().toISOString()
+  });
 
   return (
     <>

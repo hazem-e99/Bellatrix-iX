@@ -26,17 +26,25 @@ const WhyChooseSection = ({ data = {} }) => {
     fetchData();
   }, []);
 
-  // Use props if provided, otherwise fall back to default data
-  const displayData =
-    data && Object.keys(data).length > 0
-      ? data
-      : defaultData || {
-          title: "Why Choose Bellatrix for Implementation?",
-          subtitle:
-            "We bring years of expertise, proven methodologies, and cutting-edge solutions to ensure your implementation success",
-          image: "/Videos/implementation/whyChoese.jpg",
-          features: [],
-        };
+  // PRIORITIZE props data over default data for real-time preview
+  const displayData = data && Object.keys(data).length > 0
+    ? data
+    : defaultData || {
+        title: "Why Choose Bellatrix for Implementation?",
+        subtitle:
+          "We bring years of expertise, proven methodologies, and cutting-edge solutions to ensure your implementation success",
+        image: "/Videos/implementation/whyChoese.jpg",
+        features: [],
+      };
+
+  // Debug logging for real-time updates
+  console.log("🎯 [ImplementationWhyChooseSection] Component received data:", {
+    hasPropsData: !!(data && Object.keys(data).length > 0),
+    propsData: data,
+    hasDefaultData: !!defaultData,
+    finalData: displayData,
+    timestamp: new Date().toISOString()
+  });
 
   return (
     <>

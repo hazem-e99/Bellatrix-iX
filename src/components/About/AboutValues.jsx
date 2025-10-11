@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
-const AboutValues = ({ values = [] }) => {
+const AboutValues = ({ values = [], data = {} }) => {
   const [defaultData, setDefaultData] = useState(null);
 
   useEffect(() => {
@@ -24,13 +24,23 @@ const AboutValues = ({ values = [] }) => {
     fetchData();
   }, []);
 
-  // Use default data from JSON
-  const displayData = defaultData || {
+  // PRIORITIZE props data over default data for real-time preview
+  const displayData = data || defaultData || {
     title: "Our Values",
     description:
       "These core values guide everything we do and shape how we interact with our clients, partners, and each other.",
     items: [],
   };
+
+  // Debug logging for real-time updates
+  console.log("🎯 [AboutValues] Component received data:", {
+    hasPropsData: !!data,
+    propsData: data,
+    hasDefaultData: !!defaultData,
+    finalData: displayData,
+    valuesFromProps: values,
+    timestamp: new Date().toISOString()
+  });
 
   const defaultValues = [
     {

@@ -32,8 +32,17 @@ const PricingSection = ({ data = {} }) => {
     fetchData();
   }, []);
 
-  // Use props if provided, otherwise fall back to default data
+  // PRIORITIZE props data over default data for real-time preview
   const pricing = data.pricing || defaultData || [];
+
+  // Debug logging for real-time updates
+  console.log("🎯 [HRPricingSection] Component received data:", {
+    hasPropsData: !!(data && data.pricing),
+    propsData: data,
+    hasDefaultData: !!defaultData,
+    finalData: pricing,
+    timestamp: new Date().toISOString()
+  });
   return (
     <>
       <SEO

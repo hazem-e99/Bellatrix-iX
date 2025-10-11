@@ -9,7 +9,7 @@ import CTASection from "./CTASection";
 import FAQSection from "./FAQSection";
 import DemoModal from "./DemoModal";
 
-const HRSolution = () => {
+const HRSolution = ({ data: propsData = null }) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -21,6 +21,14 @@ const HRSolution = () => {
   const [imgFade, setImgFade] = useState(true);
 
   useEffect(() => {
+    // PRIORITIZE props data over fetched data for real-time preview
+    if (propsData) {
+      setData(propsData);
+      setLoading(false);
+      console.log("🎯 [MainHR] Using props data:", propsData);
+      return;
+    }
+
     const fetchData = async () => {
       try {
         const response = await fetch("/data/hr.json");
@@ -29,6 +37,7 @@ const HRSolution = () => {
         }
         const jsonData = await response.json();
         setData(jsonData);
+        console.log("🎯 [MainHR] Using fetched data:", jsonData);
       } catch (e) {
         setError(e.message);
         console.error("Error fetching data:", e);
@@ -38,7 +47,7 @@ const HRSolution = () => {
     };
 
     fetchData();
-  }, []);
+  }, [propsData]);
 
   const handleDemoChange = (newIdx) => {
     setImgFade(false);

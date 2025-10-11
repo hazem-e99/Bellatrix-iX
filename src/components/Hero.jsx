@@ -3,13 +3,14 @@ import SEO from "./SEO";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import { AnimatePresence } from "framer-motion";
 
-const Hero = () => {
+const Hero = ({ slides: propsSlides = [], stats: propsStats = [], data }) => {
   const videoRef = useRef(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [hasUserInteracted, setHasUserInteracted] = useState(false);
 
-  const slides = [
+  // PRIORITIZE props data over default data for real-time preview
+  const defaultSlides = [
     {
       title: "Strategic Business Transformation",
       subtitle: "Oracle NetSuite Consultancy",
@@ -33,6 +34,22 @@ const Hero = () => {
         "https://assets.mixkit.co/videos/preview/mixkit-woman-analyzing-data-on-her-laptop-12347-large.mp4",
     },
   ];
+
+  const slides = propsSlides.length > 0 ? propsSlides : (data?.slides || defaultSlides);
+  const stats = propsStats.length > 0 ? propsStats : (data?.stats || []);
+
+  // Debug logging for real-time updates
+  console.log("🎯 [Hero] Component received data:", {
+    hasPropsSlides: propsSlides.length > 0,
+    propsSlides: propsSlides,
+    hasPropsStats: propsStats.length > 0,
+    propsStats: propsStats,
+    hasData: !!data,
+    data: data,
+    finalSlides: slides,
+    finalStats: stats,
+    timestamp: new Date().toISOString()
+  });
 
   // Handle video play/pause with error handling
   useEffect(() => {

@@ -25,15 +25,23 @@ const HeroSection = ({ data = {} }) => {
     fetchData();
   }, []);
 
-  // Use props if provided, otherwise fall back to default data
-  const heroData = data.hero ||
-    defaultData || {
-      title: "Modern HR, Payroll & People Management",
-      subtitle:
-        "Automate HR, empower employees, and stay compliant—on one secure platform designed for the future of work.",
-      bgVideo: "/Videos/hrVideo.mp4",
-      bgColor: "bg-gradient-to-br from-[#191970] via-black to-blue-700",
-    };
+  // PRIORITIZE props data over default data for real-time preview
+  const heroData = data.hero || defaultData || {
+    title: "Modern HR, Payroll & People Management",
+    subtitle:
+      "Automate HR, empower employees, and stay compliant—on one secure platform designed for the future of work.",
+    bgVideo: "/Videos/hrVideo.mp4",
+    bgColor: "bg-gradient-to-br from-[#191970] via-black to-blue-700",
+  };
+
+  // Debug logging for real-time updates
+  console.log("🎯 [HRHeroSection] Component received data:", {
+    hasPropsData: !!(data && data.hero),
+    propsData: data,
+    hasDefaultData: !!defaultData,
+    finalData: heroData,
+    timestamp: new Date().toISOString()
+  });
 
   return (
     <>

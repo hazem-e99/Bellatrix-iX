@@ -35,21 +35,29 @@ const HeroSection = ({ data = {}, openModal }) => {
     fetchData();
   }, []);
 
-  // Use props if provided, otherwise fall back to default data
-  const rawData =
-    data && Object.keys(data).length > 0
-      ? data
-      : defaultData || {
-          backgroundVideo: "/Videos/HomeHeroSectionV.mp4",
-          titleParts: ["Where", "Vision", "Meets", "Reality"],
-          description:
-            "We don't just implement solutions—we craft digital experiences that transform the way you do business",
-          ctaButton: {
-            text: "Start Implementation",
-            icon: "M13 7l5 5m0 0l-5 5m5-5H6",
-            variant: "primary",
-          },
-        };
+  // PRIORITIZE props data over default data for real-time preview
+  const rawData = data && Object.keys(data).length > 0
+    ? data
+    : defaultData || {
+        backgroundVideo: "/Videos/HomeHeroSectionV.mp4",
+        titleParts: ["Where", "Vision", "Meets", "Reality"],
+        description:
+          "We don't just implement solutions—we craft digital experiences that transform the way you do business",
+        ctaButton: {
+          text: "Start Implementation",
+          icon: "M13 7l5 5m0 0l-5 5m5-5H6",
+          variant: "primary",
+        },
+      };
+
+  // Debug logging for real-time updates
+  console.log("🎯 [ImplementationHeroSection] Component received data:", {
+    hasPropsData: !!(data && Object.keys(data).length > 0),
+    propsData: data,
+    hasDefaultData: !!defaultData,
+    finalData: rawData,
+    timestamp: new Date().toISOString()
+  });
 
   // Convert title/subtitle to titleParts if needed
   const displayData = {

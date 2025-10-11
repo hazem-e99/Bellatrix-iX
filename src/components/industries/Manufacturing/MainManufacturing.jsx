@@ -11,7 +11,7 @@ import Modal from "../../Modal";
 import ContactForm from "../../ContactForm";
 import { usePageData } from "../../../hooks/useJsonServerData.jsx";
 
-const Manufacturing = () => {
+const Manufacturing = ({ data: propsData = null }) => {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [activeChallenge, setActiveChallenge] = useState(0);
   const [activeSolution, setActiveSolution] = useState(0);
@@ -19,8 +19,9 @@ const Manufacturing = () => {
   const openContactModal = () => setIsContactModalOpen(true);
   const closeContactModal = () => setIsContactModalOpen(false);
 
-  // Fetch data from JSON Server
-  const { data, isLoading: loading } = usePageData("manufacturing");
+  // PRIORITIZE props data over fetched data for real-time preview
+  const { data: fetchedData, isLoading: loading } = usePageData("manufacturing");
+  const data = propsData || fetchedData;
 
   // Auto-rotate challenges and solutions
   useEffect(() => {

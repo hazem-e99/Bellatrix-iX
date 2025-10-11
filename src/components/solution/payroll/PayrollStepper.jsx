@@ -19,12 +19,21 @@ const PayrollStepper = ({ steps = [], title }) => {
     fetchData();
   }, []);
 
-  // Use provided steps or default data
+  // PRIORITIZE props data over default data for real-time preview
   const displaySteps = useMemo(
     () => (steps.length > 0 ? steps : defaultData?.steps || []),
     [steps, defaultData?.steps]
   );
   const displayTitle = title || defaultData?.title || "Payroll Process Steps";
+
+  // Debug logging for real-time updates
+  console.log("🎯 [PayrollStepper] Component received data:", {
+    hasPropsData: steps.length > 0,
+    propsData: { steps, title },
+    hasDefaultData: !!defaultData,
+    finalData: { displaySteps, displayTitle },
+    timestamp: new Date().toISOString()
+  });
 
   useEffect(() => {
     if (!displaySteps || displaySteps.length === 0) return;

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Items Update</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .test-title {
+            color: #333;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .test-step {
+            background: #f8f9fa;
+            padding: 15px;
+            border-left: 4px solid #007bff;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .test-step h4 {
+            margin: 0 0 10px 0;
+            color: #007bff;
+        }
+        .test-step ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .test-step li {
+            margin: 5px 0;
+        }
+        .expected-result {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .debug-info {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h2 class="test-title">🧪 Test: Items Update in Admin Dashboard</h2>
+        
+        <div class="test-step">
+            <h4>📋 Test Scenario</h4>
+            <p>Testing the real-time update functionality for items in the admin dashboard forms, specifically for components with nested array fields like "features" in AboutCTA component.</p>
+        </div>
+
+        <div class="test-step">
+            <h4>🔧 Steps to Test</h4>
+            <ol>
+                <li>Open the admin dashboard</li>
+                <li>Navigate to "Available Components" page</li>
+                <li>Find and select the "AboutCTA" component (or any component with items/features)</li>
+                <li>In the form, locate the "Features" section</li>
+                <li>Try to edit the "Feature Title" and "Feature Description" fields</li>
+                <li>Observe the live preview on the right side</li>
+                <li>Check the browser console for debug logs</li>
+            </ol>
+        </div>
+
+        <div class="expected-result">
+            <strong>✅ Expected Result:</strong>
+            <ul>
+                <li>Text input fields should accept typing normally</li>
+                <li>Changes should appear immediately in the live preview</li>
+                <li>Console should show debug logs for field changes</li>
+                <li>No JavaScript errors should occur</li>
+            </ul>
+        </div>
+
+        <div class="debug-info">
+            <strong>🔍 Debug Information to Look For:</strong><br>
+            • Console logs starting with "📝 [TEXT INPUT CHANGE]"<br>
+            • Console logs starting with "📝 [DynamicFormGenerator] handleChange"<br>
+            • Console logs starting with "🎯 [FIELD CHANGE]"<br>
+            • Console logs starting with "🔄 [REALTIME UPDATE]"<br>
+            • Console logs starting with "👁️ [LIVE PREVIEW]"<br>
+        </div>
+
+        <div class="test-step">
+            <h4>🐛 Troubleshooting</h4>
+            <p>If the items are not updating:</p>
+            <ol>
+                <li>Check browser console for errors</li>
+                <li>Verify that the component schema is loaded correctly</li>
+                <li>Ensure the component has the correct data structure</li>
+                <li>Check if the live preview is receiving updated data</li>
+                <li>Verify that the component is using props data correctly</li>
+            </ol>
+        </div>
+
+        <div class="test-step">
+            <h4>📊 Test Results</h4>
+            <p><strong>Status:</strong> <span id="test-status">Ready to test</span></p>
+            <p><strong>Last Updated:</strong> <span id="last-updated">2024-01-01 00:00:00</span></p>
+        </div>
+    </div>
+
+    <script>
+        // Update timestamp
+        document.getElementById('last-updated').textContent = new Date().toLocaleString();
+        
+        // Test status update function
+        function updateTestStatus(status, color = '#333') {
+            const statusElement = document.getElementById('test-status');
+            statusElement.textContent = status;
+            statusElement.style.color = color;
+        }
+        
+        // Example usage:
+        // updateTestStatus('✅ PASSED', '#28a745');
+        // updateTestStatus('❌ FAILED', '#dc3545');
+        // updateTestStatus('⚠️ PARTIAL', '#ffc107');
+    </script>
+</body>
+</html>

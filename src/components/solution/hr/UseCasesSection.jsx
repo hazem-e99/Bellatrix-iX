@@ -30,8 +30,17 @@ const UseCasesSection = ({ data = {} }) => {
     fetchData();
   }, []);
 
-  // Use props if provided, otherwise fall back to default data
+  // PRIORITIZE props data over default data for real-time preview
   const useCases = data.useCases || defaultData || [];
+
+  // Debug logging for real-time updates
+  console.log("🎯 [HRUseCasesSection] Component received data:", {
+    hasPropsData: !!(data && data.useCases),
+    propsData: data,
+    hasDefaultData: !!defaultData,
+    finalData: useCases,
+    timestamp: new Date().toISOString()
+  });
   return (
     <>
       <SEO

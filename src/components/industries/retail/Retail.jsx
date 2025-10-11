@@ -11,7 +11,7 @@ import CaseStudiesSection from "./CaseStudiesSection";
 import ImplementationSection from "./ImplementationSection";
 import CTASection from "./CTASection";
 
-const Retail = () => {
+const Retail = ({ data: propsData = null }) => {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [activeChallenge, setActiveChallenge] = useState(0);
   const [activeSolution, setActiveSolution] = useState(0);
@@ -21,14 +21,22 @@ const Retail = () => {
   const openContactModal = () => setIsContactModalOpen(true);
   const closeContactModal = () => setIsContactModalOpen(false);
 
-  // Fetch data from JSON file
+  // PRIORITIZE props data over fetched data for real-time preview
   useEffect(() => {
+    if (propsData) {
+      setPageData(propsData);
+      setLoading(false);
+      console.log("🎯 [Retail] Using props data:", propsData);
+      return;
+    }
+
     const fetchData = async () => {
       try {
         const response = await fetch("/data/retail-data.json");
         const data = await response.json();
         setPageData(data);
         setLoading(false);
+        console.log("🎯 [Retail] Using fetched data:", data);
       } catch (error) {
         console.error("Error fetching data:", error);
         setLoading(false);
@@ -36,7 +44,7 @@ const Retail = () => {
     };
 
     fetchData();
-  }, []);
+  }, [propsData]);
 
   // Auto-rotate challenges and solutions
   useEffect(() => {

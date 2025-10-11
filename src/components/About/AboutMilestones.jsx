@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
-const AboutMilestones = ({ milestones = [] }) => {
+const AboutMilestones = ({ milestones = [], data = {} }) => {
   const [defaultData, setDefaultData] = useState(null);
 
   useEffect(() => {
@@ -24,13 +24,23 @@ const AboutMilestones = ({ milestones = [] }) => {
     fetchData();
   }, []);
 
-  // Use props if provided, otherwise fall back to default data
-  const displayData = defaultData || {
+  // PRIORITIZE props data over default data for real-time preview
+  const displayData = data || defaultData || {
     title: "Our Milestones",
     description:
       "Key achievements and milestones that mark our journey of growth, innovation, and commitment to excellence.",
     items: [],
   };
+
+  // Debug logging for real-time updates
+  console.log("🎯 [AboutMilestones] Component received data:", {
+    hasPropsData: !!data,
+    propsData: data,
+    hasDefaultData: !!defaultData,
+    finalData: displayData,
+    milestonesFromProps: milestones,
+    timestamp: new Date().toISOString()
+  });
 
   const displayMilestones =
     milestones.length > 0 ? milestones : displayData.items;
