@@ -1,5 +1,6 @@
 import React from "react";
 import { smartRender } from "../../../utils/htmlSanitizer";
+import CTAButton from "../../CTAButton";
 
 const CtaSection = ({ title, subtitle, buttonText }) => {
   // Check if title contains HTML and render accordingly
@@ -21,9 +22,18 @@ const CtaSection = ({ title, subtitle, buttonText }) => {
             ? { dangerouslySetInnerHTML: subtitleHTML }
             : { children: subtitle })}
         />
-        <button className="bg-[var(--color-bg-primary)] text-[var(--color-primary-dark)] font-bold px-8 py-4 rounded-xl shadow-lg text-lg transition-all duration-300 hover:scale-105">
+        <CTAButton
+          variant="primary"
+          size="lg"
+          className="rounded-xl shadow-lg hover:scale-105"
+          modalConfig={{
+            title: "NetSuite Customization Consultation",
+            subtitle: "Let's discuss your customization needs and requirements",
+            icon: "⚙️"
+          }}
+        >
           {buttonText}
-        </button>
+        </CTAButton>
       </div>
     </section>
   );

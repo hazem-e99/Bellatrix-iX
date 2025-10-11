@@ -165,9 +165,10 @@ const DynamicPageRenderer = () => {
 
     if (component.contentJson) {
       try {
-        rawData = typeof component.contentJson === "string"
-          ? JSON.parse(component.contentJson)
-          : component.contentJson;
+        rawData =
+          typeof component.contentJson === "string"
+            ? JSON.parse(component.contentJson)
+            : component.contentJson;
       } catch (err) {
         console.warn("Failed to parse contentJson:", err);
       }
@@ -182,9 +183,22 @@ const DynamicPageRenderer = () => {
   // Build safe props
   const buildSafeProps = (props) => {
     const commonArrayKeys = [
-      "items", "list", "milestones", "services", "steps", "faqs", 
-      "features", "plans", "members", "values", "sections", "cases", 
-      "caseStudies", "benefits", "types", "programs"
+      "items",
+      "list",
+      "milestones",
+      "services",
+      "steps",
+      "faqs",
+      "features",
+      "plans",
+      "members",
+      "values",
+      "sections",
+      "cases",
+      "caseStudies",
+      "benefits",
+      "types",
+      "programs",
     ];
     const safe = { ...(props || {}) };
     commonArrayKeys.forEach((key) => {
@@ -223,7 +237,10 @@ const DynamicPageRenderer = () => {
         );
       } else {
         // Old sections format
-        const transformedProps = transformProps(section.componentId, section.props);
+        const transformedProps = transformProps(
+          section.componentId,
+          section.props
+        );
         return (
           <section key={sectionId} data-theme={themeAttribute}>
             <Component {...transformedProps} />

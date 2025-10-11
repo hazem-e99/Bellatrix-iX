@@ -153,8 +153,6 @@ const Navbar = ({ industries = [] }) => {
     { title: "Retail & E-commerce", link: "/industries/retail" },
   ];
 
-
-
   const handleMenuEnter = (dropdown) => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);

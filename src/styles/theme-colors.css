@@ -329,7 +329,7 @@
 .admin-layout,
 .admin-dashboard,
 .admin-component {
-  --color-text-secondary: var(--color-text-inverse) !important;
+  --color-text-secondary: var(--color-text-muted) !important;
 }
 
 /* ==================================================

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import {
   PlusIcon,
@@ -25,6 +25,9 @@ import SectionDataEditor from "./SectionDataEditor";
 import PagePreview from "./PagePreview";
 import MediaInputDetector from "../UI/MediaInputDetector";
 import DynamicContentForm from "../UI/DynamicContentForm";
+import DynamicFormGenerator from "../UI/DynamicFormGenerator";
+import { LivePreview, SplitScreenPreview } from "../UI/LivePreview";
+import { getAboutComponentSchema } from "../../data/aboutComponentSchemas";
 import pagesAPI from "../../lib/pagesAPI";
 import api from "../../lib/api";
 
@@ -40,6 +43,73 @@ const EnhancedPageBuilder = () => {
   // Ref to prevent multiple simultaneous API calls
   const isSavingRef = useRef(false);
 
+  // Page data - moved up to fix initialization order
+  const [pageData, setPageData] = useState({
+    id: null, // Add page ID to state
+    name: "",
+    categoryId: null,
+    slug: "",
+    metaTitle: "",
+    metaDescription: "",
+    isHomepage: false,
+    isPublished: false,
+    components: [],
+  });
+  
+  // Debounced auto-save system
+  const autoSaveTimeoutRef = useRef(null);
+  
+  // Debounced auto-save function
+  const debouncedAutoSave = useCallback((componentIndex, componentData) => {
+    // Clear any existing timeout
+    if (autoSaveTimeoutRef.current) {
+      clearTimeout(autoSaveTimeoutRef.current);
+    }
+    
+    // Set new timeout for auto-save
+    autoSaveTimeoutRef.current = setTimeout(() => {
+      const component = pageData.components[componentIndex];
+      if (!component?.id || !pageData.id) {
+        console.log("⚠️ [AUTO-SAVE] Skipping auto-save - component or page not saved yet");
+        return;
+      }
+      
+      const updateData = {
+        id: component.id,
+        pageId: pageData.id,
+        componentType: component.componentType,
+        componentName: component.componentName || "",
+        contentJson: JSON.stringify(componentData, null, 2),
+        orderIndex: component.orderIndex !== undefined ? component.orderIndex : componentIndex,
+        isVisible: Boolean(component.isVisible === true || component.isVisible === 1),
+        theme: component.theme === 1 ? 1 : 2,
+      };
+      
+      console.log("💾 [AUTO-SAVE] Saving component:", {
+        componentType: component.componentType,
+        componentId: component.id,
+        dataKeys: Object.keys(componentData)
+      });
+      
+      pagesAPI.updatePageComponent(component.id, updateData)
+        .then(() => {
+          console.log("✅ [AUTO-SAVE] Component saved successfully");
+        })
+        .catch((error) => {
+          console.error("❌ [AUTO-SAVE] Failed to save component:", error);
+        });
+    }, 1500); // 1.5 second delay
+  }, [pageData.components, pageData.id]);
+
+  // Cleanup auto-save timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (autoSaveTimeoutRef.current) {
+        clearTimeout(autoSaveTimeoutRef.current);
+      }
+    };
+  }, []);
+
   // Step navigation handler
   const handleStepClick = (stepId) => {
     console.log("🎯 [STEP NAVIGATION] Clicked step:", stepId);
@@ -53,19 +123,6 @@ const EnhancedPageBuilder = () => {
       console.log("❌ [STEP NAVIGATION] Cannot skip ahead to future steps");
     }
   };
-
-  // Page data
-  const [pageData, setPageData] = useState({
-    id: null, // Add page ID to state
-    name: "",
-    categoryId: null,
-    slug: "",
-    metaTitle: "",
-    metaDescription: "",
-    isHomepage: false,
-    isPublished: false,
-    components: [],
-  });
 
   // Available components derived dynamically from component registry
   const [availableComponents, setAvailableComponents] = useState([]);
@@ -284,6 +341,23 @@ const EnhancedPageBuilder = () => {
           const category = categorizeComponent(componentType, path);
           const icon = getComponentIcon(componentType, category);
 
+          // Check if this is an About component with enhanced schema
+          const aboutSchema = getAboutComponentSchema(componentType);
+          if (aboutSchema) {
+            return {
+              id: componentType,
+              name: aboutSchema.displayName,
+              description: aboutSchema.description,
+              icon: aboutSchema.icon,
+              componentType,
+              componentName: aboutSchema.componentName,
+              category: aboutSchema.category,
+              hasEnhancedSchema: true,
+              schema: aboutSchema.schema,
+              defaultData: aboutSchema.defaultData,
+            };
+          }
+
           return {
             id: componentType,
             name: componentType.replace(/([A-Z])/g, " $1").trim(), // Add spaces before capital letters
@@ -292,6 +366,7 @@ const EnhancedPageBuilder = () => {
             componentType,
             componentName: componentType,
             category,
+            hasEnhancedSchema: false,
           };
         });
 
@@ -303,10 +378,42 @@ const EnhancedPageBuilder = () => {
     loadRegistry();
   }, []);
 
+  // Load About component schemas for enhanced form generation
+  useEffect(() => {
+    const loadSchemas = async () => {
+      try {
+        const schemas = {};
+        
+        // Pre-load schemas for all About components
+        const aboutComponents = [
+          'AboutMissionSection', 'AboutTeamSection', 'AboutValuesSection',
+          'AboutJourneySection', 'AboutMilestonesSection', 'AboutDifferentiatorsSection', 
+          'AboutCTASection', 'AboutHeroSection'
+        ];
+        
+        aboutComponents.forEach(compType => {
+          try {
+            schemas[compType] = getAboutComponentSchema(compType);
+          } catch (error) {
+            console.warn(`⚠️ [SCHEMA LOAD] Failed to load schema for ${compType}:`, error);
+          }
+        });
+        
+        setComponentSchemas(schemas);
+        console.log("✅ [SCHEMAS LOADED] Available schemas:", Object.keys(schemas));
+      } catch (error) {
+        console.error("❌ [SCHEMA LOAD ERROR] Failed to load component schemas:", error);
+      }
+    };
+    
+    loadSchemas();
+  }, []);
+
   // UI State
   const [editingComponent, setEditingComponent] = useState(null);
   const [showSectionEditor, setShowSectionEditor] = useState(false);
   const [showPagePreview, setShowPagePreview] = useState(false);
+  const [componentSchemas, setComponentSchemas] = useState({});
 
   const steps = [
     { id: 1, title: "Category", description: "Choose a category for the page" },
@@ -483,9 +590,19 @@ const EnhancedPageBuilder = () => {
       setLoading(true);
 
       // Always use schema-based default data for consistent pre-filling
-      const defaultContent = getDefaultDataForComponent(
-        component.componentType
-      );
+      let defaultContent = getDefaultDataForComponent(component.componentType);
+      
+      // For About components, also check schema-based defaults
+      if (component.componentType.includes("About")) {
+        const componentSchema = getAboutComponentSchema(component.componentType);
+        if (componentSchema && componentSchema.defaultData) {
+          defaultContent = {
+            ...defaultContent,
+            ...componentSchema.defaultData
+          };
+          console.log(`📋 [SCHEMA DEFAULT] Using schema defaults for ${component.componentType}:`, componentSchema.defaultData);
+        }
+      }
 
       console.log(
         `🆕 [ADD COMPONENT] Adding ${component.componentType} with default data:`,
@@ -657,13 +774,30 @@ const EnhancedPageBuilder = () => {
 
   // Function to update a specific component field
   const updateComponent = (index, field, value) => {
-    console.log("🔄 [MANUFACTURING UPDATE CRITICAL]", {
-      index: index,
-      field: field,
-      value: value,
+    console.log("🔄 [REALTIME UPDATE] Component:", index, "Field:", field, "Value:", value);
+    console.log("🔄 [REALTIME UPDATE] Context:", {
       componentType: pageData.components[index]?.componentType,
       currentContentJson: pageData.components[index]?.contentJson,
+      fieldType: typeof value,
+      isAboutMissionSection: pageData.components[index]?.componentType === 'AboutMissionSection'
     });
+
+    // Special debugging for AboutMissionSection
+    if (pageData.components[index]?.componentType === 'AboutMissionSection') {
+      console.log("🎯 [AboutMissionSection REALTIME] Field update:", {
+        field,
+        value,
+        valueType: typeof value,
+        isArray: Array.isArray(value),
+        currentData: (() => {
+          try {
+            return JSON.parse(pageData.components[index]?.contentJson || '{}');
+          } catch (e) {
+            return { parseError: e.message };
+          }
+        })()
+      });
+    }
 
     // Special handling for image fields
     if (field === "image" || field === "contentJson") {
@@ -711,6 +845,14 @@ const EnhancedPageBuilder = () => {
           ...currentComponent,
           contentJson: value,
         };
+        
+        // Trigger debounced auto-save for contentJson updates
+        try {
+          const parsedData = JSON.parse(value);
+          debouncedAutoSave(index, parsedData);
+        } catch (e) {
+          console.warn("⚠️ [AUTO-SAVE] Invalid JSON, skipping auto-save:", e);
+        }
       } else if (
         field === "isVisible" ||
         field === "theme" ||
@@ -898,6 +1040,24 @@ const EnhancedPageBuilder = () => {
         });
       }
 
+      // About Components Debug Logging
+      if (updatedComponents[index]?.componentType?.includes("About")) {
+        console.log("🏢 [ABOUT COMPONENT UPDATE] Real-time update:", {
+          componentType: updatedComponents[index].componentType,
+          field: field,
+          value: field === "contentJson" ? "JSON Object" : value,
+          contentJson: updatedComponents[index].contentJson,
+          parsedContentJson: (() => {
+            try {
+              return JSON.parse(updatedComponents[index].contentJson || "{}");
+            } catch (e) {
+              return { parseError: e.message };
+            }
+          })(),
+          timestamp: new Date().toISOString()
+        });
+      }
+
       return {
         ...prev,
         components: updatedComponents,
@@ -1016,6 +1176,45 @@ const EnhancedPageBuilder = () => {
         );
       }
     }
+
+    // Immediate API sync for critical AboutMissionSection fields (real-time synchronization)
+    if (pageData.components[index]?.componentType === 'AboutMissionSection' && 
+        (field === 'title' || field === 'description' || field === 'vision' || field === 'subtitle')) {
+      const component = pageData.components[index];
+      if (component?.id && pageData.id) {
+        console.log("🚀 [IMMEDIATE SYNC] Critical AboutMissionSection field update:", {
+          field, 
+          value, 
+          componentId: component.id
+        });
+
+        const currentContentData = (() => {
+          try {
+            return JSON.parse(component.contentJson || '{}');
+          } catch {
+            return {};
+          }
+        })();
+
+        const updateData = {
+          id: component.id,
+          pageId: pageData.id,
+          componentType: component.componentType,
+          componentName: component.componentName || "",
+          contentJson: JSON.stringify({
+            ...currentContentData,
+            [field]: value
+          }, null, 2),
+          orderIndex: component.orderIndex !== undefined ? component.orderIndex : index,
+          isVisible: Boolean(component.isVisible === true || component.isVisible === 1),
+          theme: component.theme === 1 ? 1 : 2,
+        };
+
+        pagesAPI.updatePageComponent(component.id, updateData)
+          .then(() => console.log("✅ [IMMEDIATE SYNC] AboutMissionSection field updated:", field))
+          .catch(error => console.error("❌ [IMMEDIATE SYNC] Failed:", error));
+      }
+    }
   };
 
   const getDefaultDataForComponent = (componentType) => {
@@ -1124,17 +1323,17 @@ const EnhancedPageBuilder = () => {
       },
 
       AboutHeroSection: {
-        title: "About Us",
-        subtitle: "Your trusted technology partner",
+        title: "About Bellatrix",
+        subtitle: "Your trusted partner in digital transformation",
         description:
-          "We help businesses transform through innovative technology solutions",
-        backgroundImage: "/images/about-hero.jpg",
-        backgroundVideo: "",
-        ctaButton: {
-          text: "Learn More",
-          link: "/about",
-          variant: validateVariant("primary"),
-        },
+          "We are a leading consultancy firm specializing in NetSuite implementations, business process optimization, and technology solutions that drive growth and efficiency.",
+        backgroundVideo: "/Videos/about-hero.mp4",
+        stats: [
+          { value: "500+", label: "Projects Completed" },
+          { value: "15+", label: "Years Experience" },
+          { value: "98%", label: "Client Satisfaction" },
+          { value: "200+", label: "Happy Clients" },
+        ],
       },
       // Payroll Sections
       PayrollHowItWorksSection: {
@@ -2221,27 +2420,14 @@ const EnhancedPageBuilder = () => {
 
       // About Sections
       AboutMissionSection: {
-        title: "Our Mission",
-        subtitle: "Empowering business transformation",
-        description:
-          "We are committed to helping businesses achieve their full potential through innovative technology solutions and expert guidance.",
-        missionPoints: [
-          {
-            title: "Innovation",
-            description: "Delivering cutting-edge solutions",
-            icon: "💡",
-          },
-          {
-            title: "Excellence",
-            description: "Maintaining the highest standards",
-            icon: "⭐",
-          },
-          {
-            title: "Partnership",
-            description: "Building lasting relationships",
-            icon: "🤝",
-          },
-        ],
+        title: "",
+        subtitle: "",
+        description: "",
+        vision: "",
+        additionalContent: "",
+        image: "",
+        stats: [],
+        missionPoints: []
       },
 
       AboutValuesSection: {
@@ -2779,6 +2965,7 @@ const EnhancedPageBuilder = () => {
             onRemoveComponent={removeComponent}
             onDuplicateComponent={duplicateComponent}
             onMoveComponent={moveComponent}
+            componentSchemas={componentSchemas}
           />
         );
       case 4:
@@ -3189,6 +3376,7 @@ const SectionsStep = ({
   onUpdateComponent,
   onRemoveComponent,
   onDuplicateComponent,
+  componentSchemas = {},
 }) => {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
@@ -3764,22 +3952,82 @@ const SectionsStep = ({
                           </div>
                         </div>
 
-                        {/* Dynamic Form View */}
+                        {/* Enhanced Schema-based Form View */}
                         {(!component.viewMode ||
                           component.viewMode === "form") && (
                           <div className="bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 p-4">
-                            <DynamicContentForm
-                              contentJson={component.contentJson || "{}"}
-                              componentType={component.componentType}
-                              onChange={(jsonString) =>
-                                handleComponentUpdate(
-                                  index,
-                                  "contentJson",
-                                  jsonString
-                                )
+                            {(() => {
+                              // Check if component has enhanced schema (use preloaded or fallback)
+                              const componentSchema = componentSchemas[component.componentType] || 
+                                                      getAboutComponentSchema(component.componentType);
+                              
+                              console.log("🔍 [SCHEMA CHECK]", component.componentType, "has schema:", !!componentSchema, "preloaded:", !!componentSchemas[component.componentType]);
+
+                              if (componentSchema) {
+                                // Use enhanced dynamic form generator
+                                console.log("📝 [FORM RENDER] DynamicFormGenerator for:", {
+                                  componentType: component.componentType,
+                                  hasSchema: !!componentSchema.schema,
+                                  hasData: !!component.contentJson,
+                                  currentData: component.contentJson ? JSON.parse(component.contentJson) : componentSchema.defaultData
+                                });
+
+                                return (
+                                  <DynamicFormGenerator
+                                    schema={componentSchema.schema}
+                                    data={
+                                      component.contentJson
+                                        ? JSON.parse(component.contentJson)
+                                        : componentSchema.defaultData
+                                    }
+                                    onChange={(formData) => {
+                                      console.log("📝 [FORM CHANGE] New form data:", formData);
+                                      // Update the entire contentJson with new form data
+                                      handleComponentUpdate(
+                                        index,
+                                        "contentJson",
+                                        JSON.stringify(formData, null, 2)
+                                      );
+                                    }}
+                                    onFieldChange={(field, value) => {
+                                      console.log("🎯 [FIELD CHANGE]", field, value);
+                                      // Update individual field for immediate feedback
+                                      const currentContentData = component.contentJson 
+                                        ? JSON.parse(component.contentJson) 
+                                        : componentSchema.defaultData;
+                                      
+                                      const updatedContentData = {
+                                        ...currentContentData,
+                                        [field]: value,
+                                      };
+                                      
+                                      handleComponentUpdate(
+                                        index,
+                                        "contentJson",
+                                        JSON.stringify(updatedContentData, null, 2)
+                                      );
+                                    }}
+                                    componentType={component.componentType}
+                                  />
+                                );
+                              } else {
+                                // Fallback to existing form
+                                return (
+                                  <DynamicContentForm
+                                    contentJson={component.contentJson || "{}"}
+                                    componentType={component.componentType}
+                                    onChange={(jsonString) =>
+                                      handleComponentUpdate(
+                                        index,
+                                        "contentJson",
+                                        jsonString
+                                      )
+                                    }
+                                    className="text-white [&_label]:text-gray-300 [&_input]:bg-white/10 [&_input]:border-white/20 [&_input]:text-white [&_input::placeholder]:text-white/50 [&_input:focus]:border-blue-400 [&_button]:bg-white/10 [&_button]:border-white/20 [&_button]:text-white [&_button:hover]:bg-white/20"
+                                  />
+                                );
                               }
-                              className="text-white [&_label]:text-gray-300 [&_input]:bg-white/10 [&_input]:border-white/20 [&_input]:text-white [&_input::placeholder]:text-white/50 [&_input:focus]:border-blue-400 [&_button]:bg-white/10 [&_button]:border-white/20 [&_button]:text-white [&_button:hover]:bg-white/20"
-                            />
+                            })()}
                           </div>
                         )}
 
@@ -3832,6 +4080,16 @@ const SectionsStep = ({
           )}
         </CardContent>
       </Card>
+
+      {/* Live Preview Section */}
+      <LivePreview
+        components={pageData.components.filter(
+          (comp) => comp.isVisible !== false && comp.isVisible !== 0
+        )}
+        previewMode="desktop"
+        showDebugInfo={false}
+        className="mt-6"
+      />
     </div>
   );
 };

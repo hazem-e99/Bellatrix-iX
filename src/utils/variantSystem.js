@@ -198,7 +198,7 @@ export const getRoutesByCategory = () => {
     main: [
       { value: '/', label: 'Home' },
       { value: '/about', label: 'About' },
-      { value: '/contact', label: 'Contact' },
+      { value: null, label: 'Contact (Modal)' },
       { value: '/services', label: 'Services' },
       { value: '/industries', label: 'Industries' }
     ],

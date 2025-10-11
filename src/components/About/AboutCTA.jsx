@@ -1,4 +1,5 @@
 import React from "react";
+import CTAButton from "../CTAButton";
 
 const AboutCTA = ({
   title,
@@ -28,7 +29,7 @@ const AboutCTA = ({
       description ||
       "Contact us today to discuss how we can help you optimize your operations and drive growth.",
     buttonText: ctaButton?.text || "Start Consultation",
-    buttonLink: ctaButton?.link || "/about/contact",
+    buttonLink: ctaButton?.link || null,
     variant: ctaButton?.variant || "primary",
     features: features || [
       {
@@ -112,29 +113,19 @@ const AboutCTA = ({
                 </div>
               ))}
             </div>
-            {finalData.buttonLink ? (
-              <a
-                href={finalData.buttonLink}
-                className="inline-block theme-cta-button text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300"
-                style={{
-                  background: "var(--color-primary)",
-                  borderColor: "var(--color-primary-dark)",
-                }}
-              >
-                {finalData.buttonText}
-              </a>
-            ) : (
-              <button
-                onClick={onOpenContactModal}
-                className="theme-cta-button text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300"
-                style={{
-                  background: "var(--color-primary)",
-                  borderColor: "var(--color-primary-dark)",
-                }}
-              >
-                {finalData.buttonText}
-              </button>
-            )}
+            <CTAButton
+              variant="primary"
+              size="lg"
+              className="theme-cta-button rounded-full shadow-lg hover:shadow-xl"
+              modalConfig={{
+                title: "Contact Us - About Bellatrix",
+                subtitle: "Let's discuss how we can help transform your business",
+                icon: "🚀"
+              }}
+              href={finalData.buttonLink}
+            >
+              {finalData.buttonText}
+            </CTAButton>
           </div>
         </div>
       </div>

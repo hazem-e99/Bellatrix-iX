@@ -5,6 +5,7 @@ import {
   getVariantClasses,
   validateVariant,
 } from "../../../utils/variantSystem";
+import CTAButton from "../../CTAButton";
 
 const HeroSection = ({ data = {}, openModal }) => {
   const [defaultData, setDefaultData] = useState(null);
@@ -188,15 +189,20 @@ const HeroSection = ({ data = {}, openModal }) => {
               </p>
             </div>
 
-            {/* CTA Button - Now using variant system */}
+            {/* CTA Button - Now using global CTA system */}
             <div className="text-center">
-              <button
-                onClick={openModal}
-                className={`group relative px-10 py-4 font-bold text-lg rounded-full overflow-hidden transition-all duration-300 transform hover:scale-105 hover:shadow-2xl animate-slide-up-delay ${variantClasses}`}
-              >
-                <span className="relative z-10 flex items-center justify-center">
+              <CTAButton
+                variant={ctaVariant}
+                size="lg"
+                className="group relative rounded-full overflow-hidden animate-slide-up-delay"
+                modalConfig={{
+                  title: "Start NetSuite Implementation",
+                  subtitle: "Let's discuss your implementation requirements and timeline",
+                  icon: "🚀"
+                }}
+                icon={
                   <svg
-                    className="w-5 h-5 mr-2 transition-transform group-hover:translate-x-1"
+                    className="w-5 h-5 transition-transform group-hover:translate-x-1"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -208,10 +214,10 @@ const HeroSection = ({ data = {}, openModal }) => {
                       d={displayData.ctaButton.icon}
                     />
                   </svg>
-                  {displayData.ctaButton.text}
-                </span>
-                <div className="absolute inset-0 bg-gray-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              </button>
+                }
+              >
+                {displayData.ctaButton.text}
+              </CTAButton>
             </div>
           </div>
         </div>

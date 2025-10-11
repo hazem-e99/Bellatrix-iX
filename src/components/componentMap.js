@@ -2,6 +2,17 @@
 
 // Map componentType to componentPath
 export const idToPathMap = {
+  // About Components
+  AboutHeroSection: "About/AboutHero",
+  AboutMissionSection: "About/AboutMission", 
+  AboutTeamSection: "About/AboutTeam",
+  AboutValuesSection: "About/AboutValues",
+  AboutJourneySection: "About/AboutJourney",
+  AboutMilestonesSection: "About/AboutMilestones",
+  AboutDifferentiatorsSection: "About/AboutDifferentiators",
+  AboutCTASection: "About/AboutCTA",
+  
+  // Existing Components
   PayrollHeroSection: "solution/payroll/PayrollHero",
   PayrollHowItWorksSection: "solution/payroll/PayrollHowItWorks",
   PayrollWorkflowSection: "solution/payroll/PayrollWorkflow",
