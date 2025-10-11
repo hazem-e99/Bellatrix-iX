@@ -3,6 +3,7 @@ import SEO from "../../SEO";
 import { integrationData } from "../../../data/integrationData";
 import { mergeStringData } from "../../../utils/dataMerger";
 import { smartRender } from "../../../utils/htmlSanitizer";
+import CTAButton from "../../CTAButton";
 
 const CtaSection = ({ title, subtitle, buttonText }) => {
   // Fallback data for when no data is available
@@ -61,12 +62,18 @@ const CtaSection = ({ title, subtitle, buttonText }) => {
               : { children: displayData.subtitle })}
           />
         </header>
-        <button
-          className="bg-white text-blue-800 font-bold px-8 py-4 rounded-xl shadow-lg text-lg transition-all duration-300 hover:scale-105"
-          aria-label="Start Oracle NetSuite Integration Process"
+        <CTAButton
+          variant="primary"
+          size="lg"
+          className="rounded-xl shadow-lg hover:scale-105"
+          modalConfig={{
+            title: "NetSuite Integration Consultation",
+            subtitle: "Let's discuss your integration needs and requirements",
+            icon: "🔗"
+          }}
         >
           {displayData.buttonText}
-        </button>
+        </CTAButton>
       </article>
     </>
   );

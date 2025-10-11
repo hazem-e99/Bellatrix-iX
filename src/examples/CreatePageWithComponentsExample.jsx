@@ -26,7 +26,7 @@ const CreatePageWithComponentsExample = () => {
         title: 'مرحباً بك',
         subtitle: 'نحن نقدم أفضل الخدمات',
         buttonText: 'ابدأ الآن',
-        buttonLink: '/contact'
+        buttonLink: null
       }),
       orderIndex: 0
     },

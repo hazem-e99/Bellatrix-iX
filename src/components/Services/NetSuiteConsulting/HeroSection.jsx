@@ -1,5 +1,6 @@
 import React from "react";
 import SEO from "../../SEO";
+import CTAButton from "../../CTAButton";
 
 const HeroSection = ({ title, description, ctaText, ctaIcon }) => {
   return (
@@ -97,13 +98,18 @@ const HeroSection = ({ title, description, ctaText, ctaIcon }) => {
             </p>
 
             <div style={{ textAlign: "center" }}>
-              <a
-                href="#request-info"
-                className="group relative inline-block min-w-[180px] min-h-[56px] font-bold text-sm uppercase leading-5 rounded-md px-4 py-4 mt-8 mb-0 no-underline transition-all duration-300 transform hover:scale-105 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] hover:from-[var(--color-primary-light)] hover:to-[var(--color-primary)] text-[var(--color-text-inverse)] border-2 border-[var(--color-primary-light)] hover:border-[var(--color-primary)] hover:shadow-lg hover:shadow-[var(--color-primary)]/25"
-              >
-                <span className="relative z-10 flex items-center justify-center">
+              <CTAButton
+                variant="primary"
+                size="lg"
+                className="group relative min-w-[180px] min-h-[56px] font-bold text-sm uppercase leading-5 rounded-md mt-8 mb-0 transition-all duration-300 transform hover:scale-105 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] hover:from-[var(--color-primary-light)] hover:to-[var(--color-primary)] text-[var(--color-text-inverse)] border-2 border-[var(--color-primary-light)] hover:border-[var(--color-primary)] hover:shadow-lg hover:shadow-[var(--color-primary)]/25"
+                modalConfig={{
+                  title: "NetSuite Consulting Request",
+                  subtitle: "Let's discuss your NetSuite consulting needs and create a customized solution",
+                  icon: "💼"
+                }}
+                icon={
                   <svg
-                    className="w-5 h-5 mr-2 transition-transform group-hover:translate-x-1"
+                    className="w-5 h-5 transition-transform group-hover:translate-x-1"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -115,10 +121,10 @@ const HeroSection = ({ title, description, ctaText, ctaIcon }) => {
                       d={ctaIcon}
                     />
                   </svg>
-                  {ctaText}
-                </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-primary-dark)]/20 to-[var(--color-primary)]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-md"></div>
-              </a>
+                }
+              >
+                {ctaText}
+              </CTAButton>
             </div>
           </div>
         </div>

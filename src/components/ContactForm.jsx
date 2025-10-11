@@ -17,20 +17,34 @@ const ContactForm = ({
       type: "text",
       placeholder: "John Doe",
       required: true,
+      name: "fullName",
     },
     {
       label: "Email Address *",
       type: "email",
       placeholder: "john@company.com",
       required: true,
+      name: "email",
     },
-    { label: "Phone Number", type: "tel", placeholder: "+1 (555) 123-4567" },
+    { 
+      label: "Phone Number", 
+      type: "tel", 
+      placeholder: "+1 (555) 123-4567",
+      name: "phone",
+    },
   ],
   companyFields = [
-    { label: "Company Name", type: "text", placeholder: "Your Company Inc." },
+    { 
+      label: "Company Name", 
+      type: "text", 
+      placeholder: "Your Company Inc.",
+      name: "companyName",
+    },
     {
-      label: "Industry",
+      label: "Industry *",
       type: "select",
+      name: "industry",
+      required: true,
       options: [
         "Select Industry",
         "Manufacturing",
@@ -44,8 +58,10 @@ const ContactForm = ({
       ],
     },
     {
-      label: "Country",
+      label: "Country *",
       type: "select",
+      name: "country",
+      required: true,
       options: [
         "Select Country",
         "United States",
@@ -65,10 +81,11 @@ const ContactForm = ({
   onSuccess,
   onError,
 }) => {
-  const [form, setForm] = useState({
+  // Form state
+  const [formData, setFormData] = useState({
     fullName: "",
     email: "",
-    phoneNumber: "",
+    phone: "",
     companyName: "",
     industry: "Select Industry",
     country: "Select Country",
@@ -196,12 +213,26 @@ const ContactForm = ({
                 </label>
                 <input
                   type={field.type}
-                  className="w-full px-3 py-2 mt-1 bg-[var(--color-white)] border border-[var(--color-border-primary)] rounded-lg focus:ring-2 focus:ring-[var(--color-focus)] focus:border-transparent outline-none transition-all duration-300 text-[var(--color-text-primary)] placeholder-[var(--color-text-muted)]"
+                  name={field.name}
+                  value={formData[field.name] || ""}
+                  onChange={handleInputChange}
+                  onBlur={handleFieldBlur}
+                  className={`w-full px-3 py-2 mt-1 bg-[var(--color-white)] border rounded-lg focus:ring-2 focus:ring-[var(--color-focus)] focus:border-transparent outline-none transition-all duration-300 text-[var(--color-text-primary)] placeholder-[var(--color-text-muted)] ${
+                    errors[field.name] && touched[field.name]
+                      ? "border-red-500 focus:ring-red-500"
+                      : "border-[var(--color-border-primary)]"
+                  }`}
                   placeholder={field.placeholder}
                   required={field.required}
                   value={index === 0 ? form.fullName : index === 1 ? form.email : form.phoneNumber}
                   onChange={index === 0 ? handleChange("fullName") : index === 1 ? handleChange("email") : handleChange("phoneNumber")}
                 />
+                {errors[field.name] && touched[field.name] && (
+                  <p className="text-red-500 text-xs mt-1 flex items-center">
+                    <span className="mr-1">⚠️</span>
+                    {errors[field.name]}
+                  </p>
+                )}
               </div>
             ))}
           </fieldset>
@@ -216,9 +247,17 @@ const ContactForm = ({
                   {field.label}
                 </label>
                 {field.type === "select" ? (
-                  <select className="w-full px-3 py-2 mt-1 bg-[var(--color-white)] border border-[var(--color-border-primary)] rounded-lg focus:ring-2 focus:ring-[var(--color-focus)] focus:border-transparent outline-none transition-all duration-300 text-[var(--color-text-primary)]"
-                          value={index === 0 ? form.companyName : index === 1 ? form.industry : form.country}
-                          onChange={index === 0 ? handleChange("companyName") : index === 1 ? handleChange("industry") : handleChange("country")}>
+                  <select 
+                    name={field.name}
+                    value={formData[field.name] || ""}
+                    onChange={handleInputChange}
+                    onBlur={handleFieldBlur}
+                    className={`w-full px-3 py-2 mt-1 bg-[var(--color-white)] border rounded-lg focus:ring-2 focus:ring-[var(--color-focus)] focus:border-transparent outline-none transition-all duration-300 text-[var(--color-text-primary)] ${
+                      errors[field.name] && touched[field.name]
+                        ? "border-red-500 focus:ring-red-500"
+                        : "border-[var(--color-border-primary)]"
+                    }`}
+                  >
                     {field.options.map((option, i) => (
                       <option
                         key={i}
@@ -232,11 +271,26 @@ const ContactForm = ({
                 ) : (
                   <input
                     type={field.type}
-                    className="w-full px-3 py-2 mt-1 bg-[var(--color-white)] border border-[var(--color-border-primary)] rounded-lg focus:ring-2 focus:ring-[var(--color-focus)] focus:border-transparent outline-none transition-all duration-300 text-[var(--color-text-primary)] placeholder-[var(--color-text-muted)]"
+                    name={field.name}
+                    value={formData[field.name] || ""}
+                    onChange={handleInputChange}
+                    onBlur={handleFieldBlur}
+                    className={`w-full px-3 py-2 mt-1 bg-[var(--color-white)] border rounded-lg focus:ring-2 focus:ring-[var(--color-focus)] focus:border-transparent outline-none transition-all duration-300 text-[var(--color-text-primary)] placeholder-[var(--color-text-muted)] ${
+                      errors[field.name] && touched[field.name]
+                        ? "border-red-500 focus:ring-red-500"
+                        : "border-[var(--color-border-primary)]"
+                    }`}
                     placeholder={field.placeholder}
                     value={form.companyName}
                     onChange={handleChange("companyName")}
+                    maxLength={field.name === "companyName" ? 100 : undefined}
                   />
+                )}
+                {errors[field.name] && touched[field.name] && (
+                  <p className="text-red-500 text-xs mt-1 flex items-center">
+                    <span className="mr-1">⚠️</span>
+                    {errors[field.name]}
+                  </p>
                 )}
               </div>
             ))}
@@ -245,31 +299,68 @@ const ContactForm = ({
         {/* Message Section - Full Width */}
         <div>
           <label className="text-sm font-medium text-[var(--color-text-primary)]">
-            {messageLabel}
+            {messageLabel} *
           </label>
           <textarea
-            rows="3"
-            className="w-full px-3 py-2 mt-1 bg-[var(--color-white)] border border-[var(--color-border-primary)] rounded-lg focus:ring-2 focus:ring-[var(--color-focus)] focus:border-transparent outline-none transition-all duration-300 resize-none text-[var(--color-text-primary)] placeholder-[var(--color-text-muted)]"
+            name="message"
+            rows="4"
+            value={formData.message}
+            onChange={handleInputChange}
+            onBlur={handleFieldBlur}
+            className={`w-full px-3 py-2 mt-1 bg-[var(--color-white)] border rounded-lg focus:ring-2 focus:ring-[var(--color-focus)] focus:border-transparent outline-none transition-all duration-300 resize-none text-[var(--color-text-primary)] placeholder-[var(--color-text-muted)] ${
+              errors.message && touched.message
+                ? "border-red-500 focus:ring-red-500"
+                : "border-[var(--color-border-primary)]"
+            }`}
             placeholder={messagePlaceholder}
-            value={form.message}
-            onChange={handleChange("message")}
-          ></textarea>
-          {error && (
-            <p className="mt-2 text-sm text-red-600">{error}</p>
-          )}
-          {success && (
-            <p className="mt-2 text-sm text-green-600">Message sent successfully.</p>
-          )}
+            maxLength={500}
+          />
+          <div className="flex justify-between items-center mt-1">
+            {errors.message && touched.message && (
+              <p className="text-red-500 text-xs flex items-center">
+                <span className="mr-1">⚠️</span>
+                {errors.message}
+              </p>
+            )}
+            <p className={`text-xs ml-auto ${
+              messageCharCount > messageMaxLength * 0.9 
+                ? "text-orange-500" 
+                : messageCharCount > messageMaxLength 
+                ? "text-red-500" 
+                : "text-[var(--color-text-muted)]"
+            }`}>
+              {messageCharCount}/{messageMaxLength} characters
+              {formData.message.trim().length < 20 && formData.message.trim() && (
+                <span className="ml-2 text-orange-500">
+                  (minimum 20 required)
+                </span>
+              )}
+            </p>
+          </div>
         </div>
         {/* Submit Section */}
         <div className="flex items-center justify-between pt-3 border-t border-[var(--color-border-primary)]">
           <p className="text-xs text-[var(--color-text-muted)]">{submitNote}</p>
           <button
             type="submit"
-            className="bg-[var(--button-bg-primary)] hover:bg-[var(--button-bg-primary-hover)] text-[var(--button-text-primary)] px-6 py-2 rounded-lg font-semibold transition-colors duration-300 shadow-sm"
-            disabled={submitting}
+            disabled={!isFormValid() || isSubmitting}
+            className={`px-6 py-2 rounded-lg font-semibold transition-all duration-300 shadow-sm ${
+              !isFormValid() || isSubmitting
+                ? "bg-gray-400 text-gray-200 cursor-not-allowed"
+                : "bg-[var(--button-bg-primary)] hover:bg-[var(--button-bg-primary-hover)] text-[var(--button-text-primary)] hover:shadow-md transform hover:scale-105"
+            }`}
           >
-            {submitting ? "Sending..." : submitText}
+            {isSubmitting ? (
+              <span className="flex items-center">
+                <svg className="animate-spin -ml-1 mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Sending...
+              </span>
+            ) : (
+              submitText
+            )}
           </button>
         </div>
       </form>

@@ -13,6 +13,7 @@ import {
 } from "@mui/icons-material";
 import ContactForm from "./ContactForm";
 import Modal from "./Modal";
+import CTAButton from "./CTAButton";
 
 // Icon mapping for dynamic icon rendering
 const iconMap = {
@@ -45,12 +46,12 @@ const Services = ({
 
   const openContactModal = () => {
     setIsContactModalOpen(true);
-    setIsServiceModalOpen(false);
   };
 
   const closeContactModal = () => {
     setIsContactModalOpen(false);
   };
+
 
   // Show only first 4 services initially, or all if showAllServices is true
   const displayedServices = showAllServices ? services : services.slice(0, 4);
@@ -404,12 +405,18 @@ const Services = ({
         </div>
         {/* CTA Button */}
         <div className="text-center">
-          <button
-            onClick={openContactModal}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg"
+          <CTAButton
+            variant="primary"
+            size="md"
+            className="hover:scale-105 hover:shadow-lg"
+            modalConfig={{
+              title: "Service Consultation Request",
+              subtitle: "Let's discuss your service requirements and how we can help",
+              icon: "💼"
+            }}
           >
             Contact Us for This Service
-          </button>
+          </CTAButton>
         </div>
       </Modal>
 

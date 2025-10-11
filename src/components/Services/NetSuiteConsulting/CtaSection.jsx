@@ -1,5 +1,6 @@
 import React from "react";
 import SEO from "../../SEO";
+import CTAButton from "../../CTAButton";
 
 const CtaSection = ({
   title,
@@ -60,13 +61,18 @@ const CtaSection = ({
             ))}
           </div>
 
-          <button
-            onClick={openContactModal}
-            className="bg-[var(--color-primary)] text-[var(--color-text-inverse)] px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl hover:bg-[var(--color-primary-dark)] transition-all duration-300"
-            aria-label="Start Oracle NetSuite Consulting Process"
+          <CTAButton
+            variant="primary"
+            size="lg"
+            className="rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+            modalConfig={{
+              title: "NetSuite Consulting Consultation",
+              subtitle: "Let's discuss your NetSuite consulting needs and how we can help",
+              icon: "💼"
+            }}
           >
             {buttonText}
-          </button>
+          </CTAButton>
         </article>
       </section>
     </>

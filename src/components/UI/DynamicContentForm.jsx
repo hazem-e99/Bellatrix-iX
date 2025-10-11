@@ -455,7 +455,7 @@ const DynamicContentForm = ({
       { value: "/", label: "Home" },
       { value: "/about", label: "About Us" },
       { value: "/services", label: "Services" },
-      { value: "/contact", label: "Contact" },
+      { value: null, label: "Contact (Modal)" },
       { value: "/training", label: "Training" },
       { value: "/implementation", label: "Implementation" },
       { value: "/customization", label: "Customization" },

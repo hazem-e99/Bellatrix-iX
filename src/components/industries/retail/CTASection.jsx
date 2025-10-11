@@ -27,7 +27,7 @@ const CTASection = ({
       description ||
       "Join hundreds of retail companies that have unified their commerce operations and improved customer experience with NetSuite. Get started with a free consultation today.",
     buttonText: ctaButton?.text || "Get Started",
-    buttonLink: ctaButton?.link || "/retail/contact",
+    buttonLink: ctaButton?.link || null,
     variant: ctaButton?.variant || "primary",
     features: features || [
       {

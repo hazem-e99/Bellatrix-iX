@@ -48,7 +48,7 @@ const SectionDataEditor = ({
         description: "Transform your business with our expert services",
         ctaButton: {
           text: "Get Started",
-          link: "/contact",
+          link: null,
           variant: "primary",
         },
         backgroundImage: "/images/HeroSection.png",
@@ -156,7 +156,7 @@ const SectionDataEditor = ({
         image: "/images/ProcessImplementattion.png",
         ctaButton: {
           text: "Start Your Implementation",
-          link: "/contact",
+          link: null,
           variant: "primary",
         },
       },
@@ -250,7 +250,7 @@ const SectionDataEditor = ({
           "Get started today and experience the benefits of automated payroll management",
         ctaButton: {
           text: "Start Free Trial",
-          link: "/contact",
+          link: null,
           variant: "primary",
         },
         features: [

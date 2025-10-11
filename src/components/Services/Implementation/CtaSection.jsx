@@ -6,6 +6,7 @@ import {
   validateVariant,
 } from "../../../utils/variantSystem";
 import { smartRender } from "../../../utils/htmlSanitizer";
+import CTAButton from "../../CTAButton";
 
 const CtaSection = ({
   title,
@@ -33,7 +34,7 @@ const CtaSection = ({
       "Transform your business operations with our expert NetSuite implementation services. Let's turn your vision into reality with proven methodologies and dedicated support.",
     description: description || "",
     buttonText: ctaButton?.text || "Get Started Today",
-    buttonLink: ctaButton?.link || "/implementation/contact",
+    buttonLink: ctaButton?.link || null,
     variant: validateVariant(ctaButton?.variant || "primary"),
     features: features || [
       {
@@ -129,25 +130,19 @@ const CtaSection = ({
 
             {/* CTA Button */}
             <div className="mb-16">
-              {finalData.buttonLink ? (
-                <a
-                  href={finalData.buttonLink}
-                  className={`inline-block px-10 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-lg ${getVariantClasses(
-                    finalData.variant
-                  )}`}
-                >
-                  {finalData.buttonText}
-                </a>
-              ) : (
-                <button
-                  onClick={openModal}
-                  className={`px-10 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-lg ${getVariantClasses(
-                    finalData.variant
-                  )}`}
-                >
-                  {finalData.buttonText}
-                </button>
-              )}
+              <CTAButton
+                variant={finalData.variant}
+                size="lg"
+                className="rounded-xl hover:scale-105 hover:shadow-lg"
+                modalConfig={{
+                  title: "NetSuite Implementation Consultation",
+                  subtitle: "Let's discuss your implementation needs and timeline",
+                  icon: "⚡"
+                }}
+                href={finalData.buttonLink}
+              >
+                {finalData.buttonText}
+              </CTAButton>
             </div>
 
             {/* Features Grid */}

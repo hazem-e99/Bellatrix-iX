@@ -40,7 +40,7 @@ const CTASection = ({
       "Join hundreds of manufacturing companies that have optimized their operations with our solutions.",
     buttonText: finalData.buttonText || ctaButton?.text || "Get Started",
     buttonLink:
-      finalData.buttonLink || ctaButton?.link || "/manufacturing/contact",
+      finalData.buttonLink || ctaButton?.link || null,
     variant: finalData.variant || ctaButton?.variant || "primary",
     features: finalData.features ||
       features || [

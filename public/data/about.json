@@ -1,7 +1,7 @@
 {
   "hero": {
     "title": "About Bellatrix",
-    "subtitle": "Your trusted partner in digital transformationeeeeee",
+    "subtitle": "Your trusted partner in digital transformation",
     "description": "We are a leading consultancy firm specializing in NetSuite implementations, business process optimization, and technology solutions that drive growwwth and efficiency.",
     "backgroundVideo": "/Videos/about-hero.mp4",
     "stats": [
@@ -237,7 +237,7 @@
     "subtitle": "Let's work together to achieve your goals",
     "description": "Contact us today to discuss how we can help you optimize your operations and drive growth.",
     "buttonText": "Get Started",
-    "buttonLink": "/contact"
+    "buttonLink": null
   },
   "lastModified": "2025-09-19T21:42:51.991Z"
 }

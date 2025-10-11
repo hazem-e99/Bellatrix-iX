@@ -24,6 +24,7 @@ import MessagesPage from "./pages/Admin/MessagesPage";
 import DynamicPageRenderer from "./components/DynamicPageRenderer";
 import { ThemeProvider } from "./context/ThemeContext";
 import { AuthProvider } from "./hooks/useAuth.jsx";
+import { CTAModalProvider } from "./contexts/CTAModalContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AuthRoutes from "./routes/AuthRoutes";
 import AuthDashboard from "./components/Admin/AuthDashboard";
@@ -33,7 +34,8 @@ function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <Toaster
+        <CTAModalProvider>
+          <Toaster
           position="top-right"
           toastOptions={{
             duration: 4000,
@@ -139,6 +141,7 @@ function App() {
             <Route path="settings" element={<AdminDashboard />} />
           </Route>
         </Routes>
+        </CTAModalProvider>
       </AuthProvider>
     </ThemeProvider>
   );

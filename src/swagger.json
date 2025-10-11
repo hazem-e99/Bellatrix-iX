@@ -4308,6 +4308,10 @@
             "type": "integer",
             "format": "int32"
           },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
           "slug": {
             "maxLength": 200,
             "minLength": 0,
@@ -4346,6 +4350,10 @@
             "maxLength": 100,
             "minLength": 2,
             "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
           },
           "categoryId": {
             "type": "integer",
@@ -5213,6 +5221,10 @@
             "type": "string",
             "nullable": true
           },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
           "slug": {
             "type": "string",
             "nullable": true
@@ -5290,6 +5302,10 @@
             "format": "int32"
           },
           "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
             "type": "string",
             "nullable": true
           },
@@ -5550,6 +5566,10 @@
             "maxLength": 100,
             "minLength": 2,
             "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
           },
           "categoryId": {
             "type": "integer",

@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import ContactForm from "../ContactForm";
 import Modal from "../../components/Modal";
+import CTAButton from "../CTAButton";
 import { usePageData } from "../../hooks/useJsonServerData.jsx";
 
 const Training = () => {
   const [isProgramModalOpen, setIsProgramModalOpen] = useState(false);
   const [selectedProgram, setSelectedProgram] = useState(null);
-  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [isFeatureModalOpen, setIsFeatureModalOpen] = useState(false);
   const [selectedFeature, setSelectedFeature] = useState(null);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
   // Fetch data from JSON Server
   const { data, isLoading: loading } = usePageData("training");
@@ -86,14 +87,6 @@ const Training = () => {
     setSelectedProgram(null);
   };
 
-  const openContactModal = () => {
-    setIsContactModalOpen(true);
-    setIsProgramModalOpen(false);
-  };
-
-  const closeContactModal = () => {
-    setIsContactModalOpen(false);
-  };
 
   const openFeatureModal = (feature) => {
     setSelectedFeature(feature);
@@ -103,6 +96,14 @@ const Training = () => {
   const closeFeatureModal = () => {
     setIsFeatureModalOpen(false);
     setSelectedFeature(null);
+  };
+
+  const openContactModal = () => {
+    setIsContactModalOpen(true);
+  };
+
+  const closeContactModal = () => {
+    setIsContactModalOpen(false);
   };
 
   if (loading) {
@@ -1643,12 +1644,18 @@ const Training = () => {
           </div>
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <button
-              onClick={openContactModal}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg"
+            <CTAButton
+              variant="primary"
+              size="md"
+              className="hover:scale-105 hover:shadow-lg"
+              modalConfig={{
+                title: "Training Information Request",
+                subtitle: "Get detailed information about our training programs",
+                icon: "📚"
+              }}
             >
               Get More Information
-            </button>
+            </CTAButton>
             <button
               onClick={closeFeatureModal}
               className="bg-gray-100 hover:bg-gray-200 text-gray-700 border border-gray-200 px-6 py-2.5 rounded-lg font-semibold transition-all duration-300"
