@@ -796,7 +796,7 @@ const Manufacturing = () => {
         subtitle="Let's discuss your manufacturing challenges and solutions"
       >
         <div className="p-2">
-          <ContactForm />
+          <ContactForm onSuccess={closeContactModal} />
         </div>
       </Modal>
     </div>

@@ -75,7 +75,7 @@ const ImplementationModal = ({ isOpen, onClose, data }) => {
           </header>
           {/* Form Content */}
           <main className="p-6 bg-[#f7fafc]">
-            <ContactForm />
+            <ContactForm onSuccess={onClose} />
           </main>
         </article>
       </div>

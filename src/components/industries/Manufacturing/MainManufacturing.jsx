@@ -119,7 +119,7 @@ const Manufacturing = () => {
         subtitle={data.modal.subtitle}
       >
         <div className="p-2">
-          <ContactForm />
+          <ContactForm onSuccess={closeContactModal} />
         </div>
       </Modal>
     </main>

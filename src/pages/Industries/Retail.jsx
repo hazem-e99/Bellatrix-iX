@@ -932,7 +932,7 @@ const Retail = () => {
         subtitle="Let's discuss your retail challenges and solutions"
       >
         <div className="p-2">
-          <ContactForm />
+          <ContactForm onSuccess={closeContactModal} />
         </div>
       </Modal>
     </div>

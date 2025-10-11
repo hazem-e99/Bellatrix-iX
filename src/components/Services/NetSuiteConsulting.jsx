@@ -543,7 +543,7 @@ const NetSuiteConsulting = () => {
         title="Schedule Your Consultation"
         subtitle="Let's discuss your NetSuite consulting needs"
       >
-        <ContactForm />
+        <ContactForm onSuccess={closeContactModal} />
       </Modal>
     </div>
   );

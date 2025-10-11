@@ -432,38 +432,39 @@ const ModernDashboard = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {quickActions.map((action) => {
-                  const colorClasses = getColorClasses(action.color);
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {quickActions.map((action, index) => {
                   const IconComponent = action.icon;
-
                   return (
                     <motion.div
                       key={action.id}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.35, delay: index * 0.05 }}
+                      whileHover={{ scale: 1.01 }}
+                      onClick={() => handleQuickAction(action)}
+                      className="cursor-pointer"
                     >
-                      <Button
-                        variant="outline"
-                        className="h-auto p-4 flex-col items-start space-y-2 w-full bg-[var(--color-white-10)] hover:bg-[var(--color-white-20)] border-[var(--color-white-20)] text-[var(--color-text-inverse)] transition-all duration-200"
-                        onClick={() => handleQuickAction(action)}
-                      >
-                        <div
-                          className={`p-2 rounded-lg bg-[var(--color-white-10)] border border-[var(--color-white-20)]`}
-                        >
-                          <IconComponent
-                            className={`h-5 w-5 text-[var(--color-text-inverse)]/90`}
-                          />
-                        </div>
-                        <div className="text-left">
-                          <div className="font-medium text-[var(--color-text-inverse)]">
-                            {action.name}
+                      <Card className="bg-[var(--color-white-10)] border border-[var(--color-white-20)] hover:-translate-y-0.5 transition-transform duration-200">
+                        <CardContent>
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <p className="text-sm font-medium text-[var(--color-text-secondary)]">
+                                {action.name}
+                              </p>
+                              <p className="text-base font-semibold text-[var(--color-text-inverse)] mt-2">
+                                {action.description}
+                              </p>
+                              <div className="mt-2 text-sm text-[var(--color-text-light)]">
+                                Click to continue
+                              </div>
+                            </div>
+                            <div className="p-3 rounded-lg bg-[var(--color-white-10)] border border-[var(--color-white-20)]">
+                              <IconComponent className="h-6 w-6 text-[var(--color-text-inverse)]/90" />
+                            </div>
                           </div>
-                          <div className="text-sm text-[var(--color-text-secondary)]">
-                            {action.description}
-                          </div>
-                        </div>
-                      </Button>
+                        </CardContent>
+                      </Card>
                     </motion.div>
                   );
                 })}

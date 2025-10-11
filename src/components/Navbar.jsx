@@ -794,7 +794,7 @@ const Navbar = ({ industries = [] }) => {
         subtitle={modalContent.subtitle}
       >
         <div className="p-2">
-          <ContactForm />
+          <ContactForm onSuccess={closeContactModal} />
         </div>
       </Modal>
 

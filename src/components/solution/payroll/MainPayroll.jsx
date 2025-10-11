@@ -128,7 +128,7 @@ export default function PayrollPage({ data }) {
           subtitle="Let's discuss your payroll needs"
         >
           <div className="p-2">
-            <ContactForm />
+            <ContactForm onSuccess={closeContactModal} />
           </div>
         </Modal>
       </main>

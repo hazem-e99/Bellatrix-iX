@@ -1,19 +1,17 @@
 import React from "react";
 import {
-  EyeIcon,
   PencilIcon,
   TrashIcon,
-  CheckCircleIcon,
-  ClockIcon,
   EnvelopeIcon,
-  UserIcon,
   CalendarIcon,
 } from "@heroicons/react/24/outline";
 import Button from "../ui/Button";
 import Card, { CardContent } from "../ui/Card";
 import { motion } from "framer-motion";
+// Ensure linter recognizes usage in JSX by keeping a top-level reference
+const MOTION_REF = motion;
 
-const MessagesList = ({ messages, onReply, onMarkStatus, onDelete }) => {
+const MessagesList = ({ messages, onMarkStatus, onDelete }) => {
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const now = new Date();
@@ -81,7 +79,7 @@ const MessagesList = ({ messages, onReply, onMarkStatus, onDelete }) => {
                   <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg transition-all duration-300 group-hover:scale-110 ${
                     message.isReplied ? 'bg-gray-600' : 'bg-blue-600'
                   }`}>
-                    {getInitials(message.name || 'U')}
+                    {getInitials((message.fullName || message.name || 'U').trim())}
                   </div>
                   
                   <div className="flex-1 min-w-0">
@@ -89,7 +87,7 @@ const MessagesList = ({ messages, onReply, onMarkStatus, onDelete }) => {
                       <h3 className={`font-semibold group-hover:text-blue-300 transition-colors duration-300 ${
                         message.isReplied ? 'text-gray-300' : 'text-white'
                       }`}>
-                        {message.name || 'Unknown User'}
+                        {message.fullName || message.name || 'Unknown User'}
                       </h3>
                       {!message.isReplied && (
                         <motion.div
@@ -111,7 +109,7 @@ const MessagesList = ({ messages, onReply, onMarkStatus, onDelete }) => {
                       </div>
                       <div className="flex items-center space-x-1">
                         <CalendarIcon className="h-4 w-4" />
-                        <span>{formatDate(message.createdAt || message.date)}</span>
+                        <span>{formatDate(message.submittedAt || message.createdAt || message.date)}</span>
                       </div>
                     </div>
                     
@@ -132,7 +130,7 @@ const MessagesList = ({ messages, onReply, onMarkStatus, onDelete }) => {
                       ? 'bg-green-600 text-white' 
                       : 'bg-orange-600 text-white'
                   }`}>
-                    {message.isReplied ? 'Replied' : 'Unread'}
+                    {message.isReplied ? 'Read' : 'Unread'}
                   </span>
                 </div>
               </div>
@@ -156,23 +154,10 @@ const MessagesList = ({ messages, onReply, onMarkStatus, onDelete }) => {
                     >
                       <Button
                         icon={<PencilIcon className="h-4 w-4" />}
-                        onClick={() => onReply(message)}
+                        onClick={() => onMarkStatus(message.id, message.isReplied)}
                         className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl"
                       >
-                        Reply
-                      </Button>
-                    </motion.div>
-                    
-                    <motion.div
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                    >
-                      <Button
-                        icon={message.isReplied ? <ClockIcon className="h-4 w-4" /> : <CheckCircleIcon className="h-4 w-4" />}
-                        onClick={() => onMarkStatus(message.id, message.isReplied)}
-                        className="bg-gray-600 hover:bg-gray-700 text-white rounded-xl transition-all duration-300"
-                      >
-                        {message.isReplied ? 'Mark Unread' : 'Mark Read'}
+                        {message.isReplied ? 'Unread' : 'Read'}
                       </Button>
                     </motion.div>
                   </div>

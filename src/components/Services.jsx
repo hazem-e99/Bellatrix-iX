@@ -421,7 +421,7 @@ const Services = ({
         subtitle="Let's discuss your project needs"
       >
         <div className="p-2">
-          <ContactForm />
+          <ContactForm onSuccess={closeContactModal} />
         </div>
       </Modal>
     </section>

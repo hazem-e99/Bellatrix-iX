@@ -23,13 +23,11 @@ import Card, { CardContent, CardHeader, CardTitle } from "../../components/ui/Ca
 import Modal, { ModalFooter } from "../../components/ui/Modal";
 import Toast from "../../components/ui/Toast";
 import MessagesList from "../../components/Admin/MessagesList";
-import ReplyModal from "../../components/Admin/ReplyModal";
 import { 
   getContactMessages, 
   markMessageAsReplied, 
   markMessageAsUnreplied, 
-  deleteContactMessage,
-  sendReply 
+  deleteContactMessage
 } from "../../lib/contactMessagesAPI";
 
 const MessagesPage = () => {
@@ -41,7 +39,6 @@ const MessagesPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedMessage, setSelectedMessage] = useState(null);
-  const [showReplyModal, setShowReplyModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [operationLoading, setOperationLoading] = useState(false);
   const [toast, setToast] = useState(null);
@@ -88,6 +85,7 @@ const MessagesPage = () => {
     if (searchTerm) {
       const query = searchTerm.toLowerCase();
       filtered = filtered.filter(msg =>
+        msg.fullName?.toLowerCase().includes(query) ||
         msg.name?.toLowerCase().includes(query) ||
         msg.email?.toLowerCase().includes(query) ||
         msg.subject?.toLowerCase().includes(query) ||
@@ -106,10 +104,7 @@ const MessagesPage = () => {
     setFilterStatus(status);
   };
 
-  const handleReply = (message) => {
-    setSelectedMessage(message);
-    setShowReplyModal(true);
-  };
+  // Reply modal removed; Reply button now toggles read/unread via onMarkStatus
 
   const handleMarkStatus = async (messageId, isReplied) => {
     try {
@@ -163,28 +158,7 @@ const MessagesPage = () => {
     }
   };
 
-  const handleReplySubmit = async (replyData) => {
-    if (!selectedMessage?.id) return;
-
-    try {
-      setOperationLoading(true);
-      const response = await sendReply(selectedMessage.id, replyData);
-      
-      if (response.success) {
-        showToast("Reply sent successfully", "success");
-        setShowReplyModal(false);
-        setSelectedMessage(null);
-        fetchMessages();
-      } else {
-        showToast(response.message || "Failed to send reply", "error");
-      }
-    } catch (err) {
-      console.error("Error sending reply:", err);
-      showToast("Failed to send reply", "error");
-    } finally {
-      setOperationLoading(false);
-    }
-  };
+  // No reply submit; using mark as replied instead
 
   useEffect(() => {
     fetchMessages();
@@ -266,7 +240,7 @@ const MessagesPage = () => {
                 <CheckCircleIcon className="h-6 w-6 text-green-400" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-300">Replied</p>
+                <p className="text-sm font-medium text-gray-300">Read</p>
                 <p className="text-2xl font-bold text-white">
                   {stats.read}
                 </p>
@@ -339,17 +313,11 @@ const MessagesPage = () => {
 
       <MessagesList
         messages={filteredMessages}
-        onReply={handleReply}
         onMarkStatus={handleMarkStatus}
         onDelete={handleDelete}
       />
 
-      <ReplyModal
-        open={showReplyModal}
-        onClose={() => setShowReplyModal(false)}
-        message={selectedMessage}
-        onSubmit={handleReplySubmit}
-      />
+      {/* ReplyModal removed */}
 
       <Modal
         isOpen={showDeleteModal}

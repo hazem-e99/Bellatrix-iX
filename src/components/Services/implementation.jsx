@@ -678,7 +678,7 @@ const Implementation = () => {
             </div>
             {/* Form Content */}
             <div className="p-6 bg-[#f7fafc]">
-              <ContactForm />
+              <ContactForm onSuccess={closeModal} />
             </div>
           </div>
         </div>

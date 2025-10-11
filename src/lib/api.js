@@ -81,3 +81,9 @@ export const getAuthTokenFromState = (state) => {
 };
 
 export default api;
+
+// Lightweight helper for JSON POSTs (returns unwrapped data due to interceptor)
+export const postJson = async (url, payload, options = {}) => {
+  const res = await api.post(url, payload, options);
+  return res.data;
+};
