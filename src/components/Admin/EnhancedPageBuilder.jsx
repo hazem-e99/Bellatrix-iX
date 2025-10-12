@@ -4059,27 +4059,131 @@ const SectionsStep = ({
                                             description: "To empower businesses with innovative technology solutions that transform operations, enhance productivity, and drive sustainable growth.",
                                             vision: "To be the global leader in business transformation consulting, helping organizations achieve their full potential through technology excellence.",
                                             image: "/images/ourProServices.png",
-                                            stats: []
+                                            stats: [],
+                                            missionPoints: []
                                           },
                                           AboutTeamSection: {
                                             title: "Meet Our Team",
                                             description: "Our diverse team of experts brings together decades of experience in enterprise software, business consulting, and digital transformation.",
-                                            members: []
+                                            members: [
+                                              {
+                                                name: "Sarah Johnson",
+                                                role: "Chief Executive Officer",
+                                                image: "/images/ourteam/1.jpg",
+                                                bio: "Visionary leader with 20+ years in enterprise software solutions.",
+                                                expertise: ["Strategic Planning", "Business Development", "Leadership"]
+                                              },
+                                              {
+                                                name: "Michael Chen",
+                                                role: "Chief Technology Officer",
+                                                image: "/images/ourteam/2.jpg",
+                                                bio: "Technology expert specializing in NetSuite implementations and cloud solutions.",
+                                                expertise: ["NetSuite Development", "Cloud Architecture", "System Integration"]
+                                              },
+                                              {
+                                                name: "Emily Rodriguez",
+                                                role: "Head of Operations",
+                                                image: "/images/ourteam/3.jpg",
+                                                bio: "Operations specialist ensuring seamless project delivery and client success.",
+                                                expertise: ["Project Management", "Process Optimization", "Quality Assurance"]
+                                              }
+                                            ]
                                           },
                                           AboutValuesSection: {
                                             title: "Our Values",
                                             description: "These core values guide everything we do and shape how we interact with our clients, partners, and each other.",
-                                            items: []
+                                            items: [
+                                              {
+                                                title: "Innovation",
+                                                description: "We embrace cutting-edge technologies and creative thinking to solve complex business challenges.",
+                                                icon: "🚀",
+                                                color: "from-blue-500 to-cyan-500"
+                                              },
+                                              {
+                                                title: "Excellence",
+                                                description: "We deliver exceptional quality in every project, exceeding client expectations consistently.",
+                                                icon: "⭐",
+                                                color: "from-purple-500 to-pink-500"
+                                              },
+                                              {
+                                                title: "Integrity",
+                                                description: "We act with honesty and transparency, building trust through ethical business practices.",
+                                                icon: "🤝",
+                                                color: "from-green-500 to-teal-500"
+                                              },
+                                              {
+                                                title: "Partnership",
+                                                description: "We work closely with our clients as trusted partners in their digital transformation journey.",
+                                                icon: "🤝",
+                                                color: "from-orange-500 to-red-500"
+                                              }
+                                            ]
                                           },
                                           AboutMilestonesSection: {
                                             title: "Our Milestones",
                                             description: "Key achievements and milestones that mark our journey of growth, innovation, and commitment to excellence.",
-                                            items: []
+                                            items: [
+                                              {
+                                                year: "2008",
+                                                title: "Company Founded",
+                                                description: "Bellatrix was established with a vision to transform businesses through technology."
+                                              },
+                                              {
+                                                year: "2012",
+                                                title: "First 100 Clients",
+                                                description: "Reached our first major milestone of serving 100 satisfied clients."
+                                              },
+                                              {
+                                                year: "2016",
+                                                title: "NetSuite Gold Partner",
+                                                description: "Achieved NetSuite Gold Partner status, recognizing our expertise."
+                                              },
+                                              {
+                                                year: "2020",
+                                                title: "Global Expansion",
+                                                description: "Expanded operations to serve clients across multiple continents."
+                                              },
+                                              {
+                                                year: "2023",
+                                                title: "500+ Projects",
+                                                description: "Successfully completed over 500 implementation projects."
+                                              },
+                                              {
+                                                year: "2024",
+                                                title: "AI Integration",
+                                                description: "Pioneered AI-powered solutions for enhanced business intelligence."
+                                              }
+                                            ]
                                           },
                                           AboutDifferentiatorsSection: {
                                             title: "What Sets Us Apart",
                                             description: "Our unique combination of expertise, methodology, and commitment to excellence makes us the preferred choice for Oracle NetSuite implementations.",
-                                            items: []
+                                            items: [
+                                              {
+                                                title: "Industry Expertise",
+                                                description: "Deep understanding of various industries and their unique challenges.",
+                                                stats: "15+ Industries",
+                                                icon: "🏭"
+                                              },
+                                              {
+                                                title: "Proven Methodology",
+                                                description: "Time-tested implementation methodology ensuring project success.",
+                                                stats: "98% Success Rate",
+                                                icon: "📊"
+                                              },
+                                              {
+                                                title: "Ongoing Support",
+                                                description: "24/7 support and maintenance services for continuous optimization.",
+                                                stats: "24/7 Support",
+                                                icon: "🛠️"
+                                              },
+                                              {
+                                                title: "Custom Solutions",
+                                                description: "Tailored solutions designed specifically for your business needs.",
+                                                stats: "100% Custom",
+                                                icon: "⚙️"
+                                              }
+                                            ]
                                           },
                                           AboutCTASection: {
                                             title: "Ready to Build Something Great?",
@@ -4097,21 +4201,113 @@ const SectionsStep = ({
                                         return aboutDataMap[component.componentType] || componentSchema.defaultData;
                                       }
                                       
-                                      // For other components, use empty data structure
-                                      const emptyData = {};
-                                      if (componentSchema.schema && componentSchema.schema.properties) {
-                                        Object.keys(componentSchema.schema.properties).forEach(key => {
-                                          const prop = componentSchema.schema.properties[key];
-                                          if (prop.type === 'string') {
-                                            emptyData[key] = '';
-                                          } else if (prop.type === 'array') {
-                                            emptyData[key] = [];
-                                          } else if (prop.type === 'object') {
-                                            emptyData[key] = {};
+                                      // For Payroll components, use actual payroll data
+                                      if (component.componentType.includes('Payroll')) {
+                                        const payrollDataMap = {
+                                          PayrollHeroSection: {
+                                            title: "Transform Your Payroll Process",
+                                            subtitle: "Streamline operations with our intelligent, automated payroll system",
+                                            description: "Our comprehensive payroll solution automates complex processes and ensures accuracy.",
+                                            backgroundImage: "/images/payroll-hero.jpg"
+                                          },
+                                          PayrollHowItWorksSection: {
+                                            title: "How Our Payroll System Works",
+                                            description: "Our payroll process is simple: upload employee and contract details, sync timesheets and leave data, let the system run payroll automatically on schedule, approve via role-based access, execute payments through integrated bank APIs, and download payslips & compliance-ready reports—all in one platform.",
+                                            steps: [
+                                              { title: "Data Input", description: "Enter employee data and hours", icon: "📝" },
+                                              { title: "Processing", description: "System calculates payroll automatically", icon: "⚙️" },
+                                              { title: "Approval", description: "Review and approve payroll", icon: "✅" }
+                                            ]
+                                          },
+                                          PayrollPainPointsSection: {
+                                            title: "The Payroll Struggles We Eliminate",
+                                            description: "Our system addresses the most common payroll challenges faced by consultancy firms:",
+                                            painPoints: [
+                                              { title: "Delayed salary processing and errors", description: "Manual processing leads to delays and mistakes" },
+                                              { title: "Manual tax calculations and compliance risks", description: "Complex tax calculations prone to errors" },
+                                              { title: "Lack of visibility and transparency", description: "Employees lack insight into their payroll" }
+                                            ]
+                                          },
+                                          PayrollFAQSection: {
+                                            title: "Common Questions",
+                                            description: "Get quick answers to the most frequently asked questions about our payroll system",
+                                            faqItems: [
+                                              { question: "Does this system support global payroll?", answer: "Yes, we support multi-country and multi-currency payroll operations." },
+                                              { question: "Can it integrate with our existing HR system?", answer: "Absolutely, we offer seamless integrations and open APIs." },
+                                              { question: "How long does implementation take?", answer: "Most companies are onboarded in less than 2 weeks." }
+                                            ]
+                                          },
+                                          PayrollCTASection: {
+                                            title: "Ready to Simplify Your Payroll?",
+                                            subtitle: "Get started today",
+                                            description: "Get in touch for a personalized demo and see how our solution can transform your payroll process.",
+                                            ctaButton: { text: "Request Now!", link: "/contact" }
                                           }
-                                        });
+                                        };
+                                        
+                                        return payrollDataMap[component.componentType] || componentSchema.defaultData;
                                       }
-                                      return emptyData;
+                                      
+                                      // For HR components, use actual HR data
+                                      if (component.componentType.includes('HR')) {
+                                        const hrDataMap = {
+                                          HRHeroSection: {
+                                            title: "nada HR, Payroll & People Management",
+                                            subtitle: "Automate HR, empower employees, and stay compliant—on one secure platform designed for the future of work.",
+                                            description: "Our comprehensive HR solution simplifies employee management.",
+                                            backgroundImage: "/images/hr-hero.jpg"
+                                          },
+                                          HRModulesSection: {
+                                            title: "HR Modules",
+                                            description: "Comprehensive HR modules for modern businesses",
+                                            modules: [
+                                              { title: "Employee Management", description: "Complete employee lifecycle management from hiring to offboarding with customizable workflows.", icon: "👥" },
+                                              { title: "Time & Attendance", description: "Automated time tracking, shift planning, overtime management, and absence tracking.", icon: "⏱️" },
+                                              { title: "Payroll & Compensation", description: "End-to-end payroll processing, tax filing, benefits administration, and compensation planning.", icon: "💰" }
+                                            ]
+                                          },
+                                          HRBenefitsSection: {
+                                            title: "Why Choose Our HR Solution?",
+                                            description: "Discover the key advantages that make our HR platform the smart choice for modern businesses of all sizes and industries.",
+                                            features: [
+                                              { title: "Payroll Automation", description: "Automate payroll processing, tax calculations, and compliance with built-in error checking and real-time updates." },
+                                              { title: "Centralized Employee Data", description: "All employee records, contracts, documents, and history in one secure, searchable cloud-based platform." },
+                                              { title: "Streamlined Onboarding", description: "Digitize onboarding with automated workflows, e-signatures, task assignments, and welcome packages." }
+                                            ]
+                                          },
+                                          HRPricingSection: {
+                                            title: "Pricing Plans",
+                                            description: "Choose the right plan for your needs",
+                                            pricing: [
+                                              { name: "Essential", price: "$2,500", description: "Perfect for small teams getting started with HR automation", features: ["Basic system analysis & configuration", "Standard implementation setup", "Core HR module implementation"] },
+                                              { name: "Professional", price: "$5,000", description: "Ideal for growing companies with complex HR needs", features: ["Comprehensive needs analysis", "Custom implementation & configuration", "Multiple module implementation"] },
+                                              { name: "Enterprise", price: "Custom", description: "Complete solution for large organizations with global teams", features: ["Enterprise-grade analysis & planning", "Fully customized implementation", "All modules & advanced features"] }
+                                            ]
+                                          },
+                                          HRFAQSection: {
+                                            title: "Frequently Asked Questions",
+                                            faq: {
+                                              title: "HR Solution FAQ",
+                                              items: [
+                                                { question: "Is my employee data secure and compliant?", answer: "Yes. We use enterprise-grade 256-bit encryption, regular security audits, and are fully GDPR, SOC 2, and ISO 27001 compliant." },
+                                                { question: "Can I integrate with my existing payroll and accounting software?", answer: "Absolutely. We offer pre-built integrations with all major payroll providers and accounting software." },
+                                                { question: "How long does implementation typically take?", answer: "Implementation time varies based on complexity: Essential (2-3 weeks), Professional (3-5 weeks), Enterprise (6-8 weeks)." }
+                                              ]
+                                            }
+                                          },
+                                          HRCTASection: {
+                                            title: "Ready to Transform Your HR Operations?",
+                                            subtitle: "Get started today",
+                                            description: "Join 10,000+ companies that have automated their HR processes and reduced administrative workload by 70%",
+                                            ctaButton: { text: "Start Free Trial", link: "/contact" }
+                                          }
+                                        };
+                                        
+                                        return hrDataMap[component.componentType] || componentSchema.defaultData;
+                                      }
+                                      
+                                      // For other components, use schema default data
+                                      return componentSchema.defaultData;
                                     })();
 
                                 console.log("📊 [DATA EXTRACTION]", {
@@ -4121,10 +4317,30 @@ const SectionsStep = ({
                                   defaultData: componentSchema.defaultData
                                 });
 
+                                // Filter data to only include fields that exist in schema
+                                const filteredData = {};
+                                if (componentSchema.schema && componentSchema.schema.properties) {
+                                  Object.keys(componentSchema.schema.properties).forEach(key => {
+                                    if (actualData && key in actualData) {
+                                      filteredData[key] = actualData[key];
+                                    }
+                                  });
+                                }
+
+                                console.log("🔍 [DATA FILTERING]", {
+                                  componentType: component.componentType,
+                                  originalDataKeys: actualData ? Object.keys(actualData) : [],
+                                  schemaKeys: componentSchema.schema ? Object.keys(componentSchema.schema.properties) : [],
+                                  filteredDataKeys: Object.keys(filteredData),
+                                  hasItemsInOriginal: actualData && 'items' in actualData,
+                                  hasItemsInSchema: componentSchema.schema && 'items' in componentSchema.schema.properties,
+                                  hasItemsInFiltered: 'items' in filteredData
+                                });
+
                                 return (
                                   <DynamicFormGenerator
                                     schema={componentSchema.schema}
-                                    data={actualData}
+                                    data={filteredData}
                                     onChange={(formData) => {
                                       console.log("📝 [FORM CHANGE] New form data:", formData);
                                       // Update the entire contentJson with new form data

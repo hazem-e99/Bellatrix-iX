@@ -65,7 +65,8 @@ export const aboutComponentSchemas = {
           },
           formField: "array",
           minItems: 0,
-          maxItems: 6
+          maxItems: 6,
+          hidden: true  // إخفاء حقل stats من Component Configuration
         }
       }
     },
@@ -155,7 +156,8 @@ export const aboutComponentSchemas = {
           },
           formField: "array",
           minItems: 0,
-          maxItems: 6
+          maxItems: 6,
+          hidden: true  // إخفاء حقل stats من Component Configuration
         },
         missionPoints: {
           type: "array",
@@ -187,7 +189,8 @@ export const aboutComponentSchemas = {
           },
           formField: "array",
           minItems: 0,
-          maxItems: 8
+          maxItems: 8,
+          hidden: true  // إخفاء حقل missionPoints من Component Configuration
         }
       }
     },

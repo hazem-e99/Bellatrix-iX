@@ -521,7 +521,10 @@ const DynamicFormGenerator = ({
             componentType,
             fieldCount: fieldEntries.length,
             fieldKeys: fieldEntries.map(([key]) => key),
-            schemaProperties: schema.properties
+            schemaProperties: schema.properties,
+            formDataKeys: Object.keys(formData),
+            hasItemsInData: 'items' in formData,
+            hasItemsInSchema: 'items' in schema.properties
           });
           
           return fieldEntries.map(([key, fieldSchema]) => {
@@ -529,8 +532,45 @@ const DynamicFormGenerator = ({
               componentType,
               fieldKey: key,
               fieldSchema,
-              fieldValue: getValueByPath(formData, key)
+              fieldValue: getValueByPath(formData, key),
+              hasItemsField: key === 'items',
+              isArrayField: fieldSchema.type === 'array',
+              formFieldType: fieldSchema.formField || fieldSchema.type,
+              isInSchema: key in schema.properties,
+              isInFormData: key in formData,
+              isHidden: fieldSchema.hidden === true
             });
+            
+            // Log warning for unexpected items field
+            if (key === 'items' && fieldSchema.type !== 'array') {
+              console.warn("⚠️ [DynamicFormGenerator] Unexpected items field found:", {
+                componentType,
+                fieldSchema,
+                fieldType: fieldSchema.type,
+                formFieldType: fieldSchema.formField
+              });
+            }
+            
+            // Only render fields that exist in the schema
+            if (!(key in schema.properties)) {
+              console.warn("⚠️ [DynamicFormGenerator] Field not in schema, skipping:", {
+                componentType,
+                fieldKey: key,
+                schemaKeys: Object.keys(schema.properties)
+              });
+              return null;
+            }
+            
+            // Skip hidden fields
+            if (fieldSchema.hidden === true) {
+              console.log("👁️ [DynamicFormGenerator] Field is hidden, skipping:", {
+                componentType,
+                fieldKey: key,
+                fieldSchema
+              });
+              return null;
+            }
+            
             return renderField(key, fieldSchema);
           });
         })()}

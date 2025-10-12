@@ -92,7 +92,7 @@ export const generalComponentSchemas = {
                 formField: "text"
               }
             }
-          }
+          },
         }
       }
     },
@@ -157,7 +157,7 @@ export const generalComponentSchemas = {
                 formField: "textarea"
               }
             }
-          }
+          },
         }
       }
     },
@@ -213,7 +213,7 @@ export const generalComponentSchemas = {
                 formField: "textarea"
               }
             }
-          }
+          },
         }
       }
     },
@@ -270,7 +270,7 @@ export const generalComponentSchemas = {
                 formField: "textarea"
               }
             }
-          }
+          },
         }
       }
     },
@@ -322,7 +322,7 @@ export const generalComponentSchemas = {
                 formField: "textarea"
               }
             }
-          }
+          },
         }
       }
     },
@@ -485,7 +485,7 @@ export const generalComponentSchemas = {
                 formField: "text"
               }
             }
-          }
+          },
         }
       }
     },
@@ -545,7 +545,7 @@ export const generalComponentSchemas = {
                 formField: "textarea"
               }
             }
-          }
+          },
         }
       }
     },
@@ -603,7 +603,7 @@ export const generalComponentSchemas = {
                 formField: "textarea"
               }
             }
-          }
+          },
         }
       }
     },
@@ -674,7 +674,7 @@ export const generalComponentSchemas = {
                 }
               }
             }
-          }
+          },
         }
       }
     },
@@ -739,7 +739,7 @@ export const generalComponentSchemas = {
                     formField: "textarea"
                   }
                 }
-              }
+              },
             }
           }
         }
