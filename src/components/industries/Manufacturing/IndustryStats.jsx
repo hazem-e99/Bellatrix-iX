@@ -57,7 +57,8 @@ const IndustryStats = (props) => {
   // PRIORITIZE FORM DATA OVER DEFAULTS
   const finalTitle = title || defaultData.title;
   const finalSubtitle = subtitle || defaultData.subtitle;
-  const finalStats = Array.isArray(stats) && stats.length > 0 ? stats : (defaultData.stats || []);
+  const finalStats =
+    Array.isArray(stats) && stats.length > 0 ? stats : defaultData.stats || [];
 
   console.log("🏭 [IndustryStats] FINAL DATA:", {
     finalTitle,

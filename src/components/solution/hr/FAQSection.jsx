@@ -37,7 +37,7 @@ const FAQSection = ({ data, openFAQ, setOpenFAQ }) => {
   // PRIORITIZE props data over default data for real-time preview
   // Handle different data structures from dynamic schema generator
   let faqData;
-  
+
   if (data?.faq) {
     // Standard structure: { faq: { title, items } }
     faqData = data.faq;
@@ -45,13 +45,13 @@ const FAQSection = ({ data, openFAQ, setOpenFAQ }) => {
     // Dynamic schema structure: { title, faqItems }
     faqData = {
       title: data.title,
-      items: data.faqItems || []
+      items: data.faqItems || [],
     };
   } else if (data?.items) {
     // Direct items structure: { items }
     faqData = {
       title: data.title || "Frequently Asked Questions",
-      items: data.items || []
+      items: data.items || [],
     };
   } else if (defaultData) {
     // Use default data
@@ -60,7 +60,7 @@ const FAQSection = ({ data, openFAQ, setOpenFAQ }) => {
     // Ultimate fallback
     faqData = {
       title: "Frequently Asked Questions",
-      items: []
+      items: [],
     };
   }
 
@@ -72,7 +72,7 @@ const FAQSection = ({ data, openFAQ, setOpenFAQ }) => {
     propsData: data,
     hasDefaultData: !!defaultData,
     finalData: displayData,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
   return (
     <>

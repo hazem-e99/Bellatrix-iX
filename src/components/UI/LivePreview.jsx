@@ -12,7 +12,8 @@ import AboutJourney from "../About/AboutJourney";
 import AboutMilestones from "../About/AboutMilestones";
 import AboutDifferentiators from "../About/AboutDifferentiators";
 import AboutCTA from "../About/AboutCTA";
-// General Components
+
+// HR & Payroll Components
 import PayrollHero from "../solution/payroll/PayrollHero";
 import PayrollWorkflow from "../solution/payroll/PayrollWorkflow";
 import PayrollStepper from "../solution/payroll/PayrollStepper";
@@ -26,18 +27,39 @@ import HRUseCases from "../solution/hr/UseCasesSection";
 import HRPricing from "../solution/hr/PricingSection";
 import HRFAQ from "../solution/hr/FAQSection";
 import HRCTA from "../solution/hr/CTASection";
+
 // Landing Page Components
 import Hero from "../Hero";
 import Services from "../Services";
 import Testimonials from "../Testimonials";
 import Industries from "../Industries";
+
 // Services Components
 import ImplementationHero from "../Services/Implementation/HeroSection";
+import ImplementationProcess from "../Services/Implementation/ProcessSection";
+import ImplementationWhyChoose from "../Services/Implementation/WhyChooseSection";
+import ImplementationPricing from "../Services/Implementation/PricingSection";
+import ImplementationCta from "../Services/Implementation/CtaSection";
 import TrainingHero from "../Services/training/HeroSection";
 import IntegrationHero from "../Services/Integration/HeroSection";
-// Industries Components
+
+// Industries Components - Manufacturing
 import ManufacturingHero from "../industries/Manufacturing/HeroSection";
+import ManufacturingSolutions from "../industries/Manufacturing/SolutionsSection";
+import ManufacturingChallenges from "../industries/Manufacturing/ChallengesSection";
+import ManufacturingIndustryStats from "../industries/Manufacturing/IndustryStats";
+import ManufacturingImplementationProcess from "../industries/Manufacturing/ImplementationProcess";
+import ManufacturingCaseStudies from "../industries/Manufacturing/CaseStudies";
+import ManufacturingCTA from "../industries/Manufacturing/CTASection";
+
+// Industries Components - Retail
 import RetailHero from "../industries/retail/HeroSection";
+
+// Common/Shared Components
+import SEO from "../SEO";
+import ContactForm from "../ContactForm";
+import Modal from "../Modal";
+import CTAButton from "../CTAButton";
 
 /**
  * Real-time Component Preview System
@@ -48,13 +70,16 @@ const ComponentPreview = ({
   componentData = {},
   theme = 1,
   isVisible = true,
-  className = ""
+  className = "",
 }) => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Component registry mapping
+  // Component registry mapping - All available components for preview
   const componentRegistry = {
+    // ===========================================
+    // ABOUT PAGE COMPONENTS
+    // ===========================================
     AboutHeroSection: AboutHero,
     AboutMissionSection: AboutMission,
     AboutTeamSection: AboutTeam,
@@ -63,7 +88,10 @@ const ComponentPreview = ({
     AboutMilestonesSection: AboutMilestones,
     AboutDifferentiatorsSection: AboutDifferentiators,
     AboutCTASection: AboutCTA,
-    // General Components
+
+    // ===========================================
+    // HR & PAYROLL COMPONENTS
+    // ===========================================
     PayrollHeroSection: PayrollHero,
     PayrollWorkflowSection: PayrollWorkflow,
     PayrollStepperSection: PayrollStepper,
@@ -77,40 +105,78 @@ const ComponentPreview = ({
     HRPricingSection: HRPricing,
     HRFAQSection: HRFAQ,
     HRCTASection: HRCTA,
-    // Landing Page Components
+
+    // ===========================================
+    // LANDING PAGE COMPONENTS
+    // ===========================================
+    Hero: Hero,
     HeroSection: Hero,
+    Services: Services,
     ServicesSection: Services,
+    Testimonials: Testimonials,
     TestimonialsSection: Testimonials,
+    Industries: Industries,
     IndustriesSection: Industries,
-    // Services Components
+
+    // ===========================================
+    // SERVICES COMPONENTS
+    // ===========================================
     ImplementationHeroSection: ImplementationHero,
+    ImplementationProcessSection: ImplementationProcess,
+    ImplementationWhyChooseSection: ImplementationWhyChoose,
+    ImplementationPricingSection: ImplementationPricing,
+    ImplementationCtaSection: ImplementationCta,
     TrainingHeroSection: TrainingHero,
     IntegrationHeroSection: IntegrationHero,
-    // Industries Components
+
+    // ===========================================
+    // INDUSTRY COMPONENTS - MANUFACTURING
+    // ===========================================
     ManufacturingHeroSection: ManufacturingHero,
-    RetailHeroSection: RetailHero
+    ManufacturingSolutionsSection: ManufacturingSolutions,
+    ManufacturingChallengesSection: ManufacturingChallenges,
+    ManufacturingIndustryStats: ManufacturingIndustryStats,
+    ManufacturingImplementationProcess: ManufacturingImplementationProcess,
+    ManufacturingCaseStudies: ManufacturingCaseStudies,
+    ManufacturingCTASection: ManufacturingCTA,
+
+    // ===========================================
+    // INDUSTRY COMPONENTS - RETAIL
+    // ===========================================
+    RetailHeroSection: RetailHero,
+
+    // ===========================================
+    // COMMON/SHARED COMPONENTS
+    // ===========================================
+    SEO: SEO,
+    ContactForm: ContactForm,
+    Modal: Modal,
+    CTAButton: CTAButton,
   };
 
   // Transform data to component props format
   const transformedProps = useMemo(() => {
     if (!componentData) return {};
-    
+
     try {
       // Transform based on component type
       switch (componentType) {
-        case 'AboutHeroSection':
+        case "AboutHeroSection":
           return {
             data: {
               title: componentData.title,
               subtitle: componentData.subtitle,
               description: componentData.description,
               backgroundVideo: componentData.backgroundVideo,
-              stats: componentData.stats || []
-            }
+              stats: componentData.stats || [],
+            },
           };
 
-        case 'AboutMissionSection': {
-          console.log("🎯 [AboutMissionSection TRANSFORM] Input data:", componentData);
+        case "AboutMissionSection": {
+          console.log(
+            "🎯 [AboutMissionSection TRANSFORM] Input data:",
+            componentData
+          );
           const transformedMissionData = {
             data: {
               title: componentData.title || "",
@@ -119,345 +185,928 @@ const ComponentPreview = ({
               vision: componentData.vision || "",
               additionalContent: componentData.additionalContent || "",
               image: componentData.image || "",
-              stats: Array.isArray(componentData.stats) ? componentData.stats : [],
-              missionPoints: Array.isArray(componentData.missionPoints) ? componentData.missionPoints : []
-            }
+              stats: Array.isArray(componentData.stats)
+                ? componentData.stats
+                : [],
+              missionPoints: Array.isArray(componentData.missionPoints)
+                ? componentData.missionPoints
+                : [],
+            },
           };
-          console.log("✅ [AboutMissionSection TRANSFORM] Output data:", transformedMissionData);
+          console.log(
+            "✅ [AboutMissionSection TRANSFORM] Output data:",
+            transformedMissionData
+          );
           return transformedMissionData;
         }
 
-        case 'AboutTeamSection':
-          console.log("🎯 [AboutTeamSection TRANSFORM] Input data:", componentData);
+        case "AboutTeamSection":
+          console.log(
+            "🎯 [AboutTeamSection TRANSFORM] Input data:",
+            componentData
+          );
           const transformedTeamData = {
             teamMembers: componentData.members || [],
             data: {
               title: componentData.title || "Meet Our Team",
-              description: componentData.description || "Our diverse team of experts brings together decades of experience in enterprise software, business consulting, and digital transformation."
-            }
+              description:
+                componentData.description ||
+                "Our diverse team of experts brings together decades of experience in enterprise software, business consulting, and digital transformation.",
+            },
           };
-          console.log("✅ [AboutTeamSection TRANSFORM] Output data:", transformedTeamData);
+          console.log(
+            "✅ [AboutTeamSection TRANSFORM] Output data:",
+            transformedTeamData
+          );
           return transformedTeamData;
 
-        case 'AboutValuesSection':
-          console.log("🎯 [AboutValuesSection TRANSFORM] Input data:", componentData);
+        case "AboutValuesSection":
+          console.log(
+            "🎯 [AboutValuesSection TRANSFORM] Input data:",
+            componentData
+          );
           const transformedValuesData = {
             values: componentData.items || [],
             data: {
               title: componentData.title || "Our Values",
-              description: componentData.description || "These core values guide everything we do and shape how we interact with our clients, partners, and each other."
-            }
+              description:
+                componentData.description ||
+                "These core values guide everything we do and shape how we interact with our clients, partners, and each other.",
+            },
           };
-          console.log("✅ [AboutValuesSection TRANSFORM] Output data:", transformedValuesData);
+          console.log(
+            "✅ [AboutValuesSection TRANSFORM] Output data:",
+            transformedValuesData
+          );
           return transformedValuesData;
 
-        case 'AboutJourneySection':
-          console.log("🎯 [AboutJourneySection TRANSFORM] Input data:", componentData);
+        case "AboutJourneySection":
+          console.log(
+            "🎯 [AboutJourneySection TRANSFORM] Input data:",
+            componentData
+          );
           const transformedJourneyData = {
             data: {
               beginningTitle: componentData.beginningTitle || "The Beginning",
-              beginningText: componentData.beginningText || "Founded in 2008 with a vision to bridge the gap between complex enterprise software and real business needs. Our founders recognized that many businesses were struggling to fully leverage their technology investments.",
+              beginningText:
+                componentData.beginningText ||
+                "Founded in 2008 with a vision to bridge the gap between complex enterprise software and real business needs. Our founders recognized that many businesses were struggling to fully leverage their technology investments.",
               growthTitle: componentData.growthTitle || "Growth & Evolution",
-              growthText: componentData.growthText || "Over the years, we've evolved from a small consulting firm to a comprehensive digital transformation partner, helping hundreds of organizations across various industries unlock their full potential.",
+              growthText:
+                componentData.growthText ||
+                "Over the years, we've evolved from a small consulting firm to a comprehensive digital transformation partner, helping hundreds of organizations across various industries unlock their full potential.",
               todayTitle: componentData.todayTitle || "Today",
-              todayText: componentData.todayText || "We continue to innovate and expand our services, staying at the forefront of technology trends while maintaining our core values of excellence and integrity.",
-              imageUrl: componentData.imageUrl || "/images/solution.jpg"
-            }
+              todayText:
+                componentData.todayText ||
+                "We continue to innovate and expand our services, staying at the forefront of technology trends while maintaining our core values of excellence and integrity.",
+              imageUrl: componentData.imageUrl || "/images/solution.jpg",
+            },
           };
-          console.log("✅ [AboutJourneySection TRANSFORM] Output data:", transformedJourneyData);
+          console.log(
+            "✅ [AboutJourneySection TRANSFORM] Output data:",
+            transformedJourneyData
+          );
           return transformedJourneyData;
 
-        case 'AboutMilestonesSection':
-          console.log("🎯 [AboutMilestonesSection TRANSFORM] Input data:", componentData);
+        case "AboutMilestonesSection":
+          console.log(
+            "🎯 [AboutMilestonesSection TRANSFORM] Input data:",
+            componentData
+          );
           const transformedMilestonesData = {
             milestones: componentData.items || [],
             data: {
               title: componentData.title || "Our Milestones",
-              description: componentData.description || "Key achievements and milestones that mark our journey of growth, innovation, and commitment to excellence."
-            }
+              description:
+                componentData.description ||
+                "Key achievements and milestones that mark our journey of growth, innovation, and commitment to excellence.",
+            },
           };
-          console.log("✅ [AboutMilestonesSection TRANSFORM] Output data:", transformedMilestonesData);
+          console.log(
+            "✅ [AboutMilestonesSection TRANSFORM] Output data:",
+            transformedMilestonesData
+          );
           return transformedMilestonesData;
 
-        case 'AboutDifferentiatorsSection':
-          console.log("🎯 [AboutDifferentiatorsSection TRANSFORM] Input data:", componentData);
+        case "AboutDifferentiatorsSection":
+          console.log(
+            "🎯 [AboutDifferentiatorsSection TRANSFORM] Input data:",
+            componentData
+          );
           const transformedDifferentiatorsData = {
             differentiators: componentData.items || [],
             data: {
               title: componentData.title || "What Sets Us Apart",
-              description: componentData.description || "Our unique combination of expertise, methodology, and commitment to excellence makes us the preferred choice for Oracle NetSuite implementations."
-            }
+              description:
+                componentData.description ||
+                "Our unique combination of expertise, methodology, and commitment to excellence makes us the preferred choice for Oracle NetSuite implementations.",
+            },
           };
-          console.log("✅ [AboutDifferentiatorsSection TRANSFORM] Output data:", transformedDifferentiatorsData);
+          console.log(
+            "✅ [AboutDifferentiatorsSection TRANSFORM] Output data:",
+            transformedDifferentiatorsData
+          );
           return transformedDifferentiatorsData;
 
-        case 'AboutCTASection':
-          console.log("🎯 [AboutCTASection TRANSFORM] Input data:", componentData);
+        case "AboutCTASection":
+          console.log(
+            "🎯 [AboutCTASection TRANSFORM] Input data:",
+            componentData
+          );
           const transformedCTAData = {
             title: componentData.title || "Ready to Build Something Great?",
-            subtitle: componentData.subtitle || "Let's collaborate to transform your business with innovative Oracle NetSuite solutions that drive growth, efficiency, and success.",
-            description: componentData.description || "Contact us today to discuss how we can help you optimize your operations and drive growth.",
-            ctaButton: componentData.ctaButton || { text: "Start Consultation", link: "/contact", variant: "primary" },
+            subtitle:
+              componentData.subtitle ||
+              "Let's collaborate to transform your business with innovative Oracle NetSuite solutions that drive growth, efficiency, and success.",
+            description:
+              componentData.description ||
+              "Contact us today to discuss how we can help you optimize your operations and drive growth.",
+            ctaButton: componentData.ctaButton || {
+              text: "Start Consultation",
+              link: "/contact",
+              variant: "primary",
+            },
             features: componentData.features || [
-              { title: "Quick Start", description: "Get started our consultation" },
-              { title: "Expert Team", description: "Work with certified professionals" },
-              { title: "Proven Results", description: "Join our success stories" }
+              {
+                title: "Quick Start",
+                description: "Get started our consultation",
+              },
+              {
+                title: "Expert Team",
+                description: "Work with certified professionals",
+              },
+              {
+                title: "Proven Results",
+                description: "Join our success stories",
+              },
             ],
-            onOpenContactModal: () => console.log('Contact modal opened')
+            onOpenContactModal: () => console.log("Contact modal opened"),
           };
-          console.log("✅ [AboutCTASection TRANSFORM] Output data:", transformedCTAData);
+          console.log(
+            "✅ [AboutCTASection TRANSFORM] Output data:",
+            transformedCTAData
+          );
           return transformedCTAData;
 
         // General Components
-        case 'PayrollHeroSection':
-          console.log("🎯 [PayrollHeroSection TRANSFORM] Input data:", componentData);
+        case "PayrollHeroSection":
+          console.log(
+            "🎯 [PayrollHeroSection TRANSFORM] Input data:",
+            componentData
+          );
           const transformedPayrollHeroData = {
             title: componentData.title || "Transform Your Payroll Process",
-            subtitle: componentData.subtitle || "Streamline operations with our intelligent, automated payroll system",
+            subtitle:
+              componentData.subtitle ||
+              "Streamline operations with our intelligent, automated payroll system",
             description: componentData.description || "",
-            ctaButton: componentData.ctaButton || { text: "Get Started", link: "/contact" },
-            backgroundImage: componentData.backgroundImage || "/images/payrollFinal.jpeg",
+            ctaButton: componentData.ctaButton || {
+              text: "Get Started",
+              link: "/contact",
+            },
+            backgroundImage:
+              componentData.backgroundImage || "/images/payrollFinal.jpeg",
             bgColor: componentData.bgColor || "",
             bgVideo: componentData.bgVideo || "",
-            data: componentData
+            data: componentData,
           };
-          console.log("✅ [PayrollHeroSection TRANSFORM] Output data:", transformedPayrollHeroData);
+          console.log(
+            "✅ [PayrollHeroSection TRANSFORM] Output data:",
+            transformedPayrollHeroData
+          );
           return transformedPayrollHeroData;
 
-        case 'HRHeroSection':
-          console.log("🎯 [HRHeroSection TRANSFORM] Input data:", componentData);
+        case "HRHeroSection":
+          console.log(
+            "🎯 [HRHeroSection TRANSFORM] Input data:",
+            componentData
+          );
           const transformedHRHeroData = {
             data: {
               hero: {
-                title: componentData.title || "Modern HR, Payroll & People Management",
-                subtitle: componentData.subtitle || "Automate HR, empower employees, and stay compliant—on one secure platform designed for the future of work.",
+                title:
+                  componentData.title ||
+                  "Modern HR, Payroll & People Management",
+                subtitle:
+                  componentData.subtitle ||
+                  "Automate HR, empower employees, and stay compliant—on one secure platform designed for the future of work.",
                 bgVideo: componentData.bgVideo || "/Videos/hrVideo.mp4",
-                bgColor: componentData.bgColor || "bg-gradient-to-br from-[#191970] via-black to-blue-700"
-              }
-            }
+                bgColor:
+                  componentData.bgColor ||
+                  "bg-gradient-to-br from-[#191970] via-black to-blue-700",
+              },
+            },
           };
-          console.log("✅ [HRHeroSection TRANSFORM] Output data:", transformedHRHeroData);
+          console.log(
+            "✅ [HRHeroSection TRANSFORM] Output data:",
+            transformedHRHeroData
+          );
           return transformedHRHeroData;
 
-        case 'PayrollWorkflowSection':
-          console.log("🎯 [PayrollWorkflowSection TRANSFORM] Input data:", componentData);
+        case "PayrollWorkflowSection":
+          console.log(
+            "🎯 [PayrollWorkflowSection TRANSFORM] Input data:",
+            componentData
+          );
           const transformedPayrollWorkflowData = {
             workflowData: {
-              title: componentData.title || "Payroll System Built for All Industries",
-              description: componentData.description || "Streamline your entire payroll lifecycle — from onboarding to salary disbursement — with a secure, intuitive platform.",
-              steps: componentData.steps || []
-            }
+              title:
+                componentData.title ||
+                "Payroll System Built for All Industries",
+              description:
+                componentData.description ||
+                "Streamline your entire payroll lifecycle — from onboarding to salary disbursement — with a secure, intuitive platform.",
+              steps: componentData.steps || [],
+            },
           };
-          console.log("✅ [PayrollWorkflowSection TRANSFORM] Output data:", transformedPayrollWorkflowData);
+          console.log(
+            "✅ [PayrollWorkflowSection TRANSFORM] Output data:",
+            transformedPayrollWorkflowData
+          );
           return transformedPayrollWorkflowData;
 
-        case 'PayrollStepperSection':
-          console.log("🎯 [PayrollStepperSection TRANSFORM] Input data:", componentData);
+        case "PayrollStepperSection":
+          console.log(
+            "🎯 [PayrollStepperSection TRANSFORM] Input data:",
+            componentData
+          );
           const transformedPayrollStepperData = {
             steps: componentData.steps || [],
-            title: componentData.title || "Payroll Process Steps"
+            title: componentData.title || "Payroll Process Steps",
           };
-          console.log("✅ [PayrollStepperSection TRANSFORM] Output data:", transformedPayrollStepperData);
+          console.log(
+            "✅ [PayrollStepperSection TRANSFORM] Output data:",
+            transformedPayrollStepperData
+          );
           return transformedPayrollStepperData;
 
-        case 'PayrollPainPointsSection':
-          console.log("🎯 [PayrollPainPointsSection TRANSFORM] Input data:", componentData);
+        case "PayrollPainPointsSection":
+          console.log(
+            "🎯 [PayrollPainPointsSection TRANSFORM] Input data:",
+            componentData
+          );
           const transformedPayrollPainPointsData = {
-            painPoints: componentData.items || []
+            painPoints: componentData.items || [],
           };
-          console.log("✅ [PayrollPainPointsSection TRANSFORM] Output data:", transformedPayrollPainPointsData);
+          console.log(
+            "✅ [PayrollPainPointsSection TRANSFORM] Output data:",
+            transformedPayrollPainPointsData
+          );
           return transformedPayrollPainPointsData;
 
-        case 'PayrollFAQSection':
-          console.log("🎯 [PayrollFAQSection TRANSFORM] Input data:", componentData);
+        case "PayrollFAQSection":
+          console.log(
+            "🎯 [PayrollFAQSection TRANSFORM] Input data:",
+            componentData
+          );
           const transformedPayrollFAQData = {
             faqData: {
               title: componentData.title || "Frequently Asked Questions",
-              items: componentData.items || []
-            }
+              items: componentData.items || [],
+            },
           };
-          console.log("✅ [PayrollFAQSection TRANSFORM] Output data:", transformedPayrollFAQData);
+          console.log(
+            "✅ [PayrollFAQSection TRANSFORM] Output data:",
+            transformedPayrollFAQData
+          );
           return transformedPayrollFAQData;
 
-        case 'PayrollCTASection':
-          console.log("🎯 [PayrollCTASection TRANSFORM] Input data:", componentData);
+        case "PayrollCTASection":
+          console.log(
+            "🎯 [PayrollCTASection TRANSFORM] Input data:",
+            componentData
+          );
           const transformedPayrollCTAData = {
             title: componentData.title || "Ready to Transform Your Payroll?",
-            subtitle: componentData.subtitle || "Let's discuss your payroll needs",
-            ctaButton: componentData.ctaButton || { text: "Get Started", link: "/contact" }
+            subtitle:
+              componentData.subtitle || "Let's discuss your payroll needs",
+            ctaButton: componentData.ctaButton || {
+              text: "Get Started",
+              link: "/contact",
+            },
           };
-          console.log("✅ [PayrollCTASection TRANSFORM] Output data:", transformedPayrollCTAData);
+          console.log(
+            "✅ [PayrollCTASection TRANSFORM] Output data:",
+            transformedPayrollCTAData
+          );
           return transformedPayrollCTAData;
 
-        case 'HRModulesSection':
-          console.log("🎯 [HRModulesSection TRANSFORM] Input data:", componentData);
+        case "HRModulesSection": {
+          console.log(
+            "🎯 [HRModulesSection TRANSFORM] Input data:",
+            componentData
+          );
           const transformedHRModulesData = {
             data: {
-              modules: componentData.modules || []
+              modules: componentData.modules || [
+                {
+                  icon: "👥",
+                  title: "Employee Management",
+                  desc: "Comprehensive employee records, profiles, and lifecycle management from onboarding to offboarding."
+                },
+                {
+                  icon: "💰", 
+                  title: "Payroll Processing",
+                  desc: "Automated payroll calculations, tax deductions, and salary disbursements with compliance features."
+                },
+                {
+                  icon: "📊",
+                  title: "Performance Analytics",
+                  desc: "Track employee performance, KPIs, and generate insightful reports for better decision making."
+                },
+                {
+                  icon: "📋",
+                  title: "Compliance Tracking",
+                  desc: "Stay compliant with labor laws, regulations, and industry standards with automated tracking."
+                }
+              ]
             }
           };
-          console.log("✅ [HRModulesSection TRANSFORM] Output data:", transformedHRModulesData);
+          console.log(
+            "✅ [HRModulesSection TRANSFORM] Output data:",
+            transformedHRModulesData
+          );
           return transformedHRModulesData;
+        }
 
-        case 'HRBenefitsSection':
-          console.log("🎯 [HRBenefitsSection TRANSFORM] Input data:", componentData);
+        case "HRBenefitsSection": {
+          console.log(
+            "🎯 [HRBenefitsSection TRANSFORM] Input data:",
+            componentData
+          );
           const transformedHRBenefitsData = {
             data: {
-              features: componentData.features || []
-            }
+              features: {
+                title: componentData.title || "Why Choose Our HR Solution?",
+                description: componentData.description || "Discover the key advantages that make our HR platform the smart choice for modern businesses of all sizes and industries.",
+                items: componentData.features || componentData.items || [
+                  {
+                    title: "Automated Workflows",
+                    description: "Streamline HR processes with intelligent automation",
+                    icon: "⚙️"
+                  },
+                  {
+                    title: "Employee Self-Service",
+                    description: "Empower employees with self-service capabilities",
+                    icon: "👤"
+                  },
+                  {
+                    title: "Compliance Management",
+                    description: "Stay compliant with automated reporting and tracking",
+                    icon: "📋"
+                  }
+                ]
+              }
+            },
           };
-          console.log("✅ [HRBenefitsSection TRANSFORM] Output data:", transformedHRBenefitsData);
+          console.log(
+            "✅ [HRBenefitsSection TRANSFORM] Output data:",
+            transformedHRBenefitsData
+          );
           return transformedHRBenefitsData;
+        }
 
-        case 'HRUseCasesSection':
-          console.log("🎯 [HRUseCasesSection TRANSFORM] Input data:", componentData);
+        case "HRUseCasesSection": {
+          console.log(
+            "🎯 [HRUseCasesSection TRANSFORM] Input data:",
+            componentData
+          );
           const transformedHRUseCasesData = {
             data: {
-              useCases: componentData.useCases || []
+              useCases: componentData.useCases || [
+                {
+                  title: "Small Businesses",
+                  desc: "Streamline HR processes for growing teams with automated workflows and compliance tracking."
+                },
+                {
+                  title: "Medium Enterprises", 
+                  desc: "Scale your HR operations with advanced analytics and performance management tools."
+                },
+                {
+                  title: "Large Corporations",
+                  desc: "Manage complex organizational structures with enterprise-grade HR solutions."
+                },
+                {
+                  title: "Remote Teams",
+                  desc: "Support distributed workforces with cloud-based HR management and collaboration tools."
+                }
+              ]
             }
           };
-          console.log("✅ [HRUseCasesSection TRANSFORM] Output data:", transformedHRUseCasesData);
+          console.log(
+            "✅ [HRUseCasesSection TRANSFORM] Output data:",
+            transformedHRUseCasesData
+          );
           return transformedHRUseCasesData;
+        }
 
-        case 'HRPricingSection':
-          console.log("🎯 [HRPricingSection TRANSFORM] Input data:", componentData);
+        case "HRPricingSection": {
+          console.log(
+            "🎯 [HRPricingSection TRANSFORM] Input data:",
+            componentData
+          );
           const transformedHRPricingData = {
             data: {
-              pricing: componentData.pricing || []
+              pricing: componentData.pricing || [
+                {
+                  name: "Basic Plan",
+                  price: "$99",
+                  period: "per month",
+                  description: "Perfect for small businesses",
+                  features: [
+                    "Employee Management",
+                    "Basic Payroll",
+                    "Time Tracking",
+                    "Benefits Administration"
+                  ],
+                  isPopular: false
+                },
+                {
+                  name: "Professional Plan", 
+                  price: "$199",
+                  period: "per month",
+                  description: "Ideal for growing companies",
+                  features: [
+                    "Everything in Basic",
+                    "Advanced Analytics",
+                    "Performance Management",
+                    "Advanced Reporting",
+                    "Integration Support"
+                  ],
+                  isPopular: true
+                }
+              ]
             }
           };
-          console.log("✅ [HRPricingSection TRANSFORM] Output data:", transformedHRPricingData);
+          console.log(
+            "✅ [HRPricingSection TRANSFORM] Output data:",
+            transformedHRPricingData
+          );
           return transformedHRPricingData;
+        }
 
-        case 'HRFAQSection':
+        case "HRFAQSection": {
           console.log("🎯 [HRFAQSection TRANSFORM] Input data:", componentData);
           const transformedHRFAQData = {
             data: {
-              faq: componentData.faq || []
+              faq: {
+                items: componentData.faq?.items || componentData.faq || [
+                  {
+                    question: "What HR modules are included?",
+                    answer: "Our HR solution includes employee management, payroll processing, benefits administration, and performance tracking modules."
+                  },
+                  {
+                    question: "How long does implementation take?",
+                    answer: "Typical implementation takes 4-8 weeks depending on your organization size and requirements."
+                  },
+                  {
+                    question: "Is training provided?",
+                    answer: "Yes, we provide comprehensive training for all users including administrators and end-users."
+                  }
+                ]
+              }
             }
           };
-          console.log("✅ [HRFAQSection TRANSFORM] Output data:", transformedHRFAQData);
+          console.log(
+            "✅ [HRFAQSection TRANSFORM] Output data:",
+            transformedHRFAQData
+          );
           return transformedHRFAQData;
+        }
 
-        case 'HRCTASection':
+        case "HRCTASection": {
           console.log("🎯 [HRCTASection TRANSFORM] Input data:", componentData);
           const transformedHRCTAData = {
             title: componentData.title || "Ready to Transform Your HR?",
             subtitle: componentData.subtitle || "Let's discuss your HR needs",
-            ctaButton: componentData.ctaButton || { text: "Get Started", link: "/contact" }
+            ctaButton: componentData.ctaButton || {
+              text: "Get Started",
+              link: "/contact",
+            },
           };
-          console.log("✅ [HRCTASection TRANSFORM] Output data:", transformedHRCTAData);
+          console.log(
+            "✅ [HRCTASection TRANSFORM] Output data:",
+            transformedHRCTAData
+          );
           return transformedHRCTAData;
+        }
 
         // Landing Page Components
-        case 'HeroSection':
+        case "HeroSection":
           console.log("🎯 [HeroSection TRANSFORM] Input data:", componentData);
           const transformedHeroData = {
             slides: componentData.slides || [],
             stats: componentData.stats || [],
-            data: componentData
+            data: componentData,
           };
-          console.log("✅ [HeroSection TRANSFORM] Output data:", transformedHeroData);
+          console.log(
+            "✅ [HeroSection TRANSFORM] Output data:",
+            transformedHeroData
+          );
           return transformedHeroData;
 
-        case 'ServicesSection':
-          console.log("🎯 [ServicesSection TRANSFORM] Input data:", componentData);
+        case "ServicesSection":
+          console.log(
+            "🎯 [ServicesSection TRANSFORM] Input data:",
+            componentData
+          );
           const transformedServicesData = {
             services: componentData.services || [],
             sectionHeader: componentData.sectionHeader || {},
             viewAllButton: componentData.viewAllButton || {},
-            data: componentData
+            data: componentData,
           };
-          console.log("✅ [ServicesSection TRANSFORM] Output data:", transformedServicesData);
+          console.log(
+            "✅ [ServicesSection TRANSFORM] Output data:",
+            transformedServicesData
+          );
           return transformedServicesData;
 
-        case 'TestimonialsSection':
-          console.log("🎯 [TestimonialsSection TRANSFORM] Input data:", componentData);
+        case "TestimonialsSection":
+          console.log(
+            "🎯 [TestimonialsSection TRANSFORM] Input data:",
+            componentData
+          );
           const transformedTestimonialsData = {
             testimonials: componentData.testimonials || [],
             sectionHeader: componentData.sectionHeader || {},
-            data: componentData
+            data: componentData,
           };
-          console.log("✅ [TestimonialsSection TRANSFORM] Output data:", transformedTestimonialsData);
+          console.log(
+            "✅ [TestimonialsSection TRANSFORM] Output data:",
+            transformedTestimonialsData
+          );
           return transformedTestimonialsData;
 
-        case 'IndustriesSection':
-          console.log("🎯 [IndustriesSection TRANSFORM] Input data:", componentData);
+        case "IndustriesSection":
+          console.log(
+            "🎯 [IndustriesSection TRANSFORM] Input data:",
+            componentData
+          );
           const transformedIndustriesData = {
             industries: componentData.industries || [],
             sectionHeader: componentData.sectionHeader || {},
-            data: componentData
+            data: componentData,
           };
-          console.log("✅ [IndustriesSection TRANSFORM] Output data:", transformedIndustriesData);
+          console.log(
+            "✅ [IndustriesSection TRANSFORM] Output data:",
+            transformedIndustriesData
+          );
           return transformedIndustriesData;
 
         // Services Components
-        case 'ImplementationHeroSection':
-          console.log("🎯 [ImplementationHeroSection TRANSFORM] Input data:", componentData);
+        case "ImplementationHeroSection":
+          console.log(
+            "🎯 [ImplementationHeroSection TRANSFORM] Input data:",
+            componentData
+          );
           const transformedImplementationHeroData = {
-            data: componentData || {}
+            data: componentData || {},
           };
-          console.log("✅ [ImplementationHeroSection TRANSFORM] Output data:", transformedImplementationHeroData);
+          console.log(
+            "✅ [ImplementationHeroSection TRANSFORM] Output data:",
+            transformedImplementationHeroData
+          );
           return transformedImplementationHeroData;
 
-        case 'TrainingHeroSection':
-          console.log("🎯 [TrainingHeroSection TRANSFORM] Input data:", componentData);
+        case "TrainingHeroSection":
+          console.log(
+            "🎯 [TrainingHeroSection TRANSFORM] Input data:",
+            componentData
+          );
           const transformedTrainingHeroData = {
             heroContent: componentData.heroContent || {
               title: "Transform Your Career with Oracle NetSuite Training",
               subtitle: "Professional ERP Education & Skills Development",
-              description: "Master Oracle NetSuite with comprehensive training programs designed for professionals at all levels."
+              description:
+                "Master Oracle NetSuite with comprehensive training programs designed for professionals at all levels.",
             },
-            backgroundVideo: componentData.backgroundVideo || "/Videos/training-hero.mp4",
+            backgroundVideo:
+              componentData.backgroundVideo || "/Videos/training-hero.mp4",
             ctaButton: componentData.ctaButton || {
               text: "Start Learning",
-              variant: "primary"
+              variant: "primary",
             },
-            data: componentData
+            data: componentData,
           };
-          console.log("✅ [TrainingHeroSection TRANSFORM] Output data:", transformedTrainingHeroData);
+          console.log(
+            "✅ [TrainingHeroSection TRANSFORM] Output data:",
+            transformedTrainingHeroData
+          );
           return transformedTrainingHeroData;
 
-        case 'IntegrationHeroSection':
-          console.log("🎯 [IntegrationHeroSection TRANSFORM] Input data:", componentData);
+        case "IntegrationHeroSection":
+          console.log(
+            "🎯 [IntegrationHeroSection TRANSFORM] Input data:",
+            componentData
+          );
           const transformedIntegrationHeroData = {
             title: componentData.title || "NetSuite Integration Services",
-            subtitle: componentData.subtitle || "Connect NetSuite with your existing systems for seamless data flow",
-            data: componentData
+            subtitle:
+              componentData.subtitle ||
+              "Connect NetSuite with your existing systems for seamless data flow",
+            data: componentData,
           };
-          console.log("✅ [IntegrationHeroSection TRANSFORM] Output data:", transformedIntegrationHeroData);
+          console.log(
+            "✅ [IntegrationHeroSection TRANSFORM] Output data:",
+            transformedIntegrationHeroData
+          );
           return transformedIntegrationHeroData;
 
         // Industries Components
-        case 'ManufacturingHeroSection':
-          console.log("🎯 [ManufacturingHeroSection TRANSFORM] Input data:", componentData);
+        case "ManufacturingHeroSection":
+          console.log(
+            "🎯 [ManufacturingHeroSection TRANSFORM] Input data:",
+            componentData
+          );
           const transformedManufacturingHeroData = {
             title: componentData.title || "Manufacturing Solutions",
-            subtitle: componentData.subtitle || "Streamline your manufacturing operations",
-            description: componentData.description || "Comprehensive NetSuite solutions for manufacturing businesses",
-            backgroundImage: componentData.backgroundImage || "/images/manufacturing-hero.jpg",
+            subtitle:
+              componentData.subtitle ||
+              "Streamline your manufacturing operations",
+            description:
+              componentData.description ||
+              "Comprehensive NetSuite solutions for manufacturing businesses",
+            backgroundImage:
+              componentData.backgroundImage || "/images/manufacturing-hero.jpg",
             backgroundVideo: componentData.backgroundVideo || "",
             ctaButton: componentData.ctaButton || {
               text: "Learn More",
               link: "/manufacturing",
-              variant: "primary"
+              variant: "primary",
             },
-            data: componentData
+            data: componentData,
           };
-          console.log("✅ [ManufacturingHeroSection TRANSFORM] Output data:", transformedManufacturingHeroData);
+          console.log(
+            "✅ [ManufacturingHeroSection TRANSFORM] Output data:",
+            transformedManufacturingHeroData
+          );
           return transformedManufacturingHeroData;
 
-        case 'RetailHeroSection':
-          console.log("🎯 [RetailHeroSection TRANSFORM] Input data:", componentData);
+        case "RetailHeroSection": {
+          console.log(
+            "🎯 [RetailHeroSection TRANSFORM] Input data:",
+            componentData
+          );
           const transformedRetailHeroData = {
             data: componentData || {
               title: "Retail Solutions",
               subtitle: "Transform your retail operations",
-              description: "Comprehensive NetSuite solutions for retail businesses"
-            }
+              description:
+                "Comprehensive NetSuite solutions for retail businesses",
+            },
           };
-          console.log("✅ [RetailHeroSection TRANSFORM] Output data:", transformedRetailHeroData);
+          console.log(
+            "✅ [RetailHeroSection TRANSFORM] Output data:",
+            transformedRetailHeroData
+          );
           return transformedRetailHeroData;
+        }
+
+        // Implementation Service Components
+        case "ImplementationProcessSection": {
+          console.log(
+            "🎯 [ImplementationProcessSection TRANSFORM] Input data:",
+            componentData
+          );
+          const transformedData = {
+            processData: {
+              title: componentData.title || "Implementation Process",
+              description:
+                componentData.description || "Our proven methodology",
+              steps: componentData.steps || [],
+            },
+          };
+          console.log(
+            "✅ [ImplementationProcessSection TRANSFORM] Output data:",
+            transformedData
+          );
+          return transformedData;
+        }
+
+        case "ImplementationWhyChooseSection": {
+          console.log(
+            "🎯 [ImplementationWhyChooseSection TRANSFORM] Input data:",
+            componentData
+          );
+          const transformedData = {
+            benefits: componentData.benefits || [],
+            title: componentData.title || "Why Choose Our Implementation",
+            description:
+              componentData.description || "Benefits of our services",
+          };
+          console.log(
+            "✅ [ImplementationWhyChooseSection TRANSFORM] Output data:",
+            transformedData
+          );
+          return transformedData;
+        }
+
+        case "ImplementationPricingSection": {
+          console.log(
+            "🎯 [ImplementationPricingSection TRANSFORM] Input data:",
+            componentData
+          );
+          const transformedData = {
+            pricingData: {
+              title: componentData.title || "Implementation Pricing",
+              plans: componentData.plans || [],
+            },
+          };
+          console.log(
+            "✅ [ImplementationPricingSection TRANSFORM] Output data:",
+            transformedData
+          );
+          return transformedData;
+        }
+
+        case "ImplementationCtaSection": {
+          console.log(
+            "🎯 [ImplementationCtaSection TRANSFORM] Input data:",
+            componentData
+          );
+          const transformedData = {
+            title: componentData.title || "Ready to Start Implementation?",
+            subtitle: componentData.subtitle || "Let's discuss your needs",
+            ctaButton: componentData.ctaButton || {
+              text: "Get Started",
+              link: "/contact",
+            },
+          };
+          console.log(
+            "✅ [ImplementationCtaSection TRANSFORM] Output data:",
+            transformedData
+          );
+          return transformedData;
+        }
+
+        // Manufacturing Industry Components
+        case "ManufacturingSolutionsSection": {
+          console.log(
+            "🎯 [ManufacturingSolutionsSection TRANSFORM] Input data:",
+            componentData
+          );
+          const transformedData = {
+            solutions: componentData.solutions || [],
+            title: componentData.title || "Manufacturing Solutions",
+            description:
+              componentData.description ||
+              "Comprehensive solutions for manufacturing",
+          };
+          console.log(
+            "✅ [ManufacturingSolutionsSection TRANSFORM] Output data:",
+            transformedData
+          );
+          return transformedData;
+        }
+
+        case "ManufacturingChallengesSection": {
+          console.log(
+            "🎯 [ManufacturingChallengesSection TRANSFORM] Input data:",
+            componentData
+          );
+          const transformedData = {
+            challenges: componentData.challenges || [],
+            title: componentData.title || "Manufacturing Challenges",
+            subtitle: componentData.subtitle || "Common pain points we solve",
+          };
+          console.log(
+            "✅ [ManufacturingChallengesSection TRANSFORM] Output data:",
+            transformedData
+          );
+          return transformedData;
+        }
+
+        case "ManufacturingIndustryStats": {
+          console.log(
+            "🎯 [ManufacturingIndustryStats TRANSFORM] Input data:",
+            componentData
+          );
+          const transformedData = {
+            stats: componentData.stats || [],
+            title: componentData.title || "Manufacturing Industry Statistics",
+            subtitle: componentData.subtitle || "Key industry metrics",
+          };
+          console.log(
+            "✅ [ManufacturingIndustryStats TRANSFORM] Output data:",
+            transformedData
+          );
+          return transformedData;
+        }
+
+        case "ManufacturingImplementationProcess": {
+          console.log(
+            "🎯 [ManufacturingImplementationProcess TRANSFORM] Input data:",
+            componentData
+          );
+          const transformedData = {
+            processSteps: componentData.processSteps || [],
+            title: componentData.title || "Implementation Process",
+            description: componentData.description || "Our proven methodology",
+          };
+          console.log(
+            "✅ [ManufacturingImplementationProcess TRANSFORM] Output data:",
+            transformedData
+          );
+          return transformedData;
+        }
+
+        case "ManufacturingCaseStudies": {
+          console.log(
+            "🎯 [ManufacturingCaseStudies TRANSFORM] Input data:",
+            componentData
+          );
+          const transformedData = {
+            caseStudies: componentData.caseStudies || [],
+            title: componentData.title || "Manufacturing Success Stories",
+            description:
+              componentData.description || "See how we've helped others",
+          };
+          console.log(
+            "✅ [ManufacturingCaseStudies TRANSFORM] Output data:",
+            transformedData
+          );
+          return transformedData;
+        }
+
+        case "ManufacturingCTASection": {
+          console.log(
+            "🎯 [ManufacturingCTASection TRANSFORM] Input data:",
+            componentData
+          );
+          const transformedData = {
+            title: componentData.title || "Ready to Transform Manufacturing?",
+            subtitle:
+              componentData.subtitle ||
+              "Let's discuss your manufacturing needs",
+            ctaButton: componentData.ctaButton || {
+              text: "Get Started",
+              link: "/contact",
+            },
+          };
+          console.log(
+            "✅ [ManufacturingCTASection TRANSFORM] Output data:",
+            transformedData
+          );
+          return transformedData;
+        }
+
+        // Common/Shared Components
+        case "SEO": {
+          console.log("🎯 [SEO TRANSFORM] Input data:", componentData);
+          const transformedData = {
+            title: componentData.title || "Page Title",
+            description: componentData.description || "Page description",
+            keywords: componentData.keywords || "",
+            ogTitle: componentData.ogTitle || componentData.title,
+            ogDescription:
+              componentData.ogDescription || componentData.description,
+            ogImage: componentData.ogImage || "",
+            twitterCard: componentData.twitterCard || "summary",
+            canonicalUrl: componentData.canonicalUrl || "",
+          };
+          console.log("✅ [SEO TRANSFORM] Output data:", transformedData);
+          return transformedData;
+        }
+
+        case "ContactForm": {
+          console.log("🎯 [ContactForm TRANSFORM] Input data:", componentData);
+          const transformedData = {
+            title: componentData.title || "Contact Us",
+            description:
+              componentData.description || "Get in touch with our team",
+            fields: componentData.fields || [],
+          };
+          console.log(
+            "✅ [ContactForm TRANSFORM] Output data:",
+            transformedData
+          );
+          return transformedData;
+        }
+
+        case "Modal": {
+          console.log("🎯 [Modal TRANSFORM] Input data:", componentData);
+          const transformedData = {
+            isOpen: componentData.isOpen || false,
+            title: componentData.title || "Modal Title",
+            content: componentData.content || "Modal content",
+            onClose: componentData.onClose || (() => {}),
+          };
+          console.log("✅ [Modal TRANSFORM] Output data:", transformedData);
+          return transformedData;
+        }
+
+        case "CTAButton": {
+          console.log("🎯 [CTAButton TRANSFORM] Input data:", componentData);
+          const transformedData = {
+            text: componentData.text || "Click Here",
+            variant: componentData.variant || "primary",
+            icon: componentData.icon || "",
+            onClick: componentData.onClick || (() => {}),
+          };
+          console.log("✅ [CTAButton TRANSFORM] Output data:", transformedData);
+          return transformedData;
+        }
 
         default:
           // Generic prop structure for unknown components
@@ -478,7 +1127,7 @@ const ComponentPreview = ({
   const ErrorBoundaryWrapper = ({ children }) => {
     const [hasError, setHasError] = useState(false);
     const [errorDetails, setErrorDetails] = useState(null);
-    
+
     const dataString = JSON.stringify(componentData);
 
     useEffect(() => {
@@ -532,7 +1181,8 @@ const ComponentPreview = ({
           </h3>
         </div>
         <p className="text-sm text-yellow-600 dark:text-yellow-400">
-          Component type "{componentType}" is not registered in the preview system.
+          Component type "{componentType}" is not registered in the preview
+          system.
         </p>
       </div>
     );
@@ -561,7 +1211,7 @@ const ComponentPreview = ({
           animate={{ opacity: isVisible ? 1 : 0.5 }}
           transition={{ duration: 0.2 }}
           style={{
-            filter: isVisible ? 'none' : 'grayscale(50%)',
+            filter: isVisible ? "none" : "grayscale(50%)",
           }}
         >
           <ErrorBoundaryWrapper>
@@ -584,44 +1234,48 @@ const LivePreview = ({
   components = [],
   previewMode = "desktop",
   showDebugInfo = false,
-  className = ""
+  className = "",
 }) => {
   const [refreshKey, setRefreshKey] = useState(0);
 
   // Force refresh when component data changes
   useEffect(() => {
     const timeout = setTimeout(() => {
-      setRefreshKey(prev => prev + 1);
+      setRefreshKey((prev) => prev + 1);
     }, 100); // Small debounce to prevent too frequent updates
-    
+
     return () => clearTimeout(timeout);
   }, [components]);
 
   // Additional refresh trigger for contentJson changes
   useEffect(() => {
-    const contentJsonString = components.map(comp => comp.contentJson).join('|');
+    const contentJsonString = components
+      .map((comp) => comp.contentJson)
+      .join("|");
     console.log("🔄 [LIVE PREVIEW] ContentJson changed:", {
       contentJsonString: contentJsonString.slice(0, 200),
       componentCount: components.length,
-      refreshKey: refreshKey
+      refreshKey: refreshKey,
     });
-    
+
     const timeout = setTimeout(() => {
       console.log("🔄 [LIVE PREVIEW] Triggering refresh:", refreshKey + 1);
-      setRefreshKey(prev => prev + 1);
+      setRefreshKey((prev) => prev + 1);
     }, 50); // Faster refresh for content changes
-    
+
     return () => clearTimeout(timeout);
-  }, [components.map(comp => comp.contentJson).join('|')]);
+  }, [components.map((comp) => comp.contentJson).join("|")]);
 
   const previewClasses = {
     desktop: "max-w-none",
     tablet: "max-w-4xl mx-auto",
-    mobile: "max-w-sm mx-auto"
+    mobile: "max-w-sm mx-auto",
   };
 
   return (
-    <Card className={`bg-white/5 backdrop-blur-sm border border-white/10 shadow-xl ${className}`}>
+    <Card
+      className={`bg-white/5 backdrop-blur-sm border border-white/10 shadow-xl ${className}`}
+    >
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle className="text-white text-xl font-bold flex items-center space-x-2">
@@ -633,13 +1287,16 @@ const LivePreview = ({
               {previewMode.charAt(0).toUpperCase() + previewMode.slice(1)} View
             </span>
             <span className="text-xs text-gray-500">
-              ({components.length} component{components.length !== 1 ? 's' : ''})
+              ({components.length} component{components.length !== 1 ? "s" : ""}
+              )
             </span>
           </div>
         </div>
       </CardHeader>
       <CardContent>
-        <div className={`bg-white dark:bg-gray-900 rounded-lg min-h-[400px] ${previewClasses[previewMode]}`}>
+        <div
+          className={`bg-white dark:bg-gray-900 rounded-lg min-h-[400px] ${previewClasses[previewMode]}`}
+        >
           {components.length === 0 ? (
             <div className="flex items-center justify-center h-64 text-gray-400">
               <div className="text-center">
@@ -657,43 +1314,56 @@ const LivePreview = ({
                     componentType: component.componentType,
                     contentJson: component.contentJson,
                     hasContentJson: !!component.contentJson,
-                    isAboutMissionSection: component.componentType === 'AboutMissionSection'
+                    isAboutMissionSection:
+                      component.componentType === "AboutMissionSection",
                   });
 
                   let rawData = {};
-                  
+
                   // Always use the latest contentJson from form
                   if (component.contentJson) {
                     try {
                       rawData = JSON.parse(component.contentJson);
-                      console.log("✅ [REALTIME EXTRACTION] Parsed content:", rawData);
+                      console.log(
+                        "✅ [REALTIME EXTRACTION] Parsed content:",
+                        rawData
+                      );
                     } catch (err) {
-                      console.error("❌ [REALTIME EXTRACTION] JSON parse error:", err);
+                      console.error(
+                        "❌ [REALTIME EXTRACTION] JSON parse error:",
+                        err
+                      );
                       rawData = {};
                     }
                   }
 
                   // Enhanced debugging for AboutMissionSection
-                  if (component.componentType === 'AboutMissionSection') {
-                    console.log("🎯 [AboutMissionSection EXTRACTION] Debug data:", {
-                      rawContentJson: component.contentJson,
-                      parsedData: rawData,
-                      fieldAnalysis: {
-                        hasTitle: !!rawData.title,
-                        hasSubtitle: !!rawData.subtitle,
-                        hasDescription: !!rawData.description,
-                        hasVision: !!rawData.vision,
-                        hasAdditionalContent: !!rawData.additionalContent,
-                        hasImage: !!rawData.image,
-                        hasStats: Array.isArray(rawData.stats),
-                        statsCount: rawData.stats?.length || 0,
-                        hasMissionPoints: Array.isArray(rawData.missionPoints),
-                        missionPointsCount: rawData.missionPoints?.length || 0
-                      },
-                      timestamp: new Date().toISOString()
-                    });
+                  if (component.componentType === "AboutMissionSection") {
+                    console.log(
+                      "🎯 [AboutMissionSection EXTRACTION] Debug data:",
+                      {
+                        rawContentJson: component.contentJson,
+                        parsedData: rawData,
+                        fieldAnalysis: {
+                          hasTitle: !!rawData.title,
+                          hasSubtitle: !!rawData.subtitle,
+                          hasDescription: !!rawData.description,
+                          hasVision: !!rawData.vision,
+                          hasAdditionalContent: !!rawData.additionalContent,
+                          hasImage: !!rawData.image,
+                          hasStats: Array.isArray(rawData.stats),
+                          statsCount: rawData.stats?.length || 0,
+                          hasMissionPoints: Array.isArray(
+                            rawData.missionPoints
+                          ),
+                          missionPointsCount:
+                            rawData.missionPoints?.length || 0,
+                        },
+                        timestamp: new Date().toISOString(),
+                      }
+                    );
                   }
-                  
+
                   return rawData;
                 };
 
@@ -701,34 +1371,61 @@ const LivePreview = ({
 
                 // Debug logging for all About components
                 if (component.componentType?.includes("About")) {
-                  console.log(`👁️ [LIVE PREVIEW] Rendering ${component.componentType}:`, {
-                    componentIndex: index,
-                    hasContentJson: !!component.contentJson,
-                    contentJsonLength: component.contentJson?.length || 0,
-                    parsedData: componentData,
-                    extractedKeys: Object.keys(componentData),
-                    timestamp: new Date().toISOString()
-                  });
+                  console.log(
+                    `👁️ [LIVE PREVIEW] Rendering ${component.componentType}:`,
+                    {
+                      componentIndex: index,
+                      hasContentJson: !!component.contentJson,
+                      contentJsonLength: component.contentJson?.length || 0,
+                      parsedData: componentData,
+                      extractedKeys: Object.keys(componentData),
+                      timestamp: new Date().toISOString(),
+                    }
+                  );
                 }
-                
+
                 return (
-                  <div key={`${component.id || index}-${component.componentType}-${refreshKey}-${component.contentJson?.slice(0, 50)}`} className="relative">
+                  <div
+                    key={`${component.id || index}-${
+                      component.componentType
+                    }-${refreshKey}-${component.contentJson?.slice(0, 50)}`}
+                    className="relative"
+                  >
                     {showDebugInfo && (
                       <div className="absolute top-2 right-2 z-10 bg-black/70 text-white text-xs p-2 rounded max-w-xs">
-                        <div><strong>Type:</strong> {component.componentType}</div>
-                        <div><strong>Theme:</strong> {component.theme === 1 ? 'Light' : 'Dark'}</div>
-                        <div><strong>Visible:</strong> {component.isVisible ? 'Yes' : 'No'}</div>
-                        <div><strong>Order:</strong> {component.orderIndex || index + 1}</div>
-                        <div><strong>Data Keys:</strong> {Object.keys(componentData).join(', ')}</div>
+                        <div>
+                          <strong>Type:</strong> {component.componentType}
+                        </div>
+                        <div>
+                          <strong>Theme:</strong>{" "}
+                          {component.theme === 1 ? "Light" : "Dark"}
+                        </div>
+                        <div>
+                          <strong>Visible:</strong>{" "}
+                          {component.isVisible ? "Yes" : "No"}
+                        </div>
+                        <div>
+                          <strong>Order:</strong>{" "}
+                          {component.orderIndex || index + 1}
+                        </div>
+                        <div>
+                          <strong>Data Keys:</strong>{" "}
+                          {Object.keys(componentData).join(", ")}
+                        </div>
                       </div>
                     )}
-                    
+
                     <ComponentPreview
                       componentType={component.componentType}
                       componentData={componentData}
                       theme={component.theme}
                       isVisible={component.isVisible}
-                      key={`preview-${component.id || index}-${refreshKey}-${JSON.stringify(componentData).slice(0, 100)}`}
+                      key={`preview-${
+                        component.id || index
+                      }-${refreshKey}-${JSON.stringify(componentData).slice(
+                        0,
+                        100
+                      )}`}
                     />
                   </div>
                 );
@@ -750,7 +1447,7 @@ const SplitScreenPreview = ({
   componentData,
   formComponent,
   theme = 1,
-  className = ""
+  className = "",
 }) => {
   return (
     <div className={`grid grid-cols-1 lg:grid-cols-2 gap-6 ${className}`}>

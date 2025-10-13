@@ -25,12 +25,13 @@ const AboutValues = ({ values = [], data = {} }) => {
   }, []);
 
   // PRIORITIZE props data over default data for real-time preview
-  const displayData = data || defaultData || {
-    title: "Our Values",
-    description:
-      "These core values guide everything we do and shape how we interact with our clients, partners, and each other.",
-    items: [],
-  };
+  const displayData = data ||
+    defaultData || {
+      title: "Our Values",
+      description:
+        "These core values guide everything we do and shape how we interact with our clients, partners, and each other.",
+      items: [],
+    };
 
   // Debug logging for real-time updates
   console.log("🎯 [AboutValues] Component received data:", {
@@ -39,7 +40,7 @@ const AboutValues = ({ values = [], data = {} }) => {
     hasDefaultData: !!defaultData,
     finalData: displayData,
     valuesFromProps: values,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
 
   const defaultValues = [

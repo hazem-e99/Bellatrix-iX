@@ -31,12 +31,13 @@ const AboutTeam = ({
   }, []);
 
   // PRIORITIZE props data over default data for real-time preview
-  const displayData = data || defaultData || {
-    title: "Meet Our Team",
-    description:
-      "Our diverse team of experts brings together decades of experience in enterprise software, business consulting, and digital transformation.",
-    members: [],
-  };
+  const displayData = data ||
+    defaultData || {
+      title: "Meet Our Team",
+      description:
+        "Our diverse team of experts brings together decades of experience in enterprise software, business consulting, and digital transformation.",
+      members: [],
+    };
 
   // Debug logging for real-time updates
   console.log("🎯 [AboutTeam] Component received data:", {
@@ -45,7 +46,7 @@ const AboutTeam = ({
     hasDefaultData: !!defaultData,
     finalData: displayData,
     teamMembersFromProps: teamMembers,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
 
   // Default team members if none provided

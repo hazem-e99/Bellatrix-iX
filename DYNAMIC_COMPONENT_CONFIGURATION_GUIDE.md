@@ -35,19 +35,19 @@ The system automatically detects field types based on:
 
 ### 3. Field Type Examples
 
-| Data Type | Example Value | Generated Field Type |
-|-----------|---------------|---------------------|
-| `title: "Welcome"` | Text Input |
-| `description: "Long text..."` | Textarea |
-| `isActive: true` | Checkbox |
-| `maxCount: 10` | Number Input |
-| `email: "user@example.com"` | Email Input |
-| `website: "https://example.com"` | URL Input |
-| `primaryColor: "#ff6b35"` | Color Picker |
+| Data Type                           | Example Value            | Generated Field Type |
+| ----------------------------------- | ------------------------ | -------------------- |
+| `title: "Welcome"`                  | Text Input               |
+| `description: "Long text..."`       | Textarea                 |
+| `isActive: true`                    | Checkbox                 |
+| `maxCount: 10`                      | Number Input             |
+| `email: "user@example.com"`         | Email Input              |
+| `website: "https://example.com"`    | URL Input                |
+| `primaryColor: "#ff6b35"`           | Color Picker             |
 | `backgroundImage: "/images/bg.jpg"` | Image Input with Preview |
-| `heroVideo: "/videos/intro.mp4"` | Video Input |
-| `tags: ["tag1", "tag2"]` | Array Field |
-| `settings: { theme: "dark" }` | Object Field (nested) |
+| `heroVideo: "/videos/intro.mp4"`    | Video Input              |
+| `tags: ["tag1", "tag2"]`            | Array Field              |
+| `settings: { theme: "dark" }`       | Object Field (nested)    |
 
 ## Implementation Details
 
@@ -88,6 +88,7 @@ if (componentSchema) {
 ## Example Schema Generation
 
 ### Input Component Data:
+
 ```json
 {
   "title": "Meet Our Team",
@@ -106,6 +107,7 @@ if (componentSchema) {
 ```
 
 ### Generated Schema:
+
 ```javascript
 {
   schema: {
@@ -119,14 +121,14 @@ if (componentSchema) {
         placeholder: "Enter title..."
       },
       description: {
-        type: "string", 
+        type: "string",
         label: "Description",
         formField: "textarea",
         placeholder: "Enter description..."
       },
       backgroundImage: {
         type: "string",
-        label: "Background Image", 
+        label: "Background Image",
         formField: "media-image",
         placeholder: "/images/example.jpg"
       },
@@ -157,7 +159,7 @@ if (componentSchema) {
 ## Benefits
 
 1. **No More Static Fields**: Every component shows its actual editable properties
-2. **Type-Safe Inputs**: Appropriate input types prevent data entry errors  
+2. **Type-Safe Inputs**: Appropriate input types prevent data entry errors
 3. **Better UX**: Users see exactly what they can edit for each component
 4. **Extensible**: New component types work automatically without schema definitions
 5. **Consistent**: All components use the same dynamic configuration system
@@ -173,7 +175,7 @@ if (componentSchema) {
 ## Future Enhancements
 
 - **Field validation** based on detected types
-- **Conditional fields** that show/hide based on other field values  
+- **Conditional fields** that show/hide based on other field values
 - **Field grouping** for better organization of complex forms
 - **Custom field type plugins** for specialized input requirements
 - **Schema caching** to improve performance for frequently used components

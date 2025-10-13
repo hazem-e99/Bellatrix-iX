@@ -2,7 +2,9 @@
 
 // Map componentType to componentPath
 export const idToPathMap = {
-  // About Components
+  // ===========================================
+  // ABOUT PAGE COMPONENTS
+  // ===========================================
   AboutHeroSection: "About/AboutHero",
   AboutMissionSection: "About/AboutMission", 
   AboutTeamSection: "About/AboutTeam",
@@ -12,7 +14,9 @@ export const idToPathMap = {
   AboutDifferentiatorsSection: "About/AboutDifferentiators",
   AboutCTASection: "About/AboutCTA",
   
-  // Existing Components
+  // ===========================================
+  // HR & PAYROLL COMPONENTS
+  // ===========================================
   PayrollHeroSection: "solution/payroll/PayrollHero",
   PayrollHowItWorksSection: "solution/payroll/PayrollHowItWorks",
   PayrollWorkflowSection: "solution/payroll/PayrollWorkflow",
@@ -27,44 +31,76 @@ export const idToPathMap = {
   HRPricingSection: "solution/hr/PricingSection",
   HRFAQSection: "solution/hr/FAQSection",
   HRCTASection: "solution/hr/CTASection",
+
+  // ===========================================
+  // LANDING PAGE COMPONENTS
+  // ===========================================
+  Hero: "Hero",
+  HeroSection: "Hero",
+  Services: "Services",
+  ServicesSection: "Services", 
+  Testimonials: "Testimonials",
+  TestimonialsSection: "Testimonials",
+  Industries: "Industries",
+  IndustriesSection: "Industries",
+
+  // ===========================================
+  // SERVICES COMPONENTS
+  // ===========================================
   ServiceGrid: "Services/ServiceGrid",
   ImplementationHeroSection: "Services/Implementation/HeroSection",
   ImplementationProcessSection: "Services/Implementation/ProcessSection",
   ImplementationWhyChooseSection: "Services/Implementation/WhyChooseSection",
   ImplementationPricingSection: "Services/Implementation/PricingSection",
   ImplementationCTASection: "Services/Implementation/CtaSection",
+  ImplementationCtaSection: "Services/Implementation/CtaSection",
   TrainingHeroSection: "Services/training/HeroSection",
   TrainingProgramsSection: "Services/training/TrainingPrograms",
   TrainingWhyChooseSection: "Services/training/WhyChooseSection",
   IntegrationHeroSection: "Services/Integration/HeroSection",
   IntegrationTypesSection: "Services/Integration/IntegrationTypes",
   IntegrationBenefitsSection: "Services/Integration/BenefitsSection",
+  IntegrationPopularSection: "Services/Integration/PopularSection",
+  IntegrationCtaSection: "Services/Integration/CtaSection",
   CustomizationHeroSection: "Services/Customization/HeroSection",
   CustomizationServicesSection: "Services/Customization/ServicesSection",
   CustomizationProcessSection: "Services/Customization/ProcessSection",
+
+  // ===========================================
+  // MANUFACTURING INDUSTRY COMPONENTS
+  // ===========================================
   ManufacturingHeroSection: "industries/Manufacturing/HeroSection",
+  ManufacturingIndustryStats: "industries/Manufacturing/IndustryStats",
   ManufacturingIndustryStatsSection: "industries/Manufacturing/IndustryStats",
   ManufacturingChallengesSection: "industries/Manufacturing/ChallengesSection",
   ManufacturingSolutionsSection: "industries/Manufacturing/SolutionsSection",
+  ManufacturingCaseStudies: "industries/Manufacturing/CaseStudies",
   ManufacturingCaseStudiesSection: "industries/Manufacturing/CaseStudies",
+  ManufacturingImplementationProcess: "industries/Manufacturing/ImplementationProcess",
   ManufacturingImplementationProcessSection: "industries/Manufacturing/ImplementationProcess",
   ManufacturingCTASection: "industries/Manufacturing/CTASection",
+
+  // ===========================================
+  // RETAIL INDUSTRY COMPONENTS  
+  // ===========================================
   RetailHeroSection: "industries/retail/HeroSection",
-  RetailIndustryStatsSection: "industries/retail/IndustryStats",
+  RetailIndustryStats: "industries/retail/IndustryStats",
+  RetailIndustryStatsSection: "industries/retail/IndustryStats", 
   RetailChallengesSection: "industries/retail/ChallengesSection",
   RetailSolutionsSection: "industries/retail/SolutionsSection",
   RetailFeaturesSection: "industries/retail/FeaturesSection",
+  RetailCaseStudies: "industries/retail/CaseStudies",
   RetailCaseStudiesSection: "industries/retail/CaseStudiesSection",
   RetailImplementationSection: "industries/retail/ImplementationSection",
   RetailCTASection: "industries/retail/CTASection",
-  AboutHeroSection: "About/AboutHero",
-  AboutMissionSection: "About/AboutMission",
-  AboutValuesSection: "About/AboutValues",
-  AboutTeamSection: "About/AboutTeam",
-  AboutJourneySection: "About/AboutJourney",
-  AboutMilestonesSection: "About/AboutMilestones",
-  AboutDifferentiatorsSection: "About/AboutDifferentiators",
-  AboutCTASection: "About/AboutCTA",
+
+  // ===========================================
+  // COMMON/SHARED COMPONENTS
+  // ===========================================
+  SEO: "SEO",
+  ContactForm: "ContactForm",
+  Modal: "Modal",
+  CTAButton: "CTAButton"
 };
 
 export const getComponentPathFromId = (componentId) => idToPathMap[componentId] || null;
@@ -73,6 +109,21 @@ export const getComponentPathFromId = (componentId) => idToPathMap[componentId] 
 export const loadComponent = async (componentPath) => {
   try {
     const componentMap = {
+      // ===========================================
+      // ABOUT PAGE COMPONENTS
+      // ===========================================
+      "About/AboutHero": () => import("./About/AboutHero"),
+      "About/AboutMission": () => import("./About/AboutMission"),
+      "About/AboutTeam": () => import("./About/AboutTeam"),
+      "About/AboutValues": () => import("./About/AboutValues"),
+      "About/AboutJourney": () => import("./About/AboutJourney"),
+      "About/AboutMilestones": () => import("./About/AboutMilestones"),
+      "About/AboutDifferentiators": () => import("./About/AboutDifferentiators"),
+      "About/AboutCTA": () => import("./About/AboutCTA"),
+
+      // ===========================================
+      // HR & PAYROLL COMPONENTS
+      // ===========================================
       "solution/payroll/PayrollHero": () => import("./solution/payroll/PayrollHero"),
       "solution/payroll/PayrollHowItWorks": () => import("./solution/payroll/PayrollHowItWorks"),
       "solution/payroll/PayrollWorkflow": () => import("./solution/payroll/PayrollWorkflow"),
@@ -87,6 +138,18 @@ export const loadComponent = async (componentPath) => {
       "solution/hr/PricingSection": () => import("./solution/hr/PricingSection"),
       "solution/hr/FAQSection": () => import("./solution/hr/FAQSection"),
       "solution/hr/CTASection": () => import("./solution/hr/CTASection"),
+
+      // ===========================================
+      // LANDING PAGE COMPONENTS
+      // ===========================================
+      "Hero": () => import("./Hero"),
+      "Services": () => import("./Services"),
+      "Testimonials": () => import("./Testimonials"),
+      "Industries": () => import("./Industries"),
+
+      // ===========================================
+      // SERVICES COMPONENTS
+      // ===========================================
       "Services/ServiceGrid": () => import("./Services/ServiceGrid"),
       "Services/Implementation/HeroSection": () => import("./Services/Implementation/HeroSection"),
       "Services/Implementation/ProcessSection": () => import("./Services/Implementation/ProcessSection"),
@@ -102,6 +165,10 @@ export const loadComponent = async (componentPath) => {
       "Services/Customization/HeroSection": () => import("./Services/Customization/HeroSection"),
       "Services/Customization/ServicesSection": () => import("./Services/Customization/ServicesSection"),
       "Services/Customization/ProcessSection": () => import("./Services/Customization/ProcessSection"),
+
+      // ===========================================
+      // MANUFACTURING INDUSTRY COMPONENTS
+      // ===========================================
       "industries/Manufacturing/HeroSection": () => import("./industries/Manufacturing/HeroSection"),
       "industries/Manufacturing/IndustryStats": () => import("./industries/Manufacturing/IndustryStats"),
       "industries/Manufacturing/ChallengesSection": () => import("./industries/Manufacturing/ChallengesSection"),
@@ -109,22 +176,19 @@ export const loadComponent = async (componentPath) => {
       "industries/Manufacturing/CaseStudies": () => import("./industries/Manufacturing/CaseStudies"),
       "industries/Manufacturing/ImplementationProcess": () => import("./industries/Manufacturing/ImplementationProcess"),
       "industries/Manufacturing/CTASection": () => import("./industries/Manufacturing/CTASection"),
+
+      // ===========================================
+      // RETAIL INDUSTRY COMPONENTS
+      // ===========================================
       "industries/retail/HeroSection": () => import("./industries/retail/HeroSection"),
-      "industries/retail/IndustryStats": () => import("./industries/retail/IndustryStats"),
-      "industries/retail/ChallengesSection": () => import("./industries/retail/ChallengesSection"),
-      "industries/retail/SolutionsSection": () => import("./industries/retail/SolutionsSection"),
-      "industries/retail/FeaturesSection": () => import("./industries/retail/FeaturesSection"),
-      "industries/retail/CaseStudiesSection": () => import("./industries/retail/CaseStudiesSection"),
-      "industries/retail/ImplementationSection": () => import("./industries/retail/ImplementationSection"),
-      "industries/retail/CTASection": () => import("./industries/retail/CTASection"),
-      "About/AboutHero": () => import("./About/AboutHero"),
-      "About/AboutMission": () => import("./About/AboutMission"),
-      "About/AboutValues": () => import("./About/AboutValues"),
-      "About/AboutTeam": () => import("./About/AboutTeam"),
-      "About/AboutJourney": () => import("./About/AboutJourney"),
-      "About/AboutMilestones": () => import("./About/AboutMilestones"),
-      "About/AboutDifferentiators": () => import("./About/AboutDifferentiators"),
-      "About/AboutCTA": () => import("./About/AboutCTA"),
+
+      // ===========================================
+      // COMMON/SHARED COMPONENTS
+      // ===========================================
+      "SEO": () => import("./SEO"),
+      "ContactForm": () => import("./ContactForm"),
+      "Modal": () => import("./Modal"),
+      "CTAButton": () => import("./CTAButton"),
     };
 
     const loader = componentMap[componentPath];
