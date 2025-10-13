@@ -70,9 +70,9 @@ const AboutValues = ({ values = [], data = {} }) => {
   ];
 
   const displayValues =
-    values.length > 0
+    Array.isArray(values) && values.length > 0
       ? values
-      : displayData.items.length > 0
+      : Array.isArray(displayData.items) && displayData.items.length > 0
       ? displayData.items
       : defaultValues;
 

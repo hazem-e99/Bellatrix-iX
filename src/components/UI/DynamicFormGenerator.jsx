@@ -462,6 +462,203 @@ const DynamicFormGenerator = ({
           </div>
         );
 
+      case "checkbox":
+        return (
+          <div key={fullPath} className="space-y-2">
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                id={fullPath}
+                checked={Boolean(value)}
+                onChange={(e) => {
+                  console.log("☑️ [CHECKBOX CHANGE]", {
+                    fullPath,
+                    oldValue: value,
+                    newValue: e.target.checked,
+                    componentType
+                  });
+                  handleChange(fullPath, e.target.checked);
+                }}
+                className="w-4 h-4 text-blue-600 bg-white/10 border-white/20 rounded focus:ring-blue-500 focus:ring-2"
+              />
+              <label htmlFor={fullPath} className="text-sm font-medium text-gray-300">
+                {fieldSchema.label} {isRequired && <span className="text-red-400">*</span>}
+              </label>
+            </div>
+          </div>
+        );
+
+      case "number":
+        return (
+          <div key={fullPath} className="space-y-2">
+            <label className={labelClasses}>
+              {fieldSchema.label} {isRequired && <span className="text-red-400">*</span>}
+            </label>
+            <input
+              type="number"
+              value={value || ""}
+              onChange={(e) => {
+                const numValue = e.target.value === "" ? "" : Number(e.target.value);
+                console.log("🔢 [NUMBER CHANGE]", {
+                  fullPath,
+                  oldValue: value,
+                  newValue: numValue,
+                  componentType
+                });
+                handleChange(fullPath, numValue);
+              }}
+              placeholder={fieldSchema.placeholder}
+              className={inputClasses}
+            />
+          </div>
+        );
+
+      case "email":
+        return (
+          <div key={fullPath} className="space-y-2">
+            <label className={labelClasses}>
+              {fieldSchema.label} {isRequired && <span className="text-red-400">*</span>}
+            </label>
+            <input
+              type="email"
+              value={value || ""}
+              onChange={(e) => {
+                console.log("📧 [EMAIL CHANGE]", {
+                  fullPath,
+                  oldValue: value,
+                  newValue: e.target.value,
+                  componentType
+                });
+                handleChange(fullPath, e.target.value);
+              }}
+              placeholder={fieldSchema.placeholder}
+              className={inputClasses}
+            />
+          </div>
+        );
+
+      case "url":
+        return (
+          <div key={fullPath} className="space-y-2">
+            <label className={labelClasses}>
+              {fieldSchema.label} {isRequired && <span className="text-red-400">*</span>}
+            </label>
+            <input
+              type="url"
+              value={value || ""}
+              onChange={(e) => {
+                console.log("🔗 [URL CHANGE]", {
+                  fullPath,
+                  oldValue: value,
+                  newValue: e.target.value,
+                  componentType
+                });
+                handleChange(fullPath, e.target.value);
+              }}
+              placeholder={fieldSchema.placeholder}
+              className={inputClasses}
+            />
+          </div>
+        );
+
+      case "color":
+        return (
+          <div key={fullPath} className="space-y-2">
+            <label className={labelClasses}>
+              {fieldSchema.label} {isRequired && <span className="text-red-400">*</span>}
+            </label>
+            <div className="flex space-x-2">
+              <input
+                type="color"
+                value={value || "#000000"}
+                onChange={(e) => {
+                  console.log("🎨 [COLOR CHANGE]", {
+                    fullPath,
+                    oldValue: value,
+                    newValue: e.target.value,
+                    componentType
+                  });
+                  handleChange(fullPath, e.target.value);
+                }}
+                className="w-12 h-10 rounded border border-white/20 bg-white/10"
+              />
+              <input
+                type="text"
+                value={value || ""}
+                onChange={(e) => handleChange(fullPath, e.target.value)}
+                placeholder={fieldSchema.placeholder}
+                className={`${inputClasses} flex-1`}
+              />
+            </div>
+          </div>
+        );
+
+      case "media-image":
+        return (
+          <div key={fullPath} className="space-y-2">
+            <label className={labelClasses}>
+              {fieldSchema.label} {isRequired && <span className="text-red-400">*</span>}
+            </label>
+            <input
+              type="url"
+              value={value || ""}
+              onChange={(e) => {
+                console.log("🖼️ [IMAGE CHANGE]", {
+                  fullPath,
+                  oldValue: value,
+                  newValue: e.target.value,
+                  componentType
+                });
+                handleChange(fullPath, e.target.value);
+              }}
+              placeholder={fieldSchema.placeholder || "/images/example.jpg"}
+              className={inputClasses}
+            />
+            <p className="text-xs text-gray-400">
+              Image URL (e.g., /images/example.jpg or https://example.com/image.jpg)
+            </p>
+            {value && (
+              <div className="mt-2">
+                <img 
+                  src={value} 
+                  alt="Preview" 
+                  className="max-w-xs h-20 object-cover rounded border border-white/20"
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                  }}
+                />
+              </div>
+            )}
+          </div>
+        );
+
+      case "media-video":
+        return (
+          <div key={fullPath} className="space-y-2">
+            <label className={labelClasses}>
+              {fieldSchema.label} {isRequired && <span className="text-red-400">*</span>}
+            </label>
+            <input
+              type="url"
+              value={value || ""}
+              onChange={(e) => {
+                console.log("🎬 [VIDEO CHANGE]", {
+                  fullPath,
+                  oldValue: value,
+                  newValue: e.target.value,
+                  componentType
+                });
+                handleChange(fullPath, e.target.value);
+              }}
+              placeholder={fieldSchema.placeholder || "/videos/example.mp4"}
+              className={inputClasses}
+            />
+            <p className="text-xs text-gray-400">
+              Video URL (e.g., /videos/example.mp4 or https://example.com/video.mp4)
+            </p>
+          </div>
+        );
+
       default:
         return (
           <div key={fullPath} className="space-y-2">

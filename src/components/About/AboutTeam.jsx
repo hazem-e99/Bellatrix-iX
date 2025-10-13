@@ -81,9 +81,9 @@ const AboutTeam = ({
 
   // Use provided team members or default ones
   const displayTeamMembers =
-    teamMembers && teamMembers.length > 0
+    Array.isArray(teamMembers) && teamMembers.length > 0
       ? teamMembers
-      : displayData.members.length > 0
+      : Array.isArray(displayData.members) && displayData.members.length > 0
       ? displayData.members
       : defaultTeamMembers;
 

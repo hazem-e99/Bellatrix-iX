@@ -35,12 +35,36 @@ const FAQSection = ({ data, openFAQ, setOpenFAQ }) => {
   }, []);
 
   // PRIORITIZE props data over default data for real-time preview
-  const displayData = {
-    faq: data?.faq || defaultData || {
+  // Handle different data structures from dynamic schema generator
+  let faqData;
+  
+  if (data?.faq) {
+    // Standard structure: { faq: { title, items } }
+    faqData = data.faq;
+  } else if (data?.title && data?.faqItems) {
+    // Dynamic schema structure: { title, faqItems }
+    faqData = {
+      title: data.title,
+      items: data.faqItems || []
+    };
+  } else if (data?.items) {
+    // Direct items structure: { items }
+    faqData = {
+      title: data.title || "Frequently Asked Questions",
+      items: data.items || []
+    };
+  } else if (defaultData) {
+    // Use default data
+    faqData = defaultData;
+  } else {
+    // Ultimate fallback
+    faqData = {
       title: "Frequently Asked Questions",
-      items: [],
-    },
-  };
+      items: []
+    };
+  }
+
+  const displayData = { faq: faqData };
 
   // Debug logging for real-time updates
   console.log("🎯 [HRFAQSection] Component received data:", {
@@ -72,7 +96,7 @@ const FAQSection = ({ data, openFAQ, setOpenFAQ }) => {
             </h2>
           </header>
           <div className="space-y-6">
-            {displayData.faq.items.map((faq, idx) => (
+            {(displayData.faq?.items || []).map((faq, idx) => (
               <article
                 key={idx}
                 className="border-b border-[var(--color-primary)]/20 pb-4"

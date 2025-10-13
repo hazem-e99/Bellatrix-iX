@@ -29,6 +29,7 @@ import DynamicFormGenerator from "../UI/DynamicFormGenerator";
 import { LivePreview, SplitScreenPreview } from "../UI/LivePreview";
 import { getAboutComponentSchema } from "../../data/aboutComponentSchemas";
 import { getGeneralComponentSchema } from "../../data/generalComponentSchemas";
+import { generateDynamicSchema, mergeDynamicSchema } from "../../utils/dynamicSchemaGenerator";
 import pagesAPI from "../../lib/pagesAPI";
 import api from "../../lib/api";
 
@@ -184,9 +185,34 @@ const EnhancedPageBuilder = () => {
   }, [pageId]);
 
   useEffect(() => {
-    // Lazy import to prevent circular deps when builder imports registry that imports components directory
+    // Load components from comprehensive component registry
     const loadRegistry = async () => {
       try {
+        const { getAllComponents } = await import("../../data/componentRegistry");
+        const registryComponents = getAllComponents();
+        
+        console.log("📦 [COMPONENT REGISTRY] Loaded components from registry:", registryComponents.length);
+        
+        // Convert registry components to the format expected by the builder
+        const formattedComponents = registryComponents.map(comp => ({
+          id: comp.componentType,
+          name: comp.componentName || comp.componentType.replace(/([A-Z])/g, " $1").trim(),
+          description: comp.description,
+          icon: comp.icon,
+          componentType: comp.componentType,
+          componentName: comp.componentName,
+          category: comp.category,
+          hasEnhancedSchema: !!comp.defaultData, // Has enhanced schema if it has default data
+          schema: comp.schema,
+          defaultData: comp.defaultData,
+          filePath: comp.filePath,
+          pageType: comp.pageType,
+          dataStructure: comp.dataStructure
+        }));
+
+        setAvailableComponents(formattedComponents);
+        
+        // Also try to load from the old componentMap as fallback
         const { idToPathMap } = await import("../componentMap");
 
         // Enhanced categorization function
@@ -336,8 +362,11 @@ const EnhancedPageBuilder = () => {
           return categoryIcons[category] || "📄";
         };
 
-        // Build a generic list using keys; categorize by enhanced heuristics
-        const items = Object.keys(idToPathMap).map((componentType) => {
+        // Get additional components from componentMap that aren't in registry
+        const registryComponentTypes = new Set(formattedComponents.map(c => c.componentType));
+        const additionalItems = Object.keys(idToPathMap)
+          .filter(componentType => !registryComponentTypes.has(componentType))
+          .map((componentType) => {
           const path = idToPathMap[componentType];
           const category = categorizeComponent(componentType, path);
           const icon = getComponentIcon(componentType, category);
@@ -388,7 +417,16 @@ const EnhancedPageBuilder = () => {
           };
         });
 
-        setAvailableComponents(items);
+        // Combine registry components with additional components
+        const allComponents = [...formattedComponents, ...additionalItems];
+        
+        console.log("📦 [COMPONENT REGISTRY] Final component list:", {
+          registryComponents: formattedComponents.length,
+          additionalComponents: additionalItems.length,
+          totalComponents: allComponents.length
+        });
+
+        setAvailableComponents(allComponents);
       } catch (e) {
         console.error("Failed to load component registry", e);
       }
@@ -4386,19 +4424,67 @@ const SectionsStep = ({
                                   />
                                 );
                               } else {
-                                // Fallback to existing form
+                                // Generate dynamic schema from existing component data
+                                console.log("🔧 [DYNAMIC SCHEMA] No predefined schema found, generating dynamic schema for:", component.componentType);
+                                
+                                // Parse existing data or use empty object
+                                const existingData = component.contentJson 
+                                  ? JSON.parse(component.contentJson) 
+                                  : {};
+                                
+                                console.log("🔧 [DYNAMIC SCHEMA] Existing data:", existingData);
+                                
+                                // Generate schema based on existing data structure
+                                const dynamicSchema = generateDynamicSchema(existingData, component.componentType);
+                                
+                                console.log("🔧 [DYNAMIC SCHEMA] Generated schema:", dynamicSchema);
+
                                 return (
-                                  <DynamicContentForm
-                                    contentJson={component.contentJson || "{}"}
-                                    componentType={component.componentType}
-                                    onChange={(jsonString) =>
+                                  <DynamicFormGenerator
+                                    schema={dynamicSchema.schema}
+                                    data={existingData}
+                                    onChange={(formData) => {
+                                      console.log("🎯 [DYNAMIC FORM] Data changed:", formData);
                                       handleComponentUpdate(
                                         index,
                                         "contentJson",
-                                        jsonString
-                                      )
-                                    }
-                                    className="text-white [&_label]:text-gray-300 [&_input]:bg-white/10 [&_input]:border-white/20 [&_input]:text-white [&_input::placeholder]:text-white/50 [&_input:focus]:border-blue-400 [&_button]:bg-white/10 [&_button]:border-white/20 [&_button]:text-white [&_button:hover]:bg-white/20"
+                                        JSON.stringify(formData, null, 2)
+                                      );
+                                    }}
+                                    onFieldChange={(field, value) => {
+                                      console.log("🎯 [DYNAMIC FIELD] Field changed:", field, value);
+                                      // Update individual field for immediate feedback
+                                      const currentContentData = component.contentJson 
+                                        ? JSON.parse(component.contentJson) 
+                                        : existingData;
+                                      
+                                      // Handle nested field updates (e.g., "features.0.title")
+                                      const updatedContentData = { ...currentContentData };
+                                      const fieldPath = field.split('.');
+                                      
+                                      if (fieldPath.length === 1) {
+                                        // Simple field update
+                                        updatedContentData[field] = value;
+                                      } else {
+                                        // Nested field update
+                                        let current = updatedContentData;
+                                        for (let i = 0; i < fieldPath.length - 1; i++) {
+                                          if (!current[fieldPath[i]]) {
+                                            current[fieldPath[i]] = {};
+                                          }
+                                          current = current[fieldPath[i]];
+                                        }
+                                        current[fieldPath[fieldPath.length - 1]] = value;
+                                      }
+                                      
+                                      handleComponentUpdate(
+                                        index,
+                                        "contentJson",
+                                        JSON.stringify(updatedContentData, null, 2)
+                                      );
+                                    }}
+                                    componentType={component.componentType}
+                                    className="text-white [&_label]:text-gray-300"
                                   />
                                 );
                               }
