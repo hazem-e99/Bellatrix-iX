@@ -4439,6 +4439,17 @@ const SectionsStep = ({
                                 
                                 console.log("🔧 [DYNAMIC SCHEMA] Generated schema:", dynamicSchema);
 
+                                // Add safety check for schema
+                                if (!dynamicSchema || !dynamicSchema.schema) {
+                                  console.error("❌ [DYNAMIC SCHEMA] Invalid schema generated:", dynamicSchema);
+                                  return (
+                                    <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+                                      <div className="text-red-400 text-sm font-medium">Error: Could not generate schema</div>
+                                      <div className="text-red-300 text-xs mt-1">Component: {component.componentType}</div>
+                                    </div>
+                                  );
+                                }
+
                                 return (
                                   <DynamicFormGenerator
                                     schema={dynamicSchema.schema}

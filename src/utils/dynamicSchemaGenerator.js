@@ -258,6 +258,14 @@ export const generateArraySchema = (arrayValue, key) => {
     items: {
       type: typeof firstItem,
       formField: detectFieldType(firstItem, key),
+      // Add safety properties for undefined items
+      ...(typeof firstItem === "object" && firstItem !== null ? {
+        properties: {
+          id: { type: "string", label: "ID", formField: "text" },
+          title: { type: "string", label: "Title", formField: "text" },
+          description: { type: "string", label: "Description", formField: "textarea" }
+        }
+      } : {})
     },
     formField: "array",
   };
@@ -368,7 +376,17 @@ export const generateDynamicSchema = (
     const fieldType = detectFieldType(value, key);
 
     if (Array.isArray(value)) {
-      properties[key] = generateArraySchema(value, key);
+      const arraySchema = generateArraySchema(value, key);
+      // Ensure items schema has required properties
+      if (arraySchema.items && !arraySchema.items.type) {
+        arraySchema.items.type = "object";
+        arraySchema.items.properties = arraySchema.items.properties || {
+          id: { type: "string", label: "ID", formField: "text" },
+          title: { type: "string", label: "Title", formField: "text" },
+          description: { type: "string", label: "Description", formField: "textarea" }
+        };
+      }
+      properties[key] = arraySchema;
     } else if (typeof value === "object" && value !== null) {
       properties[key] = generateObjectSchema(value, key);
     } else {

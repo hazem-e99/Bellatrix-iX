@@ -42,6 +42,12 @@ import ImplementationPricing from "../Services/Implementation/PricingSection";
 import ImplementationCta from "../Services/Implementation/CtaSection";
 import TrainingHero from "../Services/training/HeroSection";
 import IntegrationHero from "../Services/Integration/HeroSection";
+import IntegrationTypes from "../Services/Integration/IntegrationTypes";
+import IntegrationBenefits from "../Services/Integration/BenefitsSection";
+import IntegrationPopular from "../Services/Integration/PopularIntegrations";
+import IntegrationCta from "../Services/Integration/CtaSection";
+import CustomizationServices from "../Services/Customization/ServicesSection";
+import CustomizationProcess from "../Services/Customization/ProcessSection";
 
 // Industries Components - Manufacturing
 import ManufacturingHero from "../industries/Manufacturing/HeroSection";
@@ -54,6 +60,13 @@ import ManufacturingCTA from "../industries/Manufacturing/CTASection";
 
 // Industries Components - Retail
 import RetailHero from "../industries/retail/HeroSection";
+import RetailIndustryStats from "../industries/retail/IndustryStats";
+import RetailChallenges from "../industries/retail/ChallengesSection";
+import RetailSolutions from "../industries/retail/SolutionsSection";
+import RetailFeatures from "../industries/retail/FeaturesSection";
+import RetailCaseStudies from "../industries/retail/CaseStudiesSection";
+import RetailImplementation from "../industries/retail/ImplementationSection";
+import RetailCTA from "../industries/retail/CTASection";
 
 // Common/Shared Components
 import SEO from "../SEO";
@@ -128,6 +141,12 @@ const ComponentPreview = ({
     ImplementationCtaSection: ImplementationCta,
     TrainingHeroSection: TrainingHero,
     IntegrationHeroSection: IntegrationHero,
+    IntegrationTypesSection: IntegrationTypes,
+    IntegrationBenefitsSection: IntegrationBenefits,
+    IntegrationPopularSection: IntegrationPopular,
+    IntegrationCtaSection: IntegrationCta,
+    CustomizationServicesSection: CustomizationServices,
+    CustomizationProcessSection: CustomizationProcess,
 
     // ===========================================
     // INDUSTRY COMPONENTS - MANUFACTURING
@@ -136,14 +155,26 @@ const ComponentPreview = ({
     ManufacturingSolutionsSection: ManufacturingSolutions,
     ManufacturingChallengesSection: ManufacturingChallenges,
     ManufacturingIndustryStats: ManufacturingIndustryStats,
+    ManufacturingIndustryStatsSection: ManufacturingIndustryStats,
     ManufacturingImplementationProcess: ManufacturingImplementationProcess,
+    ManufacturingImplementationProcessSection: ManufacturingImplementationProcess,
     ManufacturingCaseStudies: ManufacturingCaseStudies,
+    ManufacturingCaseStudiesSection: ManufacturingCaseStudies,
     ManufacturingCTASection: ManufacturingCTA,
 
     // ===========================================
     // INDUSTRY COMPONENTS - RETAIL
     // ===========================================
     RetailHeroSection: RetailHero,
+    RetailIndustryStats: RetailIndustryStats,
+    RetailIndustryStatsSection: RetailIndustryStats,
+    RetailChallengesSection: RetailChallenges,
+    RetailSolutionsSection: RetailSolutions,
+    RetailFeaturesSection: RetailFeatures,
+    RetailCaseStudies: RetailCaseStudies,
+    RetailCaseStudiesSection: RetailCaseStudies,
+    RetailImplementationSection: RetailImplementation,
+    RetailCTASection: RetailCTA,
 
     // ===========================================
     // COMMON/SHARED COMPONENTS

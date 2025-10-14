@@ -151,6 +151,12 @@ const DynamicFormGenerator = ({
   const createDefaultItem = (itemSchema) => {
     const defaultItem = {};
     
+    // Add safety check for itemSchema
+    if (!itemSchema) {
+      console.warn("⚠️ [DynamicFormGenerator] createDefaultItem: itemSchema is undefined");
+      return { id: "", title: "", description: "" };
+    }
+    
     if (itemSchema.type === "object" && itemSchema.properties) {
       Object.entries(itemSchema.properties).forEach(([key, prop]) => {
         if (prop.type === "string") {
@@ -161,6 +167,8 @@ const DynamicFormGenerator = ({
           defaultItem[key] = {};
         }
       });
+    } else if (itemSchema.type === "string") {
+      return "";
     }
     
     return defaultItem;
@@ -174,10 +182,21 @@ const DynamicFormGenerator = ({
   };
 
   const renderField = (key, fieldSchema, basePath = "", level = 0) => {
+    // Add safety check for fieldSchema
+    if (!fieldSchema) {
+      console.warn("⚠️ [DynamicFormGenerator] renderField: fieldSchema is undefined for key:", key);
+      return (
+        <div key={basePath ? `${basePath}.${key}` : key} className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+          <div className="text-red-400 text-sm font-medium">Error: No schema defined</div>
+          <div className="text-red-300 text-xs mt-1">Field: {key}</div>
+        </div>
+      );
+    }
+    
     const fullPath = basePath ? `${basePath}.${key}` : key;
     const value = getValueByPath(formData, fullPath);
     const isRequired = fieldSchema.required;
-    const fieldType = fieldSchema.formField || fieldSchema.type;
+    const fieldType = fieldSchema.formField || fieldSchema.type || "text";
     
     console.log("🔧 [RENDER FIELD] Field details:", {
       key,
@@ -377,7 +396,15 @@ const DynamicFormGenerator = ({
               </button>
               <Button
                 size="sm"
-                onClick={() => handleArrayAdd(fullPath, createDefaultItem(itemSchema))}
+                onClick={() => {
+                  const defaultItem = createDefaultItem(itemSchema);
+                  console.log("➕ [ARRAY ADD] Adding item with schema:", {
+                    itemSchema,
+                    defaultItem,
+                    fullPath
+                  });
+                  handleArrayAdd(fullPath, defaultItem);
+                }}
                 className="bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 border-blue-400/30"
               >
                 <PlusIcon className="h-4 w-4 mr-1" />
@@ -423,7 +450,7 @@ const DynamicFormGenerator = ({
                     </div>
                     
                     <div className="space-y-3">
-                      {itemSchema.type === "string" ? (
+                      {itemSchema && itemSchema.type === "string" ? (
                         <input
                           type="text"
                           value={item || ""}
@@ -435,7 +462,7 @@ const DynamicFormGenerator = ({
                           className={inputClasses}
                           placeholder={`${fieldSchema.label} item`}
                         />
-                      ) : itemSchema.properties ? (
+                      ) : itemSchema && itemSchema.properties ? (
                         Object.entries(itemSchema.properties).map(([propKey, propSchema]) => {
                           const itemFieldPath = `${fullPath}.${index}.${propKey}`;
                           console.log("🔧 [ARRAY ITEM FIELD] Rendering field:", {
@@ -447,7 +474,14 @@ const DynamicFormGenerator = ({
                           });
                           return renderField(propKey, propSchema, `${fullPath}.${index}`, level + 1);
                         })
-                      ) : null}
+                      ) : (
+                        <div className="text-center py-4 text-gray-400">
+                          <div className="text-sm">No schema defined for array items</div>
+                          <div className="text-xs mt-1">
+                            Item Schema: {itemSchema ? JSON.stringify(itemSchema) : 'undefined'}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}

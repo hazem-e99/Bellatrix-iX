@@ -277,6 +277,78 @@ export const componentRegistry = {
       filePath: "src/components/Services/Implementation/CtaSection.jsx",
       description: "Call-to-action for implementation services",
     },
+
+    // Integration Service Components
+    IntegrationTypesSection: {
+      componentType: "IntegrationTypesSection",
+      componentName: "Integration Types",
+      category: "features",
+      icon: "🔗",
+      filePath: "src/components/Services/Integration/IntegrationTypes.jsx",
+      description: "Types of integrations available",
+      dataStructure: {
+        title: "string",
+        items: "array", // title, description, icon
+      },
+    },
+    IntegrationBenefitsSection: {
+      componentType: "IntegrationBenefitsSection",
+      componentName: "Integration Benefits",
+      category: "benefits",
+      icon: "✨",
+      filePath: "src/components/Services/Integration/BenefitsSection.jsx",
+      description: "Benefits of integration services",
+      dataStructure: {
+        title: "string",
+        items: "array", // title, description
+      },
+    },
+    IntegrationPopularSection: {
+      componentType: "IntegrationPopularSection",
+      componentName: "Popular Integrations",
+      category: "features",
+      icon: "⭐",
+      filePath: "src/components/Services/Integration/PopularIntegrations.jsx",
+      description: "Popular integration platforms",
+      dataStructure: {
+        title: "string",
+        platforms: "array", // platform names
+      },
+    },
+    IntegrationCtaSection: {
+      componentType: "IntegrationCtaSection",
+      componentName: "Integration CTA",
+      category: "cta",
+      icon: "📞",
+      filePath: "src/components/Services/Integration/CtaSection.jsx",
+      description: "Call-to-action for integration services",
+    },
+
+    // Customization Service Components
+    CustomizationServicesSection: {
+      componentType: "CustomizationServicesSection",
+      componentName: "Customization Services",
+      category: "features",
+      icon: "🔧",
+      filePath: "src/components/Services/Customization/ServicesSection.jsx",
+      description: "Customization services offered",
+      dataStructure: {
+        title: "string",
+        items: "array", // name, title, description, icon
+      },
+    },
+    CustomizationProcessSection: {
+      componentType: "CustomizationProcessSection",
+      componentName: "Customization Process",
+      category: "process",
+      icon: "📋",
+      filePath: "src/components/Services/Customization/ProcessSection.jsx",
+      description: "Customization process steps",
+      dataStructure: {
+        title: "string",
+        steps: "array", // title, description, step
+      },
+    },
   },
 
   // ===========================================
@@ -508,22 +580,6 @@ export const componentRegistry = {
       filePath: "src/components/industries/Manufacturing/HeroSection.jsx",
       description: "Manufacturing industry hero section",
     },
-    ManufacturingSolutionsSection: {
-      componentType: "ManufacturingSolutionsSection",
-      componentName: "Manufacturing Solutions",
-      category: "solutions",
-      icon: "🔧",
-      filePath: "src/components/industries/Manufacturing/SolutionsSection.jsx",
-      description: "Manufacturing industry solutions",
-    },
-    ManufacturingChallengesSection: {
-      componentType: "ManufacturingChallengesSection",
-      componentName: "Manufacturing Challenges",
-      category: "challenges",
-      icon: "⚡",
-      filePath: "src/components/industries/Manufacturing/ChallengesSection.jsx",
-      description: "Manufacturing industry challenges",
-    },
     ManufacturingIndustryStats: {
       componentType: "ManufacturingIndustryStats",
       componentName: "Manufacturing Stats",
@@ -532,14 +588,39 @@ export const componentRegistry = {
       filePath: "src/components/industries/Manufacturing/IndustryStats.jsx",
       description: "Manufacturing industry statistics",
     },
-    ManufacturingImplementationProcess: {
-      componentType: "ManufacturingImplementationProcess",
-      componentName: "Manufacturing Implementation",
-      category: "process",
-      icon: "📋",
-      filePath:
-        "src/components/industries/Manufacturing/ImplementationProcess.jsx",
-      description: "Manufacturing implementation process",
+    ManufacturingCTASection: {
+      componentType: "ManufacturingCTASection",
+      componentName: "Manufacturing CTA",
+      category: "cta",
+      icon: "📞",
+      filePath: "src/components/industries/Manufacturing/CTASection.jsx",
+      description: "Manufacturing CTA section",
+    },
+    ManufacturingChallengesSection: {
+      componentType: "ManufacturingChallengesSection",
+      componentName: "Manufacturing Challenges",
+      category: "challenges",
+      icon: "⚡",
+      filePath: "src/components/industries/Manufacturing/ChallengesSection.jsx",
+      description: "Manufacturing industry challenges",
+      dataStructure: {
+        title: "string",
+        description: "string",
+        challenges: "array", // title, description, icon
+      },
+    },
+    ManufacturingSolutionsSection: {
+      componentType: "ManufacturingSolutionsSection",
+      componentName: "Manufacturing Solutions",
+      category: "solutions",
+      icon: "🔧",
+      filePath: "src/components/industries/Manufacturing/SolutionsSection.jsx",
+      description: "Manufacturing industry solutions",
+      dataStructure: {
+        title: "string",
+        description: "string",
+        solutions: "array", // title, description, icon
+      },
     },
     ManufacturingCaseStudies: {
       componentType: "ManufacturingCaseStudies",
@@ -548,14 +629,24 @@ export const componentRegistry = {
       icon: "📖",
       filePath: "src/components/industries/Manufacturing/CaseStudies.jsx",
       description: "Manufacturing case studies",
+      dataStructure: {
+        title: "string",
+        description: "string",
+        caseStudies: "array", // title, description, company, results
+      },
     },
-    ManufacturingCTASection: {
-      componentType: "ManufacturingCTASection",
-      componentName: "Manufacturing CTA",
-      category: "cta",
-      icon: "📞",
-      filePath: "src/components/industries/Manufacturing/CTASection.jsx",
-      description: "Manufacturing CTA section",
+    ManufacturingImplementationProcess: {
+      componentType: "ManufacturingImplementationProcess",
+      componentName: "Manufacturing Implementation",
+      category: "process",
+      icon: "📋",
+      filePath: "src/components/industries/Manufacturing/ImplementationProcess.jsx",
+      description: "Manufacturing implementation process",
+      dataStructure: {
+        title: "string",
+        description: "string",
+        steps: "array", // title, description, step
+      },
     },
 
     // Retail Components
@@ -567,29 +658,13 @@ export const componentRegistry = {
       filePath: "src/components/industries/retail/HeroSection.jsx",
       description: "Retail industry hero section",
     },
-    RetailSolutionsSection: {
-      componentType: "RetailSolutionsSection",
-      componentName: "Retail Solutions",
-      category: "solutions",
-      icon: "🛒",
-      filePath: "src/components/industries/retail/SolutionsSection.jsx",
-      description: "Retail industry solutions",
-    },
-    RetailFeaturesSection: {
-      componentType: "RetailFeaturesSection",
-      componentName: "Retail Features",
-      category: "features",
-      icon: "⭐",
-      filePath: "src/components/industries/retail/FeaturesSection.jsx",
-      description: "Retail industry features",
-    },
-    RetailChallengesSection: {
-      componentType: "RetailChallengesSection",
-      componentName: "Retail Challenges",
-      category: "challenges",
-      icon: "⚡",
-      filePath: "src/components/industries/retail/ChallengesSection.jsx",
-      description: "Retail industry challenges",
+    RetailCTASection: {
+      componentType: "RetailCTASection",
+      componentName: "Retail CTA",
+      category: "cta",
+      icon: "📞",
+      filePath: "src/components/industries/retail/CTASection.jsx",
+      description: "Retail CTA section",
     },
     RetailIndustryStats: {
       componentType: "RetailIndustryStats",
@@ -598,6 +673,63 @@ export const componentRegistry = {
       icon: "📊",
       filePath: "src/components/industries/retail/IndustryStats.jsx",
       description: "Retail industry statistics",
+      dataStructure: {
+        title: "string",
+        description: "string",
+        stats: "array", // value, label, description
+      },
+    },
+    RetailChallengesSection: {
+      componentType: "RetailChallengesSection",
+      componentName: "Retail Challenges",
+      category: "challenges",
+      icon: "⚡",
+      filePath: "src/components/industries/retail/ChallengesSection.jsx",
+      description: "Retail industry challenges",
+      dataStructure: {
+        title: "string",
+        description: "string",
+        challenges: "array", // title, description, icon
+      },
+    },
+    RetailSolutionsSection: {
+      componentType: "RetailSolutionsSection",
+      componentName: "Retail Solutions",
+      category: "solutions",
+      icon: "🔧",
+      filePath: "src/components/industries/retail/SolutionsSection.jsx",
+      description: "Retail industry solutions",
+      dataStructure: {
+        title: "string",
+        description: "string",
+        solutions: "array", // title, description, icon
+      },
+    },
+    RetailFeaturesSection: {
+      componentType: "RetailFeaturesSection",
+      componentName: "Retail Features",
+      category: "features",
+      icon: "⭐",
+      filePath: "src/components/industries/retail/FeaturesSection.jsx",
+      description: "Retail industry features",
+      dataStructure: {
+        title: "string",
+        description: "string",
+        features: "array", // title, description, icon
+      },
+    },
+    RetailCaseStudies: {
+      componentType: "RetailCaseStudies",
+      componentName: "Retail Case Studies",
+      category: "case-studies",
+      icon: "📖",
+      filePath: "src/components/industries/retail/CaseStudiesSection.jsx",
+      description: "Retail case studies",
+      dataStructure: {
+        title: "string",
+        description: "string",
+        caseStudies: "array", // title, description, company, results
+      },
     },
     RetailImplementationSection: {
       componentType: "RetailImplementationSection",
@@ -606,22 +738,11 @@ export const componentRegistry = {
       icon: "📋",
       filePath: "src/components/industries/retail/ImplementationSection.jsx",
       description: "Retail implementation process",
-    },
-    RetailCaseStudiesSection: {
-      componentType: "RetailCaseStudiesSection",
-      componentName: "Retail Case Studies",
-      category: "case-studies",
-      icon: "📖",
-      filePath: "src/components/industries/retail/CaseStudiesSection.jsx",
-      description: "Retail case studies",
-    },
-    RetailCTASection: {
-      componentType: "RetailCTASection",
-      componentName: "Retail CTA",
-      category: "cta",
-      icon: "📞",
-      filePath: "src/components/industries/retail/CTASection.jsx",
-      description: "Retail CTA section",
+      dataStructure: {
+        title: "string",
+        description: "string",
+        steps: "array", // title, description, step
+      },
     },
   },
 
