@@ -491,7 +491,7 @@ export const normalizeProps = (componentType, contentJson) => {
         data.image || // Direct image from form
         data.programsSection?.image || // Nested in programsSection
         data.programsSection?.image || // From existing programsSection
-        "/images/training.jpg"; // Final fallback
+        "/images/traning.jpg"; // Final fallback
 
       console.log("🖼️ [NORMALIZE DEBUG] Final image decision:", {
         source: data.image
@@ -503,7 +503,7 @@ export const normalizeProps = (componentType, contentJson) => {
         imageSources: {
           directImage: data.image,
           programsSectionImage: data.programsSection?.image,
-          fallbackImage: "/images/training.jpg",
+          fallbackImage: "/images/traning.jpg",
         },
       });
 

@@ -2,6 +2,35 @@ import React from "react";
 import SEO from "../../SEO";
 
 const SolutionsSection = ({ data, activeSolution, setActiveSolution }) => {
+  // Ensure data is safe and provide fallback
+  const safeData = data || {};
+  const netSuiteSolutions = safeData.netSuiteSolutions || [];
+  
+  // Default solutions if none provided
+  const defaultSolutions = [
+    {
+      title: "E-commerce Platform",
+      description: "Complete e-commerce solution with NetSuite integration",
+      features: ["Online store", "Payment processing", "Order management"],
+      benefits: "50% increase in online sales"
+    },
+    {
+      title: "Inventory Management",
+      description: "Advanced inventory control and tracking",
+      features: ["Real-time tracking", "Multi-location", "Automated reordering"],
+      benefits: "30% reduction in stockouts"
+    },
+    {
+      title: "Customer Experience",
+      description: "Unified customer experience across all channels",
+      features: ["360° customer view", "Personalization", "Omnichannel support"],
+      benefits: "40% improvement in customer satisfaction"
+    }
+  ];
+  
+  const finalSolutions = netSuiteSolutions.length > 0 ? netSuiteSolutions : defaultSolutions;
+  const safeActiveSolution = Math.min(activeSolution || 0, finalSolutions.length - 1);
+
   return (
     <section className="bg-gray-50 py-20 light-section">
       <SEO
@@ -99,21 +128,27 @@ const SolutionsSection = ({ data, activeSolution, setActiveSolution }) => {
           {/* Solutions Showcase - Right Side */}
           <div className="flex-1 space-y-6">
             <h3 className="text-3xl font-bold text-gray-800">
-              {data.netSuiteSolutions[activeSolution].title}
+              {typeof finalSolutions[safeActiveSolution]?.title === 'string' 
+                ? finalSolutions[safeActiveSolution]?.title 
+                : finalSolutions[safeActiveSolution]?.title?.title || 'Solution Title'}
             </h3>
             <p className="text-gray-600 leading-relaxed text-lg">
-              {data.netSuiteSolutions[activeSolution].description}
+              {typeof finalSolutions[safeActiveSolution]?.description === 'string'
+                ? finalSolutions[safeActiveSolution]?.description
+                : finalSolutions[safeActiveSolution]?.description?.description || 'Solution Description'}
             </p>
 
             <div className="space-y-3 mb-6">
               <h4 className="font-semibold text-gray-800 mb-3">
                 Key Features:
               </h4>
-              {data.netSuiteSolutions[activeSolution].features.map(
+              {(finalSolutions[safeActiveSolution]?.features || []).map(
                 (feature, index) => (
                   <div key={index} className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-                    <span className="text-gray-600">{feature}</span>
+                    <span className="text-gray-600">
+                      {typeof feature === 'string' ? feature : feature?.name || feature?.title || 'Feature'}
+                    </span>
                   </div>
                 )
               )}
@@ -135,14 +170,16 @@ const SolutionsSection = ({ data, activeSolution, setActiveSolution }) => {
                   />
                 </svg>
                 <span className="text-blue-700 font-semibold">
-                  Result: {data.netSuiteSolutions[activeSolution].benefits}
+                  Result: {typeof finalSolutions[safeActiveSolution]?.benefits === 'string'
+                    ? finalSolutions[safeActiveSolution]?.benefits
+                    : finalSolutions[safeActiveSolution]?.benefits?.benefits || 'Improved Results'}
                 </span>
               </div>
             </div>
 
             {/* Solution Navigation */}
             <div className="flex space-x-2 mt-6 justify-center">
-              {data.netSuiteSolutions.map((_, index) => (
+              {finalSolutions.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => setActiveSolution(index)}

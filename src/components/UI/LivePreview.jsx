@@ -48,6 +48,12 @@ import IntegrationPopular from "../Services/Integration/PopularIntegrations";
 import IntegrationCta from "../Services/Integration/CtaSection";
 import CustomizationServices from "../Services/Customization/ServicesSection";
 import CustomizationProcess from "../Services/Customization/ProcessSection";
+import ServiceGrid from "../Services/ServiceGrid";
+import TrainingPrograms from "../Services/training/TrainingPrograms";
+import TrainingWhyChoose from "../Services/training/WhyChooseTraining";
+import CustomizationHero from "../Services/Customization/Customization";
+import ImplementationCTA from "../Services/Implementation/Implementation";
+import PayrollHowItWorks from "../solution/payroll/PayrollHowItWorks";
 
 // Industries Components - Manufacturing
 import ManufacturingHero from "../industries/Manufacturing/HeroSection";
@@ -111,6 +117,7 @@ const ComponentPreview = ({
     PayrollPainPointsSection: PayrollPainPoints,
     PayrollFAQSection: PayrollFAQ,
     PayrollCTASection: PayrollCTA,
+    PayrollHowItWorksSection: PayrollHowItWorks,
     HRHeroSection: HRHero,
     HRModulesSection: HRModules,
     HRBenefitsSection: HRBenefits,
@@ -147,6 +154,11 @@ const ComponentPreview = ({
     IntegrationCtaSection: IntegrationCta,
     CustomizationServicesSection: CustomizationServices,
     CustomizationProcessSection: CustomizationProcess,
+    ServiceGrid: ServiceGrid,
+    TrainingProgramsSection: TrainingPrograms,
+    TrainingWhyChooseSection: TrainingWhyChoose,
+    CustomizationHeroSection: CustomizationHero,
+    ImplementationCTASection: ImplementationCTA,
 
     // ===========================================
     // INDUSTRY COMPONENTS - MANUFACTURING
@@ -978,7 +990,20 @@ const ComponentPreview = ({
             componentData
           );
           const transformedData = {
-            solutions: componentData.solutions || [],
+            solutions: componentData.solutions || componentData.items || [
+              {
+                title: "Production Management",
+                description: "End-to-end production planning and execution",
+                features: ["Work orders", "Routing", "Capacity planning"],
+                benefits: "40% improvement in production efficiency"
+              },
+              {
+                title: "Inventory Control",
+                description: "Advanced inventory management capabilities",
+                features: ["Real-time tracking", "Multi-location", "Automated reordering"],
+                benefits: "30% reduction in stockouts"
+              }
+            ],
             title: componentData.title || "Manufacturing Solutions",
             description:
               componentData.description ||
@@ -997,7 +1022,18 @@ const ComponentPreview = ({
             componentData
           );
           const transformedData = {
-            challenges: componentData.challenges || [],
+            challenges: componentData.challenges || componentData.items || [
+              {
+                title: "Complex Production Planning",
+                description: "Difficulty in coordinating multiple production lines and resources",
+                icon: "📊"
+              },
+              {
+                title: "Inventory Management",
+                description: "Challenges in tracking inventory across multiple locations",
+                icon: "📦"
+              }
+            ],
             title: componentData.title || "Manufacturing Challenges",
             subtitle: componentData.subtitle || "Common pain points we solve",
           };
@@ -1014,7 +1050,11 @@ const ComponentPreview = ({
             componentData
           );
           const transformedData = {
-            stats: componentData.stats || [],
+            stats: componentData.stats || componentData.items || [
+              { value: "85%", label: "Efficiency Improvement", description: "Average efficiency gain" },
+              { value: "60%", label: "Cost Reduction", description: "Operational cost savings" },
+              { value: "90%", label: "Accuracy Rate", description: "Data accuracy improvement" }
+            ],
             title: componentData.title || "Manufacturing Industry Statistics",
             subtitle: componentData.subtitle || "Key industry metrics",
           };
@@ -1031,7 +1071,12 @@ const ComponentPreview = ({
             componentData
           );
           const transformedData = {
-            processSteps: componentData.processSteps || [],
+            processSteps: componentData.processSteps || componentData.steps || componentData.items || [
+              { title: "Analysis", description: "Analyze current processes", step: "01" },
+              { title: "Design", description: "Design new processes", step: "02" },
+              { title: "Implementation", description: "Implement new processes", step: "03" },
+              { title: "Training", description: "Train users", step: "04" }
+            ],
             title: componentData.title || "Implementation Process",
             description: componentData.description || "Our proven methodology",
           };
@@ -1048,7 +1093,20 @@ const ComponentPreview = ({
             componentData
           );
           const transformedData = {
-            caseStudies: componentData.caseStudies || [],
+            caseStudies: componentData.caseStudies || componentData.items || [
+              {
+                title: "Automotive Manufacturer",
+                description: "Streamlined production processes",
+                company: "ABC Motors",
+                results: "40% efficiency improvement"
+              },
+              {
+                title: "Electronics Company",
+                description: "Improved inventory management",
+                company: "TechCorp",
+                results: "60% cost reduction"
+              }
+            ],
             title: componentData.title || "Manufacturing Success Stories",
             description:
               componentData.description || "See how we've helped others",
@@ -1077,6 +1135,126 @@ const ComponentPreview = ({
           };
           console.log(
             "✅ [ManufacturingCTASection TRANSFORM] Output data:",
+            transformedData
+          );
+          return transformedData;
+        }
+
+        case "RetailSolutionsSection": {
+          console.log(
+            "🎯 [RetailSolutionsSection TRANSFORM] Input data:",
+            componentData
+          );
+          const transformedData = {
+            data: {
+              netSuiteSolutions: componentData.solutions || componentData.items || [
+                {
+                  title: "E-commerce Platform",
+                  description: "Complete e-commerce solution with NetSuite integration",
+                  features: ["Online store", "Payment processing", "Order management"],
+                  benefits: "50% increase in online sales"
+                },
+                {
+                  title: "Inventory Management",
+                  description: "Advanced inventory control and tracking",
+                  features: ["Real-time tracking", "Multi-location", "Automated reordering"],
+                  benefits: "30% reduction in stockouts"
+                }
+              ]
+            },
+            activeSolution: 0,
+            setActiveSolution: () => {}
+          };
+          console.log(
+            "✅ [RetailSolutionsSection TRANSFORM] Output data:",
+            transformedData
+          );
+          return transformedData;
+        }
+
+        case "RetailChallengesSection": {
+          console.log(
+            "🎯 [RetailChallengesSection TRANSFORM] Input data:",
+            componentData
+          );
+          const transformedData = {
+            challenges: componentData.challenges || componentData.items || [],
+            title: componentData.title || "Retail Challenges",
+            subtitle: componentData.subtitle || "Common pain points we solve",
+          };
+          console.log(
+            "✅ [RetailChallengesSection TRANSFORM] Output data:",
+            transformedData
+          );
+          return transformedData;
+        }
+
+        case "RetailFeaturesSection": {
+          console.log(
+            "🎯 [RetailFeaturesSection TRANSFORM] Input data:",
+            componentData
+          );
+          const transformedData = {
+            features: componentData.features || componentData.items || [],
+            title: componentData.title || "Retail Features",
+            description: componentData.description || "Key features of our retail solution",
+          };
+          console.log(
+            "✅ [RetailFeaturesSection TRANSFORM] Output data:",
+            transformedData
+          );
+          return transformedData;
+        }
+
+        case "RetailCaseStudies": {
+          console.log(
+            "🎯 [RetailCaseStudies TRANSFORM] Input data:",
+            componentData
+          );
+          const transformedData = {
+            caseStudies: componentData.caseStudies || componentData.items || [],
+            title: componentData.title || "Retail Success Stories",
+            description: componentData.description || "See how we've helped others",
+          };
+          console.log(
+            "✅ [RetailCaseStudies TRANSFORM] Output data:",
+            transformedData
+          );
+          return transformedData;
+        }
+
+        case "RetailImplementationSection": {
+          console.log(
+            "🎯 [RetailImplementationSection TRANSFORM] Input data:",
+            componentData
+          );
+          const transformedData = {
+            steps: componentData.steps || componentData.items || [],
+            title: componentData.title || "Implementation Process",
+            description: componentData.description || "Our proven methodology",
+          };
+          console.log(
+            "✅ [RetailImplementationSection TRANSFORM] Output data:",
+            transformedData
+          );
+          return transformedData;
+        }
+
+        case "RetailCTASection": {
+          console.log(
+            "🎯 [RetailCTASection TRANSFORM] Input data:",
+            componentData
+          );
+          const transformedData = {
+            title: componentData.title || "Ready to Transform Retail?",
+            subtitle: componentData.subtitle || "Let's discuss your retail needs",
+            ctaButton: componentData.ctaButton || {
+              text: "Get Started",
+              link: "/contact",
+            },
+          };
+          console.log(
+            "✅ [RetailCTASection TRANSFORM] Output data:",
             transformedData
           );
           return transformedData;
@@ -1136,6 +1314,149 @@ const ComponentPreview = ({
             onClick: componentData.onClick || (() => {}),
           };
           console.log("✅ [CTAButton TRANSFORM] Output data:", transformedData);
+          return transformedData;
+        }
+
+        case "ServiceGrid": {
+          console.log(
+            "🎯 [ServiceGrid TRANSFORM] Input data:",
+            componentData
+          );
+          const transformedData = {
+            data: {
+              services: componentData.services || [
+                {
+                  title: "NetSuite Implementation",
+                  description: "Complete NetSuite setup and configuration tailored to your business needs.",
+                  icon: "🚀",
+                  features: ["System Configuration", "Data Migration", "Custom Workflows", "User Training"]
+                },
+                {
+                  title: "Training & Support",
+                  description: "Comprehensive training programs to maximize your NetSuite investment.",
+                  icon: "📚",
+                  features: ["User Training", "Admin Training", "Custom Reports", "Ongoing Support"]
+                }
+              ]
+            }
+          };
+          console.log(
+            "✅ [ServiceGrid TRANSFORM] Output data:",
+            transformedData
+          );
+          return transformedData;
+        }
+
+        case "TrainingProgramsSection": {
+          console.log(
+            "🎯 [TrainingProgramsSection TRANSFORM] Input data:",
+            componentData
+          );
+          const transformedData = {
+            programsSection: componentData.programsSection || {
+              title: "Training Programs",
+              description: "Comprehensive training programs designed to enhance your skills and knowledge.",
+              image: "/images/traning.jpg"
+            },
+            trainingPrograms: componentData.trainingPrograms || [
+              {
+                title: "Basic User Training",
+                description: "Learn the fundamentals of NetSuite",
+                duration: "2 days",
+                level: "Beginner"
+              }
+            ]
+          };
+          console.log(
+            "✅ [TrainingProgramsSection TRANSFORM] Output data:",
+            transformedData
+          );
+          return transformedData;
+        }
+
+        case "TrainingWhyChooseSection": {
+          console.log(
+            "🎯 [TrainingWhyChooseSection TRANSFORM] Input data:",
+            componentData
+          );
+          const transformedData = {
+            whyChooseSection: componentData.whyChooseSection || {
+              title: "Why Choose Our Training",
+              description: "Comprehensive training solutions designed for your success."
+            },
+            trainingFeatures: componentData.trainingFeatures || [
+              {
+                id: 1,
+                title: "Expert Instructors",
+                description: "Learn from certified NetSuite professionals",
+                icon: "👨‍🏫",
+                shortDescription: "Certified instructors with real-world experience"
+              }
+            ]
+          };
+          console.log(
+            "✅ [TrainingWhyChooseSection TRANSFORM] Output data:",
+            transformedData
+          );
+          return transformedData;
+        }
+
+        case "ImplementationCTASection": {
+          console.log(
+            "🎯 [ImplementationCTASection TRANSFORM] Input data:",
+            componentData
+          );
+          const transformedData = {
+            cta: componentData.cta || {
+              title: "Ready to Transform Your Business?",
+              subtitle: "Get started with our comprehensive NetSuite implementation services today.",
+              buttonText: "Start Your Implementation",
+              buttonLink: "/contact"
+            }
+          };
+          console.log(
+            "✅ [ImplementationCTASection TRANSFORM] Output data:",
+            transformedData
+          );
+          return transformedData;
+        }
+
+        case "CustomizationHeroSection": {
+          console.log(
+            "🎯 [CustomizationHeroSection TRANSFORM] Input data:",
+            componentData
+          );
+          const transformedData = {
+            hero: componentData.hero || {
+              title: "NetSuite Customization Services",
+              subtitle: "Tailored Solutions for Your Business",
+              description: "Transform your NetSuite system with custom solutions designed specifically for your unique business requirements."
+            },
+            services: componentData.services || {
+              title: "Our Customization Services",
+              items: [
+                {
+                  title: "Custom Fields & Forms",
+                  description: "Create custom fields and forms to capture your specific business data.",
+                  icon: "📝"
+                },
+                {
+                  title: "Custom Scripts",
+                  description: "Develop custom scripts to automate your business processes.",
+                  icon: "⚙️"
+                },
+                {
+                  title: "Custom Workflows",
+                  description: "Design custom workflows to streamline your operations.",
+                  icon: "🔄"
+                }
+              ]
+            }
+          };
+          console.log(
+            "✅ [CustomizationHeroSection TRANSFORM] Output data:",
+            transformedData
+          );
           return transformedData;
         }
 

@@ -81,27 +81,41 @@ const CaseStudies = ({ data }) => {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                 <div className="absolute bottom-4 left-4">
                   <h3 className="text-xl font-bold text-white">
-                    {study.company}
+                    {typeof study.company === 'string'
+                      ? study.company
+                      : study.company?.name || study.company?.title || 'Company Name'}
                   </h3>
-                  <p className="text-cyan-300">{study.industry}</p>
+                  <p className="text-cyan-300">
+                    {typeof study.industry === 'string'
+                      ? study.industry
+                      : study.industry?.name || study.industry?.title || 'Industry'}
+                  </p>
                 </div>
               </div>
 
               <div className="p-6">
                 <div className="mb-4">
                   <h4 className="font-semibold text-white mb-2">Challenge:</h4>
-                  <p className="text-gray-300 text-sm">{study.challenge}</p>
+                  <p className="text-gray-300 text-sm">
+                    {typeof study.challenge === 'string'
+                      ? study.challenge
+                      : study.challenge?.challenge || study.challenge?.description || 'Challenge Description'}
+                  </p>
                 </div>
 
                 <div className="mb-4">
                   <h4 className="font-semibold text-white mb-2">Solution:</h4>
-                  <p className="text-gray-300 text-sm">{study.solution}</p>
+                  <p className="text-gray-300 text-sm">
+                    {typeof study.solution === 'string'
+                      ? study.solution
+                      : study.solution?.solution || study.solution?.description || 'Solution Description'}
+                  </p>
                 </div>
 
                 <div>
                   <h4 className="font-semibold text-white mb-3">Results:</h4>
                   <div className="space-y-2">
-                    {study.results.map((result, i) => (
+                    {(study.results || []).map((result, i) => (
                       <div key={i} className="flex items-center space-x-2">
                         <svg
                           className="w-4 h-4 text-cyan-400"

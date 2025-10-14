@@ -98,7 +98,11 @@ const ImplementationStepper = ({ implementationProcess }) => {
                   }`}
               >
                 {idx <= current ? (
-                  <div className="text-white">{steps[idx].icon}</div>
+                  <div className="text-white">
+                    {typeof steps[idx]?.icon === 'string' 
+                      ? steps[idx]?.icon 
+                      : steps[idx]?.icon?.icon || steps[idx]?.icon?.svg || 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2'}
+                  </div>
                 ) : (
                   <span className="font-semibold">{idx + 1}</span>
                 )}
@@ -107,7 +111,9 @@ const ImplementationStepper = ({ implementationProcess }) => {
                 className={`text-sm font-medium max-w-[140px] text-center transition-colors duration-300 leading-tight absolute top-16
                 ${idx <= current ? 'text-blue-700' : 'text-gray-500'}`}
               >
-                {step.title}
+                {typeof step.title === 'string'
+                  ? step.title
+                  : step.title?.title || step.title?.name || 'Step Title'}
               </span>
             </div>
           ))}
@@ -128,7 +134,11 @@ const ImplementationStepper = ({ implementationProcess }) => {
                 }`}
             >
               <span className="text-xs">{idx + 1}</span>
-              <span>{step.title}</span>
+              <span>
+                {typeof step.title === 'string'
+                  ? step.title
+                  : step.title?.title || step.title?.name || 'Step Title'}
+              </span>
             </button>
           ))}
         </div>
@@ -139,10 +149,14 @@ const ImplementationStepper = ({ implementationProcess }) => {
         <div className="flex flex-col lg:flex-row lg:items-start gap-8 lg:gap-12">
           <div className="lg:w-2/5">
             <h3 className="text-2xl md:text-3xl font-bold text-gray-800 mb-3">
-              {steps[current].title}
+              {typeof steps[current]?.title === 'string'
+                ? steps[current]?.title
+                : steps[current]?.title?.title || steps[current]?.title?.name || 'Step Title'}
             </h3>
             <p className="text-lg font-medium text-gray-700 mb-6">
-              {steps[current].desc}
+              {typeof steps[current]?.desc === 'string'
+                ? steps[current]?.desc
+                : steps[current]?.desc?.desc || steps[current]?.desc?.description || 'Step Description'}
             </p>
             
             {/* Key Benefits */}
@@ -194,7 +208,11 @@ const ImplementationStepper = ({ implementationProcess }) => {
           <div className="lg:w-3/5">
             <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 md:p-8 border border-blue-100">
               <h4 className="text-lg font-semibold text-gray-800 mb-4">Implementation Details</h4>
-              <p className="text-gray-700 leading-relaxed mb-6">{steps[current].details}</p>
+              <p className="text-gray-700 leading-relaxed mb-6">
+                {typeof steps[current]?.details === 'string'
+                  ? steps[current]?.details
+                  : steps[current]?.details?.details || steps[current]?.description || 'Step Details'}
+              </p>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="bg-white rounded-lg p-4 border border-blue-100">

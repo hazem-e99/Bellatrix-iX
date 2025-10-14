@@ -86,7 +86,9 @@ const CTASection = ({
               </h2>
               {mergedData.subtitle && (
                 <h3 className="text-xl md:text-2xl text-gray-800 mb-4 leading-relaxed">
-                  {mergedData.subtitle}
+                  {typeof mergedData.subtitle === 'string'
+                    ? mergedData.subtitle
+                    : mergedData.subtitle?.subtitle || mergedData.subtitle?.title || 'Subtitle'}
                 </h3>
               )}
               <p className="text-xl mb-8 leading-relaxed text-gray-700">
@@ -115,7 +117,11 @@ const CTASection = ({
                   <h4 className="text-xl font-bold mb-2 text-gray-800">
                     {feature.title}
                   </h4>
-                  <p className="text-gray-600">{feature.description}</p>
+                  <p className="text-gray-600">
+                    {typeof feature.description === 'string'
+                      ? feature.description
+                      : feature.description?.description || feature.description?.desc || 'Feature Description'}
+                  </p>
                 </div>
               ))}
             </div>

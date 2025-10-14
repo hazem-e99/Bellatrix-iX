@@ -84,11 +84,21 @@ const Customization = ({ data: propsData = null }) => {
                 key={index}
                 className="bg-white rounded-xl shadow-lg p-6 border border-blue-100 hover:shadow-xl transition-all duration-300"
               >
-                <div className="text-4xl mb-4">{service.icon}</div>
+                <div className="text-4xl mb-4">
+                  {typeof service.icon === 'string'
+                    ? service.icon
+                    : service.icon?.icon || service.icon?.emoji || '⚙️'}
+                </div>
                 <h3 className="text-xl font-bold text-blue-800 mb-3">
-                  {service.title}
+                  {typeof service.title === 'string'
+                    ? service.title
+                    : service.title?.title || service.title?.name || 'Service Title'}
                 </h3>
-                <p className="text-gray-600">{service.description}</p>
+                <p className="text-gray-600">
+                  {typeof service.description === 'string'
+                    ? service.description
+                    : service.description?.description || service.description?.desc || 'Service Description'}
+                </p>
               </div>
             ))}
           </div>
@@ -108,9 +118,15 @@ const Customization = ({ data: propsData = null }) => {
                   {process.step}
                 </div>
                 <h3 className="text-xl font-bold text-blue-800 mb-3">
-                  {process.title}
+                  {typeof process.title === 'string'
+                    ? process.title
+                    : process.title?.title || process.title?.name || 'Process Title'}
                 </h3>
-                <p className="text-gray-600">{process.description}</p>
+                <p className="text-gray-600">
+                  {typeof process.description === 'string'
+                    ? process.description
+                    : process.description?.description || process.description?.desc || 'Process Description'}
+                </p>
               </div>
             ))}
           </div>
@@ -123,7 +139,11 @@ const Customization = ({ data: propsData = null }) => {
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             {pageData.cta.title}
           </h2>
-          <p className="text-lg md:text-xl mb-8">{pageData.cta.subtitle}</p>
+          <p className="text-lg md:text-xl mb-8">
+            {typeof pageData.cta.subtitle === 'string'
+              ? pageData.cta.subtitle
+              : pageData.cta.subtitle?.subtitle || pageData.cta.subtitle?.title || 'CTA Subtitle'}
+          </p>
           <button className="bg-white text-blue-800 font-bold px-8 py-4 rounded-xl shadow-lg text-lg transition-all duration-300 hover:scale-105">
             {pageData.cta.buttonText}
           </button>

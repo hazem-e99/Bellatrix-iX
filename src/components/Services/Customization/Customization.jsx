@@ -12,23 +12,61 @@ const Customization = ({ data: propsData = null }) => {
   useEffect(() => {
     // PRIORITIZE props data over fetched data for real-time preview
     if (propsData) {
+      console.log("🎯 [Customization] Using props data:", propsData);
       setPageData(propsData);
       setLoading(false);
-      console.log("🎯 [Customization] Using props data:", propsData);
       return;
     }
 
     const fetchData = async () => {
       try {
-        const response = await fetch("./data/customization.json");
+        console.log("🎯 [Customization] Fetching data from API...");
+        const response = await fetch("/customization");
         if (!response.ok) {
-          throw new Error("Failed to fetch data");
+          throw new Error(`Failed to fetch data: ${response.status}`);
         }
+        
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+          throw new Error("Response is not JSON");
+        }
+        
         const data = await response.json();
         setPageData(data);
         console.log("🎯 [Customization] Using fetched data:", data);
       } catch (err) {
+        console.error("❌ [Customization] Error fetching data:", err);
         setError(err.message);
+        // Provide fallback data instead of failing
+        const fallbackData = {
+          hero: {
+            title: "NetSuite Customization Services",
+            subtitle: "Tailored Solutions for Your Business",
+            description: "Transform your NetSuite system with custom solutions designed specifically for your unique business requirements."
+          },
+          services: {
+            title: "Our Customization Services",
+            items: [
+              {
+                title: "Custom Fields & Forms",
+                description: "Create custom fields and forms to capture your specific business data.",
+                icon: "📝"
+              },
+              {
+                title: "Custom Scripts",
+                description: "Develop custom scripts to automate your business processes.",
+                icon: "⚙️"
+              },
+              {
+                title: "Custom Workflows",
+                description: "Design custom workflows to streamline your operations.",
+                icon: "🔄"
+              }
+            ]
+          }
+        };
+        setPageData(fallbackData);
+        console.log("🎯 [Customization] Using fallback data:", fallbackData);
       } finally {
         setLoading(false);
       }

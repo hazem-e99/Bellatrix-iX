@@ -112,14 +112,22 @@ const IntegrationTypes = ({ title, items, types }) => {
                 <div
                   className="text-4xl mb-4"
                   role="img"
-                  aria-label={`${integration.title} icon`}
+                  aria-label={`${typeof integration.title === 'string' ? integration.title : integration.title?.title || integration.title?.name || 'Integration'} icon`}
                 >
-                  {integration.icon}
+                  {typeof integration.icon === 'string'
+                    ? integration.icon
+                    : integration.icon?.icon || integration.icon?.emoji || '🔌'}
                 </div>
                 <h3 className="text-xl font-bold text-blue-800 mb-3">
-                  {integration.title}
+                  {typeof integration.title === 'string'
+                    ? integration.title
+                    : integration.title?.title || integration.title?.name || 'Integration Title'}
                 </h3>
-                <p className="text-gray-600">{integration.description}</p>
+                <p className="text-gray-600">
+                  {typeof integration.description === 'string'
+                    ? integration.description
+                    : integration.description?.description || integration.description?.desc || 'Integration Description'}
+                </p>
               </article>
             );
           })}

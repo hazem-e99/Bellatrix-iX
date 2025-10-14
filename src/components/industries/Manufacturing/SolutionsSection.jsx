@@ -201,21 +201,27 @@ const SolutionsSection = (props) => {
           {/* Solutions Showcase - Right Side */}
           <div className="flex-1 space-y-6">
             <h3 className="text-3xl font-bold text-gray-800">
-              {finalSolutions[activeSolution]?.title}
+              {typeof finalSolutions[activeSolution]?.title === 'string'
+                ? finalSolutions[activeSolution]?.title
+                : finalSolutions[activeSolution]?.title?.title || 'Solution Title'}
             </h3>
             <p className="text-gray-600 leading-relaxed text-lg">
-              {finalSolutions[activeSolution]?.description}
+              {typeof finalSolutions[activeSolution]?.description === 'string'
+                ? finalSolutions[activeSolution]?.description
+                : finalSolutions[activeSolution]?.description?.description || 'Solution Description'}
             </p>
 
             <div className="space-y-3 mb-6">
               <h4 className="font-semibold text-gray-800 mb-3">
                 Key Features:
               </h4>
-              {finalSolutions[activeSolution]?.features?.map(
+              {(finalSolutions[activeSolution]?.features || []).map(
                 (feature, index) => (
                   <div key={index} className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-                    <span className="text-gray-600">{feature}</span>
+                    <span className="text-gray-600">
+                      {typeof feature === 'string' ? feature : feature?.name || feature?.title || 'Feature'}
+                    </span>
                   </div>
                 )
               )}
@@ -237,7 +243,9 @@ const SolutionsSection = (props) => {
                   />
                 </svg>
                 <span className="text-blue-700 font-semibold">
-                  Result: {finalSolutions[activeSolution]?.benefits}
+                  Result: {typeof finalSolutions[activeSolution]?.benefits === 'string'
+                    ? finalSolutions[activeSolution]?.benefits
+                    : finalSolutions[activeSolution]?.benefits?.benefits || 'Improved Results'}
                 </span>
               </div>
             </div>

@@ -326,7 +326,7 @@ export const componentSchemas = {
       title: "Our Training Programs",
       description:
         "Comprehensive training solutions designed to empower your team with the skills they need to excel",
-      image: "/images/training.jpg",
+      image: "/images/traning.jpg",
       Professional_Badge: "Certified Training",
     },
     trainingPrograms: {

@@ -2,14 +2,19 @@ import React, { useState, useEffect } from 'react';
 
 const ImplementationStepper = ({ steps }) => {
   const [current, setCurrent] = useState(0);
+  
+  // Ensure steps is an array
+  const safeSteps = Array.isArray(steps) ? steps : [];
 
   // Auto-progression functionality - runs automatically
   useEffect(() => {
+    if (safeSteps.length === 0) return;
+    
     const interval = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % steps.length);
+      setCurrent((prev) => (prev + 1) % safeSteps.length);
     }, 4000);
     return () => clearInterval(interval);
-  }, [steps.length]);
+  }, [safeSteps.length]);
 
   return (
     <div className="w-full">
@@ -21,11 +26,11 @@ const ImplementationStepper = ({ steps }) => {
           <div
             className="absolute top-7 left-7 h-2 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full z-0 transition-all duration-500 ease-in-out"
             style={{
-              width: `${7 + (current / (steps.length - 1)) * (100 - 14)}%`,
+              width: safeSteps.length > 1 ? `${7 + (current / (safeSteps.length - 1)) * (100 - 14)}%` : '7%',
             }}
           ></div>
           {/* Step circles */}
-          {steps.map((step, idx) => (
+          {safeSteps.map((step, idx) => (
             <div key={idx} className="z-10 flex flex-col items-center relative">
               <button
                 onClick={() => setCurrent(idx)}
@@ -49,7 +54,9 @@ const ImplementationStepper = ({ steps }) => {
                 className={`text-sm font-medium max-w-[140px] text-center transition-colors duration-300 leading-tight absolute top-16
                 ${idx <= current ? 'text-blue-700' : 'text-gray-500'}`}
               >
-                {step.title}
+                {typeof step.title === 'string'
+                  ? step.title
+                  : step.title?.title || step.title?.name || 'Step Title'}
               </span>
             </div>
           ))}
@@ -59,7 +66,7 @@ const ImplementationStepper = ({ steps }) => {
       {/* Step indicators - Mobile */}
       <div className="flex md:hidden mb-6 overflow-x-auto pb-2 -mx-4 px-4">
         <div className="flex space-x-3">
-          {steps.map((step, idx) => (
+          {safeSteps.map((step, idx) => (
             <button
               key={idx}
               onClick={() => setCurrent(idx)}
@@ -70,7 +77,11 @@ const ImplementationStepper = ({ steps }) => {
                 }`}
             >
               <span className="text-xs">{idx + 1}</span>
-              <span>{step.title}</span>
+              <span>
+                {typeof step.title === 'string'
+                  ? step.title
+                  : step.title?.title || step.title?.name || 'Step Title'}
+              </span>
             </button>
           ))}
         </div>
@@ -81,17 +92,17 @@ const ImplementationStepper = ({ steps }) => {
         <div className="flex flex-col lg:flex-row lg:items-start gap-8 lg:gap-12">
           <div className="lg:w-2/5">
             <h3 className="text-2xl md:text-3xl font-bold text-gray-800 mb-3">
-              {steps[current].title}
+              {safeSteps[current]?.title || 'Step Title'}
             </h3>
             <p className="text-lg font-medium text-gray-700 mb-6">
-              {steps[current].desc}
+              {safeSteps[current]?.desc || 'Step description'}
             </p>
             
             {/* Key Benefits */}
             <div className="mb-6">
               <h4 className="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-3">Key Deliverables</h4>
               <div className="grid grid-cols-2 gap-2">
-                {steps[current].benefits.map((benefit, idx) => (
+                {(safeSteps[current]?.benefits || []).map((benefit, idx) => (
                   <div key={idx} className="flex items-center text-sm text-gray-600">
                     <svg className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -136,7 +147,11 @@ const ImplementationStepper = ({ steps }) => {
           <div className="lg:w-3/5">
             <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 md:p-8 border border-blue-100">
               <h4 className="text-lg font-semibold text-gray-800 mb-4">Implementation Details</h4>
-              <p className="text-gray-700 leading-relaxed mb-6">{steps[current].details}</p>
+              <p className="text-gray-700 leading-relaxed mb-6">
+                {typeof safeSteps[current]?.details === 'string'
+                  ? safeSteps[current]?.details
+                  : safeSteps[current]?.details?.details || safeSteps[current]?.description || 'Step Details'}
+              </p>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="bg-white rounded-lg p-4 border border-blue-100">

@@ -63,7 +63,7 @@ const ProgramsSection = ({
                   {/* Inner glow container */}
                   <div className="relative bg-gradient-to-br from-white/5 via-transparent to-blue-500/5 rounded-2xl p-4 border border-white/20">
                     <img
-                      src={programsSection.image || "/images/training.jpg"}
+                      src={programsSection.image || "/images/traning.jpg"}
                       alt="Oracle NetSuite Training Programs - Advanced ERP Learning Solutions"
                       className="w-full h-auto rounded-xl shadow-2xl brightness-105 contrast-110 saturate-105 group-hover:brightness-110 group-hover:contrast-115 group-hover:saturate-110 transition-all duration-500 filter drop-shadow-xl"
                       onError={(e) => {
@@ -73,9 +73,9 @@ const ProgramsSection = ({
                         );
                         console.error(
                           "🖼️ [IMAGE ERROR] Fallback to:",
-                          "/images/training.jpg"
+                          "/images/traning.jpg"
                         );
-                        e.target.src = "/images/training.jpg";
+                        e.target.src = "/images/traning.jpg";
                       }}
                       onLoad={(e) => {
                         console.log(

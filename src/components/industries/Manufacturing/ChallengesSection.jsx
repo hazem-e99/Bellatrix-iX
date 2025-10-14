@@ -166,10 +166,14 @@ const ChallengesSection = (props) => {
                   </svg>
                 </div>
                 <h3 className="text-2xl font-bold text-white mb-3">
-                  {finalChallenges[activeChallenge]?.title}
+                  {typeof finalChallenges[activeChallenge]?.title === 'string'
+                    ? finalChallenges[activeChallenge]?.title
+                    : finalChallenges[activeChallenge]?.title?.title || 'Challenge Title'}
                 </h3>
                 <p className="text-gray-300 mb-4">
-                  {finalChallenges[activeChallenge]?.description}
+                  {typeof finalChallenges[activeChallenge]?.description === 'string'
+                    ? finalChallenges[activeChallenge]?.description
+                    : finalChallenges[activeChallenge]?.description?.description || 'Challenge Description'}
                 </p>
                 <div className="bg-blue-900/20 border border-blue-400/30 rounded-lg p-4">
                   <div className="flex items-center space-x-2">

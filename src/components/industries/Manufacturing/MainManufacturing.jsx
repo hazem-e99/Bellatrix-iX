@@ -27,19 +27,24 @@ const Manufacturing = ({ data: propsData = null }) => {
   useEffect(() => {
     if (!data) return;
 
-    const challengeInterval = setInterval(() => {
-      setActiveChallenge(
-        (prev) => (prev + 1) % data.manufacturingChallenges.length
-      );
-    }, 4000);
+    const challenges = data.manufacturingChallenges || [];
+    const solutions = data.netSuiteSolutions || [];
 
-    const solutionInterval = setInterval(() => {
-      setActiveSolution((prev) => (prev + 1) % data.netSuiteSolutions.length);
-    }, 5000);
+    if (challenges.length === 0 && solutions.length === 0) return;
+
+    const challengeInterval = challenges.length > 0 ? setInterval(() => {
+      setActiveChallenge(
+        (prev) => (prev + 1) % challenges.length
+      );
+    }, 4000) : null;
+
+    const solutionInterval = solutions.length > 0 ? setInterval(() => {
+      setActiveSolution((prev) => (prev + 1) % solutions.length);
+    }, 5000) : null;
 
     return () => {
-      clearInterval(challengeInterval);
-      clearInterval(solutionInterval);
+      if (challengeInterval) clearInterval(challengeInterval);
+      if (solutionInterval) clearInterval(solutionInterval);
     };
   }, [data]);
 
@@ -116,8 +121,8 @@ const Manufacturing = ({ data: propsData = null }) => {
       <Modal
         isOpen={isContactModalOpen}
         onClose={closeContactModal}
-        title={data.modal.title}
-        subtitle={data.modal.subtitle}
+        title={data?.modal?.title || "Contact Us"}
+        subtitle={data?.modal?.subtitle || "Get in touch with us"}
       >
         <div className="p-2">
           <ContactForm onSuccess={closeContactModal} />

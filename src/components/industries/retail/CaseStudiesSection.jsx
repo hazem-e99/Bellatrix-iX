@@ -98,7 +98,9 @@ const CaseStudiesSection = ({ data }) => {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                 <div className="absolute bottom-4 left-4">
                   <h3 className="text-xl font-bold text-white">
-                    {study.company}
+                    {typeof study.company === 'string'
+                      ? study.company
+                      : study.company?.name || study.company?.title || 'Company Name'}
                   </h3>
                   <p
                     className="theme-accent-text"
@@ -107,7 +109,9 @@ const CaseStudiesSection = ({ data }) => {
                       transition: "color 0.6s ease",
                     }}
                   >
-                    {study.industry}
+                    {typeof study.industry === 'string'
+                      ? study.industry
+                      : study.industry?.name || study.industry?.title || 'Industry'}
                   </p>
                 </div>
               </div>
@@ -115,12 +119,20 @@ const CaseStudiesSection = ({ data }) => {
               <div className="p-6">
                 <div className="mb-4">
                   <h4 className="font-semibold text-white mb-2">Challenge:</h4>
-                  <p className="text-gray-300 text-sm">{study.challenge}</p>
+                  <p className="text-gray-300 text-sm">
+                    {typeof study.challenge === 'string'
+                      ? study.challenge
+                      : study.challenge?.challenge || study.challenge?.description || 'Challenge Description'}
+                  </p>
                 </div>
 
                 <div className="mb-4">
                   <h4 className="font-semibold text-white mb-2">Solution:</h4>
-                  <p className="text-gray-300 text-sm">{study.solution}</p>
+                  <p className="text-gray-300 text-sm">
+                    {typeof study.solution === 'string'
+                      ? study.solution
+                      : study.solution?.solution || study.solution?.description || 'Solution Description'}
+                  </p>
                 </div>
 
                 <div>
@@ -145,7 +157,11 @@ const CaseStudiesSection = ({ data }) => {
                             d="M5 13l4 4L19 7"
                           />
                         </svg>
-                        <span className="text-gray-300 text-sm">{result}</span>
+                        <span className="text-gray-300 text-sm">
+                          {typeof result === 'string'
+                            ? result
+                            : result?.result || result?.name || result?.title || 'Result'}
+                        </span>
                       </div>
                     ))}
                   </div>

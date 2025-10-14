@@ -59,9 +59,21 @@ const Integration = ({ data: propsData = null }) => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {data.integrationTypes.items.map((integration, index) => (
               <div key={index} className="bg-white rounded-xl shadow-lg p-6 border border-blue-100 hover:shadow-xl transition-all duration-300">
-                <div className="text-4xl mb-4">{integration.icon}</div>
-                <h3 className="text-xl font-bold text-blue-800 mb-3">{integration.title}</h3>
-                <p className="text-gray-600">{integration.description}</p>
+                <div className="text-4xl mb-4">
+                  {typeof integration.icon === 'string'
+                    ? integration.icon
+                    : integration.icon?.icon || integration.icon?.emoji || '🔌'}
+                </div>
+                <h3 className="text-xl font-bold text-blue-800 mb-3">
+                  {typeof integration.title === 'string'
+                    ? integration.title
+                    : integration.title?.title || integration.title?.name || 'Integration Title'}
+                </h3>
+                <p className="text-gray-600">
+                  {typeof integration.description === 'string'
+                    ? integration.description
+                    : integration.description?.description || integration.description?.desc || 'Integration Description'}
+                </p>
               </div>
             ))}
           </div>
@@ -79,8 +91,16 @@ const Integration = ({ data: propsData = null }) => {
                   ✓
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-blue-800 mb-2">{benefit.title}</h3>
-                  <p className="text-gray-600">{benefit.description}</p>
+                  <h3 className="text-lg font-bold text-blue-800 mb-2">
+                    {typeof benefit.title === 'string'
+                      ? benefit.title
+                      : benefit.title?.title || benefit.title?.name || 'Benefit Title'}
+                  </h3>
+                  <p className="text-gray-600">
+                    {typeof benefit.description === 'string'
+                      ? benefit.description
+                      : benefit.description?.description || benefit.description?.desc || 'Benefit Description'}
+                  </p>
                 </div>
               </div>
             ))}
@@ -106,7 +126,11 @@ const Integration = ({ data: propsData = null }) => {
       <section className="py-16 bg-blue-800 text-white text-center">
         <div className="max-w-2xl mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">{data.cta.title}</h2>
-          <p className="text-lg md:text-xl mb-8">{data.cta.subtitle}</p>
+          <p className="text-lg md:text-xl mb-8">
+            {typeof data.cta.subtitle === 'string'
+              ? data.cta.subtitle
+              : data.cta.subtitle?.subtitle || data.cta.subtitle?.title || 'CTA Subtitle'}
+          </p>
           <button className="bg-white text-blue-800 font-bold px-8 py-4 rounded-xl shadow-lg text-lg transition-all duration-300 hover:scale-105">
             {data.cta.buttonText}
           </button>

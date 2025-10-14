@@ -2,6 +2,35 @@ import React from "react";
 import SEO from "../../SEO";
 
 const ChallengesSection = ({ data, activeChallenge, setActiveChallenge }) => {
+  // Ensure data is safe and provide fallback
+  const safeData = data || {};
+  const retailChallenges = safeData.retailChallenges || [];
+  
+  // Default challenges if none provided
+  const defaultChallenges = [
+    {
+      title: "Omnichannel Complexity",
+      description: "Managing multiple sales channels and touchpoints",
+      icon: "M13 10V3L4 14h7v7l9-11h-7z",
+      impact: "High"
+    },
+    {
+      title: "Inventory Management",
+      description: "Real-time inventory tracking across channels",
+      icon: "M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4",
+      impact: "High"
+    },
+    {
+      title: "Customer Experience",
+      description: "Delivering consistent experiences across all touchpoints",
+      icon: "M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z",
+      impact: "Medium"
+    }
+  ];
+  
+  const finalChallenges = retailChallenges.length > 0 ? retailChallenges : defaultChallenges;
+  const safeActiveChallenge = Math.min(activeChallenge || 0, finalChallenges.length - 1);
+
   return (
     <section
       className="py-20 relative overflow-hidden theme-bg-primary"
@@ -83,15 +112,19 @@ const ChallengesSection = ({ data, activeChallenge, setActiveChallenge }) => {
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       strokeWidth={2}
-                      d={data.retailChallenges[activeChallenge].icon}
+                      d={finalChallenges[safeActiveChallenge]?.icon || "M13 10V3L4 14h7v7l9-11h-7z"}
                     />
                   </svg>
                 </div>
                 <h3 className="text-2xl font-bold text-white mb-3">
-                  {data.retailChallenges[activeChallenge].title}
+                  {typeof finalChallenges[safeActiveChallenge]?.title === 'string'
+                    ? finalChallenges[safeActiveChallenge]?.title
+                    : finalChallenges[safeActiveChallenge]?.title?.title || 'Challenge Title'}
                 </h3>
                 <p className="text-gray-300 mb-4">
-                  {data.retailChallenges[activeChallenge].description}
+                  {typeof finalChallenges[safeActiveChallenge]?.description === 'string'
+                    ? finalChallenges[safeActiveChallenge]?.description
+                    : finalChallenges[safeActiveChallenge]?.description?.description || 'Challenge Description'}
                 </p>
                 <div
                   className="rounded-lg p-4 theme-impact-box"
@@ -129,7 +162,7 @@ const ChallengesSection = ({ data, activeChallenge, setActiveChallenge }) => {
                         transition: "color 0.6s ease",
                       }}
                     >
-                      Impact: {data.retailChallenges[activeChallenge].impact}
+                      Impact: {finalChallenges[safeActiveChallenge]?.impact || 'High'}
                     </span>
                   </div>
                 </div>
@@ -138,7 +171,7 @@ const ChallengesSection = ({ data, activeChallenge, setActiveChallenge }) => {
 
             {/* Challenge Navigation */}
             <div className="flex space-x-2 mt-6 justify-center">
-              {data.retailChallenges.map((_, index) => (
+              {finalChallenges.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => setActiveChallenge(index)}

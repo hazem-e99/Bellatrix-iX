@@ -85,7 +85,11 @@ const IndustryStats = (props) => {
             {finalTitle}
           </h2>
           {finalSubtitle && (
-            <p className="text-xl text-gray-600">{finalSubtitle}</p>
+            <p className="text-xl text-gray-600">
+              {typeof finalSubtitle === 'string'
+                ? finalSubtitle
+                : finalSubtitle?.subtitle || finalSubtitle?.title || 'Subtitle'}
+            </p>
           )}
         </header>
 
@@ -103,9 +107,15 @@ const IndustryStats = (props) => {
                 {stat.value}
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                {stat.label}
+                {typeof stat.label === 'string'
+                  ? stat.label
+                  : stat.label?.name || stat.label?.title || 'Stat Label'}
               </h3>
-              <p className="text-gray-600">{stat.description}</p>
+              <p className="text-gray-600">
+                {typeof stat.description === 'string'
+                  ? stat.description
+                  : stat.description?.description || stat.description?.desc || 'Stat Description'}
+              </p>
             </motion.article>
           ))}
         </div>

@@ -3,6 +3,37 @@ import SEO from "../../SEO";
 import ImplementationStepper from "./ImplementationStepper";
 
 const ImplementationSection = ({ data }) => {
+  // Ensure data is safe and provide fallback
+  const safeData = data || {};
+  const implementationProcess = safeData.implementationProcess || {};
+  const steps = implementationProcess.steps || [];
+  
+  // Default steps if none provided
+  const defaultSteps = [
+    {
+      title: "Discovery & Assessment",
+      desc: "Analyze current retail processes and requirements",
+      benefits: ["Current state assessment", "Gap analysis", "Requirements documentation"]
+    },
+    {
+      title: "Solution Design",
+      desc: "Design NetSuite configuration for retail workflows",
+      benefits: ["System architecture", "Process flows", "Integration design"]
+    },
+    {
+      title: "Implementation",
+      desc: "Deploy and configure NetSuite for your business",
+      benefits: ["System setup", "Data migration", "User training"]
+    },
+    {
+      title: "Go-Live & Support",
+      desc: "Launch and provide ongoing support",
+      benefits: ["Go-live support", "User adoption", "Ongoing optimization"]
+    }
+  ];
+  
+  const finalSteps = steps.length > 0 ? steps : defaultSteps;
+
   return (
     <section className="py-20 bg-white light-section">
       <SEO
@@ -28,7 +59,7 @@ const ImplementationSection = ({ data }) => {
           Implementation Process
         </h3>
         {/* Implementation Process Stepper component */}
-        <ImplementationStepper steps={data.implementationProcess.steps} />
+        <ImplementationStepper steps={finalSteps} />
       </div>
     </section>
   );
