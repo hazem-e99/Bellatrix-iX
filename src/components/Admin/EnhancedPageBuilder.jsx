@@ -41,6 +41,7 @@ const EnhancedPageBuilder = () => {
   const [loading, setLoading] = useState(false);
   const [isPublishing, setIsPublishing] = useState(false);
   const [toast, setToast] = useState(null);
+  const [useNewInputSystem, setUseNewInputSystem] = useState(true); // Toggle for new input system
 
   // Ref to prevent multiple simultaneous API calls
   const isSavingRef = useRef(false);
@@ -486,6 +487,13 @@ const EnhancedPageBuilder = () => {
   const [showSectionEditor, setShowSectionEditor] = useState(false);
   const [showPagePreview, setShowPagePreview] = useState(false);
   const [componentSchemas, setComponentSchemas] = useState({});
+  
+  // New Input System State
+  const [showNewInputModal, setShowNewInputModal] = useState(false);
+  const [currentComponent, setCurrentComponent] = useState(null);
+  const [useNewInputSystemState, setUseNewInputSystemState] = useState(true);
+  
+
 
   const steps = [
     { id: 1, title: "Category", description: "Choose a category for the page" },
@@ -1298,291 +1306,955 @@ const EnhancedPageBuilder = () => {
     }
   };
 
-  const getDefaultDataForComponent = (componentType) => {
-    const defaultData = {
-      // Hero Sections
-      HeroSection: {
-        title: "Welcome to Our Services",
-        subtitle: "Professional solutions for your business",
-        description: "Transform your business with our expert services",
-        ctaButton: {
-          text: "Get Started",
-          link: "/contact",
-          variant: validateVariant("primary"),
-        },
-        backgroundImage: "/images/HeroSection.png",
-      },
-
-      PayrollHeroSection: {
-        title: "Automated Payroll Solutions",
-        subtitle: "Simplify payroll processing with our advanced system",
-        description:
-          "Reduce errors and save time with automated payroll management",
-        ctaButton: {
-          text: "Get Started",
-          link: "/payroll",
-          variant: validateVariant("primary"),
-        },
-        backgroundImage: "/images/payrollHeroSection.jpg",
-      },
-
-      HRHeroSection: {
-        titleParts: ["HR Management", "Made Simple"],
-        description:
-          "Streamline your human resources with our comprehensive HR solutions",
-        ctaButton: {
-          text: "Learn More",
-          link: "/hr",
-          variant: validateVariant("primary"),
-        },
-        backgroundVideo: "/Videos/hrVideo.mp4",
-      },
-
-      ImplementationHeroSection: {
-        title: "Implementation Services",
-        subtitle: "Seamless deployments by experts",
-        description: "We plan, configure, and launch with zero downtime",
-        backgroundImage: "/images/impleHeroSection.png",
-        ctaButton: {
-          text: "Talk to an expert",
-          link: "/contact",
-          variant: "primary", // Make sure this is a string, not validateVariant result
-          icon: "M13 7l5 5m0 0l-5 5m5-5H6",
-        },
-      },
-
-      TrainingHeroSection: {
-        heroContent: {
-          title: "Professional Training Programs",
-          description:
-            "Empower your team with comprehensive training solutions designed to enhance skills and drive success",
-        },
-        backgroundVideo: "/trainingHeroSectionTwo.mp4",
-        // ADD: CTA button data
-        ctaButton: {
-          text: "Start Learning Today",
-          link: "/training",
-          variant: "primary",
-        },
-      },
-
-      IntegrationHeroSection: {
-        title: "Integration Services",
-        subtitle: "Connect your ecosystem",
-        description: "APIs, middleware, and data pipelines",
-      },
-
-      CustomizationHeroSection: {
-        title: "Customization Services",
-        subtitle: "Tailor the system to your business",
-        description: "Workflows, scripts, and UI personalization",
-      },
-
-      ManufacturingHeroSection: {
-        title: "Manufacturing Solutions",
-        subtitle: "Streamline your manufacturing operations",
-        description:
-          "Comprehensive NetSuite solutions for manufacturing businesses",
-        backgroundImage: "/images/manufacturing-hero.jpg",
-        backgroundVideo: "",
-        ctaButton: {
-          text: "Learn More",
-          link: "/manufacturing",
-          variant: validateVariant("primary"),
-        },
-      },
-
-      RetailHeroSection: {
-        title: "Retail Solutions",
-        subtitle: "Transform your retail business",
-        description: "Complete retail management solutions with NetSuite",
-        ctaButton: {
-          text: "Discover More",
-          link: "/retail",
-          variant: validateVariant("primary"),
-        },
-      },
-
+  // Generate component-specific default data from JSON files
+  const generateDefaultDataFromJSON = () => {
+    return {
+      // About Components (from about.json)
       AboutHeroSection: {
         title: "About Bellatrix",
         subtitle: "Your trusted partner in digital transformation",
-        description:
-          "We are a leading consultancy firm specializing in NetSuite implementations, business process optimization, and technology solutions that drive growth and efficiency.",
+        description: "We are a leading consultancy firm specializing in NetSuite implementations, business process optimization, and technology solutions that drive growth and efficiency.",
         backgroundVideo: "/Videos/about-hero.mp4",
         stats: [
           { value: "500+", label: "Projects Completed" },
           { value: "15+", label: "Years Experience" },
           { value: "98%", label: "Client Satisfaction" },
-          { value: "200+", label: "Happy Clients" },
-        ],
+          { value: "200+", label: "Happy Clients" }
+        ]
       },
-      // Payroll Sections
-      PayrollHowItWorksSection: {
-        title: "How Payroll Works",
-        subtitle: "Simple, automated payroll processing",
-        description:
-          "Our streamlined process ensures accurate and timely payroll management",
-        steps: [
+
+      AboutMissionSection: {
+        title: "Our Mission",
+        description: "To empower businesses with innovative technology solutions that transform operations, enhance productivity, and drive sustainable growth.",
+        vision: "To be the global leader in business transformation consulting, helping organizations achieve their full potential through technology excellence."
+      },
+
+      AboutJourneySection: {
+        title: "Our Journey",
+        description: "From humble beginnings to becoming a trusted global partner",
+        timeline: [
+          { year: "2008", title: "Company Founded", description: "Bellatrix was established with a vision to transform businesses through technology." },
+          { year: "2012", title: "First 100 Clients", description: "Reached our first major milestone of serving 100 satisfied clients." },
+          { year: "2016", title: "NetSuite Gold Partner", description: "Achieved NetSuite Gold Partner status, recognizing our expertise." },
+          { year: "2020", title: "Global Expansion", description: "Expanded operations to serve clients across multiple continents." },
+          { year: "2023", title: "500+ Projects", description: "Successfully completed over 500 implementation projects." },
+          { year: "2024", title: "AI Integration", description: "Pioneered AI-powered solutions for enhanced business intelligence." }
+        ]
+      },
+
+      AboutTeamSection: {
+        title: "Meet Our Team",
+        description: "Experienced professionals dedicated to your success",
+        members: [
           {
-            title: "Data Collection",
-            description: "Gather employee hours and salary data",
-            icon: "📊",
+            name: "Sarah Johnson",
+            role: "Chief Executive Officer",
+            image: "/images/ourteam/1.jpg",
+            bio: "Visionary leader with 20+ years in enterprise software solutions.",
+            expertise: ["Strategic Planning", "Business Development", "Leadership"]
           },
           {
-            title: "Processing",
-            description: "Calculate wages, taxes, and deductions",
-            icon: "⚙️",
+            name: "Michael Chen",
+            role: "Chief Technology Officer",
+            image: "/images/ourteam/2.jpg",
+            bio: "Technology expert specializing in NetSuite implementations and cloud solutions.",
+            expertise: ["NetSuite Development", "Cloud Architecture", "System Integration"]
           },
           {
-            title: "Approval",
-            description: "Review and approve payroll",
-            icon: "✅",
+            name: "Emily Rodriguez",
+            role: "Head of Operations",
+            image: "/images/ourteam/3.jpg",
+            bio: "Operations specialist ensuring seamless project delivery and client success.",
+            expertise: ["Project Management", "Process Optimization", "Quality Assurance"]
+          }
+        ]
+      },
+
+      AboutValuesSection: {
+        title: "Our Values",
+        description: "The principles that guide everything we do",
+        items: [
+          {
+            title: "Innovation",
+            description: "We embrace cutting-edge technologies and creative thinking to solve complex business challenges.",
+            color: "from-blue-500 to-cyan-500",
+            icon: "🚀"
           },
           {
-            title: "Payment",
-            description: "Distribute payments to employees",
+            title: "Excellence",
+            description: "We deliver exceptional quality in every project, exceeding client expectations consistently.",
+            color: "from-purple-500 to-pink-500",
+            icon: "⭐"
+          },
+          {
+            title: "Integrity",
+            description: "We act with honesty and transparency, building trust through ethical business practices.",
+            color: "from-green-500 to-teal-500",
+            icon: "🤝"
+          }
+        ]
+      },
+
+      AboutDifferentiatorsSection: {
+        title: "What Makes Us Different",
+        description: "Key factors that set us apart from the competition",
+        items: [
+          {
+            title: "Industry Expertise",
+            description: "Deep understanding of various industries and their unique challenges.",
+            stats: "15+ Industries",
+            icon: "🏭"
+          },
+          {
+            title: "Proven Methodology",
+            description: "Time-tested implementation methodology ensuring project success.",
+            stats: "98% Success Rate",
+            icon: "📊"
+          },
+          {
+            title: "Ongoing Support",
+            description: "24/7 support and maintenance services for continuous optimization.",
+            stats: "24/7 Support",
+            icon: "🛠️"
+          }
+        ]
+      },
+
+      // HR Components (from hr.json)
+      HRHeroSection: {
+        title: "HR, Payroll & People Management",
+        subtitle: "Automate HR, empower employees, and stay compliant—on one secure platform designed for the future of work.",
+        bgVideo: "/Videos/hrVideo.mp4",
+        bgColor: "bg-gradient-to-br from-[#191970] via-black to-blue-700"
+      },
+
+      HRFeaturesSection: {
+        title: "Why Choose Our HR Solution?",
+        description: "Discover the key advantages that make our HR platform the smart choice for modern businesses of all sizes and industries.",
+        items: [
+          {
+            icon: "💸",
+            title: "Payroll Automation",
+            desc: "Automate payroll processing, tax calculations, and compliance with built-in error checking and real-time updates."
+          },
+          {
+            icon: "📂",
+            title: "Centralized Employee Data",
+            desc: "All employee records, contracts, documents, and history in one secure, searchable cloud-based platform."
+          },
+          {
+            icon: "🚀",
+            title: "Digital Onboarding",
+            desc: "Digitize onboarding with automated workflows, e-signatures, task assignments, and welcome packages."
+          }
+        ]
+      },
+
+      HRModulesSection: {
+        title: "Product Modules",
+        description: "Our platform is built from modular components to cover every aspect of HR, payroll, and compliance.",
+        modules: [
+          {
+            icon: "👥",
+            title: "Employee Management",
+            desc: "Complete employee lifecycle management from hiring to offboarding with customizable workflows."
+          },
+          {
+            icon: "⏱️",
+            title: "Time & Attendance", 
+            desc: "Automated time tracking, shift planning, overtime management, and absence tracking."
+          },
+          {
             icon: "💰",
-          },
-        ],
+            title: "Payroll & Compensation",
+            desc: "End-to-end payroll processing, tax filing, benefits administration, and compensation planning."
+          }
+        ]
       },
 
-      PayrollWorkflowSection: {
-        title: "Payroll Workflow",
-        subtitle: "Automated workflow management",
-        description: "Streamlined processes for efficient payroll management",
-        workflow: [
+      HRPricingSection: {
+        title: "HR Pricing Plans",
+        description: "Choose the perfect plan for your organization's HR needs.",
+        pricing: [
           {
-            step: "Input",
-            description: "Employee data entry",
-            duration: "5 min",
+            name: "Essential",
+            description: "Perfect for small teams getting started with HR automation",
+            price: "$2,500",
+            priceNote: "one-time implementation",
+            features: [
+              "Core HR modules setup",
+              "Employee data migration",
+              "Basic payroll configuration",
+              "User training for up to 5 administrators"
+            ],
+            ctaText: "Start with Essential",
+            isPopular: false
           },
           {
-            step: "Calculate",
-            description: "Automatic calculations",
-            duration: "2 min",
-          },
-          {
-            step: "Review",
-            description: "Manager approval",
-            duration: "10 min",
-          },
-          {
-            step: "Pay",
-            description: "Payment processing",
-            duration: "1 min",
-          },
-        ],
+            name: "Professional",
+            description: "Ideal for growing companies with complex HR needs", 
+            price: "$5,000",
+            priceNote: "one-time implementation",
+            isPopular: true,
+            features: [
+              "All Essential features",
+              "Advanced reporting setup",
+              "Custom workflow configuration",
+              "Integration with 3rd party tools"
+            ],
+            ctaText: "Choose Professional"
+          }
+        ]
       },
 
-      PayrollStepperSection: {
-        title: "Payroll Process Steps",
-        steps: [
-          {
-            title: "Setup",
-            description: "Configure payroll settings",
-            completed: true,
-          },
-          {
-            title: "Input",
-            description: "Enter employee data",
-            completed: true,
-          },
-          {
-            title: "Process",
-            description: "Calculate payroll",
-            completed: false,
-          },
-          {
-            title: "Pay",
-            description: "Distribute payments",
-            completed: false,
-          },
-        ],
+      // Payroll Components (from payroll.json)
+      PayrollHeroSection: {
+        title: "Transform Your Payroll Process",
+        subtitle: "Streamline operations with our intelligent, automated payroll system"
       },
 
       PayrollPainPointsSection: {
-        title: "Common Payroll Pain Points",
-        subtitle: "Problems we solve",
-        painPoints: [
-          {
-            title: "Manual Calculations",
-            description: "Time-consuming and error-prone manual processes",
-            impact: "High",
-          },
-          {
-            title: "Compliance Issues",
-            description: "Difficulty staying compliant with regulations",
-            impact: "High",
-          },
-          {
-            title: "Late Payments",
-            description: "Delays in processing payroll",
-            impact: "Medium",
-          },
-        ],
+        title: "The Payroll Struggles We Eliminate",
+        description: "Our system addresses the most common payroll challenges faced by consultancy firms:",
+        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+        items: [
+          { text: "Delayed salary processing and errors", icon: "time" },
+          { text: "Manual tax calculations and compliance risks", icon: "check" },
+          { text: "Lack of visibility and transparency for employees", icon: "user" },
+          { text: "Difficulty scaling payroll operations across geographies", icon: "globe" }
+        ]
       },
 
-      PayrollFAQSection: {
-        title: "Payroll FAQ",
-        subtitle: "Frequently asked questions",
-        faqs: [
+      PayrollWorkflowSection: {
+        title: "Payroll System Built for All Industries",
+        description: "Streamline your entire payroll lifecycle — from onboarding to salary disbursement — with a secure, intuitive platform.",
+        subtitle: "Core Workflow",
+        steps: [
           {
-            question: "How often can I run payroll?",
-            answer:
-              "You can run payroll as often as needed - weekly, bi-weekly, or monthly.",
+            title: "Employee data import",
+            desc: "Easily onboard and manage employee records in one place.",
+            details: "Import employee data from spreadsheets or integrated HR systems. Supports bulk uploads and data validation with real-time error checking.",
+            benefits: [
+              "Bulk data import from Excel/CSV",
+              "Real-time validation and error checking",
+              "Integration with existing HR systems",
+              "Automated employee record creation"
+            ]
           },
           {
-            question: "Can I handle multiple pay rates?",
-            answer:
-              "Yes, our system supports multiple pay rates and overtime calculations.",
-          },
-          {
-            question: "Is tax calculation automatic?",
-            answer:
-              "Yes, all federal, state, and local taxes are calculated automatically.",
-          },
-        ],
+            title: "Time & attendance sync",
+            desc: "Integrate timesheets and attendance for accurate payroll.",
+            details: "Syncs with your time tracking tools to ensure accurate hours and leave data for every employee.",
+            benefits: [
+              "Automatic timesheet integration",
+              "Leave balance calculations",
+              "Overtime and holiday tracking",
+              "Multi-location support"
+            ]
+          }
+        ]
       },
 
-      PayrollCTASection: {
-        title: "Ready to Simplify Your Payroll?",
-        subtitle: "Get started with automated payroll today",
-        description: "Join thousands of businesses using our payroll solutions",
+      PayrollFeaturesSection: {
+        title: "Key Features for Modern Consultancies",
+        items: [
+          {
+            title: "Automated Calculations",
+            description: "Smart payroll processing with tax compliance",
+            icon: "lightning"
+          },
+          {
+            title: "Multi-Currency Support",
+            description: "Handle global payroll across different currencies",
+            icon: "globe"
+          }
+        ]
+      },
+
+      // Implementation Components (from Implementation.json)
+      ImplementationHeroSection: {
+        backgroundVideo: "/Videos/HomeHeroSectionV.mp4",
+        titleParts: ["Where", "Vision", "Meets", "Reality"],
+        description: "We don't just implement solutions—we craft digital experiences that transform the way you do business",
         ctaButton: {
-          text: "Start Free Trial",
-          link: "/payroll/trial",
-          variant: validateVariant("primary"),
-        },
+          text: "Start Implementation",
+          icon: "M13 7l5 5m0 0l-5 5m5-5H6"
+        }
       },
 
-      // HR Sections
-      HRModulesSection: {
-        title: "HR Modules",
-        subtitle: "Comprehensive HR management tools",
-        description: "Everything you need to manage your workforce effectively",
+      ImplementationProcessSection: {
+        title: "Our Implementation Process",
+        subtitle: "A proven methodology for seamless business transformation",
+        image: "/Videos/implementation/implementProcess.jpg",
+        steps: [
+          {
+            number: 1,
+            title: "Analysis & Planning",
+            description: "System analysis and strategic roadmap creation",
+            icon: "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+          },
+          {
+            number: 2,
+            title: "Design & Development",
+            description: "Custom solution design and development",
+            icon: "M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+          },
+          {
+            number: 3,
+            title: "Testing & Integration",
+            description: "Quality assurance and system integration",
+            icon: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+          },
+          {
+            number: 4,
+            title: "Launch & Support",
+            description: "Deployment and ongoing support",
+            icon: "M13 10V3L4 14h7v7l9-11h-7z"
+          }
+        ],
+        ctaButton: "Start Your Journey"
+      },
+
+      ImplementationWhyChooseSection: {
+        title: "Why Choose Bellatrix for Implementation?",
+        subtitle: "We bring years of expertise, proven methodologies, and cutting-edge solutions to ensure your implementation success",
+        image: "/Videos/implementation/whyChoese.jpg",
         features: [
           {
-            title: "Employee Management",
-            description: "Complete employee lifecycle management",
-            icon: "👥",
+            number: "01",
+            title: "Proven Expertise",
+            description: "500+ successful implementations across industries"
           },
           {
-            title: "Time Tracking",
-            description: "Accurate time and attendance tracking",
-            icon: "⏰",
+            number: "02",
+            title: "Rapid Deployment",
+            description: "50% faster implementation with proven tools"
           },
           {
-            title: "Performance Reviews",
-            description: "Streamlined performance evaluation process",
-            icon: "📊",
-          },
-          {
-            title: "Benefits Administration",
-            description: "Manage employee benefits and enrollment",
-            icon: "🎁",
-          },
-        ],
+            number: "03",
+            title: "24/7 Support",
+            description: "Round-the-clock technical support & monitoring"
+          }
+        ]
       },
+
+      ImplementationPricingSection: {
+        title: "Implementation Pricing",
+        subtitle: "Choose the perfect implementation plan that fits your business needs and budget",
+        plans: [
+          {
+            name: "Basic",
+            description: "Perfect for small businesses",
+            price: "$2,500",
+            priceNote: "starting from",
+            features: [
+              "Standard NetSuite setup",
+              "Basic data migration",
+              "5 user accounts included",
+              "2-week timeline",
+              "Email support"
+            ],
+            ctaText: "Get Started"
+          },
+          {
+            name: "Professional",
+            description: "Ideal for growing companies",
+            price: "$5,000",
+            priceNote: "starting from",
+            isPopular: true,
+            features: [
+              "Advanced configuration",
+              "Complete data migration",
+              "Up to 25 users",
+              "Custom integrations",
+              "Training sessions"
+            ],
+            ctaText: "Get Started"
+          },
+          {
+            name: "Enterprise",
+            description: "For large organizations",
+            price: "Custom",
+            priceNote: "pricing",
+            features: [
+              "Full customization",
+              "Unlimited users",
+              "Advanced integrations",
+              "Dedicated support",
+              "On-site training"
+            ],
+            ctaText: "Contact Sales"
+          }
+        ]
+      },
+
+      // Manufacturing Components (from manufacturing-data.json)
+      ManufacturingHeroSection: {
+        title: "Manufacturing Excellence",
+        subtitle: "Powered by NetSuite",
+        description: "Transform your manufacturing operations with integrated ERP solutions that streamline production, optimize inventory, and ensure quality compliance across your entire value chain.",
+        backgroundImage: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+        ctaText: "Schedule Manufacturing Demo"
+      },
+
+      ManufacturingStatsSection: {
+        items: [
+          { value: "500+", label: "Manufacturing Clients", description: "Successful implementations" },
+          { value: "40%", label: "Efficiency Gain", description: "Average improvement" },
+          { value: "35%", label: "Cost Reduction", description: "In operational costs" },
+          { value: "98%", label: "Client Satisfaction", description: "Success rate" }
+        ]
+      },
+
+      ManufacturingChallengesSection: {
+        title: "Manufacturing Challenges",
+        description: "Modern manufacturing faces complex challenges that require integrated solutions to optimize operations and maintain quality standards.",
+        items: [
+          {
+            title: "Complex Production Planning",
+            description: "Managing multi-level BOMs, work orders, and production schedules across multiple facilities",
+            icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2",
+            impact: "30% production delays"
+          },
+          {
+            title: "Inventory Management Complexity",
+            description: "Tracking raw materials, WIP, and finished goods across multiple locations with real-time visibility",
+            icon: "M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4",
+            impact: "25% excess inventory"
+          }
+        ]
+      },
+
+      ManufacturingSolutionsSection: {
+        title: "NetSuite Solutions",
+        description: "Comprehensive manufacturing solutions that streamline your operations from production planning to quality control.",
+        items: [
+          {
+            title: "Advanced Manufacturing",
+            description: "Complete production planning with work orders, routing, and capacity planning",
+            features: [
+              "Multi-level BOMs",
+              "Work order management",
+              "Capacity planning",
+              "Production reporting"
+            ],
+            benefits: "40% improvement in production efficiency"
+          },
+          {
+            title: "Inventory & Warehouse Management",
+            description: "Real-time inventory visibility across all locations",
+            features: [
+              "Multi-location inventory",
+              "Serial/lot tracking",
+              "Cycle counting",
+              "Warehouse management"
+            ],
+            benefits: "35% reduction in inventory costs"
+          }
+        ]
+      },
+
+      // Retail Components (from retail-data.json)
+      RetailHeroSection: {
+        title: "Retail Excellence",
+        description: "Transform your retail operations with integrated commerce solutions that unify online, mobile, and in-store experiences while optimizing inventory and enhancing customer satisfaction.",
+        ctaText: "Talk to an Expert"
+      },
+
+      RetailStatsSection: {
+        items: [
+          { value: "300+", label: "Retail Clients", description: "Successful implementations" },
+          { value: "50%", label: "Sales Growth", description: "Average improvement" },
+          { value: "40%", label: "Cost Reduction", description: "In operational costs" },
+          { value: "99%", label: "Uptime", description: "System availability" }
+        ]
+      },
+
+      RetailChallengesSection: {
+        title: "Retail Challenges",
+        description: "Modern retail faces complex challenges that require integrated solutions to deliver exceptional customer experiences and maintain profitability.",
+        items: [
+          {
+            title: "Omnichannel Inventory Management",
+            description: "Managing inventory across multiple sales channels while maintaining real-time visibility",
+            icon: "M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4",
+            impact: "35% inventory discrepancies"
+          },
+          {
+            title: "Customer Experience Consistency", 
+            description: "Delivering consistent customer experience across online, mobile, and physical store touchpoints",
+            icon: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z",
+            impact: "40% customer satisfaction issues"
+          }
+        ]
+      },
+
+      // Training Components (from training.json)
+      TrainingHeroSection: {
+        title: "Professional Training Programs",
+        description: "Empower your team with comprehensive training solutions designed to enhance skills and drive success"
+      },
+
+      TrainingProgramsSection: {
+        title: "Our Training Programs",
+        description: "Comprehensive training solutions designed to empower your team with the skills they need to excel",
+        image: "/images/traning.jpg",
+        Professional_Badge: "Certified Training",
+        programs: [
+          {
+            id: 1,
+            title: "NetSuite Fundamentals",
+            shortDescription: "Core concepts and navigation basics",
+            icon: "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+          },
+          {
+            id: 2,
+            title: "Advanced Modules",
+            shortDescription: "Financial management and reporting",
+            icon: "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+          }
+        ]
+      },
+
+      TrainingFeaturesSection: {
+        title: "Training Features",
+        description: "What makes our training programs exceptional",
+        features: [
+          {
+            id: 1,
+            title: "Expert Instructors",
+            shortDescription: "Certified professionals with years of experience",
+            icon: "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+          },
+          {
+            id: 2,
+            title: "Hands-on Learning",
+            shortDescription: "Practical exercises with real-world scenarios",
+            icon: "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+          }
+        ]
+      },
+
+      // Consulting Components (from netSuiteConsulting.json)
+      ConsultingHeroSection: {
+        title: "NetSuite Consulting",
+        description: "Strategic guidance and expert consulting to maximize your NetSuite investment and transform your business operations.",
+        ctaText: "Talk to an Expert",
+        ctaIcon: "M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+      },
+
+      ConsultingServicesSection: {
+        title: "Our Consulting Services",
+        description: "Comprehensive NetSuite consulting services designed to optimize your business processes and maximize your return on investment.",
+        image: "/images/ourProServices.png",
+        items: [
+          {
+            title: "NetSuite Implementation Strategy",
+            description: "Comprehensive planning and roadmap development for successful NetSuite deployment",
+            icon: "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z",
+            features: [
+              "Business process analysis and optimization",
+              "System architecture design",
+              "Implementation timeline and milestones"
+            ]
+          },
+          {
+            title: "Business Process Optimization",
+            description: "Streamline your operations with NetSuite's powerful automation capabilities",
+            icon: "M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z",
+            features: [
+              "Workflow automation design",
+              "Process standardization",
+              "Performance optimization"
+            ]
+          }
+        ]
+      },
+
+      // Integration Components (from integration-data.json)
+      IntegrationHeroSection: {
+        title: "NetSuite Integration Services",
+        subtitle: "Connect NetSuite with your existing systems for seamless data flow"
+      },
+
+      IntegrationTypesSection: {
+        title: "Integration Solutions",
+        items: [
+          {
+            title: "E-commerce Integration",
+            description: "Connect NetSuite with Shopify, Magento, WooCommerce, and other platforms",
+            icon: "🛒"
+          },
+          {
+            title: "CRM Integration",
+            description: "Integrate with Salesforce, HubSpot, and other CRM systems",
+            icon: "👥"
+          },
+          {
+            title: "Payment Gateway Integration",
+            description: "Connect with PayPal, Stripe, Square, and other payment processors",
+            icon: "💳"
+          },
+          {
+            title: "Warehouse Management",
+            description: "Integrate with WMS systems for inventory management",
+            icon: "📦"
+          }
+        ]
+      },
+
+      IntegrationBenefitsSection: {
+        title: "Integration Benefits",
+        items: [
+          {
+            title: "Automated Data Sync",
+            description: "Eliminate manual data entry with real-time synchronization"
+          },
+          {
+            title: "Improved Accuracy",
+            description: "Reduce errors caused by manual data transfer"
+          },
+          {
+            title: "Enhanced Productivity",
+            description: "Save time and resources with automated processes"
+          },
+          {
+            title: "Better Visibility",
+            description: "Get a complete view of your business across all systems"
+          }
+        ]
+      },
+
+      // Customization Components (from customization.json)
+      CustomizationHeroSection: {
+        title: "NetSuite Customization & Development",
+        subtitle: "Tailor NetSuite to fit your unique business processes and requirements"
+      },
+
+      CustomizationServicesSection: {
+        title: "Our Customization Services",
+        items: [
+          {
+            title: "Custom Workflows",
+            description: "Design automated workflows that match your business processes",
+            icon: "🔄"
+          },
+          {
+            title: "Custom Fields & Forms",
+            description: "Create custom fields and forms to capture your specific data",
+            icon: "📝"
+          },
+          {
+            title: "SuiteScript Development",
+            description: "Advanced scripting to extend NetSuite functionality",
+            icon: "💻"
+          },
+          {
+            title: "Custom Reports & Dashboards",
+            description: "Build tailored reports and dashboards for better insights",
+            icon: "📊"
+          }
+        ]
+      },
+
+      CustomizationProcessSection: {
+        title: "Our Development Process",
+        steps: [
+          {
+            step: "01",
+            title: "Requirements Analysis",
+            description: "We analyze your business requirements and current NetSuite setup"
+          },
+          {
+            step: "02", 
+            title: "Solution Design",
+            description: "Design custom solutions that align with your business goals"
+          },
+          {
+            step: "03",
+            title: "Development & Testing",
+            description: "Develop and thoroughly test all customizations"
+          },
+          {
+            step: "04",
+            title: "Deployment & Support",
+            description: "Deploy solutions and provide ongoing support"
+          }
+        ]
+      },
+
+      // Home Page Components (from homeData.json)
+      HomeHeroSection: {
+        slides: [
+          {
+            title: "Strategic Business Transformations",
+            subtitle: "Oracle NetSuite Consultancy",
+            description: "Streamline operations and drive growth with our comprehensive NetSuite solutions.",
+            video: "/Videos/HomeHeroSectionV.mp4",
+            cta: "Explore Services"
+          },
+          {
+            title: "Digital Optimization Experts",
+            subtitle: "Cloud Solutions Specialists", 
+            description: "Enhance productivity with our tailored implementation and consulting services.",
+            video: "/video2.mp4",
+            cta: "View Case Studies"
+          }
+        ],
+        stats: [
+          { value: "200+", label: "Projects" },
+          { value: "98%", label: "Satisfaction" },
+          { value: "15+", label: "Years" }
+        ]
+      },
+
+      HomeServicesSection: {
+        sectionHeader: {
+          title: "Our Professional Services",
+          subtitle: "Comprehensive solutions tailored to your business needs",
+          gradientText: "Professional Services"
+        },
+        services: [
+          {
+            title: "Strategic Consultation",
+            description: "Expert analysis to optimize your NetSuite roadmap with actionable insights",
+            icon: "LightbulbOutlined",
+            color: "#10B981",
+            details: [
+              "Business process analysis",
+              "ROI forecasting", 
+              "System architecture planning"
+            ],
+            stats: "92% client satisfaction rate",
+            link: "/netsuite-consulting"
+          },
+          {
+            title: "Implementation",
+            description: "End-to-end deployment with minimal disruption to operations",
+            icon: "BuildOutlined",
+            color: "#0EA5E9",
+            details: [
+              "Phased rollout planning",
+              "Data migration services",
+              "Configuration best practices"
+            ],
+            stats: "40% faster than industry average", 
+            link: "/Implementation"
+          }
+        ],
+        viewAllButton: {
+          text: "View All Services"
+        }
+      },
+
+      HomeTestimonialsSection: {
+        sectionHeader: {
+          title: "Trusted by Industry Leaders",
+          subtitle: "Don't just take our word for it—here's what our clients say.",
+          gradientText: "Trusted by Industry Leaders"
+        },
+        testimonials: [
+          {
+            name: "Ahmed Hassan",
+            position: "CEO",
+            company: "TechCorp Solutions",
+            quote: "Bellatrix-iX transformed our business operations completely. Highly recommended!",
+            rating: 5,
+            image: "/images/testimonials/client1.jpg"
+          }
+        ],
+        ctaButton: {
+          text: "Contact This Client's Success Manager"
+        }
+      },
+
+      HomeIndustriesSection: {
+        sectionHeader: {
+          chipLabel: "INDUSTRY SOLUTIONS",
+          title: "Discover Modern Industry Solutions",
+          highlightedWord: "Modern",
+          description: "Explore how our blue-powered platform transforms your sector with interactive, tailored solutions."
+        },
+        industries: [
+          {
+            title: "Manufacturing",
+            subtitle: "Production Excellence",
+            description: "Streamline manufacturing operations with integrated production planning, quality control, and supply chain management.",
+            image: "/images/3.jpg",
+            solutions: ["Production Planning", "Quality Control", "Inventory Management"],
+            link: "/industries/manufacturing"
+          },
+          {
+            title: "Retail & E-commerce",
+            subtitle: "Omnichannel Commerce", 
+            description: "Unify online and offline operations with comprehensive retail management and customer experience solutions.",
+            image: "/images/6.jpg",
+            solutions: ["POS Integration", "Inventory Sync", "Customer Analytics"],
+            link: "/industries/retail"
+          }
+        ]
+      },
+
+      // Generic Components
+      TestimonialsSection: {
+        title: "What Our Clients Say",
+        description: "Real feedback from satisfied customers",
+        testimonials: [
+          {
+            name: "Ahmed Hassan",
+            position: "CEO",
+            company: "TechCorp Solutions",
+            quote: "Bellatrix-iX transformed our business operations completely. Highly recommended!",
+            rating: 5,
+            image: "/images/testimonials/client1.jpg"
+          },
+          {
+            name: "Sarah Mohamed", 
+            position: "Operations Manager",
+            company: "Global Enterprises",
+            quote: "Outstanding service and support. The team exceeded our expectations.",
+            rating: 5,
+            image: "/images/testimonials/client2.jpg"
+          }
+        ]
+      },
+
+      FAQSection: {
+        title: "Frequently Asked Questions",
+        description: "Find answers to common questions about our services",
+        faqs: [
+          {
+            question: "What is included in the ERP implementation?",
+            answer: "Our ERP implementation includes system setup, data migration, user training, and ongoing support to ensure smooth operation."
+          },
+          {
+            question: "How long does the implementation process take?",
+            answer: "Implementation timeline varies based on company size and complexity, typically ranging from 3-12 months."
+          },
+          {
+            question: "Do you provide training for our team?",
+            answer: "Yes, we provide comprehensive training programs for all user levels, including administrators and end-users."
+          }
+        ]
+      },
+
+      CTASection: {
+        title: "Ready to Transform Your Business?",
+        subtitle: "Let's work together to achieve your goals",
+        description: "Get started with a free consultation today and discover how we can help you achieve your goals.",
+        ctaText: "Get Started",
+        ctaLink: "/contact",
+        features: [
+          {
+            title: "Free Assessment",
+            description: "Comprehensive evaluation of your current setup",
+            icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+          },
+          {
+            title: "Expert Consultation",
+            description: "Work with certified professionals",
+            icon: "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+          }
+        ]
+      },
+
+      PricingSection: {
+        title: "Choose Your Plan",
+        description: "Flexible pricing options for businesses of all sizes",
+        plans: [
+          {
+            name: "Basic",
+            price: "$99",
+            period: "per month",
+            description: "Perfect for small businesses",
+            features: ["Up to 10 Users", "Basic Modules", "Email Support"],
+            popular: false,
+            ctaText: "Get Started"
+          },
+          {
+            name: "Professional",
+            price: "$299",
+            period: "per month", 
+            description: "Ideal for growing companies",
+            features: [
+              "Up to 50 Users",
+              "Advanced Modules",
+              "Priority Support",
+              "Custom Reports"
+            ],
+            popular: true,
+            ctaText: "Choose Professional"
+          },
+          {
+            name: "Enterprise",
+            price: "Custom",
+            period: "contact us",
+            description: "For large organizations",
+            features: [
+              "Unlimited Users",
+              "All Modules",
+              "24/7 Support", 
+              "Custom Development"
+            ],
+            popular: false,
+            ctaText: "Contact Sales"
+          }
+        ]
+      },
+
+      ContactSection: {
+        title: "Get In Touch",
+        subtitle: "Ready to transform your business? Contact us today!",
+        description: "We'd love to hear from you. Send us a message and we'll respond as soon as possible.",
+        contactInfo: {
+          phone: "+20 123 456 7890",
+          email: "info@bellatrix-ix.com",
+          address: "Cairo, Egypt",
+          workingHours: "Sunday - Thursday: 9 AM - 6 PM"
+        },
+        socialLinks: [
+          { platform: "LinkedIn", url: "https://linkedin.com/company/bellatrix-ix", icon: "linkedin" },
+          { platform: "Facebook", url: "https://facebook.com/bellatrix-ix", icon: "facebook" },
+          { platform: "Twitter", url: "https://twitter.com/bellatrix_ix", icon: "twitter" }
+        ],
+        formFields: [
+          { name: "fullName", label: "Full Name", type: "text", required: true },
+          { name: "email", label: "Email Address", type: "email", required: true },
+          { name: "company", label: "Company Name", type: "text", required: false },
+          { name: "message", label: "Message", type: "textarea", required: true }
+        ]
+      },
+
+      FeaturesSection: {
+        title: "Why Choose Our Solutions",
+        subtitle: "Discover the advantages of our ERP platform", 
+        features: [
+          {
+            title: "Cloud-Based Architecture",
+            description: "Secure, scalable cloud infrastructure for optimal performance",
+            icon: "cloud",
+            benefits: ["99.9% Uptime", "Auto Scaling", "Global Access"]
+          },
+          {
+            title: "Advanced Analytics",
+            description: "Real-time insights and comprehensive reporting tools",
+            icon: "analytics", 
+            benefits: ["Real-time Dashboards", "Custom Reports", "Predictive Analytics"]
+          },
+          {
+            title: "Mobile Optimization",
+            description: "Full mobile compatibility for on-the-go management",
+            icon: "mobile",
+            benefits: ["Responsive Design", "Native Apps", "Offline Capability"]
+          }
+        ]
+      },
+
+
+
+
+
+      // Additional CTA and FAQ components can be mapped similarly...
       HRBenefitsSection: {
         title: "HR Benefits",
         subtitle: "Why choose our HR solutions",
@@ -1626,39 +2298,6 @@ const EnhancedPageBuilder = () => {
         ],
       },
 
-      HRPricingSection: {
-        title: "HR Pricing",
-        subtitle: "Choose your plan",
-        plans: [
-          {
-            name: "Starter",
-            price: "$29",
-            period: "per employee/month",
-            features: ["Basic HR", "Time tracking", "Email support"],
-            cta: "Get Started",
-          },
-          {
-            name: "Professional",
-            price: "$49",
-            period: "per employee/month",
-            features: ["Advanced HR", "Analytics", "Phone support"],
-            cta: "Get Started",
-            popular: true,
-          },
-          {
-            name: "Enterprise",
-            price: "Custom",
-            period: "pricing",
-            features: [
-              "Full features",
-              "Custom integration",
-              "Dedicated support",
-            ],
-            cta: "Contact Sales",
-          },
-        ],
-      },
-
       HRFAQSection: {
         title: "HR FAQ",
         subtitle: "Common questions about our HR solutions",
@@ -1692,38 +2331,7 @@ const EnhancedPageBuilder = () => {
         },
       },
 
-      // Implementation Sections
-      ImplementationProcessSection: {
-        title: "Implementation Process",
-        subtitle: "Our proven methodology",
-        description: "A structured approach to successful implementation",
-        phases: [
-          {
-            title: "Discovery",
-            description: "Understand your business requirements",
-            duration: "1-2 weeks",
-            deliverables: ["Requirements document", "Solution design"],
-          },
-          {
-            title: "Configuration",
-            description: "Set up and configure your system",
-            duration: "2-4 weeks",
-            deliverables: ["Configured system", "Test data"],
-          },
-          {
-            title: "Testing",
-            description: "Comprehensive testing and validation",
-            duration: "1-2 weeks",
-            deliverables: ["Test results", "Issue resolution"],
-          },
-          {
-            title: "Go-Live",
-            description: "Launch and support",
-            duration: "1 week",
-            deliverables: ["Live system", "User training"],
-          },
-        ],
-      },
+
 
       ImplementationWhyChooseSection: {
         title: "Why Choose Our Implementation",
@@ -2672,18 +3280,224 @@ const EnhancedPageBuilder = () => {
           variant: validateVariant("primary"),
         },
       },
-    };
-
-    return (
-      defaultData[componentType] || {
-        title: "Section Title",
-        description: "Section description",
-        content: "Section content",
-      }
-    );
+      };
   };
 
-  const saveComponentData = (updatedData) => {
+  const getDefaultDataForComponent = (componentType) => {
+    // Use the generated default data
+    const defaultData = generateDefaultDataFromJSON();
+    
+    // Get component-specific data
+    const componentData = defaultData[componentType];
+    
+    if (!componentData) {
+      console.warn(`No default data defined for component: ${componentType}. Available components:`, Object.keys(defaultData));
+      return {
+        title: "New Component Title",
+        description: "Component description - please configure this component",
+        content: "This component needs to be configured with proper data.",
+        _isPlaceholder: true
+      };
+    }
+    
+    return componentData;
+  };
+
+  // Helper function to set nested object values
+  const setNestedValue = (obj, path, value) => {
+    const keys = path.split('.');
+    const lastKey = keys.pop();
+    const target = keys.reduce((acc, key) => {
+      // Handle array indices
+      if (key.includes('[') && key.includes(']')) {
+        const [arrayKey, indexStr] = key.split('[');
+        const index = parseInt(indexStr.replace(']', ''));
+        if (!acc[arrayKey]) acc[arrayKey] = [];
+        if (!acc[arrayKey][index]) acc[arrayKey][index] = {};
+        return acc[arrayKey][index];
+      }
+      if (!acc[key]) acc[key] = {};
+      return acc[key];
+    }, obj);
+    
+    if (lastKey.includes('[') && lastKey.includes(']')) {
+      const [arrayKey, indexStr] = lastKey.split('[');
+      const index = parseInt(indexStr.replace(']', ''));
+      if (!target[arrayKey]) target[arrayKey] = [];
+      target[arrayKey][index] = value;
+    } else {
+      target[lastKey] = value;
+    }
+    
+    return obj;
+  };
+
+  // Dynamic Input Generator for component-specific data
+  const renderDynamicInputs = (data, prefix = "", level = 0, componentIndex = null) => {
+    if (!data || typeof data !== 'object') return null;
+
+    return Object.entries(data).map(([key, value]) => {
+      const fieldPath = prefix ? `${prefix}.${key}` : key;
+      const indentClass = level > 0 ? `ml-${level * 4}` : '';
+
+      if (Array.isArray(value)) {
+        return (
+          <div key={fieldPath} className={`mb-4 ${indentClass}`}>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              {key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1')} (Array)
+            </label>
+            <div className="border border-gray-200 rounded-lg p-3 bg-gray-50">
+              {value.map((item, index) => (
+                <div key={`${fieldPath}[${index}]`} className="mb-3 p-2 border border-gray-100 rounded bg-white">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-xs font-medium text-gray-600">Item {index + 1}</span>
+                    <button
+                      onClick={() => handleRemoveArrayItem(fieldPath, index, componentIndex)}
+                      className="text-red-500 hover:text-red-700 text-xs px-2 py-1 rounded hover:bg-red-50"
+                      type="button"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                  {renderDynamicInputs(item, `${fieldPath}[${index}]`, level + 1, componentIndex)}
+                </div>
+              ))}
+              <button
+                onClick={() => handleAddArrayItem(fieldPath, value[0] || {}, componentIndex)}
+                className="mt-2 px-3 py-1 bg-blue-500 text-white rounded text-sm hover:bg-blue-600"
+                type="button"
+              >
+                Add {key.slice(0, -1)} {/* Remove 's' from plural */}
+              </button>
+            </div>
+          </div>
+        );
+      }
+
+      if (typeof value === 'object' && value !== null) {
+        return (
+          <div key={fieldPath} className={`mb-4 ${indentClass}`}>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              {key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1')}
+            </label>
+            <div className="border border-gray-200 rounded-lg p-3 bg-gray-50">
+              {renderDynamicInputs(value, fieldPath, level + 1, componentIndex)}
+            </div>
+          </div>
+        );
+      }
+
+      // Handle primitive values (string, number, boolean)
+      return (
+        <div key={fieldPath} className={`mb-4 ${indentClass}`}>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            {key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1')}
+          </label>
+          {typeof value === 'boolean' ? (
+            <input
+              type="checkbox"
+              checked={value}
+              onChange={(e) => handleInputChange(fieldPath, e.target.checked, componentIndex)}
+              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+            />
+          ) : value && typeof value === 'string' && value.length > 100 ? (
+            <textarea
+              value={value}
+              onChange={(e) => handleInputChange(fieldPath, e.target.value, componentIndex)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              rows={3}
+            />
+          ) : (
+            <input
+              type={typeof value === 'number' ? 'number' : 'text'}
+              value={value || ''}
+              onChange={(e) => handleInputChange(fieldPath, typeof value === 'number' ? Number(e.target.value) : e.target.value, componentIndex)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder={`Enter ${key.replace(/([A-Z])/g, ' $1').toLowerCase()}`}
+            />
+          )}
+        </div>
+      );
+    });
+  };
+
+  // Handle input changes with real-time preview update
+  const handleInputChange = (fieldPath, value, componentIndex) => {
+    if (componentIndex !== null && pageData.components[componentIndex]) {
+      const component = pageData.components[componentIndex];
+      
+      // Parse current content data
+      let currentData;
+      try {
+        currentData = component.contentJson ? JSON.parse(component.contentJson) : getDefaultDataForComponent(component.componentType);
+      } catch (error) {
+        console.error("Error parsing component data:", error);
+        currentData = getDefaultDataForComponent(component.componentType);
+      }
+
+      // Create updated data with the new value
+      const updatedData = { ...currentData };
+      setNestedValue(updatedData, fieldPath, value);
+      
+      // Update the component with new data
+      handleComponentUpdate(componentIndex, "contentJson", JSON.stringify(updatedData, null, 2));
+    }
+  };
+
+  // Handle adding new array items
+  const handleAddArrayItem = (fieldPath, templateItem = {}, componentIndex) => {
+    if (componentIndex !== null && pageData.components[componentIndex]) {
+      const component = pageData.components[componentIndex];
+      
+      // Parse current content data
+      let currentData;
+      try {
+        currentData = component.contentJson ? JSON.parse(component.contentJson) : getDefaultDataForComponent(component.componentType);
+      } catch (error) {
+        currentData = getDefaultDataForComponent(component.componentType);
+      }
+
+      const updatedData = { ...currentData };
+      const keys = fieldPath.split('.');
+      const target = keys.reduce((acc, key) => {
+        if (!acc[key]) acc[key] = [];
+        return acc[key];
+      }, updatedData);
+      
+      if (Array.isArray(target)) {
+        target.push(typeof templateItem === 'object' ? { ...templateItem } : templateItem);
+      }
+      
+      // Update the component with new data
+      handleComponentUpdate(componentIndex, "contentJson", JSON.stringify(updatedData, null, 2));
+    }
+  };
+
+  // Handle removing array items
+  const handleRemoveArrayItem = (fieldPath, index, componentIndex) => {
+    if (componentIndex !== null && pageData.components[componentIndex]) {
+      const component = pageData.components[componentIndex];
+      
+      // Parse current content data
+      let currentData;
+      try {
+        currentData = component.contentJson ? JSON.parse(component.contentJson) : getDefaultDataForComponent(component.componentType);
+      } catch (error) {
+        currentData = getDefaultDataForComponent(component.componentType);
+      }
+
+      const updatedData = { ...currentData };
+      const keys = fieldPath.split('.');
+      const target = keys.reduce((acc, key) => acc[key], updatedData);
+      
+      if (Array.isArray(target)) {
+        target.splice(index, 1);
+      }
+      
+      // Update the component with new data
+      handleComponentUpdate(componentIndex, "contentJson", JSON.stringify(updatedData, null, 2));
+    }
+  };  const saveComponentData = (updatedData) => {
     const componentIndex = editingComponent.index;
     const updatedComponents = [...pageData.components];
     const currentComponent = updatedComponents[componentIndex];
@@ -2774,6 +3588,17 @@ const EnhancedPageBuilder = () => {
 
     setShowSectionEditor(false);
     setEditingComponent(null);
+  };
+
+  // Function to open new input modal
+  const openNewInputModal = (component, componentIndex) => {
+    console.log("🆕 [NEW MODAL] Opening new input modal for component:", component);
+    setCurrentComponent({
+      ...component,
+      type: component.componentType,
+      index: componentIndex
+    });
+    setShowNewInputModal(true);
   };
 
   // Function to handle delete confirmation
@@ -3047,6 +3872,12 @@ const EnhancedPageBuilder = () => {
             onDuplicateComponent={duplicateComponent}
             onMoveComponent={moveComponent}
             componentSchemas={componentSchemas}
+            showNewInputModal={showNewInputModal}
+            setShowNewInputModal={setShowNewInputModal}
+            currentComponent={currentComponent}
+            openNewInputModal={openNewInputModal}
+            useNewInputSystemState={useNewInputSystemState}
+            setUseNewInputSystemState={setUseNewInputSystemState}
           />
         );
       case 4:
@@ -3248,24 +4079,119 @@ const EnhancedPageBuilder = () => {
 
         {/* Section Data Editor Modal */}
         {showSectionEditor && editingComponent && (
-          <SectionDataEditor
+          <Modal
             isOpen={showSectionEditor}
             onClose={() => {
               setShowSectionEditor(false);
               setEditingComponent(null);
             }}
-            section={{
-              name: editingComponent.componentName,
-              componentId: editingComponent.componentType,
-              icon: editingComponent.componentInfo?.icon || "📄",
-              data:
-                editingComponent.content ||
-                (editingComponent.contentJson
-                  ? JSON.parse(editingComponent.contentJson)
-                  : {}),
-            }}
-            onSave={saveComponentData}
-          />
+            title={`Configure ${editingComponent.componentName}`}
+            maxWidth="4xl"
+          >
+            <div className="p-6">
+              {/* Toggle between old and new input system */}
+              <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-900">Input System</h3>
+                    <p className="text-sm text-gray-500">Choose between legacy and new component-specific input system</p>
+                  </div>
+                  <button
+                    onClick={() => setUseNewInputSystem(!useNewInputSystem)}
+                    className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                      useNewInputSystem ? 'bg-blue-600' : 'bg-gray-200'
+                    }`}
+                  >
+                    <span
+                      className={`inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                        useNewInputSystem ? 'translate-x-5' : 'translate-x-0'
+                      }`}
+                    />
+                  </button>
+                </div>
+                <div className="mt-2">
+                  <span className="text-xs text-gray-600">
+                    {useNewInputSystem ? 'Using New Component-Specific System' : 'Using Legacy System'}
+                  </span>
+                </div>
+              </div>
+
+              {/* Conditional rendering based on system choice */}
+              {useNewInputSystem ? (
+                <div className="space-y-6">
+                  <div className="border-b border-gray-200 pb-4">
+                    <h3 className="text-lg font-medium text-gray-900">
+                      {editingComponent.componentName} Configuration
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      Configure component-specific settings and data
+                    </p>
+                  </div>
+                  
+                  {/* Dynamic inputs based on component data structure */}
+                  <div className="max-h-96 overflow-y-auto">
+                    {(() => {
+                      try {
+                        const componentData = editingComponent.contentJson 
+                          ? JSON.parse(editingComponent.contentJson) 
+                          : getDefaultDataForComponent(editingComponent.componentType);
+                        
+                        const componentIndex = pageData.components.findIndex(
+                          comp => comp.id === editingComponent.id
+                        );
+                        
+                        return renderDynamicInputs(componentData, "", 0, componentIndex);
+                      } catch (error) {
+                        console.error('Error rendering dynamic inputs:', error);
+                        const defaultData = getDefaultDataForComponent(editingComponent.componentType);
+                        const componentIndex = pageData.components.findIndex(
+                          comp => comp.id === editingComponent.id
+                        );
+                        return renderDynamicInputs(defaultData, "", 0, componentIndex);
+                      }
+                    })()}
+                  </div>
+                </div>
+              ) : (
+                <SectionDataEditor
+                  isOpen={true}
+                  onClose={() => {}}
+                  section={{
+                    name: editingComponent.componentName,
+                    componentId: editingComponent.componentType,
+                    icon: editingComponent.componentInfo?.icon || "📄",
+                    data:
+                      editingComponent.content ||
+                      (editingComponent.contentJson
+                        ? JSON.parse(editingComponent.contentJson)
+                        : {}),
+                  }}
+                  onSave={saveComponentData}
+                />
+              )}
+            </div>
+            
+            <ModalFooter>
+              <Button
+                variant="secondary"
+                onClick={() => {
+                  setShowSectionEditor(false);
+                  setEditingComponent(null);
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="primary"
+                onClick={() => {
+                  setShowSectionEditor(false);
+                  setEditingComponent(null);
+                }}
+              >
+                Save Changes
+              </Button>
+            </ModalFooter>
+          </Modal>
         )}
 
         {/* Page Preview Modal */}
@@ -3458,10 +4384,71 @@ const SectionsStep = ({
   onRemoveComponent,
   onDuplicateComponent,
   componentSchemas = {},
+  // New Input System Props
+  showNewInputModal,
+  setShowNewInputModal,
+  currentComponent,
+  openNewInputModal,
+  useNewInputSystemState,
+  setUseNewInputSystemState,
 }) => {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
+  
   const [isEditMode, setIsEditMode] = useState(true);
+
+  // Simple renderDynamicInputs function for the modal
+  const renderDynamicInputs = (data, fieldPath = "", level = 0, componentIndex) => {
+    if (!data || typeof data !== 'object') {
+      return <div>No configuration available for this component</div>;
+    }
+
+    return (
+      <div className="space-y-4">
+        {Object.entries(data).map(([key, value]) => (
+          <div key={key} className="border border-gray-200 p-3 rounded">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              {key}
+            </label>
+            {typeof value === 'string' && (
+              <input
+                type="text"
+                value={value}
+                onChange={(e) => {
+                  // Update logic here
+                  console.log(`Updating ${key}:`, e.target.value);
+                }}
+                className="w-full p-2 border border-gray-300 rounded"
+              />
+            )}
+            {typeof value === 'boolean' && (
+              <input
+                type="checkbox"
+                checked={value}
+                onChange={(e) => {
+                  console.log(`Updating ${key}:`, e.target.checked);
+                }}
+                className="h-4 w-4 text-blue-600"
+              />
+            )}
+            {Array.isArray(value) && (
+              <div className="space-y-2">
+                <div className="text-sm text-gray-600">Array with {value.length} items</div>
+                <button className="px-2 py-1 bg-blue-500 text-white rounded text-sm">
+                  Add Item
+                </button>
+              </div>
+            )}
+            {typeof value === 'object' && value !== null && !Array.isArray(value) && (
+              <div className="pl-4 border-l-2 border-gray-200">
+                {renderDynamicInputs(value, `${fieldPath}.${key}`, level + 1, componentIndex)}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    );
+  };
 
   // Dynamic category generation based on available components
   const categories = React.useMemo(() => {
@@ -3880,6 +4867,14 @@ const SectionsStep = ({
                         </h4>
                       </div>
                       <div className="flex items-center space-x-2">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => openNewInputModal(component, index)}
+                          className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-purple-500/20 hover:border-purple-400 transition-all duration-200"
+                        >
+                          ⚙️ Configure
+                        </Button>
                         <Button
                           size="sm"
                           variant="outline"
@@ -4758,6 +5753,8 @@ const ReviewStep = ({ pageData }) => {
           </div>
         </CardContent>
       </Card>
+
+
     </div>
   );
 };
