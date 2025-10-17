@@ -2332,953 +2332,523 @@ const EnhancedPageBuilder = () => {
           variant: validateVariant("primary"),
         },
       },
+    };
+  };
 
-      ImplementationWhyChooseSection: {
-        title: "Why Choose Our Implementation",
-        subtitle: "What sets us apart",
-        points: [
-          {
-            title: "Certified Team",
-            description: "Experienced consultants and PMs",
-            icon: "🏆",
-          },
-          {
-            title: "Proven Methodology",
-            description: "Repeatable, predictable delivery",
-            icon: "📋",
-          },
-          {
-            title: "Post Go‑Live Support",
-            description: "We stay with you after launch",
-            icon: "🤝",
-          },
-          {
-            title: "Industry Expertise",
-            description: "Deep knowledge of your industry",
-            icon: "🎯",
-          },
-        ],
-      },
-
-      ImplementationPricingSection: {
-        title: "Implementation Pricing",
-        subtitle: "Transparent pricing for all project sizes",
-        plans: [
-          {
-            name: "Starter",
-            price: "$4,900",
-            duration: "2 weeks",
-            includes: ["Discovery", "Basic config", "Training"],
-            cta: "Get Quote",
-          },
-          {
-            name: "Pro",
-            price: "$12,900",
-            duration: "6 weeks",
-            includes: ["Workshops", "Advanced config", "Data migration"],
-            cta: "Get Quote",
-            popular: true,
-          },
-          {
-            name: "Enterprise",
-            price: "Custom",
-            duration: "8+ weeks",
-            includes: ["Full customization", "Integration", "Ongoing support"],
-            cta: "Contact Sales",
-          },
-        ],
-      },
-
-      ImplementationCTASection: {
-        title: "Ready for a Seamless NetSuite Implementation?",
-        subtitle:
-          "Transform your business operations with our expert NetSuite implementation services. Let's turn your vision into reality with proven methodologies and dedicated support.",
-        description: "Get started with your NetSuite implementation today",
-        ctaButton: {
-          text: "Get Started Today",
-          link: "/implementation/contact",
-          variant: "primary", // Will be converted by validateVariant
-        },
-        // Also include alternative structures
-        button: {
-          text: "Get Started Today",
-          link: "/implementation/contact",
-          variant: "primary",
-        },
-        buttonText: "Get Started Today",
-        buttonLink: "/implementation/contact",
-        // ADD: Default features/cards data
-        features: [
-          {
-            title: "Quick Response",
-            description: "Get a detailed proposal within 24 hours",
-            icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z",
-          },
-          {
-            title: "Proven Success",
-            description: "99.9% implementation success rate",
-            icon: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z",
-          },
-          {
-            title: "Expert Support",
-            description: "Dedicated team of certified professionals",
-            icon:
+  const getDefaultDataForComponent = (componentType) => {
+    // Use the generated default data
+    const defaultData = generateDefaultDataFromJSON();
               "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z",
           },
         ],
       },
+    };
+  };
 
-      // Service Grid
-      ServiceGrid: {
-        title: "Our Services",
-        subtitle: "Professional solutions for your business",
-        description: "Choose from our comprehensive range of services",
-        services: [
-          {
-            name: "Consulting",
-            description: "Expert business consulting services",
-            icon: "💼",
-            link: "/services/consulting",
-          },
-          {
-            name: "Implementation",
-            description: "Seamless system implementation",
-            icon: "⚙️",
-            link: "/services/implementation",
-          },
-          {
-            name: "Training",
-            description: "Comprehensive training programs",
-            icon: "🎓",
-            link: "/services/training",
-          },
-          {
-            name: "Support",
-            description: "Ongoing support and maintenance",
-            icon: "🛠️",
-            link: "/services/support",
-          },
-        ],
-      },
-      // Training Sections
-      TrainingProgramsSection: {
-        programsSection: {
-          title: "Our Training Programs",
-          description:
-            "Comprehensive training solutions designed to empower your team with the skills they need to excel",
-          image: "/images/traning.jpg",
-          Professional_Badge: "Certified Training",
-        },
-        trainingPrograms: {
-          programs: [
-            {
-              id: 1,
-              title: "NetSuite Fundamentals",
-              shortDescription: "Core concepts and navigation basics",
-              longDescription:
-                "This comprehensive fundamentals program introduces you to the core concepts of NetSuite, covering essential navigation, basic configuration, and understanding the platform's architecture.",
-              icon:
-                "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253",
-            },
-            {
-              id: 2,
-              title: "Advanced Modules",
-              shortDescription: "Financial management and reporting",
-              longDescription:
-                "Dive deep into NetSuite's advanced modules with focus on financial management, advanced reporting, and complex business processes.",
-              icon:
-                "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z",
-            },
-          ],
-        },
-      },
+  const getDefaultDataForComponent = (componentType) => {
+    // Use the generated default data
+    const defaultData = generateDefaultDataFromJSON();
 
-      TrainingWhyChooseSection: {
-        whyChooseSection: {
-          title: "Why Choose Our Training?",
-          description:
-            "We provide world-class training solutions that combine expertise, innovation, and practical application to ensure your team's success",
-          image: "/images/chooese.png",
-          Professional_Badge: "Excellence Training",
-        },
-        trainingFeatures: [
-          {
-            id: 1,
-            title: "Expert Instructors",
-            shortDescription:
-              "Certified professionals with years of experience",
-            detailedDescription:
-              "Our instructors are certified NetSuite professionals with extensive real-world experience across various industries.",
-            benefits: [
-              "Industry-proven expertise with 10+ years of NetSuite experience",
-              "Multiple NetSuite certifications (Administrator, Developer, Consultant)",
-              "Real-world implementation experience across 500+ projects",
+    // Get component-specific data
+    const componentData = defaultData[componentType];
+
+    if (!componentData) {
+      console.warn(
+        `No default data defined for component: ${componentType}. Available components:`,
+        Object.keys(defaultData)
+      );
+      return {
+        title: "Default Title",
+        description: "Default Description",
+      };
+    }
+
+    return componentData;
+  };
+
+  const setNestedValue = (obj, path, value) => {
+    const keys = path.split('.');
+    let current = obj;
+    
+    for (let i = 0; i < keys.length - 1; i++) {
+      const key = keys[i];
+      const arrayMatch = key.match(/(.+)\[(\d+)\]$/);
+      
+      if (arrayMatch) {
+        const [, arrayKey, index] = arrayMatch;
+        if (!current[arrayKey]) current[arrayKey] = [];
+        if (!current[arrayKey][index]) current[arrayKey][index] = {};
+        current = current[arrayKey][index];
+      } else {
+        if (!current[key]) current[key] = {};
+        current = current[key];
+      }
+    }
+    
+    const lastKey = keys[keys.length - 1];
+    const arrayMatch = lastKey.match(/(.+)\[(\d+)\]$/);
+    
+    if (arrayMatch) {
+      const [, arrayKey, index] = arrayMatch;
+      if (!current[arrayKey]) current[arrayKey] = [];
+      current[arrayKey][index] = value;
+    } else {
+      current[lastKey] = value;
+    }
+  };
+
+  const renderDynamicInputs = (data, basePath = '', componentIndex = null) => {
+    if (!data || typeof data !== 'object') return null;
+
+    return Object.entries(data).map(([key, value]) => {
+      const fieldPath = basePath ? `${basePath}.${key}` : key;
+
+      if (Array.isArray(value)) {
+        return (
+          <div key={fieldPath} className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              {key.charAt(0).toUpperCase() + key.slice(1)}
+            </label>
+            <div className="border border-gray-200 rounded-lg p-3 bg-gray-50">
+              {value.map((item, index) => (
+                <div
+                  key={`${fieldPath}[${index}]`}
+                  className="mb-3 p-2 border border-gray-100 rounded bg-white"
+                >
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-xs font-medium text-gray-600">
+                      Item {index + 1}
+                    </span>
+                    <button
+                      onClick={() =>
+                        handleRemoveArrayItem(fieldPath, index, componentIndex)
+                      }
+                      className="text-red-500 hover:text-red-700 text-xs px-2 py-1 rounded hover:bg-red-50"
+                      type="button"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                  {renderDynamicInputs(
+                    item,
+                    `${fieldPath}[${index}]`,
+                    componentIndex
+                  )}
+                </div>
+              ))}
+              <button
+                onClick={() => handleAddArrayItem(fieldPath, componentIndex)}
+                className="mt-2 px-3 py-1 bg-blue-500 text-white rounded text-sm hover:bg-blue-600"
+                type="button"
+              >
+                Add {key.slice(0, -1)} Item
+              </button>
+            </div>
+          </div>
+        );
+      }
+
+      if (typeof value === 'object' && value !== null) {
+        return (
+          <div key={fieldPath} className="mb-4 border border-gray-200 rounded-lg p-3 bg-gray-50">
+            <h4 className="text-sm font-medium text-gray-700 mb-3">
+              {key.charAt(0).toUpperCase() + key.slice(1)}
+            </h4>
+            {renderDynamicInputs(value, fieldPath, componentIndex)}
+          </div>
+        );
+      }
+
+      return (
+        <div key={fieldPath} className="mb-4">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            {key.charAt(0).toUpperCase() + key.slice(1)}
+          </label>
+          <input
+            type="text"
+            value={value || ''}
+            onChange={(e) =>
+              handleInputChange(fieldPath, e.target.value, componentIndex)
+            }
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder={`Enter ${key}`}
+          />
+        </div>
+      );
+    });
+  };
+
+  // Handle input changes with real-time preview update
+  const handleInputChange = (fieldPath, value, componentIndex) => {
+    if (componentIndex !== null && pageData.components[componentIndex]) {
+      const component = pageData.components[componentIndex];
+
+      // Parse current content data
+      let contentData = {};
+      try {
+        contentData = typeof component.content === 'string' 
+          ? JSON.parse(component.content) 
+          : component.content || {};
+      } catch (e) {
+        console.warn('Failed to parse component content:', e);
+        contentData = {};
+      }
+
+      // Update the nested value
+      setNestedValue(contentData, fieldPath, value);
+
+      // Update component in pageData
+      const updatedComponents = [...pageData.components];
+      updatedComponents[componentIndex] = {
+        ...component,
+        content: JSON.stringify(contentData)
+      };
+
+      // Update pageData
+      const updatedData = { ...pageData, components: updatedComponents };
+      setPageData(updatedData);
+
+      // Update preview in real-time
+      if (window.updatePreview) {
+        window.updatePreview(updatedData);
+      }
+    }
+  };
+
+  // Handle adding new array items
+            category: "E-commerce",
+            features: [
+              "Multi-store support",
+              "Advanced inventory",
+              "Customer segmentation",
             ],
-            icon:
-              "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253",
-          },
-          {
-            id: 2,
-            title: "Hands-on Learning",
-            shortDescription: "Practical exercises with real-world scenarios",
-            detailedDescription:
-              "Our training methodology emphasizes practical, hands-on learning through real-world scenarios and interactive exercises.",
-            benefits: [
-              "Live NetSuite sandbox environments for each student",
-              "Real business scenarios from actual client implementations",
-              "Step-by-step guided exercises with immediate feedback",
-            ],
-            icon:
-              "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z",
           },
         ],
       },
 
-      TrainingKeyModulesSection: {
-        keyModulesSection: {
-          title: "Key Training Modules",
-          description:
-            "Comprehensive curriculum designed to master NetSuite from foundation to advanced implementation",
-        },
-        keyModules: [
-          {
-            title: "System Architecture",
-            description:
-              "Core system structure, data flow, and integration patterns",
-            duration: "8 hours",
-            icon:
-              "M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10",
-          },
-          {
-            title: "Financial Management",
-            description:
-              "General ledger, budgeting, financial reporting, and analytics",
-            duration: "12 hours",
-            icon:
-              "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z",
-          },
-        ],
-      },
-
-      TrainingCTASection: {
-        title: "Ready to Start Your Training Journey?",
-        subtitle: "Transform your skills with our expert-led programs",
+      IntegrationCTASection: {
+        title: "Ready to Connect Your Systems?",
+        subtitle: "Streamline your business with seamless integrations",
         description:
-          "Join thousands of professionals who have enhanced their capabilities through our training programs",
+          "Get started with NetSuite integrations today and unlock the full potential of your business systems",
         ctaButton: {
-          text: "Enroll Now",
-          link: "/contact",
-          variant: validateVariant("primary"),
+          text: "Start Integration",
+          link: "/integration/contact",
+          variant: "primary",
         },
-        features: [
-          "Flexible scheduling",
-          "Expert instructors",
-          "Hands-on learning",
-          "Industry certification",
-        ],
-        backgroundImage: "/images/TrainingWhy.jpg",
-      },
-
-      TrainingPricingSection: {
-        title: "Training Program Pricing",
-        subtitle: "Choose the perfect training plan for your team",
-        description:
-          "Flexible pricing options to fit your learning needs and budget",
-        plans: [
-          {
-            name: "Individual",
-            price: "$299",
-            period: "per person",
-            description: "Perfect for individual learners",
-            features: [
-              "Access to all modules",
-              "Self-paced learning",
-              "Certificate of completion",
-              "Email support",
-            ],
-            cta: "Get Started",
-            popular: false,
-          },
-          {
-            name: "Team",
-            price: "$199",
-            period: "per person",
-            description: "Ideal for small teams (5-20 people)",
-            features: [
-              "Group discounts",
-              "Team progress tracking",
-              "Dedicated support",
-              "Custom scheduling",
-            ],
-            cta: "Get Started",
-            popular: true,
-          },
-          {
-            name: "Enterprise",
-            price: "Custom",
-            period: "pricing",
-            description: "For large organizations",
-            features: [
-              "Unlimited participants",
-              "Custom curriculum",
-              "On-site training",
-              "24/7 support",
-              "Dedicated account manager",
-            ],
-            cta: "Contact Sales",
-            popular: false,
-          },
-        ],
-      },
-
-      TrainingFAQSection: {
-        title: "Training Frequently Asked Questions",
-        subtitle: "Everything you need to know about our training programs",
-        description:
-          "Find answers to common questions about our training services",
-        faqs: [
-          {
-            question: "What is the duration of each training program?",
-            answer:
-              "Our training programs range from 1-5 days depending on the complexity and depth of the subject matter. Each program is designed to provide comprehensive coverage while respecting your time constraints.",
-          },
-          {
-            question: "Do you provide certificates upon completion?",
-            answer:
-              "Yes, we provide industry-recognized certificates upon successful completion of our training programs. These certificates demonstrate your proficiency in the covered topics.",
-          },
-          {
-            question: "Can training be customized for our specific needs?",
-            answer:
-              "Absolutely! We offer customized training programs tailored to your organization's specific requirements, industry, and skill levels. Our expert instructors can adapt content to match your business context.",
-          },
-          {
-            question: "What learning formats do you offer?",
-            answer:
-              "We offer multiple learning formats including in-person workshops, virtual live sessions, self-paced online modules, and hybrid approaches to accommodate different learning preferences and schedules.",
-          },
-        ],
-      },
-
-      TrainingTestimonialsSection: {
-        title: "What Our Participants Say",
-        subtitle: "Success stories from our training graduates",
-        description:
-          "Hear from professionals who have transformed their careers through our training programs",
-        testimonials: [
-          {
-            name: "Sarah Johnson",
-            position: "IT Manager",
-            company: "TechCorp Solutions",
-            content:
-              "The training program exceeded my expectations. The hands-on approach and real-world scenarios made learning both practical and engaging.",
-            rating: 5,
-            image: "/images/testimonials/sarah.jpg",
-          },
-          {
-            name: "Michael Chen",
-            position: "Senior Developer",
-            company: "InnovateTech",
-            content:
-              "The expert instructors and comprehensive curriculum helped me advance my skills significantly. Highly recommended for anyone looking to upskill.",
-            rating: 5,
-            image: "/images/testimonials/michael.jpg",
-          },
-        ],
-      },
-
-      // Integration Sections
-      IntegrationTypesSection: {
-        title: "Integration Types",
-        subtitle: "Multiple ways to connect",
-        description: "Choose the integration method that best fits your needs",
-        types: [
-          {
-            name: "REST APIs",
-            description: "Modern API-based integration",
-            icon: "🔗",
-          },
-          {
-            name: "iPaaS",
-            description: "Integration Platform as a Service",
-            icon: "☁️",
-          },
-          {
-            name: "File‑based",
-            description: "Batch file processing",
-            icon: "📁",
-          },
-          {
-            name: "Webhooks",
-            description: "Real-time event notifications",
-            icon: "🔔",
-          },
-        ],
-      },
-
-      IntegrationBenefitsSection: {
-        title: "Integration Benefits",
-        subtitle: "Why integrate with NetSuite",
-        description: "Unlock the full potential of your business systems",
         benefits: [
+          "Reduce manual data entry by 90%",
+          "Improve data accuracy significantly",
+          "Save time and resources",
+          "Better business visibility",
+          "Real-time synchronization",
+          "Automated workflows",
+        ],
+        features: [
           {
-            title: "Fewer Manual Tasks",
-            description: "Automate data entry and reduce errors",
-            icon: "⚡",
-          },
-          {
-            title: "Real‑time Data",
-            description: "Get instant updates across all systems",
+            title: "Real-time Sync",
+            description: "Instant data synchronization across all systems",
             icon: "🔄",
           },
           {
-            title: "Higher Accuracy",
-            description: "Eliminate data inconsistencies",
-            icon: "🎯",
+            title: "Custom Mapping",
+            description: "Map data fields according to your business needs",
+            icon: "🗺️",
           },
           {
-            title: "Better Visibility",
-            description: "Unified view of your business data",
-            icon: "👁️",
+            title: "Error Monitoring",
+            description: "Advanced error detection and reporting",
+            icon: "⚠️",
           },
         ],
       },
 
-      // Customization Sections
-      CustomizationServicesSection: {
-        title: "What We Customize",
-        subtitle: "Comprehensive customization services",
-        description: "Tailor NetSuite to match your unique business processes",
-        services: [
+      // Customization Components المفقودة
+      CustomizationCTASection: {
+        title: "Ready to Customize NetSuite?",
+        subtitle: "Transform NetSuite to match your unique business needs",
+        description:
+          "Get started with NetSuite customization today and unlock the full potential of the platform",
+        ctaButton: {
+          text: "Start Customization",
+          link: "/customization/contact",
+          variant: "primary",
+        },
+        features: [
           {
-            name: "Workflows",
-            description: "Automate approvals and processes",
-            icon: "⚙️",
-          },
-          {
-            name: "Scripts",
-            description: "Server and client logic",
+            title: "Custom Development",
+            description: "Tailored solutions for your business requirements",
             icon: "💻",
           },
           {
-            name: "UI",
-            description: "Forms, fields, and dashboards",
-            icon: "🎨",
-          },
-          {
-            name: "Reports",
-            description: "Custom reporting and analytics",
-            icon: "📊",
-          },
-        ],
-      },
-
-      CustomizationProcessSection: {
-        title: "Customization Process",
-        subtitle: "Our proven approach",
-        description: "A structured methodology for successful customization",
-        steps: [
-          {
-            title: "Requirements",
-            description: "Gather and analyze your needs",
-            duration: "1 week",
-            step: "01",
-          },
-          {
-            title: "Design",
-            description: "Create solution blueprint",
-            duration: "1 week",
-            step: "02",
-          },
-          {
-            title: "Development",
-            description: "Build and test customizations",
-            duration: "2-4 weeks",
-            step: "03",
-          },
-          {
-            title: "Deployment",
-            description: "Implement and train users",
-            duration: "1 week",
-            step: "04",
-          },
-        ],
-      },
-      // Manufacturing Sections
-      ManufacturingIndustryStatsSection: {
-        title: "Manufacturing Industry Stats",
-        subtitle: "The state of manufacturing today",
-        stats: [
-          {
-            label: "Digital Transformation",
-            value: "73%",
-            description:
-              "of manufacturers are investing in digital transformation",
-          },
-          {
-            label: "Efficiency Gains",
-            value: "25%",
-            description: "average efficiency improvement with ERP systems",
-          },
-          {
-            label: "Cost Reduction",
-            value: "30%",
-            description: "average cost reduction in operations",
-          },
-        ],
-      },
-
-      ManufacturingChallengesSection: {
-        title: "Manufacturing Challenges",
-        subtitle: "Common pain points we solve",
-        challenges: [
-          {
-            title: "Inventory Management",
-            description: "Complex inventory tracking across multiple locations",
-            impact: "High",
-          },
-          {
-            title: "Production Planning",
-            description: "Difficulty in planning and scheduling production",
-            impact: "High",
-          },
-          {
-            title: "Quality Control",
-            description: "Maintaining consistent quality standards",
-            impact: "Medium",
-          },
-          {
-            title: "Compliance",
-            description: "Meeting industry regulations and standards",
-            impact: "High",
-          },
-        ],
-      },
-
-      ManufacturingSolutionsSection: {
-        title: "Manufacturing Solutions",
-        subtitle: "Comprehensive NetSuite solutions",
-        description: "Tailored solutions for manufacturing businesses",
-        solutions: [
-          {
-            title: "Production Management",
-            description: "End-to-end production planning and execution",
-            features: ["Work orders", "Routing", "Capacity planning"],
-          },
-          {
-            title: "Inventory Control",
-            description: "Advanced inventory management capabilities",
-            features: ["Multi-location", "Serial tracking", "Cycle counting"],
-          },
-          {
-            title: "Quality Management",
-            description: "Built-in quality control processes",
-            features: ["Inspections", "Non-conformance", "Corrective actions"],
-          },
-        ],
-      },
-
-      ManufacturingCaseStudiesSection: {
-        title: "Manufacturing Case Studies",
-        subtitle: "Success stories from our clients",
-        caseStudies: [
-          {
-            company: "TechManufacturing Inc.",
-            industry: "Electronics",
-            challenge: "Complex multi-level BOM management",
-            solution: "Advanced manufacturing module implementation",
-            results: "40% reduction in production planning time",
-          },
-          {
-            company: "AutoParts Ltd.",
-            industry: "Automotive",
-            challenge: "Quality control across multiple plants",
-            solution: "Integrated quality management system",
-            results: "60% improvement in quality metrics",
-          },
-        ],
-      },
-
-      ManufacturingImplementationProcessSection: {
-        title: "Manufacturing Implementation",
-        subtitle: "Specialized implementation for manufacturers",
-        description: "Our manufacturing-specific implementation approach",
-        phases: [
-          {
-            title: "Manufacturing Assessment",
-            description: "Analyze current manufacturing processes",
-            duration: "2 weeks",
-          },
-          {
-            title: "System Configuration",
-            description: "Configure manufacturing modules",
-            duration: "4 weeks",
-          },
-          {
-            title: "Data Migration",
-            description: "Migrate manufacturing data",
-            duration: "2 weeks",
-          },
-          {
-            title: "Training & Go-Live",
-            description: "Train users and launch system",
-            duration: "2 weeks",
-          },
-        ],
-      },
-
-      ManufacturingCTASection: {
-        title: "Transform Your Manufacturing Operations",
-        subtitle: "Get started with NetSuite for manufacturing",
-        description: "Join leading manufacturers using NetSuite",
-        ctaButton: {
-          text: "Schedule Demo",
-          link: "/manufacturing/demo",
-          variant: validateVariant("primary"),
-        },
-      },
-
-      // Retail Sections
-      RetailIndustryStatsSection: {
-        title: "Retail Industry Stats",
-        subtitle: "The evolving retail landscape",
-        stats: [
-          {
-            label: "Omnichannel Growth",
-            value: "85%",
-            description:
-              "of retailers are investing in omnichannel capabilities",
-          },
-          {
-            label: "Customer Expectations",
-            value: "78%",
-            description: "expect seamless online and offline experiences",
-          },
-          {
-            label: "Inventory Accuracy",
-            value: "95%",
-            description: "accuracy needed for successful omnichannel retail",
-          },
-        ],
-      },
-
-      RetailChallengesSection: {
-        title: "Retail Challenges",
-        subtitle: "Modern retail pain points",
-        challenges: [
-          {
-            title: "Omnichannel Complexity",
-            description: "Managing multiple sales channels effectively",
-            impact: "High",
-          },
-          {
-            title: "Inventory Visibility",
-            description: "Real-time inventory across all channels",
-            impact: "High",
-          },
-          {
-            title: "Customer Experience",
-            description: "Delivering consistent customer experience",
-            impact: "High",
-          },
-          {
-            title: "Seasonal Demand",
-            description: "Managing fluctuating demand patterns",
-            impact: "Medium",
-          },
-        ],
-      },
-
-      RetailSolutionsSection: {
-        title: "Retail Solutions",
-        subtitle: "Comprehensive retail management",
-        description: "Complete solutions for modern retail businesses",
-        solutions: [
-          {
-            title: "Omnichannel Commerce",
-            description: "Unified commerce across all channels",
-            features: ["POS integration", "E-commerce", "Mobile commerce"],
-          },
-          {
-            title: "Inventory Management",
-            description: "Advanced inventory optimization",
-            features: [
-              "Real-time tracking",
-              "Demand forecasting",
-              "Automated reordering",
-            ],
-          },
-          {
-            title: "Customer Management",
-            description: "360-degree customer view",
-            features: [
-              "Customer profiles",
-              "Purchase history",
-              "Loyalty programs",
-            ],
-          },
-        ],
-      },
-
-      RetailFeaturesSection: {
-        title: "Retail Features",
-        subtitle: "Key capabilities for retail success",
-        features: [
-          {
-            title: "Point of Sale",
-            description: "Modern POS system with offline capability",
-            icon: "💳",
-          },
-          {
-            title: "E-commerce Integration",
-            description: "Seamless online and offline integration",
-            icon: "🛒",
-          },
-          {
-            title: "Inventory Optimization",
-            description: "AI-powered inventory management",
-            icon: "📦",
-          },
-          {
-            title: "Customer Analytics",
-            description: "Advanced customer insights and reporting",
-            icon: "📊",
-          },
-        ],
-      },
-
-      RetailCaseStudiesSection: {
-        title: "Retail Case Studies",
-        subtitle: "Success stories from retail clients",
-        caseStudies: [
-          {
-            company: "FashionForward",
-            industry: "Fashion Retail",
-            challenge: "Omnichannel inventory management",
-            solution: "NetSuite retail implementation",
-            results: "50% improvement in inventory accuracy",
-          },
-          {
-            company: "ElectroMart",
-            industry: "Electronics Retail",
-            challenge: "Seasonal demand management",
-            solution: "Advanced demand planning",
-            results: "35% reduction in stockouts",
-          },
-        ],
-      },
-
-      RetailImplementationSection: {
-        title: "Retail Implementation",
-        subtitle: "Specialized retail implementation",
-        description: "Our retail-specific implementation approach",
-        phases: [
-          {
-            title: "Retail Assessment",
-            description: "Analyze current retail operations",
-            duration: "2 weeks",
-          },
-          {
-            title: "Channel Integration",
-            description: "Integrate all sales channels",
-            duration: "4 weeks",
-          },
-          {
-            title: "Inventory Setup",
-            description: "Configure inventory management",
-            duration: "2 weeks",
-          },
-          {
-            title: "Go-Live Support",
-            description: "Launch and provide ongoing support",
-            duration: "2 weeks",
-          },
-        ],
-      },
-
-      RetailCTASection: {
-        title: "Transform Your Retail Business",
-        subtitle: "Get started with NetSuite for retail",
-        description: "Join successful retailers using NetSuite",
-        ctaButton: {
-          text: "Schedule Demo",
-          link: "/retail/demo",
-          variant: validateVariant("primary"),
-        },
-      },
-
-      // About Sections
-      AboutMissionSection: {
-        title: "",
-        subtitle: "",
-        description: "",
-        vision: "",
-        additionalContent: "",
-        image: "",
-        stats: [],
-        missionPoints: [],
-      },
-
-      AboutValuesSection: {
-        title: "Our Values",
-        subtitle: "What drives us",
-        description:
-          "Our core values guide everything we do and shape our company culture",
-        values: [
-          {
-            title: "Integrity",
-            description:
-              "We operate with honesty and transparency in all our interactions",
-            icon: "🛡️",
-          },
-          {
-            title: "Innovation",
-            description:
-              "We continuously seek new and better ways to solve problems",
-            icon: "🚀",
-          },
-          {
-            title: "Customer Success",
-            description: "Our success is measured by our customers' success",
-            icon: "🎯",
-          },
-          {
-            title: "Collaboration",
-            description: "We believe in the power of working together",
-            icon: "👥",
-          },
-        ],
-      },
-
-      AboutTeamSection: {
-        title: "Our Team",
-        subtitle: "Meet the experts behind our success",
-        description:
-          "Our diverse team of professionals brings together decades of experience in technology and business transformation",
-        teamMembers: [
-          {
-            name: "John Smith",
-            position: "CEO & Founder",
-            bio: "20+ years in technology leadership",
-            image: "/images/team/john.jpg",
-            linkedin: "https://linkedin.com/in/johnsmith",
-          },
-          {
-            name: "Sarah Johnson",
-            position: "CTO",
-            bio: "Expert in enterprise architecture and cloud solutions",
-            image: "/images/team/sarah.jpg",
-            linkedin: "https://linkedin.com/in/sarahjohnson",
-          },
-          {
-            name: "Mike Chen",
-            position: "VP of Services",
-            bio: "Specialist in implementation and project management",
-            image: "/images/team/mike.jpg",
-            linkedin: "https://linkedin.com/in/mikechen",
-          },
-        ],
-      },
-
-      AboutJourneySection: {
-        title: "Our Journey",
-        subtitle: "From startup to industry leader",
-        description: "A timeline of our company's growth and key milestones",
-        timeline: [
-          {
-            year: "2010",
-            title: "Company Founded",
-            description:
-              "Started with a vision to transform business through technology",
-          },
-          {
-            year: "2015",
-            title: "First Major Client",
-            description:
-              "Successfully implemented NetSuite for Fortune 500 company",
-          },
-          {
-            year: "2020",
-            title: "Global Expansion",
-            description: "Expanded operations to serve clients worldwide",
-          },
-          {
-            year: "2024",
-            title: "Industry Recognition",
-            description: "Recognized as top NetSuite implementation partner",
-          },
-        ],
-      },
-
-      AboutMilestonesSection: {
-        title: "Key Milestones",
-        subtitle: "Our achievements over the years",
-        description:
-          "Significant milestones that mark our journey of growth and success",
-        milestones: [
-          {
-            title: "500+ Projects",
-            description: "Successfully completed implementations",
-            icon: "🏆",
-          },
-          {
-            title: "50+ Team Members",
-            description: "Growing team of certified professionals",
-            icon: "👥",
-          },
-          {
-            title: "15+ Countries",
-            description: "Serving clients globally",
-            icon: "🌍",
-          },
-          {
-            title: "99% Success Rate",
-            description: "Project success rate",
-            icon: "✅",
-          },
-        ],
-      },
-
-      AboutDifferentiatorsSection: {
-        title: "What Sets Us Apart",
-        subtitle: "Our competitive advantages",
-        description:
-          "The unique qualities that make us the preferred choice for NetSuite implementations",
-        differentiators: [
-          {
-            title: "Deep Expertise",
-            description:
-              "Certified professionals with extensive NetSuite experience",
-            icon: "🎓",
-          },
-          {
-            title: "Industry Focus",
-            description: "Specialized knowledge across multiple industries",
-            icon: "🏭",
-          },
-          {
-            title: "Proven Methodology",
-            description: "Repeatable, predictable implementation process",
-            icon: "📋",
+            title: "Expert Consultation",
+            description: "Work with certified NetSuite developers",
+            icon: "👨‍💻",
           },
           {
             title: "Ongoing Support",
-            description: "Comprehensive post-implementation support",
-            icon: "🤝",
+            description: "Continuous support and maintenance services",
+            icon: "🛠️",
+          },
+          {
+            title: "Quality Assurance",
+            description: "Rigorous testing and quality control processes",
+            icon: "✅",
+          },
+        ],
+        benefits: [
+          "Improved operational efficiency",
+          "Better user experience",
+          "Enhanced reporting capabilities",
+          "Streamlined business processes",
+          "Competitive advantage",
+        ],
+      },
+
+      // Service Grid Component
+      ServiceGrid: {
+        title: "Our Professional Services",
+        subtitle: "Comprehensive solutions for your business needs",
+        description:
+          "Choose from our wide range of professional services designed to help your business succeed with NetSuite",
+        services: [
+          {
+            name: "NetSuite Implementation",
+            description:
+              "Complete NetSuite setup and configuration tailored to your business",
+            icon: "⚙️",
+            link: "/services/implementation",
+            features: [
+              "System setup",
+              "Data migration",
+              "User training",
+              "Go-live support",
+            ],
+            price: "Starting from $15,000",
+            duration: "8-12 weeks",
+          },
+          {
+            name: "NetSuite Consulting",
+            description:
+              "Expert guidance and strategic planning for optimal NetSuite usage",
+            icon: "💼",
+            link: "/services/consulting",
+            features: [
+              "Business analysis",
+              "Process optimization",
+              "Strategic planning",
+              "Best practices",
+            ],
+            price: "Starting from $200/hour",
+            duration: "Flexible",
+          },
+          {
+            name: "NetSuite Integration",
+            description:
+              "Connect NetSuite with your existing business systems seamlessly",
+            icon: "🔗",
+            link: "/services/integration",
+            features: [
+              "API integration",
+              "Data synchronization",
+              "System connectivity",
+              "Real-time updates",
+            ],
+            price: "Starting from $5,000",
+            duration: "4-6 weeks",
+          },
+          {
+            name: "NetSuite Customization",
+            description:
+              "Tailor NetSuite to your specific business requirements",
+            icon: "🎨",
+            link: "/services/customization",
+            features: [
+              "Custom fields",
+              "Workflows",
+              "Reports & dashboards",
+              "SuiteScript development",
+            ],
+            price: "Starting from $3,000",
+            duration: "2-8 weeks",
+          },
+          {
+            name: "NetSuite Training",
+            description:
+              "Comprehensive training programs for your team members",
+            icon: "🎓",
+            link: "/services/training",
+            features: [
+              "User training",
+              "Admin training",
+              "Certification programs",
+              "Ongoing support",
+            ],
+            price: "Starting from $1,500",
+            duration: "1-3 days",
+          },
+          {
+            name: "NetSuite Support",
+            description:
+              "Ongoing support and maintenance for your NetSuite instance",
+            icon: "🛠️",
+            link: "/services/support",
+            features: [
+              "24/7 support",
+              "System maintenance",
+              "Performance optimization",
+              "Issue resolution",
+            ],
+            price: "Starting from $500/month",
+            duration: "Ongoing",
+          },
+          {
+            name: "Data Migration",
+            description:
+              "Seamless migration of your data from legacy systems to NetSuite",
+            icon: "📊",
+            link: "/services/data-migration",
+            features: [
+              "Data analysis",
+              "Migration planning",
+              "Data cleansing",
+              "Validation testing",
+            ],
+            price: "Starting from $8,000",
+            duration: "3-6 weeks",
+          },
+          {
+            name: "Business Process Optimization",
+            description:
+              "Streamline and optimize your business processes with NetSuite",
+            icon: "📈",
+            link: "/services/optimization",
+            features: [
+              "Process analysis",
+              "Workflow design",
+              "Automation setup",
+              "Performance monitoring",
+            ],
+            price: "Starting from $10,000",
+            duration: "6-10 weeks",
+          },
+        ],
+        testimonial: {
+          quote:
+            "The service grid helped us understand exactly what we needed for our NetSuite journey.",
+          author: "Sarah Johnson",
+          position: "CEO, TechStart Inc.",
+          company: "TechStart Inc.",
+        },
+      },
+
+      // Additional Generic Components to reach 72
+      ComparisonSection: {
+        title: "NetSuite vs. Competitors",
+        subtitle: "See why NetSuite is the superior choice",
+        description:
+          "Compare NetSuite with other ERP solutions and see the clear advantages",
+        comparisons: [
+          {
+            feature: "Cloud-based Architecture",
+            netSuite: true,
+            competitor1: false,
+            competitor2: true,
+            description:
+              "Modern cloud infrastructure for scalability and accessibility",
+          },
+          {
+            feature: "Real-time Analytics",
+            netSuite: true,
+            competitor1: false,
+            competitor2: false,
+            description: "Advanced reporting and analytics capabilities",
+          },
+          {
+            feature: "Multi-currency Support",
+            netSuite: true,
+            competitor1: true,
+            competitor2: false,
+            description: "Global business operations support",
           },
         ],
       },
 
-      AboutCTASection: {
-        title: "Ready to Work With Us?",
-        subtitle: "Let's transform your business together",
+      NewsletterSection: {
+        title: "Stay Updated",
+        subtitle: "Get the latest NetSuite insights and updates",
         description:
-          "Get in touch to discuss how we can help your business succeed",
-        ctaButton: {
-          text: "Contact Us",
-          link: "/contact",
-          variant: validateVariant("primary"),
-        },
+          "Subscribe to our newsletter for expert tips, industry insights, and NetSuite best practices",
+        placeholder: "Enter your email address",
+        buttonText: "Subscribe",
+        benefits: [
+          "Weekly NetSuite tips",
+          "Industry insights",
+          "Exclusive content",
+          "Early access to webinars",
+        ],
+      },
+
+      PartnersSection: {
+        title: "Our Trusted Partners",
+        subtitle: "Working with industry leaders",
+        description:
+          "We collaborate with the best technology partners to deliver exceptional solutions",
+        partners: [
+          {
+            name: "Oracle NetSuite",
+            logo: "/images/partners/netsuite-logo.png",
+            description: "Official NetSuite Partner",
+            level: "Gold Partner",
+          },
+          {
+            name: "Salesforce",
+            logo: "/images/partners/salesforce-logo.png",
+            description: "CRM Integration Partner",
+            level: "Certified Partner",
+          },
+          {
+            name: "Shopify",
+            logo: "/images/partners/shopify-logo.png",
+            description: "E-commerce Integration Partner",
+            level: "Technology Partner",
+          },
+        ],
+      },
+
+      SecuritySection: {
+        title: "Enterprise-Grade Security",
+        subtitle: "Your data is safe with us",
+        description:
+          "We implement the highest security standards to protect your business data",
+        features: [
+          {
+            title: "256-bit Encryption",
+            description: "Military-grade encryption for all data transmission",
+            icon: "🔒",
+          },
+          {
+            title: "Multi-Factor Authentication",
+            description: "Additional security layers for user access",
+            icon: "🔐",
+          },
+          {
+            title: "Regular Security Audits",
+            description: "Continuous monitoring and security assessments",
+            icon: "🛡️",
+          },
+          {
+            title: "Compliance Standards",
+            description: "SOC 2, GDPR, and industry compliance",
+            icon: "📋",
+          },
+        ],
+        certifications: [
+          "SOC 2 Type II",
+          "GDPR Compliant",
+          "ISO 27001",
+          "PCI DSS",
+        ],
       },
     };
   };
