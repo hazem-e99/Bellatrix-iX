@@ -1590,6 +1590,16 @@ const LivePreview = ({
 }) => {
   const [refreshKey, setRefreshKey] = useState(0);
 
+  console.log("🔍 [LIVE PREVIEW] Received components:", {
+    count: components.length,
+    components: components.map(c => ({
+      type: c.componentType,
+      hasContentJson: !!c.contentJson,
+      contentJsonLength: c.contentJson?.length || 0,
+      isVisible: c.isVisible
+    }))
+  });
+
   // Force refresh when component data changes
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -1666,8 +1676,8 @@ const LivePreview = ({
                     componentType: component.componentType,
                     contentJson: component.contentJson,
                     hasContentJson: !!component.contentJson,
-                    isAboutMissionSection:
-                      component.componentType === "AboutMissionSection",
+                    contentJsonType: typeof component.contentJson,
+                    contentJsonLength: component.contentJson?.length || 0,
                   });
 
                   let rawData = {};
@@ -1677,7 +1687,7 @@ const LivePreview = ({
                     try {
                       rawData = JSON.parse(component.contentJson);
                       console.log(
-                        "✅ [REALTIME EXTRACTION] Parsed content:",
+                        "✅ [REALTIME EXTRACTION] Parsed content for", component.componentType, ":",
                         rawData
                       );
                     } catch (err) {
@@ -1687,6 +1697,8 @@ const LivePreview = ({
                       );
                       rawData = {};
                     }
+                  } else {
+                    console.warn("⚠️ [REALTIME EXTRACTION] No contentJson found for", component.componentType);
                   }
 
                   // Enhanced debugging for AboutMissionSection

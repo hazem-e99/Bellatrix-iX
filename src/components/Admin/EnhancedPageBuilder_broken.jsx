@@ -2298,1319 +2298,6 @@ const EnhancedPageBuilder = () => {
         ],
       },
 
-      HRUseCasesSection: {
-        title: "HR Use Cases",
-        subtitle: "Real-world applications",
-        useCases: [
-          {
-            title: "Small Business",
-            description: "Perfect for businesses with 10-100 employees",
-            features: ["Basic HR", "Time tracking", "Simple reporting"],
-          },
-          {
-            title: "Enterprise",
-            description: "Comprehensive solution for large organizations",
-            features: [
-              "Advanced analytics",
-              "Multi-location support",
-              "Custom workflows",
-            ],
-          },
-        ],
-      },
-
-      HRFAQSection: {
-        title: "HR FAQ",
-        subtitle: "Common questions about our HR solutions",
-        faqs: [
-          {
-            question: "Can I integrate with existing systems?",
-            answer:
-              "Yes, we offer comprehensive integration capabilities with most HR and payroll systems.",
-          },
-          {
-            question: "Is training included?",
-            answer:
-              "Yes, we provide comprehensive training for all users at no additional cost.",
-          },
-          {
-            question: "What about data security?",
-            answer:
-              "We use enterprise-grade security with encryption and regular backups.",
-          },
-        ],
-      },
-
-      HRCTASection: {
-        title: "Transform Your HR Today",
-        subtitle: "Start your HR transformation journey",
-        description: "Join leading companies using our HR solutions",
-        ctaButton: {
-          text: "Schedule Demo",
-          link: "/hr/demo",
-          variant: validateVariant("primary"),
-        },
-      },
-
-      ImplementationWhyChooseSectionAlt: {
-        title: "Why Choose Our Implementation",
-        subtitle: "What sets us apart",
-        points: [
-          {
-            title: "Certified Team",
-            description: "Experienced consultants and PMs",
-            icon: "🏆",
-          },
-          {
-            title: "Proven Methodology",
-            description: "Repeatable, predictable delivery",
-            icon: "📋",
-          },
-          {
-            title: "Post Go‑Live Support",
-            description: "We stay with you after launch",
-            icon: "🤝",
-          },
-          {
-            title: "Industry Expertise",
-            description: "Deep knowledge of your industry",
-            icon: "🎯",
-          },
-        ],
-      },
-
-      ImplementationPricingSectionAlt: {
-        title: "Implementation Pricing",
-        subtitle: "Transparent pricing for all project sizes",
-        plans: [
-          {
-            name: "Starter",
-            price: "$4,900",
-            duration: "2 weeks",
-            includes: ["Discovery", "Basic config", "Training"],
-            cta: "Get Quote",
-          },
-          {
-            name: "Pro",
-            price: "$12,900",
-            duration: "6 weeks",
-            includes: ["Workshops", "Advanced config", "Data migration"],
-            cta: "Get Quote",
-            popular: true,
-          },
-          {
-            name: "Enterprise",
-            price: "Custom",
-            duration: "8+ weeks",
-            includes: ["Full customization", "Integration", "Ongoing support"],
-            cta: "Contact Sales",
-          },
-        ],
-      },
-
-      ImplementationCTASection: {
-        title: "Ready for a Seamless NetSuite Implementation?",
-        subtitle:
-          "Transform your business operations with our expert NetSuite implementation services. Let's turn your vision into reality with proven methodologies and dedicated support.",
-        description: "Get started with your NetSuite implementation today",
-        ctaButton: {
-          text: "Get Started Today",
-          link: "/implementation/contact",
-          variant: "primary", // Will be converted by validateVariant
-        },
-        // Also include alternative structures
-        button: {
-          text: "Get Started Today",
-          link: "/implementation/contact",
-          variant: "primary",
-        },
-        buttonText: "Get Started Today",
-        buttonLink: "/implementation/contact",
-        // ADD: Default features/cards data
-        features: [
-          {
-            title: "Quick Response",
-            description: "Get a detailed proposal within 24 hours",
-            icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z",
-          },
-          {
-            title: "Proven Success",
-            description: "99.9% implementation success rate",
-            icon: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z",
-          },
-          {
-            title: "Expert Support",
-            description: "Dedicated team of certified professionals",
-            icon:
-              "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z",
-          },
-        ],
-      },
-
-      // Service Grid
-      ServiceGrid: {
-        title: "Our Services",
-        subtitle: "Professional solutions for your business",
-        description: "Choose from our comprehensive range of services",
-        services: [
-          {
-            name: "Consulting",
-            description: "Expert business consulting services",
-            icon: "💼",
-            link: "/services/consulting",
-          },
-          {
-            name: "Implementation",
-            description: "Seamless system implementation",
-            icon: "⚙️",
-            link: "/services/implementation",
-          },
-          {
-            name: "Training",
-            description: "Comprehensive training programs",
-            icon: "🎓",
-            link: "/services/training",
-          },
-          {
-            name: "Support",
-            description: "Ongoing support and maintenance",
-            icon: "🛠️",
-            link: "/services/support",
-          },
-        ],
-      },
-      // Training Sections
-      TrainingProgramsSectionAlt: {
-        programsSection: {
-          title: "Our Training Programs",
-          description:
-            "Comprehensive training solutions designed to empower your team with the skills they need to excel",
-          image: "/images/traning.jpg",
-          Professional_Badge: "Certified Training",
-        },
-        trainingPrograms: {
-          programs: [
-            {
-              id: 1,
-              title: "NetSuite Fundamentals",
-              shortDescription: "Core concepts and navigation basics",
-              longDescription:
-                "This comprehensive fundamentals program introduces you to the core concepts of NetSuite, covering essential navigation, basic configuration, and understanding the platform's architecture.",
-              icon:
-                "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253",
-            },
-            {
-              id: 2,
-              title: "Advanced Modules",
-              shortDescription: "Financial management and reporting",
-              longDescription:
-                "Dive deep into NetSuite's advanced modules with focus on financial management, advanced reporting, and complex business processes.",
-              icon:
-                "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z",
-            },
-          ],
-        },
-      },
-
-      TrainingWhyChooseSection: {
-        whyChooseSection: {
-          title: "Why Choose Our Training?",
-          description:
-            "We provide world-class training solutions that combine expertise, innovation, and practical application to ensure your team's success",
-          image: "/images/chooese.png",
-          Professional_Badge: "Excellence Training",
-        },
-        trainingFeatures: [
-          {
-            id: 1,
-            title: "Expert Instructors",
-            shortDescription:
-              "Certified professionals with years of experience",
-            detailedDescription:
-              "Our instructors are certified NetSuite professionals with extensive real-world experience across various industries.",
-            benefits: [
-              "Industry-proven expertise with 10+ years of NetSuite experience",
-              "Multiple NetSuite certifications (Administrator, Developer, Consultant)",
-              "Real-world implementation experience across 500+ projects",
-            ],
-            icon:
-              "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253",
-          },
-          {
-            id: 2,
-            title: "Hands-on Learning",
-            shortDescription: "Practical exercises with real-world scenarios",
-            detailedDescription:
-              "Our training methodology emphasizes practical, hands-on learning through real-world scenarios and interactive exercises.",
-            benefits: [
-              "Live NetSuite sandbox environments for each student",
-              "Real business scenarios from actual client implementations",
-              "Step-by-step guided exercises with immediate feedback",
-            ],
-            icon:
-              "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z",
-          },
-        ],
-      },
-
-      TrainingKeyModulesSection: {
-        keyModulesSection: {
-          title: "Key Training Modules",
-          description:
-            "Comprehensive curriculum designed to master NetSuite from foundation to advanced implementation",
-        },
-        keyModules: [
-          {
-            title: "System Architecture",
-            description:
-              "Core system structure, data flow, and integration patterns",
-            duration: "8 hours",
-            icon:
-              "M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10",
-          },
-          {
-            title: "Financial Management",
-            description:
-              "General ledger, budgeting, financial reporting, and analytics",
-            duration: "12 hours",
-            icon:
-              "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z",
-          },
-        ],
-      },
-
-      TrainingCTASection: {
-        title: "Ready to Start Your Training Journey?",
-        subtitle: "Transform your skills with our expert-led programs",
-        description:
-          "Join thousands of professionals who have enhanced their capabilities through our training programs",
-        ctaButton: {
-          text: "Enroll Now",
-          link: "/contact",
-          variant: validateVariant("primary"),
-        },
-        features: [
-          "Flexible scheduling",
-          "Expert instructors",
-          "Hands-on learning",
-          "Industry certification",
-        ],
-        backgroundImage: "/images/TrainingWhy.jpg",
-      },
-
-      TrainingPricingSection: {
-        title: "Training Program Pricing",
-        subtitle: "Choose the perfect training plan for your team",
-        description:
-          "Flexible pricing options to fit your learning needs and budget",
-        plans: [
-          {
-            name: "Individual",
-            price: "$299",
-            period: "per person",
-            description: "Perfect for individual learners",
-            features: [
-              "Access to all modules",
-              "Self-paced learning",
-              "Certificate of completion",
-              "Email support",
-            ],
-            cta: "Get Started",
-            popular: false,
-          },
-          {
-            name: "Team",
-            price: "$199",
-            period: "per person",
-            description: "Ideal for small teams (5-20 people)",
-            features: [
-              "Group discounts",
-              "Team progress tracking",
-              "Dedicated support",
-              "Custom scheduling",
-            ],
-            cta: "Get Started",
-            popular: true,
-          },
-          {
-            name: "Enterprise",
-            price: "Custom",
-            period: "pricing",
-            description: "For large organizations",
-            features: [
-              "Unlimited participants",
-              "Custom curriculum",
-              "On-site training",
-              "24/7 support",
-              "Dedicated account manager",
-            ],
-            cta: "Contact Sales",
-            popular: false,
-          },
-        ],
-      },
-
-      TrainingFAQSection: {
-        title: "Training Frequently Asked Questions",
-        subtitle: "Everything you need to know about our training programs",
-        description:
-          "Find answers to common questions about our training services",
-        faqs: [
-          {
-            question: "What is the duration of each training program?",
-            answer:
-              "Our training programs range from 1-5 days depending on the complexity and depth of the subject matter. Each program is designed to provide comprehensive coverage while respecting your time constraints.",
-          },
-          {
-            question: "Do you provide certificates upon completion?",
-            answer:
-              "Yes, we provide industry-recognized certificates upon successful completion of our training programs. These certificates demonstrate your proficiency in the covered topics.",
-          },
-          {
-            question: "Can training be customized for our specific needs?",
-            answer:
-              "Absolutely! We offer customized training programs tailored to your organization's specific requirements, industry, and skill levels. Our expert instructors can adapt content to match your business context.",
-          },
-          {
-            question: "What learning formats do you offer?",
-            answer:
-              "We offer multiple learning formats including in-person workshops, virtual live sessions, self-paced online modules, and hybrid approaches to accommodate different learning preferences and schedules.",
-          },
-        ],
-      },
-
-      TrainingTestimonialsSection: {
-        title: "What Our Participants Say",
-        subtitle: "Success stories from our training graduates",
-        description:
-          "Hear from professionals who have transformed their careers through our training programs",
-        testimonials: [
-          {
-            name: "Sarah Johnson",
-            position: "IT Manager",
-            company: "TechCorp Solutions",
-            content:
-              "The training program exceeded my expectations. The hands-on approach and real-world scenarios made learning both practical and engaging.",
-            rating: 5,
-            image: "/images/testimonials/sarah.jpg",
-          },
-          {
-            name: "Michael Chen",
-            position: "Senior Developer",
-            company: "InnovateTech",
-            content:
-              "The expert instructors and comprehensive curriculum helped me advance my skills significantly. Highly recommended for anyone looking to upskill.",
-            rating: 5,
-            image: "/images/testimonials/michael.jpg",
-          },
-        ],
-      },
-
-      // Integration Sections
-      IntegrationTypesSectionAlt: {
-        title: "Integration Types",
-        subtitle: "Multiple ways to connect",
-        description: "Choose the integration method that best fits your needs",
-        types: [
-          {
-            name: "REST APIs",
-            description: "Modern API-based integration",
-            icon: "🔗",
-          },
-          {
-            name: "iPaaS",
-            description: "Integration Platform as a Service",
-            icon: "☁️",
-          },
-          {
-            name: "File‑based",
-            description: "Batch file processing",
-            icon: "📁",
-          },
-          {
-            name: "Webhooks",
-            description: "Real-time event notifications",
-            icon: "🔔",
-          },
-        ],
-      },
-
-      IntegrationBenefitsSectionAlt: {
-        title: "Integration Benefits",
-        subtitle: "Why integrate with NetSuite",
-        description: "Unlock the full potential of your business systems",
-        benefits: [
-          {
-            title: "Fewer Manual Tasks",
-            description: "Automate data entry and reduce errors",
-            icon: "⚡",
-          },
-          {
-            title: "Real‑time Data",
-            description: "Get instant updates across all systems",
-            icon: "🔄",
-          },
-          {
-            title: "Higher Accuracy",
-            description: "Eliminate data inconsistencies",
-            icon: "🎯",
-          },
-          {
-            title: "Better Visibility",
-            description: "Unified view of your business data",
-            icon: "👁️",
-          },
-        ],
-      },
-
-      // Customization Sections
-      CustomizationServicesSectionAlt: {
-        title: "What We Customize",
-        subtitle: "Comprehensive customization services",
-        description: "Tailor NetSuite to match your unique business processes",
-        services: [
-          {
-            name: "Workflows",
-            description: "Automate approvals and processes",
-            icon: "⚙️",
-          },
-          {
-            name: "Scripts",
-            description: "Server and client logic",
-            icon: "💻",
-          },
-          {
-            name: "UI",
-            description: "Forms, fields, and dashboards",
-            icon: "🎨",
-          },
-          {
-            name: "Reports",
-            description: "Custom reporting and analytics",
-            icon: "📊",
-          },
-        ],
-      },
-
-      CustomizationProcessSectionAlt: {
-        title: "Customization Process",
-        subtitle: "Our proven approach",
-        description: "A structured methodology for successful customization",
-        steps: [
-          {
-            title: "Requirements",
-            description: "Gather and analyze your needs",
-            duration: "1 week",
-            step: "01",
-          },
-          {
-            title: "Design",
-            description: "Create solution blueprint",
-            duration: "1 week",
-            step: "02",
-          },
-          {
-            title: "Development",
-            description: "Build and test customizations",
-            duration: "2-4 weeks",
-            step: "03",
-          },
-          {
-            title: "Deployment",
-            description: "Implement and train users",
-            duration: "1 week",
-            step: "04",
-          },
-        ],
-      },
-      // Manufacturing Sections
-      ManufacturingIndustryStatsSection: {
-        title: "Manufacturing Industry Stats",
-        subtitle: "The state of manufacturing today",
-        stats: [
-          {
-            label: "Digital Transformation",
-            value: "73%",
-            description:
-              "of manufacturers are investing in digital transformation",
-          },
-          {
-            label: "Efficiency Gains",
-            value: "25%",
-            description: "average efficiency improvement with ERP systems",
-          },
-          {
-            label: "Cost Reduction",
-            value: "30%",
-            description: "average cost reduction in operations",
-          },
-        ],
-      },
-
-      ManufacturingChallengesSectionAlt: {
-        title: "Manufacturing Challenges",
-        subtitle: "Common pain points we solve",
-        challenges: [
-          {
-            title: "Inventory Management",
-            description: "Complex inventory tracking across multiple locations",
-            impact: "High",
-          },
-          {
-            title: "Production Planning",
-            description: "Difficulty in planning and scheduling production",
-            impact: "High",
-          },
-          {
-            title: "Quality Control",
-            description: "Maintaining consistent quality standards",
-            impact: "Medium",
-          },
-          {
-            title: "Compliance",
-            description: "Meeting industry regulations and standards",
-            impact: "High",
-          },
-        ],
-      },
-
-      ManufacturingSolutionsSectionAlt: {
-        title: "Manufacturing Solutions",
-        subtitle: "Comprehensive NetSuite solutions",
-        description: "Tailored solutions for manufacturing businesses",
-        solutions: [
-          {
-            title: "Production Management",
-            description: "End-to-end production planning and execution",
-            features: ["Work orders", "Routing", "Capacity planning"],
-          },
-          {
-            title: "Inventory Control",
-            description: "Advanced inventory management capabilities",
-            features: ["Multi-location", "Serial tracking", "Cycle counting"],
-          },
-          {
-            title: "Quality Management",
-            description: "Built-in quality control processes",
-            features: ["Inspections", "Non-conformance", "Corrective actions"],
-          },
-        ],
-      },
-
-      ManufacturingCaseStudiesSection: {
-        title: "Manufacturing Case Studies",
-        subtitle: "Success stories from our clients",
-        caseStudies: [
-          {
-            company: "TechManufacturing Inc.",
-            industry: "Electronics",
-            challenge: "Complex multi-level BOM management",
-            solution: "Advanced manufacturing module implementation",
-            results: "40% reduction in production planning time",
-          },
-          {
-            company: "AutoParts Ltd.",
-            industry: "Automotive",
-            challenge: "Quality control across multiple plants",
-            solution: "Integrated quality management system",
-            results: "60% improvement in quality metrics",
-          },
-        ],
-      },
-
-      ManufacturingImplementationProcessSection: {
-        title: "Manufacturing Implementation",
-        subtitle: "Specialized implementation for manufacturers",
-        description: "Our manufacturing-specific implementation approach",
-        phases: [
-          {
-            title: "Manufacturing Assessment",
-            description: "Analyze current manufacturing processes",
-            duration: "2 weeks",
-          },
-          {
-            title: "System Configuration",
-            description: "Configure manufacturing modules",
-            duration: "4 weeks",
-          },
-          {
-            title: "Data Migration",
-            description: "Migrate manufacturing data",
-            duration: "2 weeks",
-          },
-          {
-            title: "Training & Go-Live",
-            description: "Train users and launch system",
-            duration: "2 weeks",
-          },
-        ],
-      },
-
-      ManufacturingCTASection: {
-        title: "Transform Your Manufacturing Operations",
-        subtitle: "Get started with NetSuite for manufacturing",
-        description: "Join leading manufacturers using NetSuite",
-        ctaButton: {
-          text: "Schedule Demo",
-          link: "/manufacturing/demo",
-          variant: validateVariant("primary"),
-        },
-      },
-
-      // Retail Sections
-      RetailIndustryStatsSection: {
-        title: "Retail Industry Stats",
-        subtitle: "The evolving retail landscape",
-        stats: [
-          {
-            label: "Omnichannel Growth",
-            value: "85%",
-            description:
-              "of retailers are investing in omnichannel capabilities",
-          },
-          {
-            label: "Customer Expectations",
-            value: "78%",
-            description: "expect seamless online and offline experiences",
-          },
-          {
-            label: "Inventory Accuracy",
-            value: "95%",
-            description: "accuracy needed for successful omnichannel retail",
-          },
-        ],
-      },
-
-      RetailChallengesSectionAlt: {
-        title: "Retail Challenges",
-        subtitle: "Modern retail pain points",
-        challenges: [
-          {
-            title: "Omnichannel Complexity",
-            description: "Managing multiple sales channels effectively",
-            impact: "High",
-          },
-          {
-            title: "Inventory Visibility",
-            description: "Real-time inventory across all channels",
-            impact: "High",
-          },
-          {
-            title: "Customer Experience",
-            description: "Delivering consistent customer experience",
-            impact: "High",
-          },
-          {
-            title: "Seasonal Demand",
-            description: "Managing fluctuating demand patterns",
-            impact: "Medium",
-          },
-        ],
-      },
-
-      RetailSolutionsSection: {
-        title: "Retail Solutions",
-        subtitle: "Comprehensive retail management",
-        description: "Complete solutions for modern retail businesses",
-        solutions: [
-          {
-            title: "Omnichannel Commerce",
-            description: "Unified commerce across all channels",
-            features: ["POS integration", "E-commerce", "Mobile commerce"],
-          },
-          {
-            title: "Inventory Management",
-            description: "Advanced inventory optimization",
-            features: [
-              "Real-time tracking",
-              "Demand forecasting",
-              "Automated reordering",
-            ],
-          },
-          {
-            title: "Customer Management",
-            description: "360-degree customer view",
-            features: [
-              "Customer profiles",
-              "Purchase history",
-              "Loyalty programs",
-            ],
-          },
-        ],
-      },
-
-      RetailFeaturesSection: {
-        title: "Retail Features",
-        subtitle: "Key capabilities for retail success",
-        features: [
-          {
-            title: "Point of Sale",
-            description: "Modern POS system with offline capability",
-            icon: "💳",
-          },
-          {
-            title: "E-commerce Integration",
-            description: "Seamless online and offline integration",
-            icon: "🛒",
-          },
-          {
-            title: "Inventory Optimization",
-            description: "AI-powered inventory management",
-            icon: "📦",
-          },
-          {
-            title: "Customer Analytics",
-            description: "Advanced customer insights and reporting",
-            icon: "📊",
-          },
-        ],
-      },
-
-      RetailCaseStudiesSection: {
-        title: "Retail Case Studies",
-        subtitle: "Success stories from retail clients",
-        caseStudies: [
-          {
-            company: "FashionForward",
-            industry: "Fashion Retail",
-            challenge: "Omnichannel inventory management",
-            solution: "NetSuite retail implementation",
-            results: "50% improvement in inventory accuracy",
-          },
-          {
-            company: "ElectroMart",
-            industry: "Electronics Retail",
-            challenge: "Seasonal demand management",
-            solution: "Advanced demand planning",
-            results: "35% reduction in stockouts",
-          },
-        ],
-      },
-
-      RetailImplementationSection: {
-        title: "Retail Implementation",
-        subtitle: "Specialized retail implementation",
-        description: "Our retail-specific implementation approach",
-        phases: [
-          {
-            title: "Retail Assessment",
-            description: "Analyze current retail operations",
-            duration: "2 weeks",
-          },
-          {
-            title: "Channel Integration",
-            description: "Integrate all sales channels",
-            duration: "4 weeks",
-          },
-          {
-            title: "Inventory Setup",
-            description: "Configure inventory management",
-            duration: "2 weeks",
-          },
-          {
-            title: "Go-Live Support",
-            description: "Launch and provide ongoing support",
-            duration: "2 weeks",
-          },
-        ],
-      },
-
-      RetailCTASection: {
-        title: "Transform Your Retail Business",
-        subtitle: "Get started with NetSuite for retail",
-        description: "Join successful retailers using NetSuite",
-        ctaButton: {
-          text: "Schedule Demo",
-          link: "/retail/demo",
-          variant: validateVariant("primary"),
-        },
-      },
-
-      // About Sections
-      AboutMissionSectionAlt: {
-        title: "",
-        subtitle: "",
-        description: "",
-        vision: "",
-        additionalContent: "",
-        image: "",
-        stats: [],
-        missionPoints: [],
-      },
-
-      AboutValuesSectionAlt: {
-        title: "Our Values",
-        subtitle: "What drives us",
-        description:
-          "Our core values guide everything we do and shape our company culture",
-        values: [
-          {
-            title: "Integrity",
-            description:
-              "We operate with honesty and transparency in all our interactions",
-            icon: "🛡️",
-          },
-          {
-            title: "Innovation",
-            description:
-              "We continuously seek new and better ways to solve problems",
-            icon: "🚀",
-          },
-          {
-            title: "Customer Success",
-            description: "Our success is measured by our customers' success",
-            icon: "🎯",
-          },
-          {
-            title: "Collaboration",
-            description: "We believe in the power of working together",
-            icon: "👥",
-          },
-        ],
-      },
-
-      AboutTeamSectionAlt: {
-        title: "Our Team",
-        subtitle: "Meet the experts behind our success",
-        description:
-          "Our diverse team of professionals brings together decades of experience in technology and business transformation",
-        teamMembers: [
-          {
-            name: "John Smith",
-            position: "CEO & Founder",
-            bio: "20+ years in technology leadership",
-            image: "/images/team/john.jpg",
-            linkedin: "https://linkedin.com/in/johnsmith",
-          },
-          {
-            name: "Sarah Johnson",
-            position: "CTO",
-            bio: "Expert in enterprise architecture and cloud solutions",
-            image: "/images/team/sarah.jpg",
-            linkedin: "https://linkedin.com/in/sarahjohnson",
-          },
-          {
-            name: "Mike Chen",
-            position: "VP of Services",
-            bio: "Specialist in implementation and project management",
-            image: "/images/team/mike.jpg",
-            linkedin: "https://linkedin.com/in/mikechen",
-          },
-        ],
-      },
-
-      AboutJourneySectionAlt: {
-        title: "Our Journey",
-        subtitle: "From startup to industry leader",
-        description: "A timeline of our company's growth and key milestones",
-        timeline: [
-          {
-            year: "2010",
-            title: "Company Founded",
-            description:
-              "Started with a vision to transform business through technology",
-          },
-          {
-            year: "2015",
-            title: "First Major Client",
-            description:
-              "Successfully implemented NetSuite for Fortune 500 company",
-          },
-          {
-            year: "2020",
-            title: "Global Expansion",
-            description: "Expanded operations to serve clients worldwide",
-          },
-          {
-            year: "2024",
-            title: "Industry Recognition",
-            description: "Recognized as top NetSuite implementation partner",
-          },
-        ],
-      },
-
-      AboutMilestonesSection: {
-        title: "Key Milestones",
-        subtitle: "Our achievements over the years",
-        description:
-          "Significant milestones that mark our journey of growth and success",
-        milestones: [
-          {
-            title: "500+ Projects",
-            description: "Successfully completed implementations",
-            icon: "🏆",
-          },
-          {
-            title: "50+ Team Members",
-            description: "Growing team of certified professionals",
-            icon: "👥",
-          },
-          {
-            title: "15+ Countries",
-            description: "Serving clients globally",
-            icon: "🌍",
-          },
-          {
-            title: "99% Success Rate",
-            description: "Project success rate",
-            icon: "✅",
-          },
-        ],
-      },
-
-      AboutDifferentiatorsSectionAlt: {
-        title: "What Sets Us Apart",
-        subtitle: "Our competitive advantages",
-        description:
-          "The unique qualities that make us the preferred choice for NetSuite implementations",
-        differentiators: [
-          {
-            title: "Deep Expertise",
-            description:
-              "Certified professionals with extensive NetSuite experience",
-            icon: "🎓",
-          },
-          {
-            title: "Industry Focus",
-            description: "Specialized knowledge across multiple industries",
-            icon: "🏭",
-          },
-          {
-            title: "Proven Methodology",
-            description: "Repeatable, predictable implementation process",
-            icon: "📋",
-          },
-          {
-            title: "Ongoing Support",
-            description: "Comprehensive post-implementation support",
-            icon: "🤝",
-          },
-        ],
-      },
-
-      AboutCTASection: {
-        title: "Ready to Work With Us?",
-        subtitle: "Let's transform your business together",
-        description:
-          "Get in touch to discuss how we can help your business succeed",
-        ctaButton: {
-          text: "Contact Us",
-          link: "/contact",
-          variant: validateVariant("primary"),
-        },
-      },
-
-      // Missing Implementation Components
-      ImplementationCTASectionAlt: {
-        title: "Ready for a Seamless NetSuite Implementation?",
-        subtitle:
-          "Transform your business operations with our expert NetSuite implementation services",
-        description:
-          "Get started with your NetSuite implementation today and transform your business operations",
-        ctaButton: {
-          text: "Get Started Today",
-          link: "/implementation/contact",
-          variant: "primary",
-        },
-        features: [
-          {
-            title: "Quick Response",
-            description: "Get a detailed proposal within 24 hours",
-            icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z",
-          },
-          {
-            title: "Proven Success",
-            description: "99.9% implementation success rate",
-            icon: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z",
-          },
-          {
-            title: "Expert Support",
-            description: "Dedicated team of certified professionals",
-            icon:
-              "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z",
-          },
-        ],
-      },
-
-      // Missing Integration Components
-      IntegrationPopularSection: {
-        title: "Popular Integrations",
-        subtitle: "Most requested integration solutions",
-        description:
-          "Connect NetSuite with the most popular business applications",
-        integrations: [
-          {
-            name: "Shopify",
-            description: "E-commerce platform integration",
-            icon: "🛒",
-            category: "E-commerce",
-            features: ["Order sync", "Inventory management", "Customer data"],
-          },
-          {
-            name: "Salesforce",
-            description: "CRM integration for sales teams",
-            icon: "👥",
-            category: "CRM",
-            features: [
-              "Lead management",
-              "Opportunity tracking",
-              "Contact sync",
-            ],
-          },
-          {
-            name: "PayPal",
-            description: "Payment processing integration",
-            icon: "💳",
-            category: "Payments",
-            features: [
-              "Payment processing",
-              "Transaction sync",
-              "Refund handling",
-            ],
-          },
-          {
-            name: "Amazon",
-            description: "Marketplace integration",
-            icon: "📦",
-            category: "E-commerce",
-            features: ["Order management", "Inventory sync", "FBA integration"],
-          },
-          {
-            name: "HubSpot",
-            description: "Marketing automation integration",
-            icon: "📧",
-            category: "Marketing",
-            features: ["Lead nurturing", "Email campaigns", "Analytics sync"],
-          },
-          {
-            name: "Magento",
-            description: "E-commerce platform integration",
-            icon: "🏪",
-            category: "E-commerce",
-            features: [
-              "Product sync",
-              "Order processing",
-              "Customer management",
-            ],
-          },
-        ],
-      },
-
-      IntegrationCTASection: {
-        title: "Ready to Connect Your Systems?",
-        subtitle: "Streamline your business with seamless integrations",
-        description:
-          "Get started with NetSuite integrations today and unlock the full potential of your business systems",
-        ctaButton: {
-          text: "Start Integration",
-          link: "/integration/contact",
-          variant: "primary",
-        },
-        benefits: [
-          "Reduce manual data entry by 90%",
-          "Improve data accuracy and consistency",
-          "Save time and reduce operational costs",
-          "Better business visibility and reporting",
-          "Real-time data synchronization",
-          "Scalable integration solutions",
-        ],
-      },
-
-      // Missing Customization Components
-      CustomizationCTASection: {
-        title: "Ready to Customize NetSuite?",
-        subtitle: "Transform NetSuite to match your unique business needs",
-        description:
-          "Get started with NetSuite customization today and unlock the full potential of the platform",
-        ctaButton: {
-          text: "Start Customization",
-          link: "/customization/contact",
-          variant: "primary",
-        },
-        features: [
-          {
-            title: "Custom Development",
-            description: "Tailored solutions for your business",
-            icon: "💻",
-          },
-          {
-            title: "Expert Consultation",
-            description: "Work with certified NetSuite developers",
-            icon: "👨‍💻",
-          },
-          {
-            title: "Ongoing Support",
-            description: "Continuous support and maintenance",
-            icon: "🛠️",
-          },
-          {
-            title: "Quality Assurance",
-            description: "Thorough testing and validation",
-            icon: "✅",
-          },
-        ],
-      },
-
-      // Service Grid Component
-      ServiceGridAlt: {
-        title: "Our Professional Services",
-        subtitle: "Comprehensive solutions for your business needs",
-        description:
-          "Choose from our wide range of professional services designed to help your business succeed",
-        services: [
-          {
-            name: "NetSuite Implementation",
-            description: "Complete NetSuite setup and configuration",
-            icon: "⚙️",
-            link: "/services/implementation",
-            features: ["System setup", "Data migration", "User training"],
-            price: "Starting at $4,900",
-          },
-          {
-            name: "NetSuite Consulting",
-            description: "Expert guidance and strategic planning",
-            icon: "💼",
-            link: "/services/consulting",
-            features: [
-              "Business analysis",
-              "Process optimization",
-              "Strategic planning",
-            ],
-            price: "Custom pricing",
-          },
-          {
-            name: "NetSuite Integration",
-            description: "Connect NetSuite with your existing systems",
-            icon: "🔗",
-            link: "/services/integration",
-            features: [
-              "API integration",
-              "Data synchronization",
-              "System connectivity",
-            ],
-            price: "Starting at $2,500",
-          },
-          {
-            name: "NetSuite Customization",
-            description: "Tailor NetSuite to your specific needs",
-            icon: "🎨",
-            link: "/services/customization",
-            features: ["Custom fields", "Workflows", "Reports & dashboards"],
-            price: "Starting at $1,500",
-          },
-          {
-            name: "NetSuite Training",
-            description: "Comprehensive training programs",
-            icon: "🎓",
-            link: "/services/training",
-            features: [
-              "User training",
-              "Admin training",
-              "Certification programs",
-            ],
-            price: "Starting at $500",
-          },
-          {
-            name: "NetSuite Support",
-            description: "Ongoing support and maintenance",
-            icon: "🛠️",
-            link: "/services/support",
-            features: [
-              "24/7 support",
-              "System maintenance",
-              "Performance optimization",
-            ],
-            price: "Monthly plans",
-          },
-        ],
-      },
-
-      // Additional Missing Components
-      PayrollCTASection: {
-        title: "Ready to Streamline Your Payroll?",
-        subtitle: "Transform your payroll operations with NetSuite",
-        description: "Get started with automated payroll management today",
-        ctaButton: {
-          text: "Schedule Payroll Demo",
-          link: "/payroll/demo",
-          variant: "primary",
-        },
-        benefits: [
-          "Reduce payroll processing time by 75%",
-          "Ensure 100% compliance with regulations",
-          "Automated tax calculations and filings",
-          "Real-time payroll reporting",
-        ],
-      },
-
-      ManufacturingCTASectionAlt: {
-        title: "Ready to Transform Manufacturing?",
-        subtitle: "Optimize your manufacturing operations with NetSuite",
-        description: "Streamline production, inventory, and quality management",
-        ctaButton: {
-          text: "Schedule Manufacturing Demo",
-          link: "/manufacturing/demo",
-          variant: "primary",
-        },
-        benefits: [
-          "Real-time production visibility",
-          "Optimized inventory management",
-          "Quality control automation",
-          "Cost reduction strategies",
-        ],
-      },
-
-      RetailCTASectionAlt: {
-        title: "Ready to Revolutionize Retail?",
-        subtitle: "Transform your retail operations with NetSuite",
-        description: "Unify online and offline retail experiences",
-        ctaButton: {
-          text: "Schedule Retail Demo",
-          link: "/retail/demo",
-          variant: "primary",
-        },
-        benefits: [
-          "Omnichannel retail management",
-          "Real-time inventory tracking",
-          "Customer experience optimization",
-          "Sales performance analytics",
-        ],
-      },
-
-      TrainingCTASectionAlt: {
-        title: "Ready to Enhance Your Skills?",
-        subtitle: "Master NetSuite with our comprehensive training",
-        description: "Empower your team with expert-led training programs",
-        ctaButton: {
-          text: "Enroll in Training",
-          link: "/training/enroll",
-          variant: "primary",
-        },
-        benefits: [
-          "Expert-led training sessions",
-          "Hands-on practical experience",
-          "Certification programs available",
-          "Flexible learning schedules",
-        ],
-      },
-
-      ConsultingCTASection: {
-        title: "Ready for Expert Consultation?",
-        subtitle: "Get strategic guidance for your NetSuite journey",
-        description: "Work with certified NetSuite consultants",
-        ctaButton: {
-          text: "Book Consultation",
-          link: "/consulting/book",
-          variant: "primary",
-        },
-        benefits: [
-          "Strategic business analysis",
-          "Process optimization guidance",
-          "Best practices implementation",
-          "ROI maximization strategies",
-        ],
-      },
-    };
   };
 
   const getDefaultDataForComponent = (componentType) => {
@@ -3801,20 +2488,17 @@ const EnhancedPageBuilder = () => {
         fieldPath,
         value,
         componentIndex,
-        currentContentJson: component.contentJson,
       });
 
       // Parse current content data
       let currentData;
       try {
-        const defaultData = generateDefaultDataFromJSON();
         currentData = component.contentJson
           ? JSON.parse(component.contentJson)
-          : defaultData[component.componentType] || {};
-      } catch (parseError) {
-        console.error("Error parsing component data:", parseError);
-        const defaultData = generateDefaultDataFromJSON();
-        currentData = defaultData[component.componentType] || {};
+          : getDefaultDataForComponent(component.componentType);
+      } catch (error) {
+        console.error("Error parsing component data:", error);
+        currentData = getDefaultDataForComponent(component.componentType);
       }
 
       // Create updated data with the new value
@@ -3823,17 +2507,12 @@ const EnhancedPageBuilder = () => {
 
       console.log("✅ [INPUT CHANGE] Updated data:", updatedData);
 
-      // Update the component with new data - using updateComponent function
-      const updatedComponents = [...pageData.components];
-      updatedComponents[componentIndex] = {
-        ...updatedComponents[componentIndex],
-        contentJson: JSON.stringify(updatedData, null, 2),
-      };
-
-      setPageData((prev) => ({
-        ...prev,
-        components: updatedComponents,
-      }));
+      // Update the component with new data using updateComponent directly
+      updateComponent(
+        componentIndex,
+        "contentJson",
+        JSON.stringify(updatedData, null, 2)
+      );
     }
   };
 
@@ -3845,13 +2524,11 @@ const EnhancedPageBuilder = () => {
       // Parse current content data
       let currentData;
       try {
-        const defaultData = generateDefaultDataFromJSON();
         currentData = component.contentJson
           ? JSON.parse(component.contentJson)
-          : defaultData[component.componentType] || {};
-      } catch (parseError) {
-        const defaultData = generateDefaultDataFromJSON();
-        currentData = defaultData[component.componentType] || {};
+          : getDefaultDataForComponent(component.componentType);
+      } catch (error) {
+        currentData = getDefaultDataForComponent(component.componentType);
       }
 
       const updatedData = { ...currentData };
@@ -3868,16 +2545,11 @@ const EnhancedPageBuilder = () => {
       }
 
       // Update the component with new data
-      const updatedComponents = [...pageData.components];
-      updatedComponents[componentIndex] = {
-        ...updatedComponents[componentIndex],
-        contentJson: JSON.stringify(updatedData, null, 2),
-      };
-
-      setPageData((prev) => ({
-        ...prev,
-        components: updatedComponents,
-      }));
+      updateComponent(
+        componentIndex,
+        "contentJson",
+        JSON.stringify(updatedData, null, 2)
+      );
     }
   };
 
@@ -3889,13 +2561,11 @@ const EnhancedPageBuilder = () => {
       // Parse current content data
       let currentData;
       try {
-        const defaultData = generateDefaultDataFromJSON();
         currentData = component.contentJson
           ? JSON.parse(component.contentJson)
-          : defaultData[component.componentType] || {};
-      } catch (parseError) {
-        const defaultData = generateDefaultDataFromJSON();
-        currentData = defaultData[component.componentType] || {};
+          : getDefaultDataForComponent(component.componentType);
+      } catch (error) {
+        currentData = getDefaultDataForComponent(component.componentType);
       }
 
       const updatedData = { ...currentData };
@@ -3907,16 +2577,1466 @@ const EnhancedPageBuilder = () => {
       }
 
       // Update the component with new data
-      const updatedComponents = [...pageData.components];
-      updatedComponents[componentIndex] = {
-        ...updatedComponents[componentIndex],
+      updateComponent(
+        componentIndex,
+        "contentJson",
+        JSON.stringify(updatedData, null, 2)
+      );
+    }
+  };
+
+  const saveComponentData = (updatedData) => {
+    const componentIndex = editingComponent.index;
+    const updatedComponents = [...pageData.components];
+    const currentComponent = updatedComponents[componentIndex];
+
+    // Update the component with new content data
+    updatedComponents[componentIndex] = {
+      ...currentComponent,
+      content: updatedData,
+      contentJson: JSON.stringify(updatedData, null, 2), // Update contentJson for API
+    };
+
+    // Update local state immediately for responsive UI
+    setPageData((prev) => ({
+      ...prev,
+      components: updatedComponents,
+    }));
+
+    // Make API call to persist changes if component has ID
+    if (currentComponent?.id && pageData.id) {
+      const updateData = {
+        id: currentComponent.id,
+        pageId: pageData.id,
+        componentType: currentComponent.componentType,
+        componentName: currentComponent.componentName || "",
         contentJson: JSON.stringify(updatedData, null, 2),
+        orderIndex:
+          currentComponent.orderIndex !== undefined
+            ? currentComponent.orderIndex
+            : componentIndex,
+        isVisible: Boolean(
+          currentComponent.isVisible === true ||
+            currentComponent.isVisible === 1
+        ),
+        theme: currentComponent.theme === 1 ? 1 : 2,
       };
 
-      setPageData((prev) => ({
-        ...prev,
-        components: updatedComponents,
+      console.log(
+        `🔄 [EDIT SAVE] Updating component ${currentComponent.id} with edited data:`,
+        {
+          componentId: currentComponent.id,
+          updateData,
+          originalData: updatedData,
+        }
+      );
+
+      // Make async API call
+      pagesAPI
+        .updatePageComponent(currentComponent.id, updateData)
+        .then(() => {
+          console.log(
+            `✅ [EDIT SAVE] Component ${currentComponent.id} updated successfully`
+          );
+          showToast("Section data saved successfully", "success");
+        })
+        .catch((error) => {
+          console.error(
+            `❌ [EDIT SAVE] Failed to update component ${currentComponent.id}:`,
+            error
+          );
+          showToast(`Failed to save section data: ${error.message}`, "error");
+
+          // Revert the local changes on API failure
+          setPageData((prevData) => {
+            const revertedComponents = [...prevData.components];
+            revertedComponents[componentIndex] = currentComponent; // Revert to original component
+            return {
+              ...prevData,
+              components: revertedComponents,
+            };
+          });
+        });
+    } else {
+      console.log(
+        `⚠️ [EDIT SAVE] Skipping API update for component without ID:`,
+        {
+          componentId: currentComponent?.id,
+          pageId: pageData.id,
+          reason: !currentComponent?.id
+            ? "Component not saved to database yet"
+            : "No page ID available",
+        }
+      );
+      showToast(
+        "Section data updated locally (will be saved when page is published)",
+        "info"
+      );
+    }
+
+    setShowSectionEditor(false);
+    setEditingComponent(null);
+  };
+
+  // Function to open new input modal
+  const openNewInputModal = (component, componentIndex) => {
+    console.log(
+      "🆕 [NEW MODAL] Opening new input modal for component:",
+      component
+    );
+    setCurrentComponent({
+      ...component,
+      type: component.componentType,
+      index: componentIndex,
+    });
+    setShowNewInputModal(true);
+  };
+
+  // Function to handle delete confirmation
+  const handleDeleteClick = async (componentIndex) => {
+    console.log("🗑️ [DELETE CLICK] Component to delete:", componentIndex);
+    const component = pageData.components[componentIndex];
+
+    try {
+      setLoading(true);
+      console.log("🚀 [DELETE API] Deleting component:", component);
+
+      // Create updated components array without the deleted component
+      const updatedComponents = pageData.components.filter(
+        (_, index) => index !== componentIndex
+      );
+
+      // Update order indices for remaining components
+      const reorderedComponents = updatedComponents.map((comp, index) => ({
+        ...comp,
+        orderIndex: index + 1,
       }));
+
+      // Update page data
+      const updatedPageData = {
+        ...pageData,
+        components: reorderedComponents,
+      };
+
+      setPageData(updatedPageData);
+      showToast("Component deleted successfully", "success");
+
+      console.log("✅ [DELETE API] Component deleted successfully");
+    } catch (error) {
+      console.error("❌ [DELETE API] Error deleting component:", error);
+      showToast("Failed to delete component", "error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Legacy removeComponent function for backward compatibility
+  const removeComponent = (componentIndex) => {
+    handleDeleteClick(componentIndex);
+  };
+
+  const duplicateComponent = (componentIndex) => {
+    const componentToDuplicate = pageData.components[componentIndex];
+    const newComponent = {
+      ...componentToDuplicate,
+      // Don't assign orderIndex here, as it will be handled during save
+    };
+
+    // Add to the components array
+    setPageData((prev) => {
+      const updatedComponents = [...prev.components, newComponent];
+
+      // Re-assign all orderIndex values to ensure they're sequential
+      return {
+        ...prev,
+        components: updatedComponents.map((component, index) => ({
+          ...component,
+          orderIndex: index + 1,
+        })),
+      };
+    });
+
+    showToast("Section duplicated successfully", "success");
+  };
+
+  const moveComponent = (fromIndex, toIndex) => {
+    const components = [...pageData.components];
+    const [movedComponent] = components.splice(fromIndex, 1);
+    components.splice(toIndex, 0, movedComponent);
+
+    // Always re-assign all orderIndex values after reordering to ensure they're sequential
+    const reorderedComponents = components.map((component, index) => ({
+      ...component,
+      orderIndex: index + 1, // Ensure orderIndex values are sequential and 1-based
+    }));
+
+    setPageData((prev) => ({
+      ...prev,
+      components: reorderedComponents,
+    }));
+  };
+
+  const handleSave = async (status = "draft") => {
+    // Prevent multiple simultaneous API calls
+    if (isSavingRef.current) {
+      console.log(
+        "Save operation already in progress, ignoring duplicate call"
+      );
+      return;
+    }
+
+    try {
+      // Mark that we're currently saving
+      isSavingRef.current = true;
+
+      // Set appropriate loading state
+      if (status === "published") {
+        setIsPublishing(true);
+      } else {
+        setLoading(true);
+      }
+
+      // Apply default values to ensure no null, undefined, or empty values
+      const createPageDTO = applyDefaultValues(pageData, status);
+
+      // Validate required fields - use helper function to ensure lock is reset on validation errors
+      const validateAndReturn = (message) => {
+        showToast(message, "error");
+        // Reset states before returning from validation error
+        setLoading(false);
+        setIsPublishing(false);
+        isSavingRef.current = false;
+        return;
+      };
+
+      if (!createPageDTO.name || !createPageDTO.name.trim()) {
+        return validateAndReturn("Page name is required");
+      }
+
+      if (!createPageDTO.categoryId) {
+        return validateAndReturn("Please select a category");
+      }
+
+      // Validate slug format after applying defaults
+      if (!/^[a-z0-9-]+$/.test(createPageDTO.slug)) {
+        return validateAndReturn(
+          "Generated slug contains invalid characters. Please check the page name."
+        );
+      }
+
+      // Validate components and orderIndex uniqueness
+      if (createPageDTO.components && createPageDTO.components.length > 0) {
+        const orderIndexes = new Set();
+        for (let i = 0; i < createPageDTO.components.length; i++) {
+          const comp = createPageDTO.components[i];
+
+          // Check component type
+          if (!comp.componentType?.trim()) {
+            return validateAndReturn(
+              "Component " + (i + 1) + " is missing component type"
+            );
+          }
+
+          // Check component name
+          if (!comp.componentName?.trim()) {
+            return validateAndReturn(
+              "Component " + (i + 1) + " is missing component name"
+            );
+          }
+
+          // Check content
+          if (!comp.content || typeof comp.content !== "object") {
+            return validateAndReturn(
+              "Component " + (i + 1) + " has invalid content"
+            );
+          }
+
+          // Check orderIndex uniqueness
+          const orderIndex = comp.orderIndex;
+          if (orderIndexes.has(orderIndex)) {
+            return validateAndReturn(
+              "Duplicate order index found: " +
+                orderIndex +
+                ". Each component must have a unique order index."
+            );
+          }
+          orderIndexes.add(orderIndex);
+        }
+      }
+
+      console.log("🚀 Final data being sent to API:", createPageDTO);
+      console.log("📊 Component summary:", {
+        totalComponents: createPageDTO.components?.length || 0,
+        componentTypes:
+          createPageDTO.components?.map((c) => c.componentType) || [],
+        orderIndexes: createPageDTO.components?.map((c) => c.orderIndex) || [],
+      });
+
+      // Make the API call to create page with components
+      await pagesAPI.createPage(createPageDTO);
+      console.log("✅ Page created successfully!");
+
+      // Show appropriate success message based on status
+      if (status === "published") {
+        showToast("Page published successfully", "success");
+      } else {
+        showToast(
+          'Page "' + createPageDTO.name + '" saved as draft successfully!',
+          "success"
+        );
+      }
+
+      // Navigate to pages management after a brief delay
+      setTimeout(() => {
+        navigate("/admin/pages");
+      }, 1500);
+    } catch (error) {
+      console.error("❌ Failed to save page:", error);
+      showToast(error.message || "Failed to save page", "error");
+    } finally {
+      // Reset loading states and save lock
+      setLoading(false);
+      setIsPublishing(false);
+      isSavingRef.current = false;
+    }
+  };
+
+  const isStepValid = (step) => {
+    switch (step) {
+      case 1:
+        // Require category selection
+        return (
+          pageData.categoryId !== null && pageData.categoryId !== undefined
+        );
+      case 2:
+        // Page details can be empty; defaults will be applied
+        return true;
+      case 3:
+        // Sections optional
+        return true;
+      case 4:
+        // Review step always valid
+        return true;
+      default:
+        return false;
+    }
+  };
+
+  const renderStepContent = () => {
+    switch (currentStep) {
+      case 1:
+        return (
+          <Card className="bg-white/5 backdrop-blur-sm border border-white/10 shadow-xl">
+            <CardHeader>
+              <CardTitle className="text-white text-xl font-bold">
+                Category
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CategorySelector
+                value={pageData.categoryId}
+                onChange={(id) => handlePageDataChange("categoryId", id)}
+              />
+              {!pageData.categoryId && (
+                <div className="mt-3 text-xs text-red-300">
+                  Please select a category to continue.
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        );
+      case 2:
+        return (
+          <PageDetailsStep
+            pageData={pageData}
+            onDataChange={handlePageDataChange}
+          />
+        );
+      case 3:
+        return (
+          <SectionsStep
+            pageData={pageData}
+            availableComponents={availableComponents}
+            onAddComponent={addComponent}
+            onUpdateComponent={updateComponent}
+            onRemoveComponent={removeComponent}
+            onDuplicateComponent={duplicateComponent}
+            onMoveComponent={moveComponent}
+            componentSchemas={componentSchemas}
+            showNewInputModal={showNewInputModal}
+            setShowNewInputModal={setShowNewInputModal}
+            currentComponent={currentComponent}
+            openNewInputModal={openNewInputModal}
+            useNewInputSystemState={useNewInputSystemState}
+            setUseNewInputSystemState={setUseNewInputSystemState}
+          />
+        );
+      case 4:
+        return (
+          <ReviewStep
+            pageData={pageData}
+            onSave={handleSave}
+            loading={loading}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <MediaInputDetector>
+      <div
+        className="admin-component min-h-screen bg-[var(--color-brand-dark-navy)] relative overflow-hidden"
+        data-dashboard="true"
+      >
+        <div className="relative z-10 p-6">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold text-[var(--color-text-inverse)] mb-4 tracking-tight">
+              Enhanced Page Builder
+            </h1>
+            <p className="text-lg text-[var(--color-text-secondary)] leading-relaxed">
+              Create dynamic pages with customizable sections and rich content
+            </p>
+          </div>
+
+          {/* Progress Bar */}
+          <div className="mb-10">
+            <div className="w-full h-2 bg-[var(--color-text-secondary)] rounded-full overflow-hidden">
+              <div
+                className="h-full bg-[var(--color-primary)] transition-all duration-500"
+                style={{
+                  width: `${
+                    ((currentStep - 1) / (steps.length - 1)) * 100 || 0
+                  }%`,
+                }}
+              />
+            </div>
+            <div
+              className="mt-4 grid"
+              style={{
+                gridTemplateColumns: `repeat(${steps.length}, minmax(0, 1fr))`,
+              }}
+            >
+              {steps.map((step) => {
+                const isCompleted = step.id < currentStep;
+                const isCurrent = step.id === currentStep;
+                const isFuture = step.id > currentStep;
+
+                return (
+                  <div
+                    key={step.id}
+                    className="flex items-start space-x-3 group"
+                  >
+                    {/* Interactive Step Circle */}
+                    <button
+                      onClick={() => handleStepClick(step.id)}
+                      disabled={isFuture}
+                      className={`
+                        flex items-center justify-center w-9 h-9 rounded-full border-2 
+                        transition-all duration-200 transform
+                        ${
+                          isCompleted
+                            ? "bg-[var(--tw-green-500)] border-[var(--tw-green-500)] text-[var(--color-text-inverse)] cursor-pointer hover:bg-[var(--tw-green-600)] hover:border-[var(--tw-green-600)] hover:scale-110 shadow-lg shadow-[var(--tw-green-500)]/25"
+                            : isCurrent
+                            ? "bg-[var(--color-primary)] border-[var(--color-primary)] text-[var(--color-text-inverse)] cursor-default shadow-lg shadow-[var(--color-primary)]/25"
+                            : "bg-transparent border-[var(--color-text-secondary)] text-[var(--color-text-light)] cursor-not-allowed"
+                        }
+                        group-hover:shadow-lg
+                      `}
+                      title={
+                        isCompleted
+                          ? `Go back to ${step.title}`
+                          : isCurrent
+                          ? `Current step: ${step.title}`
+                          : `Complete current steps first`
+                      }
+                    >
+                      {isCompleted ? (
+                        <CheckIcon className="h-5 w-5" />
+                      ) : (
+                        <span className="text-xs font-semibold">{step.id}</span>
+                      )}
+                    </button>
+
+                    {/* Step Info with Enhanced Styling */}
+                    <div className="flex-1 min-w-0 transition-all duration-200">
+                      <div
+                        className={`
+                          text-sm font-semibold transition-colors duration-200
+                          ${
+                            isCompleted
+                              ? "text-[var(--tw-green-400)] group-hover:text-[var(--tw-green-300)]"
+                              : isCurrent
+                              ? "text-[var(--color-primary-light)]"
+                              : "text-[var(--color-text-light)]"
+                          }
+                        `}
+                      >
+                        {step.title}
+                      </div>
+                      <div
+                        className={`
+                          text-xs transition-colors duration-200
+                          ${
+                            isCompleted
+                              ? "text-[var(--tw-green-300)]"
+                              : isCurrent
+                              ? "text-[var(--color-primary-light)]"
+                              : "text-[var(--color-text-muted)]"
+                          }
+                        `}
+                      >
+                        {step.description}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Step Content */}
+          <div className="w-full">{renderStepContent()}</div>
+
+          {/* Navigation */}
+          <div className="flex items-center justify-between w-full mt-8">
+            <Button
+              variant="outline"
+              onClick={handlePrevious}
+              disabled={currentStep === 1}
+              className="bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-[var(--color-text-inverse)] hover:bg-[var(--color-white-20)] hover:border-[var(--color-white-30)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Previous
+            </Button>
+
+            <div className="flex items-center space-x-4">
+              <Button
+                variant="outline"
+                onClick={() => navigate("/admin/pages")}
+                className="bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-[var(--color-text-inverse)] hover:bg-[var(--color-white-20)] hover:border-[var(--color-white-30)] transition-all duration-200"
+              >
+                Cancel
+              </Button>
+
+              {currentStep >= 2 && pageData.components.length > 0 && (
+                <Button
+                  variant="outline"
+                  onClick={() => setShowPagePreview(true)}
+                  className="bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-[var(--color-text-inverse)] hover:bg-[var(--color-primary)]/20 hover:border-[var(--color-primary-light)] transition-all duration-200"
+                >
+                  <EyeIcon className="h-4 w-4 mr-2" />
+                  Preview Page
+                </Button>
+              )}
+
+              {currentStep < steps.length ? (
+                <Button
+                  onClick={handleNext}
+                  disabled={!isStepValid(currentStep)}
+                  className="bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] hover:from-[var(--color-primary-dark)] hover:to-[var(--color-active)] text-[var(--color-text-inverse)] shadow-lg shadow-[var(--color-primary)]/25 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Next
+                </Button>
+              ) : (
+                <div className="flex space-x-3">
+                  <Button
+                    variant="outline"
+                    onClick={() => handleSave("draft")}
+                    loading={loading && !isPublishing}
+                    disabled={
+                      !isStepValid(currentStep) || isPublishing || loading
+                    }
+                    className="bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-[var(--color-text-inverse)] hover:bg-[var(--color-white-20)] hover:border-[var(--color-white-30)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {loading && !isPublishing ? "Saving..." : "Save as Draft"}
+                  </Button>
+                  <Button
+                    onClick={() => handleSave("published")}
+                    loading={isPublishing}
+                    disabled={
+                      !isStepValid(currentStep) || isPublishing || loading
+                    }
+                    className="bg-gradient-to-r from-[var(--tw-green-500)] to-[var(--tw-green-600)] hover:from-[var(--tw-green-600)] hover:to-[var(--tw-green-700)] text-[var(--color-text-inverse)] shadow-lg shadow-[var(--tw-green-500)]/25 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isPublishing ? "Publishing..." : "Publish Page"}
+                  </Button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Section Data Editor Modal */}
+        {showSectionEditor && editingComponent && (
+          <Modal
+            isOpen={showSectionEditor}
+            onClose={() => {
+              setShowSectionEditor(false);
+              setEditingComponent(null);
+            }}
+            title={`Configure ${editingComponent.componentName}`}
+            maxWidth="4xl"
+          >
+            <div className="p-6">
+              {/* Toggle between old and new input system */}
+              <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-900">
+                      Input System
+                    </h3>
+                    <p className="text-sm text-gray-500">
+                      Choose between legacy and new component-specific input
+                      system
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setUseNewInputSystem(!useNewInputSystem)}
+                    className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                      useNewInputSystem ? "bg-blue-600" : "bg-gray-200"
+                    }`}
+                  >
+                    <span
+                      className={`inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                        useNewInputSystem ? "translate-x-5" : "translate-x-0"
+                      }`}
+                    />
+                  </button>
+                </div>
+                <div className="mt-2">
+                  <span className="text-xs text-gray-600">
+                    {useNewInputSystem
+                      ? "Using New Component-Specific System"
+                      : "Using Legacy System"}
+                  </span>
+                </div>
+              </div>
+
+              {/* Conditional rendering based on system choice */}
+              {useNewInputSystem ? (
+                <div className="space-y-6">
+                  <div className="border-b border-gray-200 pb-4">
+                    <h3 className="text-lg font-medium text-gray-900">
+                      {editingComponent.componentName} Configuration
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      Configure component-specific settings and data
+                    </p>
+                  </div>
+
+                  {/* Dynamic inputs based on component data structure */}
+                  <div className="max-h-96 overflow-y-auto">
+                    {(() => {
+                      try {
+                        const componentData = editingComponent.contentJson
+                          ? JSON.parse(editingComponent.contentJson)
+                          : getDefaultDataForComponent(
+                              editingComponent.componentType
+                            );
+
+                        const componentIndex = pageData.components.findIndex(
+                          (comp) => comp.id === editingComponent.id
+                        );
+
+                        return renderDynamicInputs(
+                          componentData,
+                          "",
+                          0,
+                          componentIndex
+                        );
+                      } catch (error) {
+                        console.error("Error rendering dynamic inputs:", error);
+                        const defaultData = getDefaultDataForComponent(
+                          editingComponent.componentType
+                        );
+                        const componentIndex = pageData.components.findIndex(
+                          (comp) => comp.id === editingComponent.id
+                        );
+                        return renderDynamicInputs(
+                          defaultData,
+                          "",
+                          0,
+                          componentIndex
+                        );
+                      }
+                    })()}
+                  </div>
+                </div>
+              ) : (
+                <SectionDataEditor
+                  isOpen={true}
+                  onClose={() => {}}
+                  section={{
+                    name: editingComponent.componentName,
+                    componentId: editingComponent.componentType,
+                    icon: editingComponent.componentInfo?.icon || "📄",
+                    data:
+                      editingComponent.content ||
+                      (editingComponent.contentJson
+                        ? JSON.parse(editingComponent.contentJson)
+                        : {}),
+                  }}
+                  onSave={saveComponentData}
+                />
+              )}
+            </div>
+
+            <ModalFooter>
+              <Button
+                variant="secondary"
+                onClick={() => {
+                  setShowSectionEditor(false);
+                  setEditingComponent(null);
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="primary"
+                onClick={() => {
+                  setShowSectionEditor(false);
+                  setEditingComponent(null);
+                }}
+              >
+                Save Changes
+              </Button>
+            </ModalFooter>
+          </Modal>
+        )}
+
+        {/* Page Preview Modal */}
+        <PagePreview
+          isOpen={showPagePreview}
+          onClose={() => setShowPagePreview(false)}
+          pageData={pageData}
+          availableComponents={availableComponents}
+        />
+
+        {/* Toast Notification */}
+        {toast && (
+          <Toast
+            message={toast.message}
+            type={toast.type}
+            onClose={() => setToast(null)}
+          />
+        )}
+      </div>
+    </MediaInputDetector>
+  );
+};
+
+// Category selector that fetches from backend swagger endpoints
+const CategorySelector = ({ value, onChange }) => {
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const res = await api.get("/Categories");
+        const list = Array.isArray(res.data) ? res.data : [];
+
+        // Filter out "Home" and "About" categories
+        const filteredList = list.filter((category) => {
+          const name = category.name?.toLowerCase();
+          const slug = category.slug?.toLowerCase();
+          return (
+            name !== "home" &&
+            name !== "about" &&
+            slug !== "home" &&
+            slug !== "about"
+          );
+        });
+
+        setCategories(filteredList);
+      } catch (e) {
+        setError(e.message || "Failed to load categories");
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
+  }, []);
+
+  if (loading) {
+    return <div className="text-white/80 text-sm">Loading categories...</div>;
+  }
+  if (error) {
+    return <div className="text-red-300 text-sm">{error}</div>;
+  }
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      {categories.map((c) => (
+        <button
+          key={c.id}
+          onClick={() => onChange(c.id)}
+          className={`text-left p-4 rounded-lg border transition ${
+            value === c.id
+              ? "border-[var(--color-primary-light)] bg-[var(--color-primary)]/10"
+              : "border-[var(--color-white-10)] hover:border-[var(--color-white-20)] bg-[var(--color-white)]/5"
+          }`}
+        >
+          <div className="text-[var(--color-text-inverse)] font-semibold">
+            {c.name}
+          </div>
+          {c.description && (
+            <div className="text-[var(--color-text-inverse)]/70 text-sm mt-1">
+              {c.description}
+            </div>
+          )}
+        </button>
+      ))}
+    </div>
+  );
+};
+
+// Step 1: Page Details
+const PageDetailsStep = ({ pageData, onDataChange }) => {
+  return (
+    <Card className="bg-[var(--color-white)]/5 backdrop-blur-sm border border-[var(--color-white-10)] shadow-xl">
+      <CardHeader>
+        <CardTitle className="text-[var(--color-text-inverse)] text-xl font-bold">
+          Page Details
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-semibold text-[var(--color-text-inverse)] mb-2">
+              Page Name *
+            </label>
+            <Input
+              value={pageData.name}
+              onChange={(e) => onDataChange("name", e.target.value)}
+              placeholder="Enter page name"
+              className="w-full bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-[var(--color-text-inverse)] placeholder-[var(--color-text-inverse)]/50 focus:border-[var(--color-primary-light)] focus:ring-[var(--color-primary-light)]/20"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-[var(--color-text-inverse)] mb-2">
+              URL Slug *
+            </label>
+            <Input
+              type="text"
+              value={pageData.slug}
+              onChange={(e) => onDataChange("slug", e.target.value)}
+              placeholder="page-url-slug"
+              pattern="[a-z0-9-]+"
+              title="Slug must only contain lowercase letters, numbers, and dashes."
+              className="w-full bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-[var(--color-text-inverse)] placeholder-[var(--color-text-inverse)]/50 focus:border-[var(--color-primary-light)] focus:ring-[var(--color-primary-light)]/20"
+            />
+            <p className="text-sm text-[var(--color-text-secondary)] mt-2">
+              URL: /{pageData.slug || "page-url-slug"}
+            </p>
+            <p className="text-xs text-[var(--color-text-light)] mt-1">
+              Slug must only contain lowercase letters, numbers, and dashes.
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-semibold text-[var(--color-text-inverse)] mb-2">
+              SEO Meta Title
+            </label>
+            <Input
+              value={pageData.metaTitle}
+              onChange={(e) => onDataChange("metaTitle", e.target.value)}
+              placeholder="SEO title for search engines"
+              className="w-full bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-[var(--color-text-inverse)] placeholder-[var(--color-text-inverse)]/50 focus:border-[var(--color-primary-light)] focus:ring-[var(--color-primary-light)]/20"
+            />
+          </div>
+          <div></div>
+        </div>
+
+        <div>
+          <label className="block text-sm font-semibold text-[var(--color-text-inverse)] mb-2">
+            SEO Meta Description
+          </label>
+          <textarea
+            value={pageData.metaDescription}
+            onChange={(e) => onDataChange("metaDescription", e.target.value)}
+            placeholder="SEO description for search engines"
+            rows={3}
+            className="block w-full rounded-lg bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-[var(--color-text-inverse)] placeholder-[var(--color-text-inverse)]/50 focus:border-[var(--color-primary-light)] focus:ring-[var(--color-primary-light)]/20 shadow-sm resize-none"
+          />
+        </div>
+
+        <div className="flex items-center space-x-4">
+          <label className="flex items-center">
+            <input
+              type="checkbox"
+              checked={pageData.isHomepage}
+              onChange={(e) => onDataChange("isHomepage", e.target.checked)}
+              className="h-4 w-4 text-[var(--color-primary)] focus:ring-[var(--color-primary)] border-[var(--color-border-secondary)] rounded"
+            />
+            <span className="ml-2 text-sm text-[var(--color-text-inverse)]">
+              Set as Homepage
+            </span>
+          </label>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+// Step 2: Sections with detailed component forms
+const SectionsStep = ({
+  pageData,
+  availableComponents,
+  onAddComponent,
+  onUpdateComponent,
+  onRemoveComponent,
+  onDuplicateComponent,
+  componentSchemas = {},
+  // New Input System Props
+  showNewInputModal,
+  setShowNewInputModal,
+  currentComponent,
+  openNewInputModal,
+  useNewInputSystemState,
+  setUseNewInputSystemState,
+}) => {
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isEditMode, setIsEditMode] = useState(true);
+
+  // Handle real-time updates from modal inputs
+  const handleModalInputChange = (field, value, componentIndex) => {
+    console.log(
+      `🔄 [MODAL UPDATE] Component ${componentIndex}, Field: ${field}, Value:`,
+      value
+    );
+
+    // Get current component data
+    const currentData = pageData.components[componentIndex];
+
+    // Parse existing contentJson or create new object
+    let updatedContent = {};
+    try {
+      updatedContent = currentData.contentJson
+        ? JSON.parse(currentData.contentJson)
+        : {};
+    } catch (error) {
+      console.warn(
+        "Failed to parse contentJson, creating new object:",
+        error.message
+      );
+      updatedContent = {};
+    }
+
+    // Update the field
+    updatedContent[field] = value;
+
+    // Convert back to JSON and update component
+    const newContentJson = JSON.stringify(updatedContent, null, 2);
+    onUpdateComponent(componentIndex, "contentJson", newContentJson);
+
+    console.log(
+      `✅ [MODAL UPDATE] Component ${componentIndex} updated with:`,
+      updatedContent
+    );
+  };
+
+  // Simple renderDynamicInputs function for the modal
+  const renderDynamicInputs = (
+    data,
+    fieldPath = "",
+    level = 0,
+    componentIndex
+  ) => {
+    if (!data || typeof data !== "object") {
+      return <div>No configuration available for this component</div>;
+    }
+
+    return (
+      <div className="space-y-4">
+        {Object.entries(data).map(([key, value]) => (
+          <div key={key} className="border border-gray-200 p-3 rounded">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              {key}
+            </label>
+            {typeof value === "string" && (
+              <input
+                type="text"
+                defaultValue={value}
+                onChange={(e) =>
+                  handleModalInputChange(key, e.target.value, componentIndex)
+                }
+                className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+              />
+            )}
+            {typeof value === "boolean" && (
+              <input
+                type="checkbox"
+                defaultChecked={value}
+                onChange={(e) =>
+                  handleModalInputChange(key, e.target.checked, componentIndex)
+                }
+                className="h-4 w-4 text-blue-600"
+              />
+            )}
+            {Array.isArray(value) && (
+              <div className="space-y-2">
+                <div className="text-sm text-gray-600">
+                  Array with {value.length} items
+                </div>
+                <button className="px-2 py-1 bg-blue-500 text-white rounded text-sm">
+                  Add Item
+                </button>
+              </div>
+            )}
+            {typeof value === "object" &&
+              value !== null &&
+              !Array.isArray(value) && (
+                <div className="pl-4 border-l-2 border-gray-200">
+                  {renderDynamicInputs(
+                    value,
+                    `${fieldPath}.${key}`,
+                    level + 1,
+                    componentIndex
+                  )}
+                </div>
+              )}
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  // Dynamic category generation based on available components
+  const categories = React.useMemo(() => {
+    // Get components that match search term (if any)
+    const searchFilteredComponents = searchTerm.trim()
+      ? availableComponents.filter((comp) => {
+          const search = searchTerm.toLowerCase().trim();
+          return (
+            comp.name.toLowerCase().includes(search) ||
+            comp.componentType.toLowerCase().includes(search) ||
+            comp.category.toLowerCase().includes(search) ||
+            comp.description.toLowerCase().includes(search)
+          );
+        })
+      : availableComponents;
+
+    // Count components per category (considering search filter)
+    const categoryCounts = {};
+    searchFilteredComponents.forEach((comp) => {
+      categoryCounts[comp.category] = (categoryCounts[comp.category] || 0) + 1;
+    });
+
+    // Start with "All Components"
+    const dynamicCategories = [
+      {
+        id: "all",
+        name: "All Components",
+        icon: "📄",
+        count: searchFilteredComponents.length,
+      },
+    ];
+
+    // Extract unique categories from available components
+    const uniqueCategories = [
+      ...new Set(
+        availableComponents
+          .map((comp) => comp.category)
+          .filter((category) => category && category !== "all")
+      ),
+    ];
+
+    // Define category icons and display names
+    const categoryConfig = {
+      layout: { name: "Layout", icon: "🎯" },
+      content: { name: "Content", icon: "📝" },
+      pricing: { name: "Pricing", icon: "💰" },
+      faq: { name: "FAQ", icon: "❓" },
+      cta: { name: "Call to Action", icon: "🚀" },
+      about: { name: "About", icon: "👥" },
+      hero: { name: "Hero", icon: "🌟" },
+      solution: { name: "Solution", icon: "⚡" },
+      services: { name: "Services", icon: "🔧" },
+      industry: { name: "Industry", icon: "🏭" },
+      features: { name: "Features", icon: "✨" },
+      testimonials: { name: "Testimonials", icon: "💬" },
+      contact: { name: "Contact", icon: "📞" },
+      team: { name: "Team", icon: "👥" },
+      portfolio: { name: "Portfolio", icon: "🎨" },
+      blog: { name: "Blog", icon: "📰" },
+      footer: { name: "Footer", icon: "🔗" },
+      header: { name: "Header", icon: "📋" },
+      navigation: { name: "Navigation", icon: "🧭" },
+    };
+
+    // Sort categories by count (descending) for better UX
+    const sortedCategories = uniqueCategories.sort(
+      (a, b) => (categoryCounts[b] || 0) - (categoryCounts[a] || 0)
+    );
+
+    // Add categories that exist in components
+    sortedCategories.forEach((categoryId) => {
+      const config = categoryConfig[categoryId] || {
+        name: categoryId.charAt(0).toUpperCase() + categoryId.slice(1),
+        icon: "📦",
+      };
+
+      dynamicCategories.push({
+        id: categoryId,
+        name: config.name,
+        icon: config.icon,
+        count: categoryCounts[categoryId] || 0,
+      });
+    });
+
+    return dynamicCategories;
+  }, [availableComponents, searchTerm]);
+
+  return (
+    <div className="space-y-6">
+      {/* Available Components */}
+      <Card className="bg-white/5 backdrop-blur-sm border border-white/10 shadow-xl">
+        <CardHeader>
+          <CardTitle className="text-white text-xl font-bold">
+            Available Components
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {availableComponents.map((component) => (
+              <div
+                key={component.id}
+                className="p-4 border border-white/20 rounded-xl cursor-pointer hover:bg-white/10 hover:border-white/30 transition-all duration-200 group"
+                onClick={() => onAddComponent(component)}
+              >
+                <div className="flex items-center space-x-3">
+                  <div className="text-2xl group-hover:scale-110 transition-transform duration-200">
+                    {component.icon}
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="text-base font-semibold text-white mb-1">
+                      {component.name}
+                    </h4>
+                    <p className="text-sm text-gray-300 leading-relaxed">
+                      {component.description}
+                    </p>
+                    <div className="mt-2">
+                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-500/20 text-blue-300">
+                        {component.category}
+                      </span>
+                    </div>
+                  </div>
+                  <PlusIcon className="h-5 w-5 text-white/60 group-hover:text-white transition-colors" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+// Step 3: Review
+const ReviewStep = ({ pageData }) => {
+  const [isEditMode, setIsEditMode] = useState(true);
+
+  return (
+    <div className="space-y-6">
+      {/* Page Summary */}
+      <Card className="bg-white/5 backdrop-blur-sm border border-white/10 shadow-xl">
+        <CardHeader>
+          <CardTitle className="text-white text-xl font-bold">
+            Page Summary
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-400 mb-1">
+                Page Name
+              </label>
+              <p className="text-white font-semibold">{pageData.name}</p>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-400 mb-1">
+                URL Slug
+              </label>
+              <p className="text-white font-semibold">/{pageData.slug}</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+export default EnhancedPageBuilder;
+
+  // Helper function to set nested object values
+  const setNestedValue = (obj, path, value) => {
+    const keys = path.split(".");
+    const lastKey = keys.pop();
+    const target = keys.reduce((acc, key) => {
+      // Handle array indices
+      if (key.includes("[") && key.includes("]")) {
+        const [arrayKey, indexStr] = key.split("[");
+        const index = parseInt(indexStr.replace("]", ""));
+        if (!acc[arrayKey]) acc[arrayKey] = [];
+        if (!acc[arrayKey][index]) acc[arrayKey][index] = {};
+        return acc[arrayKey][index];
+      }
+      if (!acc[key]) acc[key] = {};
+      return acc[key];
+    }, obj);
+
+    if (lastKey.includes("[") && lastKey.includes("]")) {
+      const [arrayKey, indexStr] = lastKey.split("[");
+      const index = parseInt(indexStr.replace("]", ""));
+      if (!target[arrayKey]) target[arrayKey] = [];
+      target[arrayKey][index] = value;
+    } else {
+      target[lastKey] = value;
+    }
+
+    return obj;
+  };
+
+  // Dynamic Input Generator for component-specific data
+  const renderDynamicInputs = (
+    data,
+    prefix = "",
+    level = 0,
+    componentIndex = null
+  ) => {
+    if (!data || typeof data !== "object") return null;
+
+    return Object.entries(data).map(([key, value]) => {
+      const fieldPath = prefix ? `${prefix}.${key}` : key;
+      const indentClass = level > 0 ? `ml-${level * 4}` : "";
+
+      if (Array.isArray(value)) {
+        return (
+          <div key={fieldPath} className={`mb-4 ${indentClass}`}>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              {key.charAt(0).toUpperCase() +
+                key.slice(1).replace(/([A-Z])/g, " $1")}{" "}
+              (Array)
+            </label>
+            <div className="border border-gray-200 rounded-lg p-3 bg-gray-50">
+              {value.map((item, index) => (
+                <div
+                  key={`${fieldPath}[${index}]`}
+                  className="mb-3 p-2 border border-gray-100 rounded bg-white"
+                >
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-xs font-medium text-gray-600">
+                      Item {index + 1}
+                    </span>
+                    <button
+                      onClick={() =>
+                        handleRemoveArrayItem(fieldPath, index, componentIndex)
+                      }
+                      className="text-red-500 hover:text-red-700 text-xs px-2 py-1 rounded hover:bg-red-50"
+                      type="button"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                  {renderDynamicInputs(
+                    item,
+                    `${fieldPath}[${index}]`,
+                    level + 1,
+                    componentIndex
+                  )}
+                </div>
+              ))}
+              <button
+                onClick={() =>
+                  handleAddArrayItem(fieldPath, value[0] || {}, componentIndex)
+                }
+                className="mt-2 px-3 py-1 bg-blue-500 text-white rounded text-sm hover:bg-blue-600"
+                type="button"
+              >
+                Add {key.slice(0, -1)} {/* Remove 's' from plural */}
+              </button>
+            </div>
+          </div>
+        );
+      }
+
+      if (typeof value === "object" && value !== null) {
+        return (
+          <div key={fieldPath} className={`mb-4 ${indentClass}`}>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              {key.charAt(0).toUpperCase() +
+                key.slice(1).replace(/([A-Z])/g, " $1")}
+            </label>
+            <div className="border border-gray-200 rounded-lg p-3 bg-gray-50">
+              {renderDynamicInputs(value, fieldPath, level + 1, componentIndex)}
+            </div>
+          </div>
+        );
+      }
+
+      // Handle primitive values (string, number, boolean)
+      return (
+        <div key={fieldPath} className={`mb-4 ${indentClass}`}>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            {key.charAt(0).toUpperCase() +
+              key.slice(1).replace(/([A-Z])/g, " $1")}
+          </label>
+          {typeof value === "boolean" ? (
+            <input
+              type="checkbox"
+              checked={value}
+              onChange={(e) =>
+                handleInputChange(fieldPath, e.target.checked, componentIndex)
+              }
+              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+            />
+          ) : value && typeof value === "string" && value.length > 100 ? (
+            <textarea
+              value={value}
+              onChange={(e) =>
+                handleInputChange(fieldPath, e.target.value, componentIndex)
+              }
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              rows={3}
+            />
+          ) : (
+            <input
+              type={typeof value === "number" ? "number" : "text"}
+              value={value || ""}
+              onChange={(e) =>
+                handleInputChange(
+                  fieldPath,
+                  typeof value === "number"
+                    ? Number(e.target.value)
+                    : e.target.value,
+                  componentIndex
+                )
+              }
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder={`Enter ${key
+                .replace(/([A-Z])/g, " $1")
+                .toLowerCase()}`}
+            />
+          )}
+        </div>
+      );
+    });
+  };
+
+  // Handle input changes with real-time preview update
+  const handleInputChange = (fieldPath, value, componentIndex) => {
+    if (componentIndex !== null && pageData.components[componentIndex]) {
+      const component = pageData.components[componentIndex];
+
+      console.log("🔄 [INPUT CHANGE]", {
+        componentType: component.componentType,
+        fieldPath,
+        value,
+        componentIndex,
+      });
+
+      // Parse current content data
+      let currentData;
+      try {
+        currentData = component.contentJson
+          ? JSON.parse(component.contentJson)
+          : getDefaultDataForComponent(component.componentType);
+      } catch (error) {
+        console.error("Error parsing component data:", error);
+        currentData = getDefaultDataForComponent(component.componentType);
+      }
+
+      // Create updated data with the new value
+      const updatedData = { ...currentData };
+      setNestedValue(updatedData, fieldPath, value);
+
+      console.log("✅ [INPUT CHANGE] Updated data:", updatedData);
+
+      // Update the component with new data using updateComponent directly
+      updateComponent(
+        componentIndex,
+        "contentJson",
+        JSON.stringify(updatedData, null, 2)
+      );
+    }
+  };
+
+  // Handle adding new array items
+  const handleAddArrayItem = (fieldPath, templateItem = {}, componentIndex) => {
+    if (componentIndex !== null && pageData.components[componentIndex]) {
+      const component = pageData.components[componentIndex];
+
+      // Parse current content data
+      let currentData;
+      try {
+        currentData = component.contentJson
+          ? JSON.parse(component.contentJson)
+          : getDefaultDataForComponent(component.componentType);
+      } catch (error) {
+        currentData = getDefaultDataForComponent(component.componentType);
+      }
+
+      const updatedData = { ...currentData };
+      const keys = fieldPath.split(".");
+      const target = keys.reduce((acc, key) => {
+        if (!acc[key]) acc[key] = [];
+        return acc[key];
+      }, updatedData);
+
+      if (Array.isArray(target)) {
+        target.push(
+          typeof templateItem === "object" ? { ...templateItem } : templateItem
+        );
+      }
+
+      // Update the component with new data
+      handleComponentUpdate(
+        componentIndex,
+        "contentJson",
+        JSON.stringify(updatedData, null, 2)
+      );
+    }
+  };
+
+  // Handle removing array items
+  const handleRemoveArrayItem = (fieldPath, index, componentIndex) => {
+    if (componentIndex !== null && pageData.components[componentIndex]) {
+      const component = pageData.components[componentIndex];
+
+      // Parse current content data
+      let currentData;
+      try {
+        currentData = component.contentJson
+          ? JSON.parse(component.contentJson)
+          : getDefaultDataForComponent(component.componentType);
+      } catch (error) {
+        currentData = getDefaultDataForComponent(component.componentType);
+      }
+
+      const updatedData = { ...currentData };
+      const keys = fieldPath.split(".");
+      const target = keys.reduce((acc, key) => acc[key], updatedData);
+
+      if (Array.isArray(target)) {
+        target.splice(index, 1);
+      }
+
+      // Update the component with new data
+      handleComponentUpdate(
+        componentIndex,
+        "contentJson",
+        JSON.stringify(updatedData, null, 2)
+      );
     }
   };
   const saveComponentData = (updatedData) => {
@@ -5616,7 +5736,7 @@ const SectionsStep = ({
                                               },
                                             ],
                                           },
-                                          AboutJourneySectionAlt2: {
+                                          AboutJourneySection: {
                                             beginningTitle: "The Beginning",
                                             beginningText:
                                               "Founded in 2008 with a vision to bridge the gap between complex enterprise software and real business needs. Our founders recognized that many businesses were struggling to fully leverage their technology investments.",
@@ -5628,7 +5748,7 @@ const SectionsStep = ({
                                               "We continue to innovate and expand our services, staying at the forefront of technology trends while maintaining our core values of excellence and integrity.",
                                             imageUrl: "/images/solution.jpg",
                                           },
-                                          AboutMissionSectionAlt2: {
+                                          AboutMissionSection: {
                                             title: "Our Mission",
                                             description:
                                               "To empower businesses with innovative technology solutions that transform operations, enhance productivity, and drive sustainable growth.",
@@ -5638,7 +5758,7 @@ const SectionsStep = ({
                                             stats: [],
                                             missionPoints: [],
                                           },
-                                          AboutTeamSectionAlt2: {
+                                          AboutTeamSection: {
                                             title: "Meet Our Team",
                                             description:
                                               "Our diverse team of experts brings together decades of experience in enterprise software, business consulting, and digital transformation.",
@@ -5682,7 +5802,7 @@ const SectionsStep = ({
                                               },
                                             ],
                                           },
-                                          AboutValuesSectionAlt2: {
+                                          AboutValuesSection: {
                                             title: "Our Values",
                                             description:
                                               "These core values guide everything we do and shape how we interact with our clients, partners, and each other.",
@@ -5764,7 +5884,7 @@ const SectionsStep = ({
                                               },
                                             ],
                                           },
-                                          AboutDifferentiatorsSectionAlt2: {
+                                          AboutDifferentiatorsSection: {
                                             title: "What Sets Us Apart",
                                             description:
                                               "Our unique combination of expertise, methodology, and commitment to excellence makes us the preferred choice for Oracle NetSuite implementations.",
@@ -6484,15 +6604,10 @@ const SectionsStep = ({
                   🎯 Component-Specific Configuration
                 </h5>
                 {renderDynamicInputs(
-                  (() => {
-                    try {
-                      return currentComponent.contentJson
-                        ? JSON.parse(currentComponent.contentJson)
-                        : {};
-                    } catch (error) {
-                      return {};
-                    }
-                  })(),
+                  getDefaultDataForComponent(
+                    currentComponent.componentName ||
+                      currentComponent.componentType
+                  ),
                   "",
                   0,
                   currentComponent.index
