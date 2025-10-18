@@ -913,11 +913,12 @@ const ComponentPreview = ({
             componentData
           );
           const transformedData = {
-            processData: {
-              title: componentData.title || "Implementation Process",
-              description:
-                componentData.description || "Our proven methodology",
+            data: {
+              title: componentData.title || "Our Implementation Process",
+              subtitle: componentData.subtitle || "A proven methodology for seamless business transformation",
+              image: componentData.image || "/Videos/implementation/implementProcess.jpg",
               steps: componentData.steps || [],
+              ctaButton: componentData.ctaButton || "Start Your Journey",
             },
           };
           console.log(
@@ -933,10 +934,12 @@ const ComponentPreview = ({
             componentData
           );
           const transformedData = {
-            benefits: componentData.benefits || [],
-            title: componentData.title || "Why Choose Our Implementation",
-            description:
-              componentData.description || "Benefits of our services",
+            data: {
+              title: componentData.title || "Why Choose Bellatrix for Implementation?",
+              subtitle: componentData.subtitle || "We bring years of expertise, proven methodologies, and cutting-edge solutions to ensure your implementation success",
+              image: componentData.image || "/Videos/implementation/whyChoese.jpg",
+              features: componentData.features || [],
+            },
           };
           console.log(
             "✅ [ImplementationWhyChooseSection TRANSFORM] Output data:",
@@ -951,9 +954,14 @@ const ComponentPreview = ({
             componentData
           );
           const transformedData = {
-            pricingData: {
+            data: {
               title: componentData.title || "Implementation Pricing",
+              subtitle: componentData.subtitle || "Choose the perfect implementation plan that fits your business needs and budget",
               plans: componentData.plans || [],
+              additionalInfo: componentData.additionalInfo || {
+                note: "All plans include free consultation and project scoping",
+                contactText: "Need a custom solution? Contact our team for personalized pricing",
+              },
             },
           };
           console.log(
@@ -969,12 +977,33 @@ const ComponentPreview = ({
             componentData
           );
           const transformedData = {
-            title: componentData.title || "Ready to Start Implementation?",
-            subtitle: componentData.subtitle || "Let's discuss your needs",
+            title: componentData.title || "Ready for a Seamless NetSuite Implementation?",
+            subtitle: componentData.subtitle || "Transform your business operations with our expert NetSuite implementation services. Let's turn your vision into reality with proven methodologies and dedicated support.",
+            description: componentData.description || "",
             ctaButton: componentData.ctaButton || {
-              text: "Get Started",
+              text: "Get Started Today",
               link: "/contact",
+              variant: "primary",
             },
+            features: componentData.features || [
+              {
+                title: "Quick Response",
+                description: "Get a detailed proposal within 24 hours",
+                icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z",
+              },
+              {
+                title: "Proven Success",
+                description: "99.9% implementation success rate",
+                icon: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z",
+              },
+              {
+                title: "Expert Support",
+                description: "Dedicated team of certified professionals",
+                icon: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z",
+              },
+            ],
+            trustedBy: componentData.trustedBy || [],
+            openModal: () => console.log("Contact modal opened"),
           };
           console.log(
             "✅ [ImplementationCtaSection TRANSFORM] Output data:",
@@ -1365,7 +1394,9 @@ const ComponentPreview = ({
                 duration: "2 days",
                 level: "Beginner"
               }
-            ]
+            ],
+            renderIcon: () => null,
+            openProgramModal: () => console.log("Program modal opened"),
           };
           console.log(
             "✅ [TrainingProgramsSection TRANSFORM] Output data:",
@@ -1392,7 +1423,9 @@ const ComponentPreview = ({
                 icon: "👨‍🏫",
                 shortDescription: "Certified instructors with real-world experience"
               }
-            ]
+            ],
+            renderIcon: () => null,
+            openFeatureModal: () => console.log("Feature modal opened"),
           };
           console.log(
             "✅ [TrainingWhyChooseSection TRANSFORM] Output data:",
