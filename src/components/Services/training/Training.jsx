@@ -10,11 +10,6 @@ import WhyChooseSection from "./WhyChooseSection";
 import TrainingModals from "./TrainingModals";
 
 const Training = ({ data: propsData = null }) => {
-  const [isProgramModalOpen, setIsProgramModalOpen] = useState(false);
-  const [selectedProgram, setSelectedProgram] = useState(null);
-  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
-  const [isFeatureModalOpen, setIsFeatureModalOpen] = useState(false);
-  const [selectedFeature, setSelectedFeature] = useState(null);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -23,19 +18,15 @@ const Training = ({ data: propsData = null }) => {
     if (propsData) {
       setData(propsData);
       setLoading(false);
-      console.log("🎯 [Training] Using props data:", propsData);
       return;
     }
-
     const fetchData = async () => {
       try {
         const response = await fetch("data/training.json");
         const jsonData = await response.json();
         setData(jsonData);
         setLoading(false);
-        console.log("🎯 [Training] Using fetched data:", jsonData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
+      } catch {
         setLoading(false);
       }
     };
@@ -146,7 +137,6 @@ const Training = ({ data: propsData = null }) => {
             programsSection={data.programsSection}
             trainingPrograms={data.trainingPrograms}
             renderIcon={renderIcon}
-            openProgramModal={openProgramModal}
           />
         </section>
 
@@ -165,24 +155,8 @@ const Training = ({ data: propsData = null }) => {
             whyChooseSection={data.whyChooseSection}
             trainingFeatures={data.trainingFeatures}
             renderIcon={renderIcon}
-            openFeatureModal={openFeatureModal}
           />
         </section>
-
-        {/* Modals */}
-        <TrainingModals
-          isProgramModalOpen={isProgramModalOpen}
-          selectedProgram={selectedProgram}
-          closeProgramModal={closeProgramModal}
-          openContactModal={openContactModal}
-          isFeatureModalOpen={isFeatureModalOpen}
-          selectedFeature={selectedFeature}
-          closeFeatureModal={closeFeatureModal}
-          isContactModalOpen={isContactModalOpen}
-          closeContactModal={closeContactModal}
-          renderIcon={renderIcon}
-          onClose={closeContactModal}
-        />
       </main>
     </>
   );

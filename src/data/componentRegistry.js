@@ -278,78 +278,6 @@ export const componentRegistry = {
       description: "Call-to-action for implementation services",
     },
 
-    // Integration Service Components
-    IntegrationTypesSection: {
-      componentType: "IntegrationTypesSection",
-      componentName: "Integration Types",
-      category: "features",
-      icon: "🔗",
-      filePath: "src/components/Services/Integration/IntegrationTypes.jsx",
-      description: "Types of integrations available",
-      dataStructure: {
-        title: "string",
-        items: "array", // title, description, icon
-      },
-    },
-    IntegrationBenefitsSection: {
-      componentType: "IntegrationBenefitsSection",
-      componentName: "Integration Benefits",
-      category: "benefits",
-      icon: "✨",
-      filePath: "src/components/Services/Integration/BenefitsSection.jsx",
-      description: "Benefits of integration services",
-      dataStructure: {
-        title: "string",
-        items: "array", // title, description
-      },
-    },
-    IntegrationPopularSection: {
-      componentType: "IntegrationPopularSection",
-      componentName: "Popular Integrations",
-      category: "features",
-      icon: "⭐",
-      filePath: "src/components/Services/Integration/PopularIntegrations.jsx",
-      description: "Popular integration platforms",
-      dataStructure: {
-        title: "string",
-        platforms: "array", // platform names
-      },
-    },
-    IntegrationCtaSection: {
-      componentType: "IntegrationCtaSection",
-      componentName: "Integration CTA",
-      category: "cta",
-      icon: "📞",
-      filePath: "src/components/Services/Integration/CtaSection.jsx",
-      description: "Call-to-action for integration services",
-    },
-
-    // Customization Service Components
-    CustomizationServicesSection: {
-      componentType: "CustomizationServicesSection",
-      componentName: "Customization Services",
-      category: "features",
-      icon: "🔧",
-      filePath: "src/components/Services/Customization/ServicesSection.jsx",
-      description: "Customization services offered",
-      dataStructure: {
-        title: "string",
-        items: "array", // name, title, description, icon
-      },
-    },
-    CustomizationProcessSection: {
-      componentType: "CustomizationProcessSection",
-      componentName: "Customization Process",
-      category: "process",
-      icon: "📋",
-      filePath: "src/components/Services/Customization/ProcessSection.jsx",
-      description: "Customization process steps",
-      dataStructure: {
-        title: "string",
-        steps: "array", // title, description, step
-      },
-    },
-
     // Additional Service Components
     ServiceGrid: {
       componentType: "ServiceGrid",
@@ -365,61 +293,73 @@ export const componentRegistry = {
         services: [
           {
             title: "NetSuite Implementation",
-            description: "Complete NetSuite setup and configuration tailored to your business needs.",
+            description:
+              "Complete NetSuite setup and configuration tailored to your business needs.",
             icon: "🚀",
-            features: ["System Configuration", "Data Migration", "Custom Workflows", "User Training"]
+            features: [
+              "System Configuration",
+              "Data Migration",
+              "Custom Workflows",
+              "User Training",
+            ],
           },
           {
             title: "Training & Support",
-            description: "Comprehensive training programs to maximize your NetSuite investment.",
+            description:
+              "Comprehensive training programs to maximize your NetSuite investment.",
             icon: "📚",
-            features: ["User Training", "Admin Training", "Custom Reports", "Ongoing Support"]
-          }
-        ]
+            features: [
+              "User Training",
+              "Admin Training",
+              "Custom Reports",
+              "Ongoing Support",
+            ],
+          },
+        ],
       },
     },
     TrainingProgramsSection: {
-      componentType: "TrainingProgramsSection",
-      componentName: "Training Programs Section",
+      componentType: "ProgramsSection",
+      componentName: "Programs Section",
       category: "content",
       icon: "📚",
-      filePath: "src/components/Services/training/TrainingPrograms.jsx",
-      description: "Training programs section with program cards and descriptions",
+      filePath: "src/components/Services/training/ProgramsSection.jsx",
+      description: "Programs section with program cards and descriptions",
       dataStructure: {
         programsSection: "object", // object with title, description, image
         trainingPrograms: "array", // array of program objects
       },
       defaultData: {
         programsSection: {
-          title: "Training Programs",
-          description: "Comprehensive training programs designed to enhance your skills and knowledge.",
-          image: "/images/traning.jpg"
+          title: "Programs",
+          description: "Comprehensive programs designed to enhance your skills and knowledge.",
+          image: "/images/traning.jpg",
         },
         trainingPrograms: [
           {
             title: "Basic User Training",
             description: "Learn the fundamentals of NetSuite",
             duration: "2 days",
-            level: "Beginner"
-          }
-        ]
+            level: "Beginner",
+          },
+        ],
       },
     },
     TrainingWhyChooseSection: {
-      componentType: "TrainingWhyChooseSection",
-      componentName: "Training Why Choose Section",
+      componentType: "WhyChooseSection",
+      componentName: "Why Choose Section",
       category: "benefits",
       icon: "✨",
-      filePath: "src/components/Services/training/WhyChooseTraining.jsx",
-      description: "Why choose our training section with features and benefits",
+      filePath: "src/components/Services/training/WhyChooseSection.jsx",
+      description: "Why choose our section with features and benefits",
       dataStructure: {
         whyChooseSection: "object", // object with title, description
         trainingFeatures: "array", // array of feature objects
       },
       defaultData: {
         whyChooseSection: {
-          title: "Why Choose Our Training",
-          description: "Comprehensive training solutions designed for your success."
+          title: "Why Choose Our Programs",
+          description: "Comprehensive solutions designed for your success.",
         },
         trainingFeatures: [
           {
@@ -427,38 +367,10 @@ export const componentRegistry = {
             title: "Expert Instructors",
             description: "Learn from certified NetSuite professionals",
             icon: "👨‍🏫",
-            shortDescription: "Certified instructors with real-world experience"
-          }
-        ]
-      },
-    },
-    CustomizationHeroSection: {
-      componentType: "CustomizationHeroSection",
-      componentName: "Customization Hero Section",
-      category: "hero",
-      icon: "🌟",
-      filePath: "src/components/Services/Customization/Customization.jsx",
-      description: "Hero section for customization services",
-      dataStructure: {
-        hero: "object", // object with title, subtitle, description
-        services: "object", // object with title and items array
-      },
-      defaultData: {
-        hero: {
-          title: "NetSuite Customization Services",
-          subtitle: "Tailored Solutions for Your Business",
-          description: "Transform your NetSuite system with custom solutions designed specifically for your unique business requirements."
-        },
-        services: {
-          title: "Our Customization Services",
-          items: [
-            {
-              title: "Custom Fields & Forms",
-              description: "Create custom fields and forms to capture your specific business data.",
-              icon: "📝"
-            }
-          ]
-        }
+            shortDescription:
+              "Certified instructors with real-world experience",
+          },
+        ],
       },
     },
     ImplementationCTASection: {
@@ -474,10 +386,11 @@ export const componentRegistry = {
       defaultData: {
         cta: {
           title: "Ready to Transform Your Business?",
-          subtitle: "Get started with our comprehensive NetSuite implementation services today.",
+          subtitle:
+            "Get started with our comprehensive NetSuite implementation services today.",
           buttonText: "Start Your Implementation",
-          buttonLink: "/contact"
-        }
+          buttonLink: "/contact",
+        },
       },
     },
   },
@@ -771,7 +684,8 @@ export const componentRegistry = {
       componentName: "Manufacturing Implementation",
       category: "process",
       icon: "📋",
-      filePath: "src/components/industries/Manufacturing/ImplementationProcess.jsx",
+      filePath:
+        "src/components/industries/Manufacturing/ImplementationProcess.jsx",
       description: "Manufacturing implementation process",
       dataStructure: {
         title: "string",
@@ -898,22 +812,6 @@ export const componentRegistry = {
         twitterCard: "string",
         canonicalUrl: "string",
       },
-    },
-    ContactForm: {
-      componentType: "ContactForm",
-      componentName: "Contact Form",
-      category: "forms",
-      icon: "📧",
-      filePath: "src/components/ContactForm.jsx",
-      description: "Contact form component",
-    },
-    Modal: {
-      componentType: "Modal",
-      componentName: "Modal Window",
-      category: "ui",
-      icon: "🪟",
-      filePath: "src/components/Modal.jsx",
-      description: "Generic modal window component",
     },
     CTAButton: {
       componentType: "CTAButton",

@@ -906,11 +906,16 @@ const ComponentPreview = ({
             componentData
           );
           const transformedData = {
-            processData: {
+            data: {
               title: componentData.title || "Implementation Process",
-              description:
-                componentData.description || "Our proven methodology",
+              subtitle:
+                componentData.subtitle ||
+                "A proven methodology for seamless business transformation",
+              image:
+                componentData.image ||
+                "/Videos/implementation/implementProcess.jpg",
               steps: componentData.steps || [],
+              ctaButton: componentData.ctaButton || "Start Your Journey",
             },
           };
           console.log(
@@ -926,10 +931,12 @@ const ComponentPreview = ({
             componentData
           );
           const transformedData = {
-            benefits: componentData.benefits || [],
-            title: componentData.title || "Why Choose Our Implementation",
-            description:
-              componentData.description || "Benefits of our services",
+            data: {
+              benefits: componentData.benefits || [],
+              title: componentData.title || "Why Choose Our Implementation",
+              description:
+                componentData.description || "Benefits of our services",
+            },
           };
           console.log(
             "✅ [ImplementationWhyChooseSection TRANSFORM] Output data:",
@@ -944,7 +951,7 @@ const ComponentPreview = ({
             componentData
           );
           const transformedData = {
-            pricingData: {
+            data: {
               title: componentData.title || "Implementation Pricing",
               plans: componentData.plans || [],
             },
@@ -962,11 +969,13 @@ const ComponentPreview = ({
             componentData
           );
           const transformedData = {
-            title: componentData.title || "Ready to Start Implementation?",
-            subtitle: componentData.subtitle || "Let's discuss your needs",
-            ctaButton: componentData.ctaButton || {
-              text: "Get Started",
-              link: "/contact",
+            data: {
+              title: componentData.title || "Ready to Start Implementation?",
+              subtitle: componentData.subtitle || "Let's discuss your needs",
+              ctaButton: componentData.ctaButton || {
+                text: "Get Started",
+                link: "/contact",
+              },
             },
           };
           console.log(

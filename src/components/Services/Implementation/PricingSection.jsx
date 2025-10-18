@@ -31,19 +31,20 @@ const PricingSection = ({ data = {} }) => {
   }, []);
 
   // PRIORITIZE props data over default data for real-time preview
-  const displayData = data && Object.keys(data).length > 0
-    ? data
-    : defaultData || {
-        title: "Implementation Pricing",
-        subtitle:
-          "Choose the perfect implementation plan that fits your business needs and budget",
-        plans: [],
-        additionalInfo: {
-          note: "All plans include free consultation and project scoping",
-          contactText:
-            "Need a custom solution? Contact our team for personalized pricing",
-        },
-      };
+  const displayData =
+    data && Object.keys(data).length > 0
+      ? data
+      : defaultData || {
+          title: "Implementation Pricing",
+          subtitle:
+            "Choose the perfect implementation plan that fits your business needs and budget",
+          plans: [],
+          additionalInfo: {
+            note: "All plans include free consultation and project scoping",
+            contactText:
+              "Need a custom solution? Contact our team for personalized pricing",
+          },
+        };
 
   // Debug logging for real-time updates
   console.log("🎯 [ImplementationPricingSection] Component received data:", {
@@ -51,7 +52,7 @@ const PricingSection = ({ data = {} }) => {
     propsData: data,
     hasDefaultData: !!defaultData,
     finalData: displayData,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
 
   return (
@@ -149,11 +150,11 @@ const PricingSection = ({ data = {} }) => {
           {/* Additional Info */}
           <div className="text-center mt-12">
             <p className="text-gray-600 mb-4">
-              {displayData.additionalInfo.note}
+              {displayData.additionalInfo?.note || ""}
             </p>
             <p className="text-sm text-gray-500">
               {
-                displayData.additionalInfo.contactText.split(
+                (displayData.additionalInfo?.contactText || "").split(
                   "Contact our team"
                 )[0]
               }
@@ -161,7 +162,7 @@ const PricingSection = ({ data = {} }) => {
                 Contact our team
               </span>
               {
-                displayData.additionalInfo.contactText.split(
+                (displayData.additionalInfo?.contactText || "").split(
                   "Contact our team"
                 )[1]
               }
