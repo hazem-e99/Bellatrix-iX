@@ -141,9 +141,6 @@ const EnhancedPageBuilder = () => {
     }
   };
 
-  // Available components derived dynamically from component registry
-  const [availableComponents, setAvailableComponents] = useState([]);
-
   // Load existing page data if editing
   useEffect(() => {
     const loadExistingPage = async () => {
@@ -198,265 +195,6 @@ const EnhancedPageBuilder = () => {
 
     loadExistingPage();
   }, [pageId]);
-
-  useEffect(() => {
-    // Load components from comprehensive component registry
-    const loadRegistry = async () => {
-      try {
-        const { getAllComponents } = await import(
-          "../../data/componentRegistry"
-        );
-        const registryComponents = getAllComponents();
-
-        console.log(
-          "📦 [COMPONENT REGISTRY] Loaded components from registry:",
-          registryComponents.length
-        );
-
-        // Convert registry components to the format expected by the builder
-        const formattedComponents = registryComponents.map((comp) => ({
-          id: comp.componentType,
-          name:
-            comp.componentName ||
-            comp.componentType.replace(/([A-Z])/g, " $1").trim(),
-          description: comp.description,
-          icon: comp.icon,
-          componentType: comp.componentType,
-          componentName: comp.componentName,
-          category: comp.category,
-          hasEnhancedSchema: !!comp.defaultData, // Has enhanced schema if it has default data
-          schema: comp.schema,
-          defaultData: comp.defaultData,
-          filePath: comp.filePath,
-          pageType: comp.pageType,
-          dataStructure: comp.dataStructure,
-        }));
-
-        setAvailableComponents(formattedComponents);
-
-        // Also try to load from the old componentMap as fallback
-        const { idToPathMap } = await import("../componentMap");
-
-        // Enhanced categorization function
-        const categorizeComponent = (componentType, path) => {
-          const lowerType = componentType.toLowerCase();
-          const lowerPath = path.toLowerCase();
-
-          // Hero components
-          if (lowerType.includes("hero")) return "hero";
-
-          // Layout components
-          if (
-            lowerType.includes("header") ||
-            lowerType.includes("footer") ||
-            lowerType.includes("navigation") ||
-            lowerType.includes("nav") ||
-            lowerType.includes("layout")
-          )
-            return "layout";
-
-          // CTA components
-          if (
-            lowerType.includes("cta") ||
-            lowerType.includes("calltoaction") ||
-            lowerType.includes("contact") ||
-            lowerType.includes("demo")
-          )
-            return "cta";
-
-          // FAQ components
-          if (lowerType.includes("faq") || lowerType.includes("questions"))
-            return "faq";
-
-          // Pricing components
-          if (
-            lowerType.includes("pricing") ||
-            lowerType.includes("price") ||
-            lowerType.includes("plan") ||
-            lowerType.includes("subscription")
-          )
-            return "pricing";
-
-          // About/Team components
-          if (
-            lowerType.includes("about") ||
-            lowerType.includes("team") ||
-            lowerType.includes("member") ||
-            lowerType.includes("staff") ||
-            lowerPath.includes("about/")
-          )
-            return "about";
-
-          // Features/Benefits components
-          if (
-            lowerType.includes("feature") ||
-            lowerType.includes("benefit") ||
-            lowerType.includes("advantage")
-          )
-            return "features";
-
-          // Testimonials/Reviews
-          if (
-            lowerType.includes("testimonial") ||
-            lowerType.includes("review") ||
-            lowerType.includes("feedback")
-          )
-            return "testimonials";
-
-          // Solution components
-          if (lowerPath.includes("solution/") || lowerType.includes("solution"))
-            return "solution";
-
-          // Services components
-          if (lowerPath.includes("services/") || lowerType.includes("service"))
-            return "services";
-
-          // Industry components
-          if (
-            lowerPath.includes("industries/") ||
-            lowerType.includes("industry")
-          )
-            return "industry";
-
-          // Portfolio/Gallery
-          if (
-            lowerType.includes("portfolio") ||
-            lowerType.includes("gallery") ||
-            lowerType.includes("showcase")
-          )
-            return "portfolio";
-
-          // Blog/News
-          if (
-            lowerType.includes("blog") ||
-            lowerType.includes("news") ||
-            lowerType.includes("article")
-          )
-            return "blog";
-
-          // Default to content
-          return "content";
-        };
-
-        // Enhanced icon assignment
-        const getComponentIcon = (componentType, category) => {
-          const lowerType = componentType.toLowerCase();
-
-          if (lowerType.includes("hero")) return "🌟";
-          if (lowerType.includes("cta")) return "🚀";
-          if (lowerType.includes("faq")) return "❓";
-          if (lowerType.includes("pricing")) return "💰";
-          if (lowerType.includes("team") || lowerType.includes("about"))
-            return "👥";
-          if (lowerType.includes("testimonial")) return "💬";
-          if (lowerType.includes("feature")) return "✨";
-          if (lowerType.includes("contact")) return "📞";
-          if (lowerType.includes("service")) return "🔧";
-          if (lowerType.includes("solution")) return "⚡";
-          if (lowerType.includes("portfolio")) return "🎨";
-          if (lowerType.includes("blog")) return "📰";
-          if (lowerType.includes("header") || lowerType.includes("nav"))
-            return "📋";
-          if (lowerType.includes("footer")) return "🔗";
-
-          // Category-based fallbacks
-          const categoryIcons = {
-            hero: "🌟",
-            layout: "🎯",
-            content: "📝",
-            pricing: "💰",
-            faq: "❓",
-            cta: "🚀",
-            about: "👥",
-            solution: "⚡",
-            services: "🔧",
-            industry: "🏭",
-            features: "✨",
-            testimonials: "💬",
-            contact: "📞",
-            team: "👥",
-            portfolio: "🎨",
-            blog: "📰",
-            footer: "🔗",
-            header: "📋",
-          };
-
-          return categoryIcons[category] || "📄";
-        };
-
-        // Get additional components from componentMap that aren't in registry
-        const registryComponentTypes = new Set(
-          formattedComponents.map((c) => c.componentType)
-        );
-        const additionalItems = Object.keys(idToPathMap)
-          .filter((componentType) => !registryComponentTypes.has(componentType))
-          .map((componentType) => {
-            const path = idToPathMap[componentType];
-            const category = categorizeComponent(componentType, path);
-            const icon = getComponentIcon(componentType, category);
-
-            // Check if this is an About component with enhanced schema
-            const aboutSchema = getAboutComponentSchema(componentType);
-            if (aboutSchema) {
-              return {
-                id: componentType,
-                name: aboutSchema.displayName,
-                description: aboutSchema.description,
-                icon: aboutSchema.icon,
-                componentType,
-                componentName: aboutSchema.componentName,
-                category: aboutSchema.category,
-                hasEnhancedSchema: true,
-                schema: aboutSchema.schema,
-                defaultData: aboutSchema.defaultData,
-              };
-            }
-
-            // Check if this is a general component with enhanced schema
-            const generalSchema = getGeneralComponentSchema(componentType);
-            if (generalSchema) {
-              return {
-                id: componentType,
-                name: generalSchema.displayName,
-                description: generalSchema.description,
-                icon: generalSchema.icon,
-                componentType,
-                componentName: generalSchema.componentName,
-                category: generalSchema.category,
-                hasEnhancedSchema: true,
-                schema: generalSchema.schema,
-                defaultData: generalSchema.defaultData,
-              };
-            }
-
-            return {
-              id: componentType,
-              name: componentType.replace(/([A-Z])/g, " $1").trim(), // Add spaces before capital letters
-              description: `Component: ${componentType}`,
-              icon,
-              componentType,
-              componentName: componentType,
-              category,
-              hasEnhancedSchema: false,
-            };
-          });
-
-        // Combine registry components with additional components
-        const allComponents = [...formattedComponents, ...additionalItems];
-
-        console.log("📦 [COMPONENT REGISTRY] Final component list:", {
-          registryComponents: formattedComponents.length,
-          additionalComponents: additionalItems.length,
-          totalComponents: allComponents.length,
-        });
-
-        setAvailableComponents(allComponents);
-      } catch (e) {
-        console.error("Failed to load component registry", e);
-      }
-    };
-    loadRegistry();
-  }, []);
 
   // Load About component schemas for enhanced form generation
   useEffect(() => {
@@ -4290,7 +4028,6 @@ const EnhancedPageBuilder = () => {
         return (
           <SectionsStep
             pageData={pageData}
-            availableComponents={availableComponents}
             onAddComponent={addComponent}
             onUpdateComponent={updateComponent}
             onRemoveComponent={removeComponent}
@@ -4645,7 +4382,6 @@ const EnhancedPageBuilder = () => {
           isOpen={showPagePreview}
           onClose={() => setShowPagePreview(false)}
           pageData={pageData}
-          availableComponents={availableComponents}
         />
 
         {/* Toast Notification */}
@@ -4824,7 +4560,6 @@ const PageDetailsStep = ({ pageData, onDataChange }) => {
 // Step 2: Sections with detailed component forms
 const SectionsStep = ({
   pageData,
-  availableComponents,
   onAddComponent,
   onUpdateComponent,
   onRemoveComponent,
@@ -4838,10 +4573,187 @@ const SectionsStep = ({
   useNewInputSystemState,
   setUseNewInputSystemState,
 }) => {
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [searchTerm, setSearchTerm] = useState("");
-
   const [isEditMode, setIsEditMode] = useState(true);
+
+  // Function to get component icon based on component type
+  const getComponentIcon = (componentType) => {
+    const lowerType = componentType.toLowerCase();
+    
+    if (lowerType.includes("hero")) return "🌟";
+    if (lowerType.includes("cta")) return "🚀";
+    if (lowerType.includes("faq")) return "❓";
+    if (lowerType.includes("pricing")) return "💰";
+    if (lowerType.includes("team") || lowerType.includes("about")) return "👥";
+    if (lowerType.includes("testimonial")) return "💬";
+    if (lowerType.includes("feature")) return "✨";
+    if (lowerType.includes("contact")) return "📞";
+    if (lowerType.includes("service")) return "🔧";
+    if (lowerType.includes("solution")) return "⚡";
+    if (lowerType.includes("portfolio")) return "🎨";
+    if (lowerType.includes("blog")) return "📰";
+    if (lowerType.includes("header") || lowerType.includes("nav")) return "📋";
+    if (lowerType.includes("footer")) return "🔗";
+    
+    return "📄"; // Default icon
+  };
+
+  // Support Components List
+  const supportComponents = [
+    {
+      id: "BellatrixSupportHero",
+      name: "Bellatrix Support Hero",
+      description: "Main hero section for support page with professional imagery and messaging",
+      icon: "🌟",
+      componentType: "BellatrixSupportHero",
+      componentName: "BellatrixSupportHero",
+      category: "hero",
+      hasEnhancedSchema: false,
+    },
+    {
+      id: "SupportSecondSec",
+      name: "Support Second Section",
+      description: "Empower your business section with professional expertise showcase",
+      icon: "💪",
+      componentType: "SupportSecondSec",
+      componentName: "SupportSecondSec",
+      category: "content",
+      hasEnhancedSchema: false,
+    },
+    {
+      id: "SherpaCareServices",
+      name: "Sherpa Care Services",
+      description: "Comprehensive care services section with detailed service offerings",
+      icon: "🏥",
+      componentType: "SherpaCareServices",
+      componentName: "SherpaCareServices",
+      category: "services",
+      hasEnhancedSchema: false,
+    },
+    {
+      id: "WhatWeOfferSection",
+      name: "What We Offer Section",
+      description: "Detailed overview of support services and offerings",
+      icon: "📋",
+      componentType: "WhatWeOfferSection",
+      componentName: "WhatWeOfferSection",
+      category: "content",
+      hasEnhancedSchema: false,
+    },
+    {
+      id: "DedicatedTeamSection",
+      name: "Dedicated Team Section",
+      description: "Showcase of dedicated support team and expertise",
+      icon: "👥",
+      componentType: "DedicatedTeamSection",
+      componentName: "DedicatedTeamSection",
+      category: "team",
+      hasEnhancedSchema: false,
+    },
+    {
+      id: "PrePackagedSection",
+      name: "Pre-Packaged Section",
+      description: "Pre-packaged support solutions and service bundles",
+      icon: "📦",
+      componentType: "PrePackagedSection",
+      componentName: "PrePackagedSection",
+      category: "services",
+      hasEnhancedSchema: false,
+    },
+    {
+      id: "BellatrixSupportSection",
+      name: "Bellatrix Support Section",
+      description: "Core Bellatrix support services and capabilities",
+      icon: "🔧",
+      componentType: "BellatrixSupportSection",
+      componentName: "BellatrixSupportSection",
+      category: "services",
+      hasEnhancedSchema: false,
+    },
+    {
+      id: "PayPerUseSection",
+      name: "Pay Per Use Section",
+      description: "Flexible pay-per-use support pricing and options",
+      icon: "💰",
+      componentType: "PayPerUseSection",
+      componentName: "PayPerUseSection",
+      category: "pricing",
+      hasEnhancedSchema: false,
+    },
+    {
+      id: "CustomerSupport",
+      name: "Customer Support",
+      description: "24/7 customer support services and contact information",
+      icon: "📞",
+      componentType: "CustomerSupport",
+      componentName: "CustomerSupport",
+      category: "contact",
+      hasEnhancedSchema: false,
+    },
+    {
+      id: "WhyChoeseBellatrix",
+      name: "Why Choose Bellatrix",
+      description: "Compelling reasons to choose Bellatrix for support services",
+      icon: "✅",
+      componentType: "WhyChoeseBellatrix",
+      componentName: "WhyChoeseBellatrix",
+      category: "features",
+      hasEnhancedSchema: false,
+    },
+  ];
+
+  // Implementation Components List
+  const implementationComponents = [
+    {
+      id: "ImplementationHeroSection",
+      name: "Implementation Hero Section",
+      description: "Hero section for implementation service with video background and CTA",
+      icon: "🚀",
+      componentType: "ImplementationHeroSection",
+      componentName: "ImplementationHeroSection",
+      category: "hero",
+      hasEnhancedSchema: false,
+    },
+    {
+      id: "ImplementationProcessSection",
+      name: "Implementation Process Section",
+      description: "Step-by-step implementation process with detailed methodology",
+      icon: "📋",
+      componentType: "ImplementationProcessSection",
+      componentName: "ImplementationProcessSection",
+      category: "process",
+      hasEnhancedSchema: false,
+    },
+    {
+      id: "ImplementationWhyChooseSection",
+      name: "Why Choose Implementation",
+      description: "Benefits and advantages of choosing our implementation services",
+      icon: "✅",
+      componentType: "ImplementationWhyChooseSection",
+      componentName: "ImplementationWhyChooseSection",
+      category: "benefits",
+      hasEnhancedSchema: false,
+    },
+    {
+      id: "ImplementationPricingSection",
+      name: "Implementation Pricing Section",
+      description: "Pricing plans and packages for implementation services",
+      icon: "💰",
+      componentType: "ImplementationPricingSection",
+      componentName: "ImplementationPricingSection",
+      category: "pricing",
+      hasEnhancedSchema: false,
+    },
+    {
+      id: "ImplementationCtaSection",
+      name: "Implementation CTA Section",
+      description: "Call-to-action section to encourage implementation inquiries",
+      icon: "📞",
+      componentType: "ImplementationCtaSection",
+      componentName: "ImplementationCtaSection",
+      category: "cta",
+      hasEnhancedSchema: false,
+    },
+  ];
 
   // Handle real-time updates from modal inputs
   const handleModalInputChange = (field, value, componentIndex) => {
@@ -4946,115 +4858,6 @@ const SectionsStep = ({
     );
   };
 
-  // Dynamic category generation based on available components
-  const categories = React.useMemo(() => {
-    // Get components that match search term (if any)
-    const searchFilteredComponents = searchTerm.trim()
-      ? availableComponents.filter((comp) => {
-          const search = searchTerm.toLowerCase().trim();
-          return (
-            comp.name.toLowerCase().includes(search) ||
-            comp.componentType.toLowerCase().includes(search) ||
-            comp.category.toLowerCase().includes(search) ||
-            comp.description.toLowerCase().includes(search)
-          );
-        })
-      : availableComponents;
-
-    // Count components per category (considering search filter)
-    const categoryCounts = {};
-    searchFilteredComponents.forEach((comp) => {
-      categoryCounts[comp.category] = (categoryCounts[comp.category] || 0) + 1;
-    });
-
-    // Start with "All Components"
-    const dynamicCategories = [
-      {
-        id: "all",
-        name: "All Components",
-        icon: "📄",
-        count: searchFilteredComponents.length,
-      },
-    ];
-
-    // Extract unique categories from available components
-    const uniqueCategories = [
-      ...new Set(
-        availableComponents
-          .map((comp) => comp.category)
-          .filter((category) => category && category !== "all")
-      ),
-    ];
-
-    // Define category icons and display names
-    const categoryConfig = {
-      layout: { name: "Layout", icon: "🎯" },
-      content: { name: "Content", icon: "📝" },
-      pricing: { name: "Pricing", icon: "💰" },
-      faq: { name: "FAQ", icon: "❓" },
-      cta: { name: "Call to Action", icon: "🚀" },
-      about: { name: "About", icon: "👥" },
-      hero: { name: "Hero", icon: "🌟" },
-      solution: { name: "Solution", icon: "⚡" },
-      services: { name: "Services", icon: "🔧" },
-      industry: { name: "Industry", icon: "🏭" },
-      features: { name: "Features", icon: "✨" },
-      testimonials: { name: "Testimonials", icon: "💬" },
-      contact: { name: "Contact", icon: "📞" },
-      team: { name: "Team", icon: "👥" },
-      portfolio: { name: "Portfolio", icon: "🎨" },
-      blog: { name: "Blog", icon: "📰" },
-      footer: { name: "Footer", icon: "🔗" },
-      header: { name: "Header", icon: "📋" },
-      navigation: { name: "Navigation", icon: "🧭" },
-    };
-
-    // Sort categories by count (descending) for better UX
-    const sortedCategories = uniqueCategories.sort(
-      (a, b) => (categoryCounts[b] || 0) - (categoryCounts[a] || 0)
-    );
-
-    // Add categories that exist in components
-    sortedCategories.forEach((categoryId) => {
-      const config = categoryConfig[categoryId] || {
-        name: categoryId.charAt(0).toUpperCase() + categoryId.slice(1),
-        icon: "📦",
-      };
-
-      dynamicCategories.push({
-        id: categoryId,
-        name: config.name,
-        icon: config.icon,
-        count: categoryCounts[categoryId] || 0,
-      });
-    });
-
-    return dynamicCategories;
-  }, [availableComponents, searchTerm]);
-
-  const filteredComponents = React.useMemo(() => {
-    let filtered = availableComponents;
-
-    // Filter by category
-    if (selectedCategory !== "all") {
-      filtered = filtered.filter((comp) => comp.category === selectedCategory);
-    }
-
-    // Filter by search term
-    if (searchTerm.trim()) {
-      const search = searchTerm.toLowerCase().trim();
-      filtered = filtered.filter(
-        (comp) =>
-          comp.name.toLowerCase().includes(search) ||
-          comp.componentType.toLowerCase().includes(search) ||
-          comp.category.toLowerCase().includes(search) ||
-          comp.description.toLowerCase().includes(search)
-      );
-    }
-
-    return filtered;
-  }, [availableComponents, selectedCategory, searchTerm]);
-
   // Function to update a specific component field
   const handleComponentUpdate = (index, field, value) => {
     if (field === "orderIndex") {
@@ -5081,172 +4884,83 @@ const SectionsStep = ({
 
   return (
     <div className="space-y-6">
-      {/* Available Components */}
+      {/* Available Support Components */}
       <Card className="bg-white/5 backdrop-blur-sm border border-white/10 shadow-xl">
         <CardHeader>
           <CardTitle className="text-white text-xl font-bold">
-            Available Components
+            Available Support Components
           </CardTitle>
         </CardHeader>
         <CardContent>
-          {/* Search Bar */}
-          <div className="mb-6">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search components..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 bg-[var(--color-white-10)] backdrop-blur-sm border border-[var(--color-white-20)] rounded-lg text-[var(--color-text-inverse)] placeholder-[var(--color-text-inverse)]/50 focus:border-[var(--color-primary-light)] focus:ring-2 focus:ring-[var(--color-primary-light)]/20 focus:outline-none transition-all duration-200"
-              />
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <svg
-                  className="h-5 w-5 text-white/50"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  />
-                </svg>
-              </div>
-              {searchTerm && (
-                <button
-                  onClick={() => setSearchTerm("")}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-white/50 hover:text-white transition-colors"
-                >
-                  <svg
-                    className="h-5 w-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </button>
-              )}
-            </div>
-          </div>
-
-          {/* Category Filter */}
-          <div className="flex flex-wrap gap-2 mb-6">
-            {categories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => setSelectedCategory(category.id)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center space-x-2 ${
-                  selectedCategory === category.id
-                    ? "bg-blue-500 text-white shadow-lg shadow-blue-500/25 transform scale-105"
-                    : "bg-white/10 text-gray-300 hover:bg-white/20 hover:text-white hover:scale-102"
-                }`}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {supportComponents.map((component) => (
+              <div
+                key={component.id}
+                className="p-4 border border-white/20 rounded-xl cursor-pointer hover:bg-white/10 hover:border-white/30 transition-all duration-200 group"
+                onClick={() => onAddComponent(component)}
               >
-                <span>{category.icon}</span>
-                <span>{category.name}</span>
-                <span
-                  className={`text-xs px-2 py-1 rounded-full ${
-                    selectedCategory === category.id
-                      ? "bg-white/20 text-white"
-                      : "bg-gray-500/20 text-gray-400"
-                  }`}
-                >
-                  {category.count}
-                </span>
-              </button>
+                <div className="flex items-center space-x-3">
+                  <div className="text-2xl group-hover:scale-110 transition-transform duration-200">
+                    {component.icon}
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="text-base font-semibold text-white mb-1">
+                      {component.name}
+                    </h4>
+                    <p className="text-sm text-gray-300 leading-relaxed">
+                      {component.description}
+                    </p>
+                    <div className="mt-2">
+                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-500/20 text-blue-300">
+                        {component.category}
+                      </span>
+                    </div>
+                  </div>
+                  <PlusIcon className="h-5 w-5 text-white/60 group-hover:text-white transition-colors" />
+                </div>
+              </div>
             ))}
           </div>
+        </CardContent>
+      </Card>
 
-          {/* Results Summary */}
-          {(searchTerm || selectedCategory !== "all") && (
-            <div className="mb-4 text-sm text-gray-300">
-              Showing {filteredComponents.length} of{" "}
-              {availableComponents.length} components
-              {searchTerm && <span> for "{searchTerm}"</span>}
-              {selectedCategory !== "all" && (
-                <span>
-                  {" "}
-                  in {categories.find((c) => c.id === selectedCategory)?.name}
-                </span>
-              )}
-            </div>
-          )}
-
-          {/* Components Grid */}
-          {filteredComponents.length === 0 ? (
-            <div className="text-center py-12">
-              <div className="text-4xl mb-4">🔍</div>
-              <h3 className="text-lg font-medium text-white mb-2">
-                No components found
-              </h3>
-              <p className="text-gray-300 mb-4">
-                {searchTerm ? (
-                  <>No components match your search "{searchTerm}"</>
-                ) : (
-                  <>
-                    No components available for the "
-                    {categories.find((c) => c.id === selectedCategory)?.name}"
-                    category
-                  </>
-                )}
-              </p>
-              <div className="flex flex-col sm:flex-row gap-2 justify-center">
-                {searchTerm && (
-                  <button
-                    onClick={() => setSearchTerm("")}
-                    className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors"
-                  >
-                    Clear Search
-                  </button>
-                )}
-                {selectedCategory !== "all" && (
-                  <button
-                    onClick={() => setSelectedCategory("all")}
-                    className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
-                  >
-                    View All Components
-                  </button>
-                )}
-              </div>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filteredComponents.map((component) => (
-                <div
-                  key={component.id}
-                  className="p-4 border border-white/20 rounded-xl cursor-pointer hover:bg-white/10 hover:border-white/30 transition-all duration-200 group"
-                  onClick={() => onAddComponent(component)}
-                >
-                  <div className="flex items-center space-x-3">
-                    <div className="text-2xl group-hover:scale-110 transition-transform duration-200">
-                      {component.icon}
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="text-base font-semibold text-white mb-1">
-                        {component.name}
-                      </h4>
-                      <p className="text-sm text-gray-300 leading-relaxed">
-                        {component.description}
-                      </p>
-                      <div className="mt-2">
-                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-500/20 text-blue-300">
-                          {component.category}
-                        </span>
-                      </div>
-                    </div>
-                    <PlusIcon className="h-5 w-5 text-white/60 group-hover:text-white transition-colors" />
+      {/* Available Implementation Components */}
+      <Card className="bg-white/5 backdrop-blur-sm border border-white/10 shadow-xl">
+        <CardHeader>
+          <CardTitle className="text-white text-xl font-bold">
+            Available Implementation Components
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {implementationComponents.map((component) => (
+              <div
+                key={component.id}
+                className="p-4 border border-white/20 rounded-xl cursor-pointer hover:bg-white/10 hover:border-white/30 transition-all duration-200 group"
+                onClick={() => onAddComponent(component)}
+              >
+                <div className="flex items-center space-x-3">
+                  <div className="text-2xl group-hover:scale-110 transition-transform duration-200">
+                    {component.icon}
                   </div>
+                  <div className="flex-1">
+                    <h4 className="text-base font-semibold text-white mb-1">
+                      {component.name}
+                    </h4>
+                    <p className="text-sm text-gray-300 leading-relaxed">
+                      {component.description}
+                    </p>
+                    <div className="mt-2">
+                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-500/20 text-green-300">
+                        {component.category}
+                      </span>
+                    </div>
+                  </div>
+                  <PlusIcon className="h-5 w-5 text-white/60 group-hover:text-white transition-colors" />
                 </div>
-              ))}
-            </div>
-          )}
+              </div>
+            ))}
+          </div>
         </CardContent>
       </Card>
 
@@ -5354,9 +5068,7 @@ const SectionsStep = ({
                     <div className="flex items-center justify-between mb-6">
                       <div className="flex items-center space-x-3">
                         <div className="text-xl">
-                          {availableComponents.find(
-                            (c) => c.componentType === component.componentType
-                          )?.icon || "📄"}
+                          {getComponentIcon(component.componentType)}
                         </div>
                         <h4 className="text-lg font-semibold text-white">
                           Component #{index + 1}
@@ -6541,19 +6253,28 @@ const SectionsStep = ({
 // Step 3: Review
 const ReviewStep = ({ pageData }) => {
   const [isEditMode, setIsEditMode] = useState(true);
-  const [availableComponents] = useState([
-    { componentType: "HeroSection", icon: "🎯" },
-    { componentType: "HRHeroSection", icon: "👥" },
-    { componentType: "PayrollHeroSection", icon: "💰" },
-    { componentType: "HRModulesSection", icon: "📦" },
-    { componentType: "ServiceGrid", icon: "⚙️" },
-    { componentType: "ImplementationProcessSection", icon: "🔄" },
-    { componentType: "HRPricingSection", icon: "💵" },
-    { componentType: "PayrollFAQSection", icon: "❓" },
-    { componentType: "PayrollCTASection", icon: "🚀" },
-    { componentType: "AboutMissionSection", icon: "🎯" },
-    { componentType: "AboutTeamSection", icon: "👥" },
-  ]);
+
+  // Function to get component icon based on component type
+  const getComponentIcon = (componentType) => {
+    const lowerType = componentType.toLowerCase();
+    
+    if (lowerType.includes("hero")) return "🌟";
+    if (lowerType.includes("cta")) return "🚀";
+    if (lowerType.includes("faq")) return "❓";
+    if (lowerType.includes("pricing")) return "💰";
+    if (lowerType.includes("team") || lowerType.includes("about")) return "👥";
+    if (lowerType.includes("testimonial")) return "💬";
+    if (lowerType.includes("feature")) return "✨";
+    if (lowerType.includes("contact")) return "📞";
+    if (lowerType.includes("service")) return "🔧";
+    if (lowerType.includes("solution")) return "⚡";
+    if (lowerType.includes("portfolio")) return "🎨";
+    if (lowerType.includes("blog")) return "📰";
+    if (lowerType.includes("header") || lowerType.includes("nav")) return "📋";
+    if (lowerType.includes("footer")) return "🔗";
+    
+    return "📄"; // Default icon
+  };
 
   // Helper function to filter components based on mode and visibility
   const getVisibleComponents = (components, isEditing = isEditMode) => {
@@ -6569,13 +6290,6 @@ const ReviewStep = ({ pageData }) => {
       // Handle both boolean and integer values for isVisible
       return component.isVisible === true || component.isVisible === 1;
     });
-  };
-
-  const getComponentIcon = (componentType) => {
-    return (
-      availableComponents.find((c) => c.componentType === componentType)
-        ?.icon || "📄"
-    );
   };
 
   return (

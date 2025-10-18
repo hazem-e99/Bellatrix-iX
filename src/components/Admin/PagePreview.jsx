@@ -106,7 +106,6 @@ const PagePreview = ({
   isOpen,
   onClose,
   pageData,
-  availableComponents = [],
 }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -756,10 +755,25 @@ const PagePreview = ({
   };
 
   const getComponentIcon = (componentType) => {
-    const component = availableComponents.find(
-      (c) => c.componentType === componentType
-    );
-    return component?.icon || "📄";
+    // Provide default icons based on component type
+    const lowerType = componentType.toLowerCase();
+    
+    if (lowerType.includes("hero")) return "🌟";
+    if (lowerType.includes("cta")) return "🚀";
+    if (lowerType.includes("faq")) return "❓";
+    if (lowerType.includes("pricing")) return "💰";
+    if (lowerType.includes("team") || lowerType.includes("about")) return "👥";
+    if (lowerType.includes("testimonial")) return "💬";
+    if (lowerType.includes("feature")) return "✨";
+    if (lowerType.includes("contact")) return "📞";
+    if (lowerType.includes("service")) return "🔧";
+    if (lowerType.includes("solution")) return "⚡";
+    if (lowerType.includes("portfolio")) return "🎨";
+    if (lowerType.includes("blog")) return "📰";
+    if (lowerType.includes("header") || lowerType.includes("nav")) return "📋";
+    if (lowerType.includes("footer")) return "🔗";
+    
+    return "📄"; // Default icon
   };
 
   const renderComponent = (component, index) => {

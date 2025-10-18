@@ -930,6 +930,145 @@ export const componentRegistry = {
       },
     },
   },
+
+  // ===========================================
+  // SUPPORT PAGE COMPONENTS
+  // ===========================================
+  SupportPage: {
+    BellatrixSupportHero: {
+      componentType: "BellatrixSupportHero",
+      componentName: "Bellatrix Support Hero",
+      category: "hero",
+      icon: "🌟",
+      filePath: "src/components/Support/BellatrixSupportHero.jsx",
+      description: "Main hero section for support page with professional imagery and messaging",
+      dataStructure: {
+        title: "string",
+        subtitle: "string",
+        description: "string",
+        image: "string",
+        stats: "array",
+      },
+    },
+    SupportSecondSec: {
+      componentType: "SupportSecondSec",
+      componentName: "Support Second Section",
+      category: "content",
+      icon: "💪",
+      filePath: "src/components/Support/SupportSecondSec.jsx",
+      description: "Empower your business section with professional expertise showcase",
+      dataStructure: {
+        title: "string",
+        description: "string",
+        image: "string",
+        features: "array",
+      },
+    },
+    SherpaCareServices: {
+      componentType: "SherpaCareServices",
+      componentName: "Sherpa Care Services",
+      category: "services",
+      icon: "🏥",
+      filePath: "src/components/Support/SherpaCareServices.jsx",
+      description: "Comprehensive care services section with detailed service offerings",
+      dataStructure: {
+        title: "string",
+        description: "string",
+        services: "array",
+      },
+    },
+    WhatWeOfferSection: {
+      componentType: "WhatWeOfferSection",
+      componentName: "What We Offer Section",
+      category: "content",
+      icon: "📋",
+      filePath: "src/components/Support/WhatWeOfferSection.jsx",
+      description: "Detailed overview of support services and offerings",
+      dataStructure: {
+        title: "string",
+        description: "string",
+        offerings: "array",
+      },
+    },
+    DedicatedTeamSection: {
+      componentType: "DedicatedTeamSection",
+      componentName: "Dedicated Team Section",
+      category: "team",
+      icon: "👥",
+      filePath: "src/components/Support/DedicatedTeamSection.jsx",
+      description: "Showcase of dedicated support team and expertise",
+      dataStructure: {
+        title: "string",
+        description: "string",
+        teamMembers: "array",
+      },
+    },
+    PrePackagedSection: {
+      componentType: "PrePackagedSection",
+      componentName: "Pre-Packaged Section",
+      category: "services",
+      icon: "📦",
+      filePath: "src/components/Support/PrePackagedSection.jsx",
+      description: "Pre-packaged support solutions and service bundles",
+      dataStructure: {
+        title: "string",
+        description: "string",
+        packages: "array",
+      },
+    },
+    BellatrixSupportSection: {
+      componentType: "BellatrixSupportSection",
+      componentName: "Bellatrix Support Section",
+      category: "services",
+      icon: "🔧",
+      filePath: "src/components/Support/BellatrixSupportSection.jsx",
+      description: "Core Bellatrix support services and capabilities",
+      dataStructure: {
+        title: "string",
+        description: "string",
+        services: "array",
+      },
+    },
+    PayPerUseSection: {
+      componentType: "PayPerUseSection",
+      componentName: "Pay Per Use Section",
+      category: "pricing",
+      icon: "💰",
+      filePath: "src/components/Support/PayPerUseSection.jsx",
+      description: "Flexible pay-per-use support pricing and options",
+      dataStructure: {
+        title: "string",
+        description: "string",
+        pricingOptions: "array",
+      },
+    },
+    CustomerSupport: {
+      componentType: "CustomerSupport",
+      componentName: "Customer Support",
+      category: "contact",
+      icon: "📞",
+      filePath: "src/components/Support/CustomerSupport.jsx",
+      description: "24/7 customer support services and contact information",
+      dataStructure: {
+        title: "string",
+        description: "string",
+        contactInfo: "object",
+      },
+    },
+    WhyChoeseBellatrix: {
+      componentType: "WhyChoeseBellatrix",
+      componentName: "Why Choose Bellatrix",
+      category: "features",
+      icon: "✅",
+      filePath: "src/components/Support/WhyChoeseBellatrix.jsx",
+      description: "Compelling reasons to choose Bellatrix for support services",
+      dataStructure: {
+        title: "string",
+        description: "string",
+        reasons: "array",
+      },
+    },
+  },
 };
 
 /**

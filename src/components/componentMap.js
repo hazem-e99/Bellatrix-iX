@@ -95,6 +95,20 @@ export const idToPathMap = {
   RetailCTASection: "industries/retail/CTASection",
 
   // ===========================================
+  // SUPPORT PAGE COMPONENTS
+  // ===========================================
+  BellatrixSupportHero: "Support/BellatrixSupportHero",
+  SupportSecondSec: "Support/SupportSecondSec",
+  SherpaCareServices: "Support/SherpaCareServices",
+  WhatWeOfferSection: "Support/WhatWeOfferSection",
+  DedicatedTeamSection: "Support/DedicatedTeamSection",
+  PrePackagedSection: "Support/PrePackagedSection",
+  BellatrixSupportSection: "Support/BellatrixSupportSection",
+  PayPerUseSection: "Support/PayPerUseSection",
+  CustomerSupport: "Support/CustomerSupport",
+  WhyChoeseBellatrix: "Support/WhyChoeseBellatrix",
+
+  // ===========================================
   // COMMON/SHARED COMPONENTS
   // ===========================================
   SEO: "SEO",
@@ -181,6 +195,20 @@ export const loadComponent = async (componentPath) => {
       // RETAIL INDUSTRY COMPONENTS
       // ===========================================
       "industries/retail/HeroSection": () => import("./industries/retail/HeroSection"),
+
+      // ===========================================
+      // SUPPORT PAGE COMPONENTS
+      // ===========================================
+      "Support/BellatrixSupportHero": () => import("./Support/BellatrixSupportHero"),
+      "Support/SupportSecondSec": () => import("./Support/SupportSecondSec"),
+      "Support/SherpaCareServices": () => import("./Support/SherpaCareServices"),
+      "Support/WhatWeOfferSection": () => import("./Support/WhatWeOfferSection"),
+      "Support/DedicatedTeamSection": () => import("./Support/DedicatedTeamSection"),
+      "Support/PrePackagedSection": () => import("./Support/PrePackagedSection"),
+      "Support/BellatrixSupportSection": () => import("./Support/BellatrixSupportSection"),
+      "Support/PayPerUseSection": () => import("./Support/PayPerUseSection"),
+      "Support/CustomerSupport": () => import("./Support/CustomerSupport"),
+      "Support/WhyChoeseBellatrix": () => import("./Support/WhyChoeseBellatrix"),
 
       // ===========================================
       // COMMON/SHARED COMPONENTS

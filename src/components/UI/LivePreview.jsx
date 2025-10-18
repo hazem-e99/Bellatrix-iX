@@ -74,6 +74,18 @@ import RetailCaseStudies from "../industries/retail/CaseStudiesSection";
 import RetailImplementation from "../industries/retail/ImplementationSection";
 import RetailCTA from "../industries/retail/CTASection";
 
+// Support Components
+import BellatrixSupportHero from "../Support/BellatrixSupportHero";
+import SupportSecondSec from "../Support/SupportSecondSec";
+import SherpaCareServices from "../Support/SherpaCareServices";
+import WhatWeOfferSection from "../Support/WhatWeOfferSection";
+import DedicatedTeamSection from "../Support/DedicatedTeamSection";
+import PrePackagedSection from "../Support/PrePackagedSection";
+import BellatrixSupportSection from "../Support/BellatrixSupportSection";
+import PayPerUseSection from "../Support/PayPerUseSection";
+import CustomerSupport from "../Support/CustomerSupport";
+import WhyChoeseBellatrix from "../Support/WhyChoeseBellatrix";
+
 // Common/Shared Components
 import SEO from "../SEO";
 import ContactForm from "../ContactForm";
@@ -187,6 +199,20 @@ const ComponentPreview = ({
     RetailCaseStudiesSection: RetailCaseStudies,
     RetailImplementationSection: RetailImplementation,
     RetailCTASection: RetailCTA,
+
+    // ===========================================
+    // SUPPORT PAGE COMPONENTS
+    // ===========================================
+    BellatrixSupportHero: BellatrixSupportHero,
+    SupportSecondSec: SupportSecondSec,
+    SherpaCareServices: SherpaCareServices,
+    WhatWeOfferSection: WhatWeOfferSection,
+    DedicatedTeamSection: DedicatedTeamSection,
+    PrePackagedSection: PrePackagedSection,
+    BellatrixSupportSection: BellatrixSupportSection,
+    PayPerUseSection: PayPerUseSection,
+    CustomerSupport: CustomerSupport,
+    WhyChoeseBellatrix: WhyChoeseBellatrix,
 
     // ===========================================
     // COMMON/SHARED COMPONENTS
