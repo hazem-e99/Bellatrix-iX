@@ -259,7 +259,6 @@ const EnhancedPageBuilder = () => {
           if (
             lowerType.includes("cta") ||
             lowerType.includes("calltoaction") ||
-            lowerType.includes("contact") ||
             lowerType.includes("demo")
           )
             return "cta";
@@ -350,7 +349,6 @@ const EnhancedPageBuilder = () => {
             return "👥";
           if (lowerType.includes("testimonial")) return "💬";
           if (lowerType.includes("feature")) return "✨";
-          if (lowerType.includes("contact")) return "📞";
           if (lowerType.includes("service")) return "🔧";
           if (lowerType.includes("solution")) return "⚡";
           if (lowerType.includes("portfolio")) return "🎨";
@@ -373,7 +371,6 @@ const EnhancedPageBuilder = () => {
             industry: "🏭",
             features: "✨",
             testimonials: "💬",
-            contact: "📞",
             team: "👥",
             portfolio: "🎨",
             blog: "📰",
@@ -1817,130 +1814,6 @@ const EnhancedPageBuilder = () => {
         ],
       },
 
-      // Integration Components (from integration-data.json)
-      IntegrationHeroSection: {
-        title: "NetSuite Integration Services",
-        subtitle:
-          "Connect NetSuite with your existing systems for seamless data flow",
-      },
-
-      IntegrationTypesSection: {
-        title: "Integration Solutions",
-        items: [
-          {
-            title: "E-commerce Integration",
-            description:
-              "Connect NetSuite with Shopify, Magento, WooCommerce, and other platforms",
-            icon: "🛒",
-          },
-          {
-            title: "CRM Integration",
-            description:
-              "Integrate with Salesforce, HubSpot, and other CRM systems",
-            icon: "👥",
-          },
-          {
-            title: "Payment Gateway Integration",
-            description:
-              "Connect with PayPal, Stripe, Square, and other payment processors",
-            icon: "💳",
-          },
-          {
-            title: "Warehouse Management",
-            description: "Integrate with WMS systems for inventory management",
-            icon: "📦",
-          },
-        ],
-      },
-
-      IntegrationBenefitsSection: {
-        title: "Integration Benefits",
-        items: [
-          {
-            title: "Automated Data Sync",
-            description:
-              "Eliminate manual data entry with real-time synchronization",
-          },
-          {
-            title: "Improved Accuracy",
-            description: "Reduce errors caused by manual data transfer",
-          },
-          {
-            title: "Enhanced Productivity",
-            description: "Save time and resources with automated processes",
-          },
-          {
-            title: "Better Visibility",
-            description:
-              "Get a complete view of your business across all systems",
-          },
-        ],
-      },
-
-      // Customization Components (from customization.json)
-      CustomizationHeroSection: {
-        title: "NetSuite Customization & Development",
-        subtitle:
-          "Tailor NetSuite to fit your unique business processes and requirements",
-      },
-
-      CustomizationServicesSection: {
-        title: "Our Customization Services",
-        items: [
-          {
-            title: "Custom Workflows",
-            description:
-              "Design automated workflows that match your business processes",
-            icon: "🔄",
-          },
-          {
-            title: "Custom Fields & Forms",
-            description:
-              "Create custom fields and forms to capture your specific data",
-            icon: "📝",
-          },
-          {
-            title: "SuiteScript Development",
-            description: "Advanced scripting to extend NetSuite functionality",
-            icon: "💻",
-          },
-          {
-            title: "Custom Reports & Dashboards",
-            description:
-              "Build tailored reports and dashboards for better insights",
-            icon: "📊",
-          },
-        ],
-      },
-
-      CustomizationProcessSection: {
-        title: "Our Development Process",
-        steps: [
-          {
-            step: "01",
-            title: "Requirements Analysis",
-            description:
-              "We analyze your business requirements and current NetSuite setup",
-          },
-          {
-            step: "02",
-            title: "Solution Design",
-            description:
-              "Design custom solutions that align with your business goals",
-          },
-          {
-            step: "03",
-            title: "Development & Testing",
-            description: "Develop and thoroughly test all customizations",
-          },
-          {
-            step: "04",
-            title: "Deployment & Support",
-            description: "Deploy solutions and provide ongoing support",
-          },
-        ],
-      },
-
       // Home Page Components (from homeData.json)
       HomeHeroSection: {
         slides: [
@@ -3328,125 +3201,6 @@ const EnhancedPageBuilder = () => {
             description: "Dedicated team of certified professionals",
             icon:
               "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z",
-          },
-        ],
-      },
-
-      // Missing Integration Components
-      IntegrationPopularSection: {
-        title: "Popular Integrations",
-        subtitle: "Most requested integration solutions",
-        description:
-          "Connect NetSuite with the most popular business applications",
-        integrations: [
-          {
-            name: "Shopify",
-            description: "E-commerce platform integration",
-            icon: "🛒",
-            category: "E-commerce",
-            features: ["Order sync", "Inventory management", "Customer data"],
-          },
-          {
-            name: "Salesforce",
-            description: "CRM integration for sales teams",
-            icon: "👥",
-            category: "CRM",
-            features: [
-              "Lead management",
-              "Opportunity tracking",
-              "Contact sync",
-            ],
-          },
-          {
-            name: "PayPal",
-            description: "Payment processing integration",
-            icon: "💳",
-            category: "Payments",
-            features: [
-              "Payment processing",
-              "Transaction sync",
-              "Refund handling",
-            ],
-          },
-          {
-            name: "Amazon",
-            description: "Marketplace integration",
-            icon: "📦",
-            category: "E-commerce",
-            features: ["Order management", "Inventory sync", "FBA integration"],
-          },
-          {
-            name: "HubSpot",
-            description: "Marketing automation integration",
-            icon: "📧",
-            category: "Marketing",
-            features: ["Lead nurturing", "Email campaigns", "Analytics sync"],
-          },
-          {
-            name: "Magento",
-            description: "E-commerce platform integration",
-            icon: "🏪",
-            category: "E-commerce",
-            features: [
-              "Product sync",
-              "Order processing",
-              "Customer management",
-            ],
-          },
-        ],
-      },
-
-      IntegrationCTASection: {
-        title: "Ready to Connect Your Systems?",
-        subtitle: "Streamline your business with seamless integrations",
-        description:
-          "Get started with NetSuite integrations today and unlock the full potential of your business systems",
-        ctaButton: {
-          text: "Start Integration",
-          link: "/integration/contact",
-          variant: "primary",
-        },
-        benefits: [
-          "Reduce manual data entry by 90%",
-          "Improve data accuracy and consistency",
-          "Save time and reduce operational costs",
-          "Better business visibility and reporting",
-          "Real-time data synchronization",
-          "Scalable integration solutions",
-        ],
-      },
-
-      // Missing Customization Components
-      CustomizationCTASection: {
-        title: "Ready to Customize NetSuite?",
-        subtitle: "Transform NetSuite to match your unique business needs",
-        description:
-          "Get started with NetSuite customization today and unlock the full potential of the platform",
-        ctaButton: {
-          text: "Start Customization",
-          link: "/customization/contact",
-          variant: "primary",
-        },
-        features: [
-          {
-            title: "Custom Development",
-            description: "Tailored solutions for your business",
-            icon: "💻",
-          },
-          {
-            title: "Expert Consultation",
-            description: "Work with certified NetSuite developers",
-            icon: "👨‍💻",
-          },
-          {
-            title: "Ongoing Support",
-            description: "Continuous support and maintenance",
-            icon: "🛠️",
-          },
-          {
-            title: "Quality Assurance",
-            description: "Thorough testing and validation",
-            icon: "✅",
           },
         ],
       },

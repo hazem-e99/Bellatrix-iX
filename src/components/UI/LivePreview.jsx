@@ -41,18 +41,18 @@ import ImplementationWhyChoose from "../Services/Implementation/WhyChooseSection
 import ImplementationPricing from "../Services/Implementation/PricingSection";
 import ImplementationCta from "../Services/Implementation/CtaSection";
 import TrainingHero from "../Services/training/HeroSection";
+import TrainingPrograms from "../Services/training/ProgramsSection";
+import TrainingKeyModules from "../Services/training/KeyModulesSection";
+import TrainingWhyChoose from "../Services/training/WhyChooseSection";
+
 import IntegrationHero from "../Services/Integration/HeroSection";
 import IntegrationTypes from "../Services/Integration/IntegrationTypes";
 import IntegrationBenefits from "../Services/Integration/BenefitsSection";
 import IntegrationPopular from "../Services/Integration/PopularIntegrations";
 import IntegrationCta from "../Services/Integration/CtaSection";
-import CustomizationServices from "../Services/Customization/ServicesSection";
-import CustomizationProcess from "../Services/Customization/ProcessSection";
+
 import ServiceGrid from "../Services/ServiceGrid";
-import TrainingPrograms from "../Services/training/TrainingPrograms";
-import TrainingWhyChoose from "../Services/training/WhyChooseTraining";
-import CustomizationHero from "../Services/Customization/Customization";
-import ImplementationCTA from "../Services/Implementation/Implementation";
+import ImplementationCTA from "../Services/Implementation/CtaSection";
 import PayrollHowItWorks from "../solution/payroll/PayrollHowItWorks";
 
 // Industries Components - Manufacturing
@@ -76,8 +76,6 @@ import RetailCTA from "../industries/retail/CTASection";
 
 // Common/Shared Components
 import SEO from "../SEO";
-import ContactForm from "../ContactForm";
-import Modal from "../Modal";
 import CTAButton from "../CTAButton";
 
 /**
@@ -146,18 +144,15 @@ const ComponentPreview = ({
     ImplementationWhyChooseSection: ImplementationWhyChoose,
     ImplementationPricingSection: ImplementationPricing,
     ImplementationCtaSection: ImplementationCta,
+
+    // Training Components
     TrainingHeroSection: TrainingHero,
-    IntegrationHeroSection: IntegrationHero,
-    IntegrationTypesSection: IntegrationTypes,
-    IntegrationBenefitsSection: IntegrationBenefits,
-    IntegrationPopularSection: IntegrationPopular,
-    IntegrationCtaSection: IntegrationCta,
-    CustomizationServicesSection: CustomizationServices,
-    CustomizationProcessSection: CustomizationProcess,
-    ServiceGrid: ServiceGrid,
     TrainingProgramsSection: TrainingPrograms,
+    TrainingKeyModulesSection: TrainingKeyModules,
     TrainingWhyChooseSection: TrainingWhyChoose,
-    CustomizationHeroSection: CustomizationHero,
+
+    // Integration Components
+    ServiceGrid: ServiceGrid,
     ImplementationCTASection: ImplementationCTA,
 
     // ===========================================
@@ -192,8 +187,6 @@ const ComponentPreview = ({
     // COMMON/SHARED COMPONENTS
     // ===========================================
     SEO: SEO,
-    ContactForm: ContactForm,
-    Modal: Modal,
     CTAButton: CTAButton,
   };
 
@@ -545,25 +538,29 @@ const ComponentPreview = ({
                 {
                   icon: "👥",
                   title: "Employee Management",
-                  desc: "Comprehensive employee records, profiles, and lifecycle management from onboarding to offboarding."
+                  desc:
+                    "Comprehensive employee records, profiles, and lifecycle management from onboarding to offboarding.",
                 },
                 {
-                  icon: "💰", 
+                  icon: "💰",
                   title: "Payroll Processing",
-                  desc: "Automated payroll calculations, tax deductions, and salary disbursements with compliance features."
+                  desc:
+                    "Automated payroll calculations, tax deductions, and salary disbursements with compliance features.",
                 },
                 {
                   icon: "📊",
                   title: "Performance Analytics",
-                  desc: "Track employee performance, KPIs, and generate insightful reports for better decision making."
+                  desc:
+                    "Track employee performance, KPIs, and generate insightful reports for better decision making.",
                 },
                 {
                   icon: "📋",
                   title: "Compliance Tracking",
-                  desc: "Stay compliant with labor laws, regulations, and industry standards with automated tracking."
-                }
-              ]
-            }
+                  desc:
+                    "Stay compliant with labor laws, regulations, and industry standards with automated tracking.",
+                },
+              ],
+            },
           };
           console.log(
             "✅ [HRModulesSection TRANSFORM] Output data:",
@@ -581,25 +578,31 @@ const ComponentPreview = ({
             data: {
               features: {
                 title: componentData.title || "Why Choose Our HR Solution?",
-                description: componentData.description || "Discover the key advantages that make our HR platform the smart choice for modern businesses of all sizes and industries.",
-                items: componentData.features || componentData.items || [
-                  {
-                    title: "Automated Workflows",
-                    description: "Streamline HR processes with intelligent automation",
-                    icon: "⚙️"
-                  },
-                  {
-                    title: "Employee Self-Service",
-                    description: "Empower employees with self-service capabilities",
-                    icon: "👤"
-                  },
-                  {
-                    title: "Compliance Management",
-                    description: "Stay compliant with automated reporting and tracking",
-                    icon: "📋"
-                  }
-                ]
-              }
+                description:
+                  componentData.description ||
+                  "Discover the key advantages that make our HR platform the smart choice for modern businesses of all sizes and industries.",
+                items: componentData.features ||
+                  componentData.items || [
+                    {
+                      title: "Automated Workflows",
+                      description:
+                        "Streamline HR processes with intelligent automation",
+                      icon: "⚙️",
+                    },
+                    {
+                      title: "Employee Self-Service",
+                      description:
+                        "Empower employees with self-service capabilities",
+                      icon: "👤",
+                    },
+                    {
+                      title: "Compliance Management",
+                      description:
+                        "Stay compliant with automated reporting and tracking",
+                      icon: "📋",
+                    },
+                  ],
+              },
             },
           };
           console.log(
@@ -619,22 +622,26 @@ const ComponentPreview = ({
               useCases: componentData.useCases || [
                 {
                   title: "Small Businesses",
-                  desc: "Streamline HR processes for growing teams with automated workflows and compliance tracking."
+                  desc:
+                    "Streamline HR processes for growing teams with automated workflows and compliance tracking.",
                 },
                 {
-                  title: "Medium Enterprises", 
-                  desc: "Scale your HR operations with advanced analytics and performance management tools."
+                  title: "Medium Enterprises",
+                  desc:
+                    "Scale your HR operations with advanced analytics and performance management tools.",
                 },
                 {
                   title: "Large Corporations",
-                  desc: "Manage complex organizational structures with enterprise-grade HR solutions."
+                  desc:
+                    "Manage complex organizational structures with enterprise-grade HR solutions.",
                 },
                 {
                   title: "Remote Teams",
-                  desc: "Support distributed workforces with cloud-based HR management and collaboration tools."
-                }
-              ]
-            }
+                  desc:
+                    "Support distributed workforces with cloud-based HR management and collaboration tools.",
+                },
+              ],
+            },
           };
           console.log(
             "✅ [HRUseCasesSection TRANSFORM] Output data:",
@@ -660,12 +667,12 @@ const ComponentPreview = ({
                     "Employee Management",
                     "Basic Payroll",
                     "Time Tracking",
-                    "Benefits Administration"
+                    "Benefits Administration",
                   ],
-                  isPopular: false
+                  isPopular: false,
                 },
                 {
-                  name: "Professional Plan", 
+                  name: "Professional Plan",
                   price: "$199",
                   period: "per month",
                   description: "Ideal for growing companies",
@@ -674,12 +681,12 @@ const ComponentPreview = ({
                     "Advanced Analytics",
                     "Performance Management",
                     "Advanced Reporting",
-                    "Integration Support"
+                    "Integration Support",
                   ],
-                  isPopular: true
-                }
-              ]
-            }
+                  isPopular: true,
+                },
+              ],
+            },
           };
           console.log(
             "✅ [HRPricingSection TRANSFORM] Output data:",
@@ -693,22 +700,26 @@ const ComponentPreview = ({
           const transformedHRFAQData = {
             data: {
               faq: {
-                items: componentData.faq?.items || componentData.faq || [
-                  {
-                    question: "What HR modules are included?",
-                    answer: "Our HR solution includes employee management, payroll processing, benefits administration, and performance tracking modules."
-                  },
-                  {
-                    question: "How long does implementation take?",
-                    answer: "Typical implementation takes 4-8 weeks depending on your organization size and requirements."
-                  },
-                  {
-                    question: "Is training provided?",
-                    answer: "Yes, we provide comprehensive training for all users including administrators and end-users."
-                  }
-                ]
-              }
-            }
+                items: componentData.faq?.items ||
+                  componentData.faq || [
+                    {
+                      question: "What HR modules are included?",
+                      answer:
+                        "Our HR solution includes employee management, payroll processing, benefits administration, and performance tracking modules.",
+                    },
+                    {
+                      question: "How long does implementation take?",
+                      answer:
+                        "Typical implementation takes 4-8 weeks depending on your organization size and requirements.",
+                    },
+                    {
+                      question: "Is training provided?",
+                      answer:
+                        "Yes, we provide comprehensive training for all users including administrators and end-users.",
+                    },
+                  ],
+              },
+            },
           };
           console.log(
             "✅ [HRFAQSection TRANSFORM] Output data:",
@@ -838,24 +849,6 @@ const ComponentPreview = ({
           );
           return transformedTrainingHeroData;
 
-        case "IntegrationHeroSection":
-          console.log(
-            "🎯 [IntegrationHeroSection TRANSFORM] Input data:",
-            componentData
-          );
-          const transformedIntegrationHeroData = {
-            title: componentData.title || "NetSuite Integration Services",
-            subtitle:
-              componentData.subtitle ||
-              "Connect NetSuite with your existing systems for seamless data flow",
-            data: componentData,
-          };
-          console.log(
-            "✅ [IntegrationHeroSection TRANSFORM] Output data:",
-            transformedIntegrationHeroData
-          );
-          return transformedIntegrationHeroData;
-
         // Industries Components
         case "ManufacturingHeroSection":
           console.log(
@@ -913,12 +906,11 @@ const ComponentPreview = ({
             componentData
           );
           const transformedData = {
-            data: {
-              title: componentData.title || "Our Implementation Process",
-              subtitle: componentData.subtitle || "A proven methodology for seamless business transformation",
-              image: componentData.image || "/Videos/implementation/implementProcess.jpg",
+            processData: {
+              title: componentData.title || "Implementation Process",
+              description:
+                componentData.description || "Our proven methodology",
               steps: componentData.steps || [],
-              ctaButton: componentData.ctaButton || "Start Your Journey",
             },
           };
           console.log(
@@ -934,12 +926,10 @@ const ComponentPreview = ({
             componentData
           );
           const transformedData = {
-            data: {
-              title: componentData.title || "Why Choose Bellatrix for Implementation?",
-              subtitle: componentData.subtitle || "We bring years of expertise, proven methodologies, and cutting-edge solutions to ensure your implementation success",
-              image: componentData.image || "/Videos/implementation/whyChoese.jpg",
-              features: componentData.features || [],
-            },
+            benefits: componentData.benefits || [],
+            title: componentData.title || "Why Choose Our Implementation",
+            description:
+              componentData.description || "Benefits of our services",
           };
           console.log(
             "✅ [ImplementationWhyChooseSection TRANSFORM] Output data:",
@@ -954,14 +944,9 @@ const ComponentPreview = ({
             componentData
           );
           const transformedData = {
-            data: {
+            pricingData: {
               title: componentData.title || "Implementation Pricing",
-              subtitle: componentData.subtitle || "Choose the perfect implementation plan that fits your business needs and budget",
               plans: componentData.plans || [],
-              additionalInfo: componentData.additionalInfo || {
-                note: "All plans include free consultation and project scoping",
-                contactText: "Need a custom solution? Contact our team for personalized pricing",
-              },
             },
           };
           console.log(
@@ -977,33 +962,12 @@ const ComponentPreview = ({
             componentData
           );
           const transformedData = {
-            title: componentData.title || "Ready for a Seamless NetSuite Implementation?",
-            subtitle: componentData.subtitle || "Transform your business operations with our expert NetSuite implementation services. Let's turn your vision into reality with proven methodologies and dedicated support.",
-            description: componentData.description || "",
+            title: componentData.title || "Ready to Start Implementation?",
+            subtitle: componentData.subtitle || "Let's discuss your needs",
             ctaButton: componentData.ctaButton || {
-              text: "Get Started Today",
+              text: "Get Started",
               link: "/contact",
-              variant: "primary",
             },
-            features: componentData.features || [
-              {
-                title: "Quick Response",
-                description: "Get a detailed proposal within 24 hours",
-                icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z",
-              },
-              {
-                title: "Proven Success",
-                description: "99.9% implementation success rate",
-                icon: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z",
-              },
-              {
-                title: "Expert Support",
-                description: "Dedicated team of certified professionals",
-                icon: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z",
-              },
-            ],
-            trustedBy: componentData.trustedBy || [],
-            openModal: () => console.log("Contact modal opened"),
           };
           console.log(
             "✅ [ImplementationCtaSection TRANSFORM] Output data:",
@@ -1019,20 +983,25 @@ const ComponentPreview = ({
             componentData
           );
           const transformedData = {
-            solutions: componentData.solutions || componentData.items || [
-              {
-                title: "Production Management",
-                description: "End-to-end production planning and execution",
-                features: ["Work orders", "Routing", "Capacity planning"],
-                benefits: "40% improvement in production efficiency"
-              },
-              {
-                title: "Inventory Control",
-                description: "Advanced inventory management capabilities",
-                features: ["Real-time tracking", "Multi-location", "Automated reordering"],
-                benefits: "30% reduction in stockouts"
-              }
-            ],
+            solutions: componentData.solutions ||
+              componentData.items || [
+                {
+                  title: "Production Management",
+                  description: "End-to-end production planning and execution",
+                  features: ["Work orders", "Routing", "Capacity planning"],
+                  benefits: "40% improvement in production efficiency",
+                },
+                {
+                  title: "Inventory Control",
+                  description: "Advanced inventory management capabilities",
+                  features: [
+                    "Real-time tracking",
+                    "Multi-location",
+                    "Automated reordering",
+                  ],
+                  benefits: "30% reduction in stockouts",
+                },
+              ],
             title: componentData.title || "Manufacturing Solutions",
             description:
               componentData.description ||
@@ -1051,18 +1020,21 @@ const ComponentPreview = ({
             componentData
           );
           const transformedData = {
-            challenges: componentData.challenges || componentData.items || [
-              {
-                title: "Complex Production Planning",
-                description: "Difficulty in coordinating multiple production lines and resources",
-                icon: "📊"
-              },
-              {
-                title: "Inventory Management",
-                description: "Challenges in tracking inventory across multiple locations",
-                icon: "📦"
-              }
-            ],
+            challenges: componentData.challenges ||
+              componentData.items || [
+                {
+                  title: "Complex Production Planning",
+                  description:
+                    "Difficulty in coordinating multiple production lines and resources",
+                  icon: "📊",
+                },
+                {
+                  title: "Inventory Management",
+                  description:
+                    "Challenges in tracking inventory across multiple locations",
+                  icon: "📦",
+                },
+              ],
             title: componentData.title || "Manufacturing Challenges",
             subtitle: componentData.subtitle || "Common pain points we solve",
           };
@@ -1079,11 +1051,24 @@ const ComponentPreview = ({
             componentData
           );
           const transformedData = {
-            stats: componentData.stats || componentData.items || [
-              { value: "85%", label: "Efficiency Improvement", description: "Average efficiency gain" },
-              { value: "60%", label: "Cost Reduction", description: "Operational cost savings" },
-              { value: "90%", label: "Accuracy Rate", description: "Data accuracy improvement" }
-            ],
+            stats: componentData.stats ||
+              componentData.items || [
+                {
+                  value: "85%",
+                  label: "Efficiency Improvement",
+                  description: "Average efficiency gain",
+                },
+                {
+                  value: "60%",
+                  label: "Cost Reduction",
+                  description: "Operational cost savings",
+                },
+                {
+                  value: "90%",
+                  label: "Accuracy Rate",
+                  description: "Data accuracy improvement",
+                },
+              ],
             title: componentData.title || "Manufacturing Industry Statistics",
             subtitle: componentData.subtitle || "Key industry metrics",
           };
@@ -1100,12 +1085,26 @@ const ComponentPreview = ({
             componentData
           );
           const transformedData = {
-            processSteps: componentData.processSteps || componentData.steps || componentData.items || [
-              { title: "Analysis", description: "Analyze current processes", step: "01" },
-              { title: "Design", description: "Design new processes", step: "02" },
-              { title: "Implementation", description: "Implement new processes", step: "03" },
-              { title: "Training", description: "Train users", step: "04" }
-            ],
+            processSteps: componentData.processSteps ||
+              componentData.steps ||
+              componentData.items || [
+                {
+                  title: "Analysis",
+                  description: "Analyze current processes",
+                  step: "01",
+                },
+                {
+                  title: "Design",
+                  description: "Design new processes",
+                  step: "02",
+                },
+                {
+                  title: "Implementation",
+                  description: "Implement new processes",
+                  step: "03",
+                },
+                { title: "Training", description: "Train users", step: "04" },
+              ],
             title: componentData.title || "Implementation Process",
             description: componentData.description || "Our proven methodology",
           };
@@ -1122,20 +1121,21 @@ const ComponentPreview = ({
             componentData
           );
           const transformedData = {
-            caseStudies: componentData.caseStudies || componentData.items || [
-              {
-                title: "Automotive Manufacturer",
-                description: "Streamlined production processes",
-                company: "ABC Motors",
-                results: "40% efficiency improvement"
-              },
-              {
-                title: "Electronics Company",
-                description: "Improved inventory management",
-                company: "TechCorp",
-                results: "60% cost reduction"
-              }
-            ],
+            caseStudies: componentData.caseStudies ||
+              componentData.items || [
+                {
+                  title: "Automotive Manufacturer",
+                  description: "Streamlined production processes",
+                  company: "ABC Motors",
+                  results: "40% efficiency improvement",
+                },
+                {
+                  title: "Electronics Company",
+                  description: "Improved inventory management",
+                  company: "TechCorp",
+                  results: "60% cost reduction",
+                },
+              ],
             title: componentData.title || "Manufacturing Success Stories",
             description:
               componentData.description || "See how we've helped others",
@@ -1176,23 +1176,33 @@ const ComponentPreview = ({
           );
           const transformedData = {
             data: {
-              netSuiteSolutions: componentData.solutions || componentData.items || [
-                {
-                  title: "E-commerce Platform",
-                  description: "Complete e-commerce solution with NetSuite integration",
-                  features: ["Online store", "Payment processing", "Order management"],
-                  benefits: "50% increase in online sales"
-                },
-                {
-                  title: "Inventory Management",
-                  description: "Advanced inventory control and tracking",
-                  features: ["Real-time tracking", "Multi-location", "Automated reordering"],
-                  benefits: "30% reduction in stockouts"
-                }
-              ]
+              netSuiteSolutions: componentData.solutions ||
+                componentData.items || [
+                  {
+                    title: "E-commerce Platform",
+                    description:
+                      "Complete e-commerce solution with NetSuite integration",
+                    features: [
+                      "Online store",
+                      "Payment processing",
+                      "Order management",
+                    ],
+                    benefits: "50% increase in online sales",
+                  },
+                  {
+                    title: "Inventory Management",
+                    description: "Advanced inventory control and tracking",
+                    features: [
+                      "Real-time tracking",
+                      "Multi-location",
+                      "Automated reordering",
+                    ],
+                    benefits: "30% reduction in stockouts",
+                  },
+                ],
             },
             activeSolution: 0,
-            setActiveSolution: () => {}
+            setActiveSolution: () => {},
           };
           console.log(
             "✅ [RetailSolutionsSection TRANSFORM] Output data:",
@@ -1226,7 +1236,9 @@ const ComponentPreview = ({
           const transformedData = {
             features: componentData.features || componentData.items || [],
             title: componentData.title || "Retail Features",
-            description: componentData.description || "Key features of our retail solution",
+            description:
+              componentData.description ||
+              "Key features of our retail solution",
           };
           console.log(
             "✅ [RetailFeaturesSection TRANSFORM] Output data:",
@@ -1243,7 +1255,8 @@ const ComponentPreview = ({
           const transformedData = {
             caseStudies: componentData.caseStudies || componentData.items || [],
             title: componentData.title || "Retail Success Stories",
-            description: componentData.description || "See how we've helped others",
+            description:
+              componentData.description || "See how we've helped others",
           };
           console.log(
             "✅ [RetailCaseStudies TRANSFORM] Output data:",
@@ -1276,7 +1289,8 @@ const ComponentPreview = ({
           );
           const transformedData = {
             title: componentData.title || "Ready to Transform Retail?",
-            subtitle: componentData.subtitle || "Let's discuss your retail needs",
+            subtitle:
+              componentData.subtitle || "Let's discuss your retail needs",
             ctaButton: componentData.ctaButton || {
               text: "Get Started",
               link: "/contact",
@@ -1307,33 +1321,6 @@ const ComponentPreview = ({
           return transformedData;
         }
 
-        case "ContactForm": {
-          console.log("🎯 [ContactForm TRANSFORM] Input data:", componentData);
-          const transformedData = {
-            title: componentData.title || "Contact Us",
-            description:
-              componentData.description || "Get in touch with our team",
-            fields: componentData.fields || [],
-          };
-          console.log(
-            "✅ [ContactForm TRANSFORM] Output data:",
-            transformedData
-          );
-          return transformedData;
-        }
-
-        case "Modal": {
-          console.log("🎯 [Modal TRANSFORM] Input data:", componentData);
-          const transformedData = {
-            isOpen: componentData.isOpen || false,
-            title: componentData.title || "Modal Title",
-            content: componentData.content || "Modal content",
-            onClose: componentData.onClose || (() => {}),
-          };
-          console.log("✅ [Modal TRANSFORM] Output data:", transformedData);
-          return transformedData;
-        }
-
         case "CTAButton": {
           console.log("🎯 [CTAButton TRANSFORM] Input data:", componentData);
           const transformedData = {
@@ -1347,88 +1334,39 @@ const ComponentPreview = ({
         }
 
         case "ServiceGrid": {
-          console.log(
-            "🎯 [ServiceGrid TRANSFORM] Input data:",
-            componentData
-          );
+          console.log("🎯 [ServiceGrid TRANSFORM] Input data:", componentData);
           const transformedData = {
             data: {
               services: componentData.services || [
                 {
                   title: "NetSuite Implementation",
-                  description: "Complete NetSuite setup and configuration tailored to your business needs.",
+                  description:
+                    "Complete NetSuite setup and configuration tailored to your business needs.",
                   icon: "🚀",
-                  features: ["System Configuration", "Data Migration", "Custom Workflows", "User Training"]
+                  features: [
+                    "System Configuration",
+                    "Data Migration",
+                    "Custom Workflows",
+                    "User Training",
+                  ],
                 },
                 {
                   title: "Training & Support",
-                  description: "Comprehensive training programs to maximize your NetSuite investment.",
+                  description:
+                    "Comprehensive training programs to maximize your NetSuite investment.",
                   icon: "📚",
-                  features: ["User Training", "Admin Training", "Custom Reports", "Ongoing Support"]
-                }
-              ]
-            }
+                  features: [
+                    "User Training",
+                    "Admin Training",
+                    "Custom Reports",
+                    "Ongoing Support",
+                  ],
+                },
+              ],
+            },
           };
           console.log(
             "✅ [ServiceGrid TRANSFORM] Output data:",
-            transformedData
-          );
-          return transformedData;
-        }
-
-        case "TrainingProgramsSection": {
-          console.log(
-            "🎯 [TrainingProgramsSection TRANSFORM] Input data:",
-            componentData
-          );
-          const transformedData = {
-            programsSection: componentData.programsSection || {
-              title: "Training Programs",
-              description: "Comprehensive training programs designed to enhance your skills and knowledge.",
-              image: "/images/traning.jpg"
-            },
-            trainingPrograms: componentData.trainingPrograms || [
-              {
-                title: "Basic User Training",
-                description: "Learn the fundamentals of NetSuite",
-                duration: "2 days",
-                level: "Beginner"
-              }
-            ],
-            renderIcon: () => null,
-            openProgramModal: () => console.log("Program modal opened"),
-          };
-          console.log(
-            "✅ [TrainingProgramsSection TRANSFORM] Output data:",
-            transformedData
-          );
-          return transformedData;
-        }
-
-        case "TrainingWhyChooseSection": {
-          console.log(
-            "🎯 [TrainingWhyChooseSection TRANSFORM] Input data:",
-            componentData
-          );
-          const transformedData = {
-            whyChooseSection: componentData.whyChooseSection || {
-              title: "Why Choose Our Training",
-              description: "Comprehensive training solutions designed for your success."
-            },
-            trainingFeatures: componentData.trainingFeatures || [
-              {
-                id: 1,
-                title: "Expert Instructors",
-                description: "Learn from certified NetSuite professionals",
-                icon: "👨‍🏫",
-                shortDescription: "Certified instructors with real-world experience"
-              }
-            ],
-            renderIcon: () => null,
-            openFeatureModal: () => console.log("Feature modal opened"),
-          };
-          console.log(
-            "✅ [TrainingWhyChooseSection TRANSFORM] Output data:",
             transformedData
           );
           return transformedData;
@@ -1442,10 +1380,11 @@ const ComponentPreview = ({
           const transformedData = {
             cta: componentData.cta || {
               title: "Ready to Transform Your Business?",
-              subtitle: "Get started with our comprehensive NetSuite implementation services today.",
+              subtitle:
+                "Get started with our comprehensive NetSuite implementation services today.",
               buttonText: "Start Your Implementation",
-              buttonLink: "/contact"
-            }
+              buttonLink: "/contact",
+            },
           };
           console.log(
             "✅ [ImplementationCTASection TRANSFORM] Output data:",
@@ -1463,31 +1402,227 @@ const ComponentPreview = ({
             hero: componentData.hero || {
               title: "NetSuite Customization Services",
               subtitle: "Tailored Solutions for Your Business",
-              description: "Transform your NetSuite system with custom solutions designed specifically for your unique business requirements."
+              description:
+                "Transform your NetSuite system with custom solutions designed specifically for your unique business requirements.",
             },
             services: componentData.services || {
               title: "Our Customization Services",
               items: [
                 {
                   title: "Custom Fields & Forms",
-                  description: "Create custom fields and forms to capture your specific business data.",
-                  icon: "📝"
+                  description:
+                    "Create custom fields and forms to capture your specific business data.",
+                  icon: "📝",
                 },
                 {
                   title: "Custom Scripts",
-                  description: "Develop custom scripts to automate your business processes.",
-                  icon: "⚙️"
+                  description:
+                    "Develop custom scripts to automate your business processes.",
+                  icon: "⚙️",
                 },
                 {
                   title: "Custom Workflows",
-                  description: "Design custom workflows to streamline your operations.",
-                  icon: "🔄"
-                }
-              ]
-            }
+                  description:
+                    "Design custom workflows to streamline your operations.",
+                  icon: "🔄",
+                },
+              ],
+            },
           };
           console.log(
             "✅ [CustomizationHeroSection TRANSFORM] Output data:",
+            transformedData
+          );
+          return transformedData;
+        }
+
+        case "TrainingProgramsSection": {
+          console.log(
+            "🎯 [TrainingProgramsSection TRANSFORM] Input data:",
+            componentData
+          );
+          const transformedData = {
+            programsSection: componentData.programsSection || {
+              title: "Our Training Programs",
+              subtitle:
+                "Comprehensive NetSuite education for every skill level",
+            },
+            trainingPrograms: componentData.trainingPrograms || [],
+            data: componentData,
+          };
+          console.log(
+            "✅ [TrainingProgramsSection TRANSFORM] Output data:",
+            transformedData
+          );
+          return transformedData;
+        }
+
+        case "TrainingKeyModulesSection": {
+          console.log(
+            "🎯 [TrainingKeyModulesSection TRANSFORM] Input data:",
+            componentData
+          );
+          const transformedData = {
+            keyModulesSection: componentData.keyModulesSection || {
+              title: "Key Training Modules",
+              subtitle: "Master essential NetSuite concepts and features",
+            },
+            keyModules: componentData.keyModules || [],
+            data: componentData,
+          };
+          console.log(
+            "✅ [TrainingKeyModulesSection TRANSFORM] Output data:",
+            transformedData
+          );
+          return transformedData;
+        }
+
+        case "TrainingWhyChooseSection": {
+          console.log(
+            "🎯 [TrainingWhyChooseSection TRANSFORM] Input data:",
+            componentData
+          );
+          const transformedData = {
+            whyChooseSection: componentData.whyChooseSection || {
+              title: "Why Choose Our Training",
+              subtitle: "Expert-led programs with proven results",
+            },
+            trainingFeatures: componentData.trainingFeatures || [],
+            data: componentData,
+          };
+          console.log(
+            "✅ [TrainingWhyChooseSection TRANSFORM] Output data:",
+            transformedData
+          );
+          return transformedData;
+        }
+
+        case "IntegrationTypesSection": {
+          console.log(
+            "🎯 [IntegrationTypesSection TRANSFORM] Input data:",
+            componentData
+          );
+          const transformedData = {
+            title: componentData.title || "Integration Types",
+            subtitle:
+              componentData.subtitle || "Multiple ways to connect NetSuite",
+            items: componentData.items || [],
+            data: componentData,
+          };
+          console.log(
+            "✅ [IntegrationTypesSection TRANSFORM] Output data:",
+            transformedData
+          );
+          return transformedData;
+        }
+
+        case "IntegrationBenefitsSection": {
+          console.log(
+            "🎯 [IntegrationBenefitsSection TRANSFORM] Input data:",
+            componentData
+          );
+          const transformedData = {
+            title: componentData.title || "Integration Benefits",
+            subtitle: componentData.subtitle || "Why integrate with NetSuite",
+            items: componentData.items || [],
+            data: componentData,
+          };
+          console.log(
+            "✅ [IntegrationBenefitsSection TRANSFORM] Output data:",
+            transformedData
+          );
+          return transformedData;
+        }
+
+        case "IntegrationPopularSection": {
+          console.log(
+            "🎯 [IntegrationPopularSection TRANSFORM] Input data:",
+            componentData
+          );
+          const transformedData = {
+            title: componentData.title || "Popular Integrations",
+            subtitle:
+              componentData.subtitle || "Connect with leading platforms",
+            platforms: componentData.platforms || [],
+            data: componentData,
+          };
+          console.log(
+            "✅ [IntegrationPopularSection TRANSFORM] Output data:",
+            transformedData
+          );
+          return transformedData;
+        }
+
+        case "IntegrationCtaSection": {
+          console.log(
+            "🎯 [IntegrationCtaSection TRANSFORM] Input data:",
+            componentData
+          );
+          const transformedData = {
+            title: componentData.title || "Ready to Integrate?",
+            subtitle: componentData.subtitle || "Let's connect your systems",
+            buttonText: componentData.buttonText || "Get Started",
+            data: componentData,
+          };
+          console.log(
+            "✅ [IntegrationCtaSection TRANSFORM] Output data:",
+            transformedData
+          );
+          return transformedData;
+        }
+
+        case "CustomizationServicesSection": {
+          console.log(
+            "🎯 [CustomizationServicesSection TRANSFORM] Input data:",
+            componentData
+          );
+          const transformedData = {
+            title: componentData.title || "Our Customization Services",
+            subtitle:
+              componentData.subtitle || "Tailored solutions for your business",
+            items: componentData.items || [],
+            data: componentData,
+          };
+          console.log(
+            "✅ [CustomizationServicesSection TRANSFORM] Output data:",
+            transformedData
+          );
+          return transformedData;
+        }
+
+        case "CustomizationProcessSection": {
+          console.log(
+            "🎯 [CustomizationProcessSection TRANSFORM] Input data:",
+            componentData
+          );
+          const transformedData = {
+            title: componentData.title || "Our Customization Process",
+            subtitle:
+              componentData.subtitle || "Systematic approach to customization",
+            steps: componentData.steps || [],
+            data: componentData,
+          };
+          console.log(
+            "✅ [CustomizationProcessSection TRANSFORM] Output data:",
+            transformedData
+          );
+          return transformedData;
+        }
+
+        case "CustomizationCtaSection": {
+          console.log(
+            "🎯 [CustomizationCtaSection TRANSFORM] Input data:",
+            componentData
+          );
+          const transformedData = {
+            title: componentData.title || "Ready to Customize?",
+            subtitle:
+              componentData.subtitle || "Transform your NetSuite experience",
+            buttonText: componentData.buttonText || "Start Customization",
+            data: componentData,
+          };
+          console.log(
+            "✅ [CustomizationCtaSection TRANSFORM] Output data:",
             transformedData
           );
           return transformedData;
@@ -1625,12 +1760,12 @@ const LivePreview = ({
 
   console.log("🔍 [LIVE PREVIEW] Received components:", {
     count: components.length,
-    components: components.map(c => ({
+    components: components.map((c) => ({
       type: c.componentType,
       hasContentJson: !!c.contentJson,
       contentJsonLength: c.contentJson?.length || 0,
-      isVisible: c.isVisible
-    }))
+      isVisible: c.isVisible,
+    })),
   });
 
   // Force refresh when component data changes
@@ -1720,7 +1855,9 @@ const LivePreview = ({
                     try {
                       rawData = JSON.parse(component.contentJson);
                       console.log(
-                        "✅ [REALTIME EXTRACTION] Parsed content for", component.componentType, ":",
+                        "✅ [REALTIME EXTRACTION] Parsed content for",
+                        component.componentType,
+                        ":",
                         rawData
                       );
                     } catch (err) {
@@ -1731,7 +1868,10 @@ const LivePreview = ({
                       rawData = {};
                     }
                   } else {
-                    console.warn("⚠️ [REALTIME EXTRACTION] No contentJson found for", component.componentType);
+                    console.warn(
+                      "⚠️ [REALTIME EXTRACTION] No contentJson found for",
+                      component.componentType
+                    );
                   }
 
                   // Enhanced debugging for AboutMissionSection
