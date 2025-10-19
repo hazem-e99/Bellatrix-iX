@@ -78,13 +78,8 @@ export const idToPathMap = {
   // RETAIL INDUSTRY COMPONENTS
   // ===========================================
   RetailHeroSection: "industries/retail/HeroSection",
-  RetailIndustryStats: "industries/retail/IndustryStats",
-  RetailIndustryStatsSection: "industries/retail/IndustryStats",
   RetailChallengesSection: "industries/retail/ChallengesSection",
   RetailSolutionsSection: "industries/retail/SolutionsSection",
-  RetailFeaturesSection: "industries/retail/FeaturesSection",
-  RetailCaseStudies: "industries/retail/CaseStudies",
-  RetailCaseStudiesSection: "industries/retail/CaseStudiesSection",
   RetailImplementationSection: "industries/retail/ImplementationSection",
   RetailCTASection: "industries/retail/CTASection",
 
