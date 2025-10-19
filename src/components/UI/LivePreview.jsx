@@ -516,35 +516,14 @@ const ComponentPreview = ({
               "🎯 [PayrollPainPointsSection TRANSFORM] Input data:",
               componentData
             );
-            const defaultItems = [
-              { title: "Delayed salary processing and errors" },
-              { title: "Manual tax calculations and compliance risks" },
-              { title: "Lack of visibility and transparency for employees" },
-              {
-                title:
-                  "Difficulty scaling payroll operations across geographies",
-              },
-              { title: "Disconnected systems leading to data silos" },
-            ];
-            let painPoints = defaultItems;
-            if (
-              Array.isArray(componentData.items) &&
-              componentData.items.length > 0
-            ) {
-              const mapped = componentData.items.map((item) => ({
-                title: item.title || item["Pain Point Title"] || "",
-                description:
-                  item.description || item["Pain Point Description"] || "",
-              }));
-              // Only use admin items if at least one has title or description
-              if (
-                mapped.some(
-                  (item) => item.title.trim() || item.description.trim()
-                )
-              ) {
-                painPoints = mapped;
-              }
-            }
+            const painPoints = Array.isArray(componentData.painPoints)
+              ? componentData.painPoints.map((item) => ({
+                  ...item,
+                  title: item.title || item["Pain Point Title"] || "",
+                  description:
+                    item.description || item["Pain Point Description"] || "",
+                }))
+              : [];
             const transformedPayrollPainPointsData = {
               title:
                 componentData.title ||
@@ -618,7 +597,8 @@ const ComponentPreview = ({
               modules: Array.isArray(componentData.modules)
                 ? componentData.modules.map((mod) => ({
                     ...mod,
-                    description: mod.description || mod.desc || "Module description",
+                    description:
+                      mod.description || mod.desc || "Module description",
                   }))
                 : [],
             },
@@ -686,7 +666,8 @@ const ComponentPreview = ({
               useCases: Array.isArray(componentData.useCases)
                 ? componentData.useCases.map((uc) => ({
                     ...uc,
-                    description: uc.description || uc.desc || "Use case description",
+                    description:
+                      uc.description || uc.desc || "Use case description",
                   }))
                 : [],
             },
@@ -834,6 +815,26 @@ const ComponentPreview = ({
             transformedHeroData
           );
           return transformedHeroData;
+        }
+
+        case "RetailIndustryStats": {
+          console.log(
+            "🎯 [RetailIndustryStats TRANSFORM] Input data:",
+            componentData
+          );
+          const transformedData = {
+            stats: componentData.stats || componentData.items || [],
+            title: componentData.title || "Retail Industry Statistics",
+            subtitle: componentData.subtitle || "Key retail metrics",
+            description:
+              componentData.description ||
+              "Key metrics that demonstrate our retail excellence and industry leadership",
+          };
+          console.log(
+            "✅ [RetailIndustryStats TRANSFORM] Output data:",
+            transformedData
+          );
+          return transformedData;
         }
 
         case "ServicesSection": {
@@ -1383,6 +1384,10 @@ const ComponentPreview = ({
             title: componentData.title || "Ready to Transform Retail?",
             subtitle:
               componentData.subtitle || "Let's discuss your retail needs",
+            description:
+              componentData.description ||
+              "Join hundreds of retail companies that have unified their commerce operations and improved customer experience with NetSuite. Get started with a free consultation today.",
+            features: componentData.features || [],
             ctaButton: componentData.ctaButton || {
               text: "Get Started",
               link: "/contact",

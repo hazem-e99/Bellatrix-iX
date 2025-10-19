@@ -17,7 +17,7 @@ const ModulesSection = ({ data = {} }) => {
     hasPropsData: !!(data && data.modules),
     propsData: data,
     finalData: modules,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
   return (
     <>
@@ -40,7 +40,9 @@ const ModulesSection = ({ data = {} }) => {
               {title}
             </h2>
             {description && (
-              <p className="text-lg text-[var(--color-text-light)] max-w-2xl mx-auto">{description}</p>
+              <p className="text-lg text-[var(--color-text-light)] max-w-2xl mx-auto">
+                {description}
+              </p>
             )}
           </header>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">

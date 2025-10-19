@@ -4,6 +4,123 @@
  */
 
 export const generalComponentSchemas = {
+  RetailCTASection: {
+    componentName: "RetailCTA",
+    category: "retail",
+    icon: "📞",
+    displayName: "Retail CTA Section",
+    description: "Call-to-action section for retail services",
+    schema: {
+      type: "object",
+      properties: {
+        title: {
+          type: "string",
+          label: "CTA Title",
+          placeholder: "Ready to Transform Your Retail Operations?",
+          required: true,
+          formField: "text",
+        },
+        subtitle: {
+          type: "string",
+          label: "CTA Subtitle",
+          placeholder: "Get started with NetSuite for retail",
+          formField: "text",
+        },
+        description: {
+          type: "string",
+          label: "CTA Description",
+          placeholder: "Join successful retailers using NetSuite",
+          formField: "textarea",
+        },
+        features: {
+          type: "array",
+          label: "Features (Items)",
+          items: {
+            type: "object",
+            properties: {
+              icon: {
+                type: "string",
+                label: "Icon",
+                placeholder: "💡",
+                formField: "text",
+              },
+              title: {
+                type: "string",
+                label: "Feature Title",
+                placeholder: "Free Assessment",
+                formField: "text",
+              },
+              description: {
+                type: "string",
+                label: "Feature Description",
+                placeholder: "Comprehensive evaluation of your retail processes",
+                formField: "text",
+              },
+            },
+          },
+          formField: "array",
+          minItems: 1,
+          maxItems: 6,
+        },
+        ctaButton: {
+          type: "object",
+          label: "Primary CTA Button",
+          properties: {
+            text: {
+              type: "string",
+              label: "Button Text",
+              placeholder: "Schedule Retail Demo",
+              formField: "text",
+            },
+            link: {
+              type: "string",
+              label: "Button Link",
+              placeholder: "/contact",
+              formField: "text",
+            },
+            variant: {
+              type: "string",
+              label: "Button Style",
+              formField: "select",
+              options: [
+                { value: "primary", label: "Primary Button" },
+                { value: "secondary", label: "Secondary Button" },
+                { value: "outline", label: "Outline Button" },
+              ],
+            },
+          },
+          formField: "object",
+        },
+      },
+    },
+    defaultData: {
+      title: "Transform Your Retail Businesseee",
+      subtitle: "Get started with NetSuite for retailee",
+      description: "Join successful retailers using NetSuitee",
+      features: [
+        {
+          title: "Free Assessment",
+          description: "Comprehensive evaluation of your retail processes",
+          icon: "M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4",
+        },
+        {
+          title: "Rapid Implementation",
+          description: "Get up and running faster with our proven methodology",
+          icon: "M13 10V3L4 14h7v7l9-11h-7z",
+        },
+        {
+          title: "Ongoing Support",
+          description: "Continuous optimization and support for your success",
+          icon: "M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
+        },
+      ],
+      ctaButton: {
+        text: "Schedule Demoee",
+        link: "/retail/demo",
+        variant: "primary",
+      },
+    },
+  },
   // Payroll Components
   PayrollHeroSection: {
     componentName: "PayrollHero",
@@ -288,11 +405,7 @@ export const generalComponentSchemas = {
                 label: "Pain Point Title",
                 formField: "text",
               },
-              description: {
-                type: "string",
-                label: "Pain Point Description",
-                formField: "textarea",
-              },
+            
             },
           },
         },

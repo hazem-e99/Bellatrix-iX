@@ -31,7 +31,9 @@ const UseCasesSection = ({ data = {} }) => {
               {title}
             </h2>
             {description && (
-              <p className="text-lg text-[var(--color-text-secondary)] mb-3">{description}</p>
+              <p className="text-lg text-[var(--color-text-secondary)] mb-3">
+                {description}
+              </p>
             )}
             <div className="mx-auto w-16 h-1 bg-[var(--color-primary)] rounded-full"></div>
           </header>

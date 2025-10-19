@@ -1,57 +1,33 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import SEO from "../../SEO";
 
 const PayrollPainPoints = ({ painPoints }) => {
-  const [defaultData, setDefaultData] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/data/payroll.json");
-        const data = await response.json();
-        setDefaultData(data.painPoints);
-      } catch (error) {
-        console.error("Failed to load payroll data:", error);
-        setDefaultData({
-          title:
-            'The Payroll <span class="text-[var(--color-primary)]">Challenges</span> We Solve',
-          description:
-            "Our system addresses the most common payroll challenges faced by consultancy firms:",
-          items: [],
-        });
-      }
-    };
-    fetchData();
-  }, []);
-
-  // PRIORITIZE props data over default data for real-time preview
-  const displayData = {
-    title:
-      defaultData?.title ||
-      'The Payroll <span class="text-[var(--color-primary)]">Challenges</span> We Solve',
-    description:
-      defaultData?.description ||
-      "Our system addresses the most common payroll challenges faced by businesses:",
-    items: painPoints || defaultData?.items || [],
-  };
+  // اعتمد فقط على البيانات القادمة من props
+  const title =
+    painPoints?.title ||
+    'The Payroll <span class="text-[var(--color-primary)]">Struggles</span> We Eliminate';
+  const description =
+    painPoints?.description ||
+    "Our system addresses the most common payroll challenges faced by consultancy firms:";
+  const items = Array.isArray(painPoints?.painPoints)
+    ? painPoints.painPoints
+    : [];
 
   // Debug logging for real-time updates
   console.log("🎯 [PayrollPainPoints] Component received data:", {
     hasPropsData: !!painPoints,
     propsData: painPoints,
-    hasDefaultData: !!defaultData,
-    finalData: displayData,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
 
   return (
     <>
       <SEO
-        title="Oracle NetSuite Payroll Challenges & Solutions | Common Payroll Problems"
-        description="Discover common payroll challenges that Oracle NetSuite solves: compliance issues, manual processing errors, time-consuming calculations, and data integration problems."
+        title={title.replace(/<[^>]+>/g, "")}
+        description={description}
         keywords="NetSuite payroll challenges, payroll problems solutions, Oracle ERP payroll issues, automated payroll benefits, payroll compliance solutions"
-        ogTitle="NetSuite Payroll Solutions - Solving Common Payroll Challenges"
-        ogDescription="Oracle NetSuite addresses critical payroll challenges including compliance, automation, accuracy, and integration. Professional ERP payroll problem-solving."
+        ogTitle={title.replace(/<[^>]+>/g, "")}
+        ogDescription={description}
         ogImage="/images/netsuite-payroll-challenges.jpg"
       />
       <section className="bg-[var(--color-bg-secondary)] py-20 light-section">
@@ -59,19 +35,18 @@ const PayrollPainPoints = ({ painPoints }) => {
           <header className="text-center mb-12">
             <h2
               className="text-3xl md:text-4xl font-bold text-[var(--color-text-primary)]"
-              dangerouslySetInnerHTML={{ __html: displayData.title }}
+              dangerouslySetInnerHTML={{ __html: title }}
             ></h2>
           </header>
           <div className="flex flex-col md:flex-row gap-12 items-center">
             <div className="md:w-1/2">
               <strong className="text-xl text-[var(--color-text-primary)] block mb-6">
-                {displayData.description}
+                {description}
               </strong>
               <ul className="space-y-5">
-                {displayData.items?.map((item, idx) => (
+                {items.map((item, idx) => (
                   <li key={idx} className="flex items-start">
                     <span className="text-lg text-[var(--color-text-secondary)]">
-                      {" "}
                       {item.title}
                     </span>
                   </li>

@@ -2,17 +2,44 @@ import React from "react";
 import SEO from "../../SEO";
 
 const IndustryStats = ({ data }) => {
-  // Ensure data is an array and provide fallback
-  const stats = Array.isArray(data) ? data : (data?.stats || data?.items || []);
-  
+  // Accept both array and object with stats/items for live preview compatibility
+  let stats = [];
+  if (Array.isArray(data)) {
+    stats = data;
+  } else if (Array.isArray(data?.stats)) {
+    stats = data.stats;
+  } else if (Array.isArray(data?.items)) {
+    stats = data.items;
+  } else if (Array.isArray(data?.data)) {
+    stats = data.data;
+  } else if (Array.isArray(data?.data?.stats)) {
+    stats = data.data.stats;
+  }
+
   // Default stats if none provided
   const defaultStats = [
-    { value: "85%", label: "Efficiency Improvement", description: "Average efficiency gain" },
-    { value: "60%", label: "Cost Reduction", description: "Operational cost savings" },
-    { value: "90%", label: "Accuracy Rate", description: "Data accuracy improvement" },
-    { value: "75%", label: "Time Savings", description: "Process automation benefits" }
+    {
+      value: "85%",
+      label: "Efficiency Improvement",
+      description: "Average efficiency gain",
+    },
+    {
+      value: "60%",
+      label: "Cost Reduction",
+      description: "Operational cost savings",
+    },
+    {
+      value: "90%",
+      label: "Accuracy Rate",
+      description: "Data accuracy improvement",
+    },
+    {
+      value: "75%",
+      label: "Time Savings",
+      description: "Process automation benefits",
+    },
   ];
-  
+
   const finalStats = stats.length > 0 ? stats : defaultStats;
 
   return (
