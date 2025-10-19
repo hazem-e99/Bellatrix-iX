@@ -1,56 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import SEO from "../../SEO";
 
 const ModulesSection = ({ data = {} }) => {
-  const [defaultData, setDefaultData] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/data/hr.json");
-        const jsonData = await response.json();
-        setDefaultData(jsonData.modules);
-      } catch (error) {
-        console.error("Failed to load HR data:", error);
-        // Fallback data
-        setDefaultData([
-          {
-            icon: "👥",
-            title: "Employee Management",
-            desc:
-              "Comprehensive employee records, profiles, and lifecycle management from onboarding to offboarding.",
-          },
-          {
-            icon: "💰",
-            title: "Payroll Processing",
-            desc:
-              "Automated payroll calculations, tax deductions, and salary disbursements with compliance features.",
-          },
-        ]);
-      }
-    };
-    fetchData();
-  }, []);
-
-  // PRIORITIZE props data over default data for real-time preview
-  const modules = data.modules || defaultData || [];
+  // اعتمد فقط على البيانات القادمة من props
+  const title = data.title || "Product Modules";
+  const description = data.description || "";
+  const modules = Array.isArray(data.modules)
+    ? data.modules.map((m) => ({
+        ...m,
+        description: m.description || m.desc || "Module description",
+      }))
+    : [];
 
   // Debug logging for real-time updates
   console.log("🎯 [HRModulesSection] Component received data:", {
     hasPropsData: !!(data && data.modules),
     propsData: data,
-    hasDefaultData: !!defaultData,
     finalData: modules,
     timestamp: new Date().toISOString()
   });
   return (
     <>
       <SEO
-        title="Oracle NetSuite HR Modules | Complete HR Platform Components"
-        description="Explore Oracle NetSuite HR platform modules: employee management, payroll processing, compliance tracking, analytics, and more. Modular HR solutions for every business need."
+        title={title}
+        description={description}
         keywords="Oracle NetSuite HR modules, HR platform components, employee management module, payroll processing, HR compliance, NetSuite HR features"
-        ogTitle="NetSuite HR Platform Modules - Complete HR Management Components"
-        ogDescription="Modular Oracle NetSuite HR platform covering employee management, payroll, compliance, and analytics. Choose components that fit your business needs."
+        ogTitle={title}
+        ogDescription={description}
         ogImage="/images/netsuite-hr-modules.jpg"
       />
       <section
@@ -61,13 +37,11 @@ const ModulesSection = ({ data = {} }) => {
         <div className="max-w-6xl mx-auto px-4 relative z-10">
           <header className="text-center mb-10">
             <h2 className="text-3xl font-bold mb-6 text-[var(--color-text-inverse)]">
-              Product Modules
+              {title}
             </h2>
-            <p className="text-lg text-[var(--color-text-light)] max-w-2xl mx-auto">
-              Our platform is built from modular components to cover every
-              aspect of HR, payroll, and compliance—choose what fits your
-              business best.
-            </p>
+            {description && (
+              <p className="text-lg text-[var(--color-text-light)] max-w-2xl mx-auto">{description}</p>
+            )}
           </header>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             {modules.map((m, idx) => (
@@ -88,7 +62,7 @@ const ModulesSection = ({ data = {} }) => {
                   {m.title || "Module"}
                 </h3>
                 <p className="text-[var(--color-text-light)] text-base">
-                  {m.desc || "Module description"}
+                  {m.description}
                 </p>
               </article>
             ))}
