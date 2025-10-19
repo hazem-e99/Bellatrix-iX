@@ -5,8 +5,8 @@ import PayrollStepper from "./PayrollStepper";
 const PayrollWorkflow = ({ workflowData = {} }) => {
   // اعتمد فقط على البيانات القادمة من props
   const displayData = {
-    title: workflowData?.title || "Workflow",
-    description: workflowData?.description || "Workflow description",
+    title: workflowData?.title || "Payroll System Workflow",
+    description: workflowData?.description || "Streamline your entire payroll lifecycle with our comprehensive workflow solution.",
     steps: workflowData?.steps || [],
   };
 
@@ -38,17 +38,23 @@ const PayrollWorkflow = ({ workflowData = {} }) => {
         ).substring(0, 120)}... Professional ERP payroll lifecycle management.`}
         ogImage="/images/netsuite-payroll-workflow.jpg"
       />
-      <section className="py-20 bg-[var(--color-bg-primary)]">
+      
+      <section className="py-20 bg-white light-section">
         <div className="container mx-auto px-6 max-w-6xl">
-          <header className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-[var(--color-text-primary)]">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-800">
               {displayData.title}
             </h2>
-            <p className="text-xl text-[var(--color-text-secondary)]">
+            <p className="text-xl text-gray-600 leading-relaxed">
               {displayData.description}
             </p>
-          </header>
-          <PayrollStepper steps={displayData.steps} />
+          </div>
+          
+          <PayrollStepper 
+            steps={displayData.steps}
+            title={displayData.title}
+            description={displayData.description}
+          />
         </div>
       </section>
     </>

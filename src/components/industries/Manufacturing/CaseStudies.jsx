@@ -13,6 +13,19 @@ const CaseStudies = ({ data }) => {
     defaultData: manufacturingData.caseStudies,
     finalData: finalData,
     itemsCount: finalData.items?.length,
+    title: finalData.title,
+    description: finalData.description,
+    hasTitle: !!finalData.title,
+    hasDescription: !!finalData.description,
+  });
+
+  // Debug: Log the exact values being used
+  console.log("🏭 [CaseStudies] Title/Description Debug:", {
+    titleFromProps: data?.title,
+    descriptionFromProps: data?.description,
+    finalTitle: finalData.title,
+    finalDescription: finalData.description,
+    titleSplit: finalData.title ? finalData.title.split(" ") : null,
   });
 
   return (
@@ -55,16 +68,18 @@ const CaseStudies = ({ data }) => {
       <div className="container mx-auto px-6 relative z-10">
         <header className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-            Success <span className="text-cyan-400">Stories</span>
+            {(finalData.title || data?.title) ? (finalData.title || data?.title).split(" ")[0] : "Success"}{" "}
+            <span className="text-cyan-400">
+              {(finalData.title || data?.title) ? (finalData.title || data?.title).split(" ")[1] : "Stories"}
+            </span>
           </h2>
           <p className="text-lg text-gray-300 leading-relaxed max-w-3xl mx-auto">
-            Real manufacturing companies achieving remarkable results with
-            NetSuite solutions.
+            {finalData.description || data?.description || "Real manufacturing companies achieving remarkable results with NetSuite solutions."}
           </p>
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {finalData.items?.map((study, index) => (
+          {(Array.isArray(finalData.items) ? finalData.items : []).map((study, index) => (
             <motion.article
               key={index}
               initial={{ opacity: 0, y: 20 }}
@@ -115,24 +130,61 @@ const CaseStudies = ({ data }) => {
                 <div>
                   <h4 className="font-semibold text-white mb-3">Results:</h4>
                   <div className="space-y-2">
-                    {(study.results || []).map((result, i) => (
-                      <div key={i} className="flex items-center space-x-2">
-                        <svg
-                          className="w-4 h-4 text-cyan-400"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M5 13l4 4L19 7"
-                          />
-                        </svg>
-                        <span className="text-gray-300 text-sm">{result}</span>
-                      </div>
-                    ))}
+                    {(() => {
+                      const results = study.results;
+                      
+                      // Ensure results is an array
+                      if (!Array.isArray(results)) {
+                        // If results is a string, convert it to array
+                        if (typeof results === 'string') {
+                          return (
+                            <div className="flex items-center space-x-2">
+                              <svg
+                                className="w-4 h-4 text-cyan-400"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M5 13l4 4L19 7"
+                                />
+                              </svg>
+                              <span className="text-gray-300 text-sm">{results}</span>
+                            </div>
+                          );
+                        }
+                        
+                        // If results is not available or not an array, show fallback
+                        return (
+                          <div className="text-gray-400 text-sm">
+                            Results not available for this case study.
+                          </div>
+                        );
+                      }
+                      
+                      // If results is an array, map over it
+                      return results.map((result, i) => (
+                        <div key={i} className="flex items-center space-x-2">
+                          <svg
+                            className="w-4 h-4 text-cyan-400"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M5 13l4 4L19 7"
+                            />
+                          </svg>
+                          <span className="text-gray-300 text-sm">{result}</span>
+                        </div>
+                      ));
+                    })()}
                   </div>
                 </div>
               </div>

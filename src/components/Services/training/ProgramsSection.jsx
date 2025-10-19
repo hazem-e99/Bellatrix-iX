@@ -2,6 +2,7 @@
 import React from "react";
 import SEO from "../../SEO";
 import TrainingProgramCard from "./TrainingProgramCard";
+import { renderIcon as defaultRenderIcon } from "./utils";
 
 const ProgramsSection = ({
   programsSection,
@@ -9,13 +10,21 @@ const ProgramsSection = ({
   renderIcon,
   openProgramModal,
 }) => {
+  // Use provided renderIcon or fallback to default
+  const iconRenderer = renderIcon || defaultRenderIcon;
+  
+  // Add null checks and fallbacks for data
+  const programs = trainingPrograms?.programs || [];
+  const sectionData = programsSection || {};
   // Debug logging for image data
   console.log("🎯 [COMPONENT DEBUG] TrainingProgramsSection received props:", {
-    programsSection,
-    imageUrl: programsSection?.image,
-    hasImage: !!programsSection?.image,
-    imageType: typeof programsSection?.image,
-    fullProgramsSection: programsSection,
+    programsSection: sectionData,
+    imageUrl: sectionData?.image,
+    hasImage: !!sectionData?.image,
+    imageType: typeof sectionData?.image,
+    fullProgramsSection: sectionData,
+    programsCount: programs.length,
+    hasPrograms: programs.length > 0,
   });
 
   return (
@@ -31,18 +40,18 @@ const ProgramsSection = ({
       <section className="bg-gray-50 py-12 light-section">
         {/* DEBUG: Show actual image URL being used */}
         <div style={{ display: "none" }}>
-          Image URL: {programsSection?.image}
+          Image URL: {sectionData?.image}
         </div>
         <div className="container mx-auto px-6">
           <header className="text-center mb-10">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
-              {programsSection.title.split(" ")[0]}{" "}
+              {sectionData?.title ? sectionData.title.split(" ")[0] : "Training"}{" "}
               <span className="text-blue-600">
-                {programsSection.title.split(" ")[1]}
+                {sectionData?.title ? sectionData.title.split(" ")[1] : "Programs"}
               </span>
             </h2>
             <p className="text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto">
-              {programsSection.description}
+              {sectionData?.description || "Comprehensive training programs designed to enhance your skills and knowledge."}
             </p>
           </header>
 
@@ -63,13 +72,13 @@ const ProgramsSection = ({
                   {/* Inner glow container */}
                   <div className="relative bg-gradient-to-br from-white/5 via-transparent to-blue-500/5 rounded-2xl p-4 border border-white/20">
                     <img
-                      src={programsSection.image || "/images/traning.jpg"}
+                      src={sectionData?.image || "/images/traning.jpg"}
                       alt="Oracle NetSuite Training Programs - Advanced ERP Learning Solutions"
                       className="w-full h-auto rounded-xl shadow-2xl brightness-105 contrast-110 saturate-105 group-hover:brightness-110 group-hover:contrast-115 group-hover:saturate-110 transition-all duration-500 filter drop-shadow-xl"
                       onError={(e) => {
                         console.error(
                           "🖼️ [IMAGE ERROR] Failed to load:",
-                          programsSection.image
+                          sectionData?.image
                         );
                         console.error(
                           "🖼️ [IMAGE ERROR] Fallback to:",
@@ -80,7 +89,7 @@ const ProgramsSection = ({
                       onLoad={(e) => {
                         console.log(
                           "🖼️ [IMAGE LOAD] Success:",
-                          programsSection.image
+                          sectionData?.image
                         );
                         console.log(
                           "🖼️ [IMAGE LOAD] Actual src:",
@@ -139,11 +148,11 @@ const ProgramsSection = ({
                 {/* Professional Badge */}
                 <div className="absolute -bottom-3 -right-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-4 py-2 rounded-xl shadow-lg text-sm font-bold opacity-90 group-hover:opacity-100 transition-opacity duration-300">
                   <div className="flex items-center space-x-2">
-                    {renderIcon(
+                    {iconRenderer(
                       "M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z",
                       "w-4 h-4"
                     )}
-                    <span>{programsSection.Professional_Badge}</span>
+                    <span>{sectionData?.Professional_Badge || "Professional"}</span>
                   </div>
                 </div>
               </div>
@@ -152,15 +161,26 @@ const ProgramsSection = ({
             {/* Training Programs Content - Right Side */}
             <div className="flex-1">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {trainingPrograms.programs.map((program, index) => (
-                  <TrainingProgramCard
-                    key={program.id}
-                    program={program}
-                    index={index}
-                    renderIcon={renderIcon}
-                    onClick={() => openProgramModal(program)}
-                  />
-                ))}
+                {programs.length > 0 ? (
+                  programs.map((program, index) => (
+                    <TrainingProgramCard
+                      key={program.id || index}
+                      program={program}
+                      index={index}
+                      renderIcon={iconRenderer}
+                      onClick={() => openProgramModal && openProgramModal(program)}
+                    />
+                  ))
+                ) : (
+                  <div className="col-span-2 text-center py-8">
+                    <div className="text-gray-500 text-lg">
+                      No training programs available at the moment.
+                    </div>
+                    <div className="text-gray-400 text-sm mt-2">
+                      Please check back later or contact us for more information.
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

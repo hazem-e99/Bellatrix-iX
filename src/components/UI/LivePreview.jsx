@@ -1076,8 +1076,10 @@ const ComponentPreview = ({
             componentData
           );
           const transformedData = {
-            solutions: componentData.solutions ||
-              componentData.items || [
+            title: componentData.title || "NetSuite Manufacturing Solutions",
+            subtitle: componentData.subtitle || "Comprehensive ERP solutions for manufacturers",
+            description: componentData.description || "Our NetSuite solutions are specifically designed to address manufacturing challenges and streamline your operations.",
+            solutions: componentData.solutions || componentData.items || [
                 {
                   title: "Production Management",
                   description: "End-to-end production planning and execution",
@@ -1087,18 +1089,16 @@ const ComponentPreview = ({
                 {
                   title: "Inventory Control",
                   description: "Advanced inventory management capabilities",
-                  features: [
-                    "Real-time tracking",
-                    "Multi-location",
-                    "Automated reordering",
-                  ],
-                  benefits: "30% reduction in stockouts",
-                },
-              ],
-            title: componentData.title || "Manufacturing Solutions",
-            description:
-              componentData.description ||
-              "Comprehensive solutions for manufacturing",
+                features: ["Multi-location", "Serial tracking", "Cycle counting"],
+                benefits: "30% reduction in inventory costs",
+              },
+              {
+                title: "Quality Assurance",
+                description: "Comprehensive quality control systems",
+                features: ["Quality gates", "Defect tracking", "Compliance reporting"],
+                benefits: "99.5% quality achievement rate",
+              },
+            ],
           };
           console.log(
             "✅ [ManufacturingSolutionsSection TRANSFORM] Output data:",
@@ -1214,28 +1214,55 @@ const ComponentPreview = ({
             componentData
           );
           const transformedData = {
-            caseStudies: componentData.caseStudies ||
-              componentData.items || [
+            data: {
+              items: componentData.items || componentData.caseStudies || [
                 {
-                  title: "Automotive Manufacturer",
-                  description: "Streamlined production processes",
+                  title: "Automotive Parts Manufacturer",
                   company: "ABC Motors",
-                  results: "40% efficiency improvement",
+                  industry: "Automotive",
+                  challenge: "Complex multi-location inventory management",
+                  solution: "NetSuite Advanced Manufacturing with WMS",
+                  results: "40% reduction in inventory carrying costs",
+                  timeline: "6 months",
+                  image: "/images/case-study-1.jpg",
                 },
                 {
-                  title: "Electronics Company",
-                  description: "Improved inventory management",
+                  title: "Electronics Manufacturer",
                   company: "TechCorp",
-                  results: "60% cost reduction",
+                  industry: "Electronics",
+                  challenge: "Manual production planning and scheduling",
+                  solution: "NetSuite Manufacturing Edition with custom workflows",
+                  results: "60% improvement in on-time delivery",
+                  timeline: "4 months",
+                  image: "/images/case-study-2.jpg",
+                },
+                {
+                  title: "Food & Beverage Producer",
+                  company: "FreshFoods Inc",
+                  industry: "Food & Beverage",
+                  challenge: "Quality control and compliance tracking",
+                  solution: "NetSuite Quality Management Suite",
+                  results: "99.5% quality achievement rate",
+                  timeline: "3 months",
+                  image: "/images/case-study-3.jpg",
                 },
               ],
-            title: componentData.title || "Manufacturing Success Stories",
-            description:
-              componentData.description || "See how we've helped others",
+              title: componentData.title || "Manufacturing Success Stories",
+              description: componentData.description || "See how we've helped manufacturing companies transform their operations with NetSuite solutions.",
+            },
           };
           console.log(
             "✅ [ManufacturingCaseStudies TRANSFORM] Output data:",
             transformedData
+          );
+          console.log(
+            "🔍 [ManufacturingCaseStudies DEBUG] Title/Description:",
+            {
+              inputTitle: componentData.title,
+              inputDescription: componentData.description,
+              outputTitle: transformedData.data.title,
+              outputDescription: transformedData.data.description,
+            }
           );
           return transformedData;
         }
@@ -1246,14 +1273,32 @@ const ComponentPreview = ({
             componentData
           );
           const transformedData = {
-            title: componentData.title || "Ready to Transform Manufacturing?",
-            subtitle:
-              componentData.subtitle ||
-              "Let's discuss your manufacturing needs",
+            title: componentData.title || "Ready to Transform Your Manufacturing Operations?",
+            subtitle: componentData.subtitle || "Get started with our manufacturing experts",
+            description: componentData.description || "Contact our manufacturing specialists to learn how NetSuite can optimize your operations",
             ctaButton: componentData.ctaButton || {
               text: "Get Started",
               link: "/contact",
+              variant: "primary",
             },
+            features: componentData.features || [
+              {
+                icon: "💡",
+                title: "Free Assessment",
+                description: "Comprehensive evaluation of your manufacturing processes",
+              },
+              {
+                icon: "⚡",
+                title: "Rapid Implementation",
+                description: "Get up and running faster with our proven methodology",
+              },
+              {
+                icon: "🛠️",
+                title: "Ongoing Support",
+                description: "Continuous optimization and support for your success",
+              },
+            ],
+            trustedBy: componentData.trustedBy || ["Fortune 500 Manufacturers", "SMEs", "Startups"],
           };
           console.log(
             "✅ [ManufacturingCTASection TRANSFORM] Output data:",
@@ -1327,7 +1372,40 @@ const ComponentPreview = ({
             componentData
           );
           const transformedData = {
-            features: componentData.features || componentData.items || [],
+            data: {
+              retailFeatures: componentData.features || componentData.items || [
+                {
+                  title: "Point of Sale",
+                  description: "Modern POS system with offline capability",
+                  icon: "💳",
+                },
+                {
+                  title: "E-commerce Integration",
+                  description: "Seamless online and offline experience",
+                  icon: "🛒",
+                },
+                {
+                  title: "Inventory Management",
+                  description: "Real-time inventory tracking across channels",
+                  icon: "📦",
+                },
+                {
+                  title: "Customer Analytics",
+                  description: "Advanced customer insights and behavior analysis",
+                  icon: "📊",
+                },
+                {
+                  title: "Omnichannel Support",
+                  description: "Unified experience across all touchpoints",
+                  icon: "🔄",
+                },
+                {
+                  title: "Mobile Commerce",
+                  description: "Mobile-optimized shopping experience",
+                  icon: "📱",
+                },
+              ],
+            },
             title: componentData.title || "Retail Features",
             description:
               componentData.description ||
@@ -1540,11 +1618,42 @@ const ComponentPreview = ({
           );
           const transformedData = {
             programsSection: componentData.programsSection || {
-              title: "Our Training Programs",
-              subtitle:
-                "Comprehensive NetSuite education for every skill level",
+              title: "Training Programs",
+              description: "Comprehensive training programs designed to enhance your skills and knowledge.",
+              image: "/images/traning.jpg",
             },
-            trainingPrograms: componentData.trainingPrograms || [],
+            trainingPrograms: componentData.trainingPrograms || {
+              programs: componentData.programs || [
+                {
+                  id: 1,
+                  title: "Basic User Training",
+                  description: "Learn the fundamentals of NetSuite",
+                  duration: "2 days",
+                  level: "Beginner",
+                },
+                {
+                  id: 2,
+                  title: "Advanced Configuration",
+                  description: "Master advanced NetSuite configuration",
+                  duration: "3 days",
+                  level: "Advanced",
+                },
+                {
+                  id: 3,
+                  title: "Customization & Scripting",
+                  description: "Learn NetSuite customization and scripting",
+                  duration: "4 days",
+                  level: "Expert",
+                },
+                {
+                  id: 4,
+                  title: "Integration Training",
+                  description: "Master NetSuite integrations",
+                  duration: "3 days",
+                  level: "Advanced",
+                },
+              ],
+            },
             data: componentData,
           };
           console.log(

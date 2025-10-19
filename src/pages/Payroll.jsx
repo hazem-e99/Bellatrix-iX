@@ -1179,7 +1179,7 @@ function SolutionHorizontalStepper({ workflowData }) {
                 className={`text-sm font-medium max-w-[140px] text-center transition-colors duration-300 leading-tight absolute top-16
                 ${idx <= current ? "text-blue-700" : "text-gray-500"}`}
               >
-                {step.title}
+                {step?.title || `Step ${idx + 1}`}
               </span>
             </div>
           ))}
@@ -1212,10 +1212,10 @@ function SolutionHorizontalStepper({ workflowData }) {
         <div className="flex flex-col lg:flex-row lg:items-start gap-8 lg:gap-12">
           <div className="lg:w-2/5">
             <h3 className="text-2xl md:text-3xl font-bold text-gray-800 mb-3">
-              {steps[current].title}
+              {steps[current]?.title || "Step Title"}
             </h3>
             <p className="text-lg font-medium text-gray-700 mb-6">
-              {steps[current].desc}
+              {steps[current]?.desc || "Step description"}
             </p>
 
             {/* Key Benefits */}
@@ -1224,7 +1224,7 @@ function SolutionHorizontalStepper({ workflowData }) {
                 Key Benefits
               </h4>
               <div className="grid grid-cols-2 gap-2">
-                {steps[current].benefits.map((benefit, idx) => (
+                {(steps[current]?.benefits || []).map((benefit, idx) => (
                   <div
                     key={idx}
                     className="flex items-center text-sm text-gray-600"
@@ -1307,7 +1307,7 @@ function SolutionHorizontalStepper({ workflowData }) {
                 How It Works
               </h4>
               <p className="text-gray-700 leading-relaxed mb-6">
-                {steps[current].details}
+                {steps[current]?.details || "Step details not available"}
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

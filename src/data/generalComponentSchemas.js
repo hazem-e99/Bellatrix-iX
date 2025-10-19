@@ -1518,6 +1518,131 @@ export const generalComponentSchemas = {
     },
   },
 
+  ManufacturingCaseStudies: {
+    componentName: "ManufacturingCaseStudies",
+    category: "manufacturing",
+    icon: "📊",
+    displayName: "Manufacturing Case Studies",
+    description: "Success stories and case studies from manufacturing clients",
+    schema: {
+      type: "object",
+      properties: {
+        title: {
+          type: "string",
+          label: "Section Title",
+          placeholder: "Manufacturing Success Stories",
+          required: true,
+          formField: "text",
+        },
+        description: {
+          type: "string",
+          label: "Section Description",
+          placeholder: "See how we've helped manufacturing companies transform their operations",
+          formField: "textarea",
+        },
+        items: {
+          type: "array",
+          label: "Case Studies",
+          items: {
+            type: "object",
+            properties: {
+              title: {
+                type: "string",
+                label: "Case Study Title",
+                placeholder: "Automotive Manufacturer",
+                required: true,
+                formField: "text",
+              },
+              company: {
+                type: "string",
+                label: "Company Name",
+                placeholder: "ABC Motors",
+                required: true,
+                formField: "text",
+              },
+              industry: {
+                type: "string",
+                label: "Industry",
+                placeholder: "Automotive",
+                formField: "text",
+              },
+              challenge: {
+                type: "string",
+                label: "Challenge Description",
+                placeholder: "Complex multi-location inventory management",
+                formField: "textarea",
+              },
+              solution: {
+                type: "string",
+                label: "Solution Implemented",
+                placeholder: "NetSuite Advanced Manufacturing with WMS",
+                formField: "textarea",
+              },
+              results: {
+                type: "string",
+                label: "Results Achieved",
+                placeholder: "40% reduction in inventory carrying costs",
+                formField: "text",
+              },
+              timeline: {
+                type: "string",
+                label: "Implementation Timeline",
+                placeholder: "6 months",
+                formField: "text",
+              },
+              image: {
+                type: "string",
+                label: "Case Study Image",
+                placeholder: "/images/case-study-1.jpg",
+                formField: "media",
+                mediaType: "image",
+              },
+            },
+          },
+          formField: "array",
+          minItems: 1,
+          maxItems: 6,
+        },
+      },
+    },
+    defaultData: {
+      title: "Manufacturing Success Stories",
+      description: "See how we've helped manufacturing companies transform their operations with NetSuite solutions.",
+      items: [
+        {
+          title: "Automotive Parts Manufacturer",
+          company: "ABC Motors",
+          industry: "Automotive",
+          challenge: "Complex multi-location inventory management",
+          solution: "NetSuite Advanced Manufacturing with WMS",
+          results: "40% reduction in inventory carrying costs",
+          timeline: "6 months",
+          image: "/images/case-study-1.jpg",
+        },
+        {
+          title: "Electronics Manufacturer",
+          company: "TechCorp",
+          industry: "Electronics",
+          challenge: "Manual production planning and scheduling",
+          solution: "NetSuite Manufacturing Edition with custom workflows",
+          results: "60% improvement in on-time delivery",
+          timeline: "4 months",
+          image: "/images/case-study-2.jpg",
+        },
+        {
+          title: "Food & Beverage Producer",
+          company: "FreshFoods Inc",
+          industry: "Food & Beverage",
+          challenge: "Quality control and compliance tracking",
+          solution: "NetSuite Quality Management Suite",
+          results: "99.5% quality achievement rate",
+          timeline: "3 months",
+          image: "/images/case-study-3.jpg",
+        },
+      ],
+    },
+  },
+
   // Retail Components
   RetailIndustryStats: {
     componentName: "RetailIndustryStats",
