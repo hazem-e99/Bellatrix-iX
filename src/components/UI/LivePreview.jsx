@@ -177,9 +177,9 @@ const ComponentPreview = ({
     RetailIndustryStatsSection: RetailIndustryStats,
     RetailChallengesSection: RetailChallenges,
     RetailSolutionsSection: RetailSolutions,
-    RetailFeaturesSection: RetailFeatures,
-    RetailCaseStudies: RetailCaseStudies,
-    RetailCaseStudiesSection: RetailCaseStudies,
+  // RetailFeaturesSection: RetailFeatures,
+  // RetailCaseStudies: RetailCaseStudies,
+  // RetailCaseStudiesSection: RetailCaseStudies,
     RetailImplementationSection: RetailImplementation,
     RetailCTASection: RetailCTA,
 
