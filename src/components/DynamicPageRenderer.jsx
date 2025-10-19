@@ -222,8 +222,11 @@ const DynamicPageRenderer = () => {
         // New components format
         const normalizedProps = extractComponentData(section);
         const safeProps = buildSafeProps(normalizedProps);
+        // مرر الداتا في كل من data وworkflowData لتوافق كل الكمبوننتات
         const propsToPass = {
           ...safeProps,
+          data: safeProps,
+          workflowData: safeProps,
           renderIcon: safeProps.renderIcon || (() => null),
           openProgramModal: safeProps.openProgramModal || (() => {}),
           openFeatureModal: safeProps.openFeatureModal || (() => {}),
