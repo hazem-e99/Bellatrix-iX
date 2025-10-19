@@ -1,46 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import SEO from "../../SEO";
 import PayrollStepper from "./PayrollStepper";
 
 const PayrollWorkflow = ({ workflowData = {} }) => {
-  const [defaultData, setDefaultData] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/data/payroll.json");
-        const data = await response.json();
-        setDefaultData(data.coreWorkflow);
-      } catch (error) {
-        console.error("Failed to load payroll data:", error);
-        setDefaultData({
-          title: "Payroll System Built for All Industries",
-          description:
-            "Streamline your entire payroll lifecycle — from onboarding to salary disbursement — with a secure, intuitive platform.",
-          steps: [],
-        });
-      }
-    };
-    fetchData();
-  }, []);
-
-  // PRIORITIZE props data over default data for real-time preview
+  // اعتمد فقط على البيانات القادمة من props
   const displayData = {
-    title: workflowData?.title || defaultData?.title || "Workflow",
-    description:
-      workflowData?.description ||
-      defaultData?.description ||
-      "Workflow description",
-    steps: workflowData?.steps || defaultData?.steps || [],
+    title: workflowData?.title || "Workflow",
+    description: workflowData?.description || "Workflow description",
+    steps: workflowData?.steps || [],
   };
 
   // Debug logging for real-time updates
   console.log("🎯 [PayrollWorkflow] Component received data:", {
     hasPropsData: !!(workflowData && Object.keys(workflowData).length > 0),
     propsData: workflowData,
-    hasDefaultData: !!defaultData,
     finalData: displayData,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
 
   return (

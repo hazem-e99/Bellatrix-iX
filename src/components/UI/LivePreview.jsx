@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { EyeIcon, ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import Card, { CardContent, CardHeader, CardTitle } from "../UI/Card";
 
 // Import About components
+import { motion } from "framer-motion";
 import AboutHero from "../About/AboutHero";
 import AboutMission from "../About/AboutMission";
 import AboutTeam from "../About/AboutTeam";
@@ -90,7 +91,6 @@ const ComponentPreview = ({
   className = "",
 }) => {
   const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
 
   // Component registry mapping - All available components for preview
   const componentRegistry = {
@@ -520,24 +520,38 @@ const ComponentPreview = ({
               { title: "Delayed salary processing and errors" },
               { title: "Manual tax calculations and compliance risks" },
               { title: "Lack of visibility and transparency for employees" },
-              { title: "Difficulty scaling payroll operations across geographies" },
+              {
+                title:
+                  "Difficulty scaling payroll operations across geographies",
+              },
               { title: "Disconnected systems leading to data silos" },
             ];
             let painPoints = defaultItems;
-            if (Array.isArray(componentData.items) && componentData.items.length > 0) {
+            if (
+              Array.isArray(componentData.items) &&
+              componentData.items.length > 0
+            ) {
               const mapped = componentData.items.map((item) => ({
                 title: item.title || item["Pain Point Title"] || "",
-                description: item.description || item["Pain Point Description"] || "",
+                description:
+                  item.description || item["Pain Point Description"] || "",
               }));
               // Only use admin items if at least one has title or description
-              if (mapped.some((item) => item.title.trim() || item.description.trim())) {
+              if (
+                mapped.some(
+                  (item) => item.title.trim() || item.description.trim()
+                )
+              ) {
                 painPoints = mapped;
               }
             }
             const transformedPayrollPainPointsData = {
-              title: componentData.title || "The Payroll <span class=\"text-[var(--color-primary)]\">Struggles</span> We Eliminate",
+              title:
+                componentData.title ||
+                'The Payroll <span class="text-[var(--color-primary)]">Struggles</span> We Eliminate',
               description:
-                componentData.description || "Our system addresses the most common payroll challenges faced by consultancy firms:",
+                componentData.description ||
+                "Our system addresses the most common payroll challenges faced by consultancy firms:",
               painPoints,
             };
             console.log(
@@ -596,34 +610,17 @@ const ComponentPreview = ({
             "🎯 [HRModulesSection TRANSFORM] Input data:",
             componentData
           );
+          // Ensure all fields are passed and use correct keys
           const transformedHRModulesData = {
             data: {
-              modules: componentData.modules || [
-                {
-                  icon: "👥",
-                  title: "Employee Management",
-                  desc:
-                    "Comprehensive employee records, profiles, and lifecycle management from onboarding to offboarding.",
-                },
-                {
-                  icon: "💰",
-                  title: "Payroll Processing",
-                  desc:
-                    "Automated payroll calculations, tax deductions, and salary disbursements with compliance features.",
-                },
-                {
-                  icon: "📊",
-                  title: "Performance Analytics",
-                  desc:
-                    "Track employee performance, KPIs, and generate insightful reports for better decision making.",
-                },
-                {
-                  icon: "📋",
-                  title: "Compliance Tracking",
-                  desc:
-                    "Stay compliant with labor laws, regulations, and industry standards with automated tracking.",
-                },
-              ],
+              title: componentData.title || "Product Modules",
+              description: componentData.description || "",
+              modules: Array.isArray(componentData.modules)
+                ? componentData.modules.map((mod) => ({
+                    ...mod,
+                    description: mod.description || mod.desc || "Module description",
+                  }))
+                : [],
             },
           };
           console.log(
@@ -681,30 +678,17 @@ const ComponentPreview = ({
             "🎯 [HRUseCasesSection TRANSFORM] Input data:",
             componentData
           );
+          // Ensure all fields are passed and use correct keys
           const transformedHRUseCasesData = {
             data: {
-              useCases: componentData.useCases || [
-                {
-                  title: "Small Businesses",
-                  desc:
-                    "Streamline HR processes for growing teams with automated workflows and compliance tracking.",
-                },
-                {
-                  title: "Medium Enterprises",
-                  desc:
-                    "Scale your HR operations with advanced analytics and performance management tools.",
-                },
-                {
-                  title: "Large Corporations",
-                  desc:
-                    "Manage complex organizational structures with enterprise-grade HR solutions.",
-                },
-                {
-                  title: "Remote Teams",
-                  desc:
-                    "Support distributed workforces with cloud-based HR management and collaboration tools.",
-                },
-              ],
+              title: componentData.title || "Who Is It For?",
+              description: componentData.description || "",
+              useCases: Array.isArray(componentData.useCases)
+                ? componentData.useCases.map((uc) => ({
+                    ...uc,
+                    description: uc.description || uc.desc || "Use case description",
+                  }))
+                : [],
             },
           };
           console.log(
@@ -1876,33 +1860,18 @@ const LivePreview = ({
     })),
   });
 
-  // Force refresh when component data changes
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setRefreshKey((prev) => prev + 1);
-    }, 100); // Small debounce to prevent too frequent updates
-
-    return () => clearTimeout(timeout);
+  // Only reload preview when contentJson (inputs data) changes
+  const contentJsonString = useMemo(() => {
+    return components.map((comp) => comp.contentJson).join("|");
   }, [components]);
 
-  // Additional refresh trigger for contentJson changes
   useEffect(() => {
-    const contentJsonString = components
-      .map((comp) => comp.contentJson)
-      .join("|");
-    console.log("🔄 [LIVE PREVIEW] ContentJson changed:", {
-      contentJsonString: contentJsonString.slice(0, 200),
-      componentCount: components.length,
-      refreshKey: refreshKey,
-    });
-
+    // Only reload when contentJson changes (inputs data)
     const timeout = setTimeout(() => {
-      console.log("🔄 [LIVE PREVIEW] Triggering refresh:", refreshKey + 1);
       setRefreshKey((prev) => prev + 1);
-    }, 50); // Faster refresh for content changes
-
+    }, 80);
     return () => clearTimeout(timeout);
-  }, [components.map((comp) => comp.contentJson).join("|")]);
+  }, [contentJsonString]);
 
   const previewClasses = {
     desktop: "max-w-none",

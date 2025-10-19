@@ -20,7 +20,7 @@ export const idToPathMap = {
   PayrollHeroSection: "solution/payroll/PayrollHero",
   PayrollHowItWorksSection: "solution/payroll/PayrollHowItWorks",
   PayrollWorkflowSection: "solution/payroll/PayrollWorkflow",
-  PayrollStepperSection: "solution/payroll/PayrollStepper",
+  // PayrollStepperSection: "solution/payroll/PayrollStepper", // Removed
   PayrollPainPointsSection: "solution/payroll/PayrollPainPoints",
   PayrollFAQSection: "solution/payroll/PayrollFAQ",
   PayrollCTASection: "solution/payroll/PayrollCTA",
@@ -91,7 +91,7 @@ export const idToPathMap = {
   // ===========================================
   // COMMON/SHARED COMPONENTS
   // ===========================================
-  SEO: "SEO",
+  // ...existing code...
   CTAButton: "CTAButton",
 };
 
@@ -124,8 +124,8 @@ export const loadComponent = async (componentPath) => {
         import("./solution/payroll/PayrollHowItWorks"),
       "solution/payroll/PayrollWorkflow": () =>
         import("./solution/payroll/PayrollWorkflow"),
-      "solution/payroll/PayrollStepper": () =>
-        import("./solution/payroll/PayrollStepper"),
+      // "solution/payroll/PayrollStepper": () =>
+      //   import("./solution/payroll/PayrollStepper"), // Removed
       "solution/payroll/PayrollPainPoints": () =>
         import("./solution/payroll/PayrollPainPoints"),
       "solution/payroll/PayrollFAQ": () =>
@@ -200,7 +200,7 @@ export const loadComponent = async (componentPath) => {
       // ===========================================
       // COMMON/SHARED COMPONENTS
       // ===========================================
-      SEO: () => import("./SEO"),
+      // SEO: () => import("./SEO"), // Removed
       CTAButton: () => import("./CTAButton"),
     };
 

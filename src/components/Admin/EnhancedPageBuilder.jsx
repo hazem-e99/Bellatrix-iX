@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { useNavigate, useLocation, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   PlusIcon,
   DocumentTextIcon,
@@ -31,14 +31,14 @@ import { getAboutComponentSchema } from "../../data/aboutComponentSchemas";
 import { getGeneralComponentSchema } from "../../data/generalComponentSchemas";
 import {
   generateDynamicSchema,
-  mergeDynamicSchema,
+  // ...existing code...
 } from "../../utils/dynamicSchemaGenerator";
 import pagesAPI from "../../lib/pagesAPI";
 import api from "../../lib/api";
 
 const EnhancedPageBuilder = () => {
   const navigate = useNavigate();
-  const location = useLocation();
+  // const location = useLocation();
   const { pageId } = useParams();
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -3565,8 +3565,8 @@ const EnhancedPageBuilder = () => {
         currentData = component.contentJson
           ? JSON.parse(component.contentJson)
           : defaultData[component.componentType] || {};
-      } catch (parseError) {
-        console.error("Error parsing component data:", parseError);
+      } catch {
+        // ...existing code...
         const defaultData = generateDefaultDataFromJSON();
         currentData = defaultData[component.componentType] || {};
       }
@@ -3603,7 +3603,7 @@ const EnhancedPageBuilder = () => {
         currentData = component.contentJson
           ? JSON.parse(component.contentJson)
           : defaultData[component.componentType] || {};
-      } catch (parseError) {
+      } catch {
         const defaultData = generateDefaultDataFromJSON();
         currentData = defaultData[component.componentType] || {};
       }
@@ -6243,7 +6243,7 @@ const SectionsStep = ({
                       return currentComponent.contentJson
                         ? JSON.parse(currentComponent.contentJson)
                         : {};
-                    } catch (error) {
+                    } catch {
                       return {};
                     }
                   })(),

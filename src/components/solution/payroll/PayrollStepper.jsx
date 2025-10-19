@@ -32,7 +32,7 @@ const PayrollStepper = ({ steps = [], title }) => {
     propsData: { steps, title },
     hasDefaultData: !!defaultData,
     finalData: { displaySteps, displayTitle },
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
 
   useEffect(() => {
@@ -161,29 +161,33 @@ const PayrollStepper = ({ steps = [], title }) => {
           className="bg-[var(--color-bg-primary)] rounded-2xl shadow-lg p-6 border border-[var(--color-border-primary)]"
           role="article"
           aria-label={`Payroll step: ${
-            displaySteps[current]?.title || `Step ${current + 1}`
+            displaySteps[current]?.stepTitle ||
+            displaySteps[current]?.title ||
+            `Step ${current + 1}`
           }`}
         >
           <div className="flex flex-col lg:flex-row gap-8">
             <div className="lg:w-1/2">
               <h3 className="text-2xl font-bold text-[var(--color-text-primary)] mb-3">
-                {displaySteps[current]?.title || `Step ${current + 1}`}
+                {displaySteps[current]?.stepTitle ||
+                  displaySteps[current]?.title ||
+                  `Step ${current + 1}`}
               </h3>
               <p className="text-lg text-[var(--color-text-secondary)] mb-6">
-                {displaySteps[current]?.desc ||
+                {displaySteps[current]?.stepDescription ||
                   displaySteps[current]?.description ||
                   "No description available."}
               </p>
 
-              {displaySteps[current]?.benefits &&
-                Array.isArray(displaySteps[current].benefits) &&
-                displaySteps[current].benefits.length > 0 && (
+              {displaySteps[current]?.features &&
+                Array.isArray(displaySteps[current].features) &&
+                displaySteps[current].features.length > 0 && (
                   <div className="mb-6">
                     <h4 className="text-sm font-semibold text-[var(--color-text-muted)] uppercase mb-3">
                       Key Features
                     </h4>
                     <div className="space-y-2">
-                      {displaySteps[current].benefits.map((detail, idx) => (
+                      {displaySteps[current].features.map((detail, idx) => (
                         <div
                           key={idx}
                           className="flex items-center text-sm text-[var(--color-text-muted)]"
@@ -205,7 +209,8 @@ const PayrollStepper = ({ steps = [], title }) => {
                       <span className="font-medium">Automated</span>
                     </div>
                     <p className="text-sm text-[var(--color-text-muted)]">
-                      Reduces manual work by 80%
+                      {displaySteps[current]?.automated ||
+                        "Reduces manual work by 80%"}
                     </p>
                   </div>
 
@@ -214,7 +219,8 @@ const PayrollStepper = ({ steps = [], title }) => {
                       <span className="font-medium">Compliant</span>
                     </div>
                     <p className="text-sm text-[var(--color-text-muted)]">
-                      Built-in regulatory compliance
+                      {displaySteps[current]?.compliant ||
+                        "Built-in regulatory compliance"}
                     </p>
                   </div>
                 </div>

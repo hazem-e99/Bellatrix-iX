@@ -1,63 +1,38 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import SEO from "../../SEO";
 
 const UseCasesSection = ({ data = {} }) => {
-  const [defaultData, setDefaultData] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/data/hr.json");
-        const jsonData = await response.json();
-        setDefaultData(jsonData.useCases);
-      } catch (error) {
-        console.error("Failed to load HR data:", error);
-        // Fallback data
-        setDefaultData([
-          {
-            title: "Small Businesses",
-            desc:
-              "Streamline HR processes for growing teams with automated workflows and compliance tracking.",
-          },
-          {
-            title: "Medium Enterprises",
-            desc:
-              "Scale your HR operations with advanced analytics and performance management tools.",
-          },
-        ]);
-      }
-    };
-    fetchData();
-  }, []);
-
-  // PRIORITIZE props data over default data for real-time preview
-  const useCases = data.useCases || defaultData || [];
+  // اعتمد فقط على البيانات القادمة من props
+  const title = data.title || "Who Is It For?";
+  const description = data.description || "";
+  const useCases = data.useCases || [];
 
   // Debug logging for real-time updates
   console.log("🎯 [HRUseCasesSection] Component received data:", {
     hasPropsData: !!(data && data.useCases),
     propsData: data,
-    hasDefaultData: !!defaultData,
     finalData: useCases,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
   return (
     <>
       <SEO
-        title="Oracle NetSuite HR Use Cases | Who Benefits from Our HR Platform"
-        description="Discover who benefits from Oracle NetSuite HR platform: small businesses, medium enterprises, large corporations. HR solutions for every organization size and industry."
+        title={title}
+        description={description}
         keywords="Oracle NetSuite HR use cases, HR platform for small business, enterprise HR management, NetSuite HR for medium business, HR system benefits"
-        ogTitle="NetSuite HR Use Cases - Perfect for Every Business Size"
-        ogDescription="Oracle NetSuite HR platform serves small businesses, medium enterprises, and large corporations with scalable HR management solutions."
+        ogTitle={title}
+        ogDescription={description}
         ogImage="/images/netsuite-hr-use-cases.jpg"
       />
       <section className="py-20 bg-[var(--color-bg-secondary)] animate-fade-in-up light-section">
         <div className="max-w-6xl mx-auto px-4">
           <header className="text-center mb-10">
             <h2 className="text-3xl font-extrabold mb-3 text-[var(--color-primary-dark)]">
-              Who Is It{" "}
-              <span className="text-[var(--color-primary)]">For?</span>
+              {title}
             </h2>
+            {description && (
+              <p className="text-lg text-[var(--color-text-secondary)] mb-3">{description}</p>
+            )}
             <div className="mx-auto w-16 h-1 bg-[var(--color-primary)] rounded-full"></div>
           </header>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
@@ -73,7 +48,7 @@ const UseCasesSection = ({ data = {} }) => {
                   {u.title || "Use Case"}
                 </h3>
                 <p className="text-[var(--color-text-secondary)] text-base">
-                  {u.desc || "Use case description"}
+                  {u.description || "Use case description"}
                 </p>
               </article>
             ))}

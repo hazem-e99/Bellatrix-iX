@@ -158,6 +158,28 @@ export const generalComponentSchemas = {
                 label: "Step Description",
                 formField: "textarea",
               },
+              features: {
+                type: "array",
+                label: "Key Features",
+                items: {
+                  type: "string",
+                  label: "Feature",
+                  formField: "text",
+                },
+                formField: "array-text",
+              },
+              automated: {
+                type: "string",
+                label: "Automated Info",
+                placeholder: "Reduces manual work by 80%",
+                formField: "text",
+              },
+              compliant: {
+                type: "string",
+                label: "Compliant Info",
+                placeholder: "Built-in regulatory compliance",
+                formField: "text",
+              },
             },
           },
         },
@@ -583,12 +605,6 @@ export const generalComponentSchemas = {
           placeholder: "Use Cases",
           formField: "text",
         },
-        description: {
-          type: "string",
-          label: "Description",
-          placeholder: "Common use cases for our HR solution",
-          formField: "textarea",
-        },
         useCases: {
           type: "array",
           label: "Use Cases",
@@ -597,12 +613,12 @@ export const generalComponentSchemas = {
             properties: {
               title: {
                 type: "string",
-                label: "Use Case Title",
+                label: "Title",
                 formField: "text",
               },
               description: {
                 type: "string",
-                label: "Use Case Description",
+                label: "Description",
                 formField: "textarea",
               },
             },
@@ -1257,6 +1273,36 @@ export const generalComponentSchemas = {
             "Contact our manufacturing specialists to learn how NetSuite can optimize your operations",
           formField: "textarea",
         },
+        features: {
+          type: "array",
+          label: "Features (Items)",
+          items: {
+            type: "object",
+            properties: {
+              icon: {
+                type: "string",
+                label: "Icon",
+                placeholder: "💡",
+                formField: "text",
+              },
+              title: {
+                type: "string",
+                label: "Feature Title",
+                placeholder: "Streamlined Operations",
+                formField: "text",
+              },
+              description: {
+                type: "string",
+                label: "Feature Description",
+                placeholder: "Optimize your manufacturing processes",
+                formField: "text",
+              },
+            },
+          },
+          formField: "array",
+          minItems: 1,
+          maxItems: 6,
+        },
         ctaButton: {
           type: "object",
           label: "Primary CTA Button",
@@ -1329,6 +1375,23 @@ export const generalComponentSchemas = {
       subtitle: "Get started with our manufacturing experts",
       description:
         "Contact our NetSuite manufacturing specialists to discover how we can optimize your operations, reduce costs, and improve efficiency across your entire value chain.",
+      features: [
+        {
+          icon: "💡",
+          title: "Streamlined Operations",
+          description: "Optimize your manufacturing processes",
+        },
+        {
+          icon: "📊",
+          title: "Real-time Insights",
+          description: "Get actionable data for better decisions",
+        },
+        {
+          icon: "🛠️",
+          title: "Expert Support",
+          description: "24/7 support from industry experts",
+        },
+      ],
       ctaButton: {
         text: "Schedule Manufacturing Consultation",
         link: "/contact",

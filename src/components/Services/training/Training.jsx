@@ -38,34 +38,17 @@ const Training = ({ data: propsData = null }) => {
     // ... (same video protection code)
   }, []);
 
-  const openProgramModal = (program) => {
-    setSelectedProgram(program);
-    setIsProgramModalOpen(true);
-  };
+  // Removed unused openProgramModal
 
-  const closeProgramModal = () => {
-    setIsProgramModalOpen(false);
-    setSelectedProgram(null);
-  };
+  // Removed unused closeProgramModal
 
-  const openContactModal = () => {
-    setIsContactModalOpen(true);
-    setIsProgramModalOpen(false);
-  };
+  // Removed unused openContactModal
 
-  const closeContactModal = () => {
-    setIsContactModalOpen(false);
-  };
+  // Removed unused closeContactModal
 
-  const openFeatureModal = (feature) => {
-    setSelectedFeature(feature);
-    setIsFeatureModalOpen(true);
-  };
+  // Removed unused openFeatureModal
 
-  const closeFeatureModal = () => {
-    setIsFeatureModalOpen(false);
-    setSelectedFeature(null);
-  };
+  // Removed unused closeFeatureModal
 
   const renderIcon = (iconPath, className = "w-7 h-7 text-white") => {
     if (!iconPath || typeof iconPath !== "string") return null;
