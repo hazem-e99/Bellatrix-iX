@@ -197,6 +197,30 @@ const ComponentPreview = ({
     try {
       // Transform based on component type
       switch (componentType) {
+        case "PayrollHowItWorksSection": {
+          {
+            console.log(
+              "🎯 [PayrollHowItWorksSection TRANSFORM] Input data:",
+              componentData
+            );
+            const transformedPayrollHowItWorksData = {
+              data: {
+                title: componentData.title || "How Our Payroll System Works",
+                description:
+                  componentData.description ||
+                  "Our payroll process is simple: upload employee and contract details, sync timesheets and leave data, let the system run payroll automatically on schedule, approve via role-based access, execute payments through integrated bank APIs, and download payslips & compliance-ready reports—all in one platform.",
+                steps: Array.isArray(componentData.steps)
+                  ? componentData.steps
+                  : [],
+              },
+            };
+            console.log(
+              "✅ [PayrollHowItWorksSection TRANSFORM] Output data:",
+              transformedPayrollHowItWorksData
+            );
+            return transformedPayrollHowItWorksData;
+          }
+        }
         case "AboutHeroSection":
           return {
             data: {
@@ -236,7 +260,7 @@ const ComponentPreview = ({
           return transformedMissionData;
         }
 
-        case "AboutTeamSection":
+        case "AboutTeamSection": {
           console.log(
             "🎯 [AboutTeamSection TRANSFORM] Input data:",
             componentData
@@ -255,8 +279,9 @@ const ComponentPreview = ({
             transformedTeamData
           );
           return transformedTeamData;
+        }
 
-        case "AboutValuesSection":
+        case "AboutValuesSection": {
           console.log(
             "🎯 [AboutValuesSection TRANSFORM] Input data:",
             componentData
@@ -275,8 +300,9 @@ const ComponentPreview = ({
             transformedValuesData
           );
           return transformedValuesData;
+        }
 
-        case "AboutJourneySection":
+        case "AboutJourneySection": {
           console.log(
             "🎯 [AboutJourneySection TRANSFORM] Input data:",
             componentData
@@ -303,8 +329,9 @@ const ComponentPreview = ({
             transformedJourneyData
           );
           return transformedJourneyData;
+        }
 
-        case "AboutMilestonesSection":
+        case "AboutMilestonesSection": {
           console.log(
             "🎯 [AboutMilestonesSection TRANSFORM] Input data:",
             componentData
@@ -323,8 +350,9 @@ const ComponentPreview = ({
             transformedMilestonesData
           );
           return transformedMilestonesData;
+        }
 
-        case "AboutDifferentiatorsSection":
+        case "AboutDifferentiatorsSection": {
           console.log(
             "🎯 [AboutDifferentiatorsSection TRANSFORM] Input data:",
             componentData
@@ -343,8 +371,9 @@ const ComponentPreview = ({
             transformedDifferentiatorsData
           );
           return transformedDifferentiatorsData;
+        }
 
-        case "AboutCTASection":
+        case "AboutCTASection": {
           console.log(
             "🎯 [AboutCTASection TRANSFORM] Input data:",
             componentData
@@ -383,9 +412,10 @@ const ComponentPreview = ({
             transformedCTAData
           );
           return transformedCTAData;
+        }
 
         // General Components
-        case "PayrollHeroSection":
+        case "PayrollHeroSection": {
           console.log(
             "🎯 [PayrollHeroSection TRANSFORM] Input data:",
             componentData
@@ -411,8 +441,9 @@ const ComponentPreview = ({
             transformedPayrollHeroData
           );
           return transformedPayrollHeroData;
+        }
 
-        case "HRHeroSection":
+        case "HRHeroSection": {
           console.log(
             "🎯 [HRHeroSection TRANSFORM] Input data:",
             componentData
@@ -438,8 +469,9 @@ const ComponentPreview = ({
             transformedHRHeroData
           );
           return transformedHRHeroData;
+        }
 
-        case "PayrollWorkflowSection":
+        case "PayrollWorkflowSection": {
           console.log(
             "🎯 [PayrollWorkflowSection TRANSFORM] Input data:",
             componentData
@@ -460,8 +492,9 @@ const ComponentPreview = ({
             transformedPayrollWorkflowData
           );
           return transformedPayrollWorkflowData;
+        }
 
-        case "PayrollStepperSection":
+        case "PayrollStepperSection": {
           console.log(
             "🎯 [PayrollStepperSection TRANSFORM] Input data:",
             componentData
@@ -475,57 +508,88 @@ const ComponentPreview = ({
             transformedPayrollStepperData
           );
           return transformedPayrollStepperData;
+        }
 
-        case "PayrollPainPointsSection":
-          console.log(
-            "🎯 [PayrollPainPointsSection TRANSFORM] Input data:",
-            componentData
-          );
-          const transformedPayrollPainPointsData = {
-            painPoints: componentData.items || [],
-          };
-          console.log(
-            "✅ [PayrollPainPointsSection TRANSFORM] Output data:",
-            transformedPayrollPainPointsData
-          );
-          return transformedPayrollPainPointsData;
+        case "PayrollPainPointsSection": {
+          {
+            console.log(
+              "🎯 [PayrollPainPointsSection TRANSFORM] Input data:",
+              componentData
+            );
+            const defaultItems = [
+              { title: "Delayed salary processing and errors" },
+              { title: "Manual tax calculations and compliance risks" },
+              { title: "Lack of visibility and transparency for employees" },
+              { title: "Difficulty scaling payroll operations across geographies" },
+              { title: "Disconnected systems leading to data silos" },
+            ];
+            let painPoints = defaultItems;
+            if (Array.isArray(componentData.items) && componentData.items.length > 0) {
+              const mapped = componentData.items.map((item) => ({
+                title: item.title || item["Pain Point Title"] || "",
+                description: item.description || item["Pain Point Description"] || "",
+              }));
+              // Only use admin items if at least one has title or description
+              if (mapped.some((item) => item.title.trim() || item.description.trim())) {
+                painPoints = mapped;
+              }
+            }
+            const transformedPayrollPainPointsData = {
+              title: componentData.title || "The Payroll <span class=\"text-[var(--color-primary)]\">Struggles</span> We Eliminate",
+              description:
+                componentData.description || "Our system addresses the most common payroll challenges faced by consultancy firms:",
+              painPoints,
+            };
+            console.log(
+              "✅ [PayrollPainPointsSection TRANSFORM] Output data:",
+              transformedPayrollPainPointsData
+            );
+            return transformedPayrollPainPointsData;
+          }
+        }
 
-        case "PayrollFAQSection":
-          console.log(
-            "🎯 [PayrollFAQSection TRANSFORM] Input data:",
-            componentData
-          );
-          const transformedPayrollFAQData = {
-            faqData: {
-              title: componentData.title || "Frequently Asked Questions",
-              items: componentData.items || [],
-            },
-          };
-          console.log(
-            "✅ [PayrollFAQSection TRANSFORM] Output data:",
-            transformedPayrollFAQData
-          );
-          return transformedPayrollFAQData;
+        case "PayrollFAQSection": {
+          {
+            console.log(
+              "🎯 [PayrollFAQSection TRANSFORM] Input data:",
+              componentData
+            );
+            const transformedPayrollFAQData = {
+              faqData: {
+                title: componentData.title || "Frequently Asked Questions",
+                items: componentData.items || [],
+              },
+            };
+            console.log(
+              "✅ [PayrollFAQSection TRANSFORM] Output data:",
+              transformedPayrollFAQData
+            );
+            return transformedPayrollFAQData;
+          }
+        }
 
-        case "PayrollCTASection":
-          console.log(
-            "🎯 [PayrollCTASection TRANSFORM] Input data:",
-            componentData
-          );
-          const transformedPayrollCTAData = {
-            title: componentData.title || "Ready to Transform Your Payroll?",
-            subtitle:
-              componentData.subtitle || "Let's discuss your payroll needs",
-            ctaButton: componentData.ctaButton || {
-              text: "Get Started",
-              link: "/contact",
-            },
-          };
-          console.log(
-            "✅ [PayrollCTASection TRANSFORM] Output data:",
-            transformedPayrollCTAData
-          );
-          return transformedPayrollCTAData;
+        case "PayrollCTASection": {
+          {
+            console.log(
+              "🎯 [PayrollCTASection TRANSFORM] Input data:",
+              componentData
+            );
+            const transformedPayrollCTAData = {
+              title: componentData.title || "Ready to Transform Your Payroll?",
+              subtitle:
+                componentData.subtitle || "Let's discuss your payroll needs",
+              ctaButton: componentData.ctaButton || {
+                text: "Get Started",
+                link: "/contact",
+              },
+            };
+            console.log(
+              "✅ [PayrollCTASection TRANSFORM] Output data:",
+              transformedPayrollCTAData
+            );
+            return transformedPayrollCTAData;
+          }
+        }
 
         case "HRModulesSection": {
           console.log(
@@ -697,28 +761,56 @@ const ComponentPreview = ({
 
         case "HRFAQSection": {
           console.log("🎯 [HRFAQSection TRANSFORM] Input data:", componentData);
+          let items = [];
+          if (
+            Array.isArray(componentData.faqItems) &&
+            componentData.faqItems.length > 0
+          ) {
+            items = componentData.faqItems.map((f) => ({
+              q: f.q || f.question || "",
+              a: f.a || f.answer || "",
+            }));
+          } else if (
+            Array.isArray(componentData.faq?.items) &&
+            componentData.faq.items.length > 0
+          ) {
+            items = componentData.faq.items.map((f) => ({
+              q: f.q || f.question || "",
+              a: f.a || f.answer || "",
+            }));
+          } else {
+            items = [
+              {
+                q: "What HR modules are included?",
+                a:
+                  "Our HR solution includes employee management, payroll processing, benefits administration, and performance tracking modules.",
+              },
+              {
+                q: "How long does implementation take?",
+                a:
+                  "Typical implementation takes 4-8 weeks depending on your organization size and requirements.",
+              },
+              {
+                q: "Is training provided?",
+                a:
+                  "Yes, we provide comprehensive training for all users including administrators and end-users.",
+              },
+            ];
+          }
           const transformedHRFAQData = {
             data: {
               faq: {
-                items: componentData.faq?.items ||
-                  componentData.faq || [
-                    {
-                      question: "What HR modules are included?",
-                      answer:
-                        "Our HR solution includes employee management, payroll processing, benefits administration, and performance tracking modules.",
-                    },
-                    {
-                      question: "How long does implementation take?",
-                      answer:
-                        "Typical implementation takes 4-8 weeks depending on your organization size and requirements.",
-                    },
-                    {
-                      question: "Is training provided?",
-                      answer:
-                        "Yes, we provide comprehensive training for all users including administrators and end-users.",
-                    },
-                  ],
+                items,
+                title:
+                  componentData.title ||
+                  componentData.faq?.title ||
+                  "Frequently Asked Questions",
               },
+              faqItems: items,
+              title:
+                componentData.title ||
+                componentData.faq?.title ||
+                "Frequently Asked Questions",
             },
           };
           console.log(
@@ -746,7 +838,7 @@ const ComponentPreview = ({
         }
 
         // Landing Page Components
-        case "HeroSection":
+        case "HeroSection": {
           console.log("🎯 [HeroSection TRANSFORM] Input data:", componentData);
           const transformedHeroData = {
             slides: componentData.slides || [],
@@ -758,8 +850,9 @@ const ComponentPreview = ({
             transformedHeroData
           );
           return transformedHeroData;
+        }
 
-        case "ServicesSection":
+        case "ServicesSection": {
           console.log(
             "🎯 [ServicesSection TRANSFORM] Input data:",
             componentData
@@ -775,8 +868,9 @@ const ComponentPreview = ({
             transformedServicesData
           );
           return transformedServicesData;
+        }
 
-        case "TestimonialsSection":
+        case "TestimonialsSection": {
           console.log(
             "🎯 [TestimonialsSection TRANSFORM] Input data:",
             componentData
@@ -791,8 +885,9 @@ const ComponentPreview = ({
             transformedTestimonialsData
           );
           return transformedTestimonialsData;
+        }
 
-        case "IndustriesSection":
+        case "IndustriesSection": {
           console.log(
             "🎯 [IndustriesSection TRANSFORM] Input data:",
             componentData
@@ -807,9 +902,10 @@ const ComponentPreview = ({
             transformedIndustriesData
           );
           return transformedIndustriesData;
+        }
 
         // Services Components
-        case "ImplementationHeroSection":
+        case "ImplementationHeroSection": {
           console.log(
             "🎯 [ImplementationHeroSection TRANSFORM] Input data:",
             componentData
@@ -822,8 +918,9 @@ const ComponentPreview = ({
             transformedImplementationHeroData
           );
           return transformedImplementationHeroData;
+        }
 
-        case "TrainingHeroSection":
+        case "TrainingHeroSection": {
           console.log(
             "🎯 [TrainingHeroSection TRANSFORM] Input data:",
             componentData
@@ -848,9 +945,10 @@ const ComponentPreview = ({
             transformedTrainingHeroData
           );
           return transformedTrainingHeroData;
+        }
 
         // Industries Components
-        case "ManufacturingHeroSection":
+        case "ManufacturingHeroSection": {
           console.log(
             "🎯 [ManufacturingHeroSection TRANSFORM] Input data:",
             componentData
@@ -878,6 +976,7 @@ const ComponentPreview = ({
             transformedManufacturingHeroData
           );
           return transformedManufacturingHeroData;
+        }
 
         case "RetailHeroSection": {
           console.log(

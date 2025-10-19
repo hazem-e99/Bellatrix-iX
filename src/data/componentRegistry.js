@@ -332,7 +332,8 @@ export const componentRegistry = {
       defaultData: {
         programsSection: {
           title: "Programs",
-          description: "Comprehensive programs designed to enhance your skills and knowledge.",
+          description:
+            "Comprehensive programs designed to enhance your skills and knowledge.",
           image: "/images/traning.jpg",
         },
         trainingPrograms: [

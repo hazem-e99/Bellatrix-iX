@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import SEO from "../../SEO";
 
 const FAQSection = ({ data, openFAQ, setOpenFAQ }) => {
+  // استخدم useState داخلي إذا لم يتم تمرير setOpenFAQ
+  const [internalOpenFAQ, setInternalOpenFAQ] = useState(null);
+  const isControlled = typeof setOpenFAQ === "function";
   const [defaultData, setDefaultData] = useState(null);
 
   useEffect(() => {
@@ -105,11 +108,20 @@ const FAQSection = ({ data, openFAQ, setOpenFAQ }) => {
               >
                 <button
                   className="w-full text-left flex justify-between items-center text-lg font-medium text-[var(--color-primary-dark)] focus:outline-none"
-                  onClick={() => setOpenFAQ(openFAQ === idx ? null : idx)}
-                  aria-expanded={openFAQ === idx}
+                  onClick={() => {
+                    if (isControlled) {
+                      setOpenFAQ(openFAQ === idx ? null : idx);
+                    } else {
+                      setInternalOpenFAQ(internalOpenFAQ === idx ? null : idx);
+                    }
+                  }}
+                  aria-expanded={
+                    isControlled ? openFAQ === idx : internalOpenFAQ === idx
+                  }
                   aria-controls={`faq-answer-${idx}`}
                 >
                   <span>{faq.q}</span>
+                  <span>{faq.q || "(No question provided)"}</span>
                   <span
                     className={`ml-4 transition-transform ${
                       openFAQ === idx ? "rotate-180" : ""
@@ -119,12 +131,12 @@ const FAQSection = ({ data, openFAQ, setOpenFAQ }) => {
                     ▼
                   </span>
                 </button>
-                {openFAQ === idx && (
+                {(isControlled ? openFAQ === idx : internalOpenFAQ === idx) && (
                   <div
                     id={`faq-answer-${idx}`}
                     className="mt-2 text-[var(--color-text-secondary)] animate-fade-in-up"
                   >
-                    {faq.a}
+                    {faq.a || "(No answer provided)"}
                   </div>
                 )}
               </article>

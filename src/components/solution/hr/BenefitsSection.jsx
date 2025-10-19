@@ -26,12 +26,13 @@ const BenefitsSection = ({ data, activeBenefitIdx, onShowDemo }) => {
 
   // PRIORITIZE props data over default data for real-time preview
   const displayData = {
-    features: data?.features || defaultData || {
-      title: "Why Choose Our HR Solution?",
-      description:
-        "Discover the key advantages that make our HR platform the smart choice for modern businesses of all sizes and industries.",
-      items: [],
-    },
+    features: data?.features ||
+      defaultData || {
+        title: "Why Choose Our HR Solution?",
+        description:
+          "Discover the key advantages that make our HR platform the smart choice for modern businesses of all sizes and industries.",
+        items: [],
+      },
   };
 
   // Debug logging for real-time updates
@@ -40,7 +41,7 @@ const BenefitsSection = ({ data, activeBenefitIdx, onShowDemo }) => {
     propsData: data,
     hasDefaultData: !!defaultData,
     finalData: displayData,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
   return (
     <>
@@ -99,7 +100,7 @@ const BenefitsSection = ({ data, activeBenefitIdx, onShowDemo }) => {
                   {b.title}
                 </h3>
                 <p className="text-[var(--color-text-secondary)] text-lg">
-                  {b.desc}
+                  {b.desc || b.description}
                 </p>
               </article>
             ))}
