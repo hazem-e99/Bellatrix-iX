@@ -34,21 +34,26 @@ const EditPageModal = ({ isOpen, onClose, page, onSave, showToast }) => {
     const loadCategories = async () => {
       try {
         const cats = await pagesAPI.getCategories();
-        
+
         // Filter out "Home" and "About" categories
-        const filteredCats = cats.filter(category => {
+        const filteredCats = cats.filter((category) => {
           const name = category.name?.toLowerCase();
           const slug = category.slug?.toLowerCase();
-          return name !== 'home' && name !== 'about' && slug !== 'home' && slug !== 'about';
+          return (
+            name !== "home" &&
+            name !== "about" &&
+            slug !== "home" &&
+            slug !== "about"
+          );
         });
-        
+
         setCategories(filteredCats);
       } catch (error) {
         console.error("Error loading categories:", error);
         showToast("Error loading categories", "error");
       }
     };
-    
+
     if (isOpen) {
       loadCategories();
     }
@@ -90,7 +95,8 @@ const EditPageModal = ({ isOpen, onClose, page, onSave, showToast }) => {
       newErrors.metaTitle = "Meta title must not exceed 60 characters";
     }
     if (formData.metaDescription && formData.metaDescription.length > 160) {
-      newErrors.metaDescription = "Meta description must not exceed 160 characters";
+      newErrors.metaDescription =
+        "Meta description must not exceed 160 characters";
     }
 
     setErrors(newErrors);
@@ -98,16 +104,16 @@ const EditPageModal = ({ isOpen, onClose, page, onSave, showToast }) => {
   };
 
   const handleInputChange = (field, value) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [field]: value
+      [field]: value,
     }));
-    
+
     // Clear error when user starts typing
     if (errors[field]) {
-      setErrors(prev => ({
+      setErrors((prev) => ({
         ...prev,
-        [field]: ""
+        [field]: "",
       }));
     }
   };
@@ -120,7 +126,17 @@ const EditPageModal = ({ isOpen, onClose, page, onSave, showToast }) => {
 
     try {
       setLoading(true);
-      await pagesAPI.updatePage(page.id, formData);
+      const payload = {
+        title: formData.name,
+        slug: formData.slug,
+        categoryId: formData.categoryId,
+        isHomepage: formData.isHomepage,
+        isPublished: formData.isPublished,
+        metaTitle: formData.metaTitle,
+        metaDescription: formData.metaDescription,
+        description: formData.description,
+      };
+      await pagesAPI.updatePage(page.id, payload);
       showToast(`Page "${formData.name}" updated successfully`, "success");
       await onSave(); // Refresh the pages list
       onClose();
@@ -175,29 +191,32 @@ const EditPageModal = ({ isOpen, onClose, page, onSave, showToast }) => {
                 {currentStep === "page" ? "Edit Page" : "Edit Page Components"}
               </h2>
               <p className="text-xs text-gray-300">
-                {currentStep === "page" 
-                  ? "Update page information and settings" 
-                  : `Manage components for "${formData.name}"`
-                }
+                {currentStep === "page"
+                  ? "Update page information and settings"
+                  : `Manage components for "${formData.name}"`}
               </p>
             </div>
           </div>
-          
+
           {/* Step Indicator */}
           <div className="flex items-center space-x-1">
-            <div className={`px-2 py-1 rounded-full text-xs font-medium ${
-              currentStep === "page" 
-                ? "bg-blue-600 text-white" 
-                : "bg-white/10 text-gray-300"
-            }`}>
+            <div
+              className={`px-2 py-1 rounded-full text-xs font-medium ${
+                currentStep === "page"
+                  ? "bg-blue-600 text-white"
+                  : "bg-white/10 text-gray-300"
+              }`}
+            >
               1
             </div>
             <ArrowRightIcon className="h-3 w-3 text-gray-400" />
-            <div className={`px-2 py-1 rounded-full text-xs font-medium ${
-              currentStep === "components" 
-                ? "bg-blue-600 text-white" 
-                : "bg-white/10 text-gray-300"
-            }`}>
+            <div
+              className={`px-2 py-1 rounded-full text-xs font-medium ${
+                currentStep === "components"
+                  ? "bg-blue-600 text-white"
+                  : "bg-white/10 text-gray-300"
+              }`}
+            >
               2
             </div>
           </div>
@@ -214,7 +233,7 @@ const EditPageModal = ({ isOpen, onClose, page, onSave, showToast }) => {
                 <DocumentTextIcon className="h-4 w-4 mr-2 text-blue-400" />
                 Basic Information
               </h3>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {/* Page Name */}
                 <div className="space-y-2">
@@ -276,11 +295,17 @@ const EditPageModal = ({ isOpen, onClose, page, onSave, showToast }) => {
                 </label>
                 <select
                   value={formData.categoryId}
-                  onChange={(e) => handleInputChange("categoryId", parseInt(e.target.value))}
+                  onChange={(e) =>
+                    handleInputChange("categoryId", parseInt(e.target.value))
+                  }
                   className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
                   {categories.map((category) => (
-                    <option key={category.id} value={category.id} className="bg-gray-800 text-white">
+                    <option
+                      key={category.id}
+                      value={category.id}
+                      className="bg-gray-800 text-white"
+                    >
                       {category.name}
                     </option>
                   ))}
@@ -294,7 +319,7 @@ const EditPageModal = ({ isOpen, onClose, page, onSave, showToast }) => {
                 <DocumentTextIcon className="h-4 w-4 mr-2 text-green-400" />
                 SEO Information
               </h3>
-              
+
               <div className="space-y-3">
                 {/* Meta Title */}
                 <div className="space-y-2">
@@ -304,7 +329,9 @@ const EditPageModal = ({ isOpen, onClose, page, onSave, showToast }) => {
                   <Input
                     type="text"
                     value={formData.metaTitle}
-                    onChange={(e) => handleInputChange("metaTitle", e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("metaTitle", e.target.value)
+                    }
                     placeholder="SEO title for search engines"
                     className={`bg-white/10 border-white/20 text-white placeholder:text-gray-400 ${
                       errors.metaTitle ? "border-red-500" : ""
@@ -329,7 +356,9 @@ const EditPageModal = ({ isOpen, onClose, page, onSave, showToast }) => {
                   </label>
                   <textarea
                     value={formData.metaDescription}
-                    onChange={(e) => handleInputChange("metaDescription", e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("metaDescription", e.target.value)
+                    }
                     placeholder="SEO description for search engines"
                     rows={3}
                     className={`w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none ${
@@ -356,7 +385,7 @@ const EditPageModal = ({ isOpen, onClose, page, onSave, showToast }) => {
                 <DocumentTextIcon className="h-4 w-4 mr-2 text-purple-400" />
                 Page Settings
               </h3>
-              
+
               <div className="space-y-3">
                 {/* Published Status */}
                 <div className="flex items-center space-x-3">
@@ -364,10 +393,15 @@ const EditPageModal = ({ isOpen, onClose, page, onSave, showToast }) => {
                     type="checkbox"
                     id="isPublished"
                     checked={formData.isPublished}
-                    onChange={(e) => handleInputChange("isPublished", e.target.checked)}
+                    onChange={(e) =>
+                      handleInputChange("isPublished", e.target.checked)
+                    }
                     className="w-4 h-4 text-blue-600 bg-white/10 border-white/20 rounded focus:ring-blue-500 focus:ring-2"
                   />
-                  <label htmlFor="isPublished" className="text-sm font-medium text-white">
+                  <label
+                    htmlFor="isPublished"
+                    className="text-sm font-medium text-white"
+                  >
                     Published
                   </label>
                   <span className="text-xs text-gray-400">
@@ -376,21 +410,24 @@ const EditPageModal = ({ isOpen, onClose, page, onSave, showToast }) => {
                 </div>
 
                 {/* Homepage Status */}
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center gap-2 mt-4">
                   <input
                     type="checkbox"
                     id="isHomepage"
                     checked={formData.isHomepage}
-                    onChange={(e) => handleInputChange("isHomepage", e.target.checked)}
-                    className="w-4 h-4 text-blue-600 bg-white/10 border-white/20 rounded focus:ring-blue-500 focus:ring-2"
+                    onChange={(e) =>
+                      setFormData({ ...formData, isHomepage: e.target.checked })
+                    }
+                    className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                   />
-                  <label htmlFor="isHomepage" className="text-sm font-medium text-white">
-                    Set as Homepage
+                  <label htmlFor="isHomepage" className="text-sm text-white">
+                    Set as main page of this category
                   </label>
-                  <span className="text-xs text-gray-400">
-                    Make this the main page of the website
-                  </span>
                 </div>
+                <p className="text-xs text-gray-400 mt-1">
+                  This will make the page the main (homepage) within its
+                  category.
+                </p>
               </div>
             </div>
           </div>
@@ -411,10 +448,9 @@ const EditPageModal = ({ isOpen, onClose, page, onSave, showToast }) => {
           <div className="flex items-center space-x-2">
             <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
             <span className="text-xs text-gray-300">
-              {currentStep === "page" 
-                ? "Form-based editing with validation" 
-                : "Component management interface"
-              }
+              {currentStep === "page"
+                ? "Form-based editing with validation"
+                : "Component management interface"}
             </span>
           </div>
 

@@ -25,59 +25,71 @@ const DynamicPageRenderer = () => {
         setPageData(pageData);
 
         // Load components for each section (support both old sections format and new components format)
-        const sectionsToRender = pageData.sections || pageData.components || [];
+        let sectionsToRender = pageData.sections || pageData.components || [];
 
-        if (sectionsToRender.length > 0) {
-          const componentPromises = sectionsToRender.map(
-            async (section, index) => {
-              // Handle new components format
-              if (pageData.components) {
-                const componentPath = getComponentPathFromId(
-                  section.componentType
-                );
+        // Filter by isVisible === true if property exists
+        if (Array.isArray(sectionsToRender) && sectionsToRender.length > 0) {
+          sectionsToRender = sectionsToRender.filter(
+            (section) =>
+              section.isVisible === undefined || section.isVisible === true
+          );
+
+          if (sectionsToRender.length > 0) {
+            const componentPromises = sectionsToRender.map(
+              async (section, index) => {
+                // Handle new components format
+                if (pageData.components) {
+                  const componentPath = getComponentPathFromId(
+                    section.componentType
+                  );
+                  if (componentPath) {
+                    const Component = await loadComponent(componentPath);
+                    return {
+                      sectionId: `component-${index}`,
+                      Component,
+                      sectionData: section,
+                    };
+                  }
+                  return {
+                    sectionId: `component-${index}`,
+                    Component: null,
+                    sectionData: section,
+                  };
+                }
+
+                // Handle old sections format
+                const componentPath =
+                  section.componentPath ||
+                  getComponentPathFromId(section.componentId);
                 if (componentPath) {
                   const Component = await loadComponent(componentPath);
                   return {
-                    sectionId: `component-${index}`,
+                    sectionId: section.uid,
                     Component,
                     sectionData: section,
                   };
                 }
                 return {
-                  sectionId: `component-${index}`,
+                  sectionId: section.uid,
                   Component: null,
                   sectionData: section,
                 };
               }
+            );
 
-              // Handle old sections format
-              const componentPath =
-                section.componentPath ||
-                getComponentPathFromId(section.componentId);
-              if (componentPath) {
-                const Component = await loadComponent(componentPath);
-                return {
-                  sectionId: section.uid,
-                  Component,
-                  sectionData: section,
-                };
+            const loadedComponents = await Promise.all(componentPromises);
+            const componentMap = {};
+            loadedComponents.forEach(
+              ({ sectionId, Component, sectionData }) => {
+                if (Component) {
+                  componentMap[sectionId] = { Component, sectionData };
+                }
               }
-              return {
-                sectionId: section.uid,
-                Component: null,
-                sectionData: section,
-              };
-            }
-          );
-
-          const loadedComponents = await Promise.all(componentPromises);
-          const componentMap = {};
-          loadedComponents.forEach(({ sectionId, Component, sectionData }) => {
-            if (Component) {
-              componentMap[sectionId] = { Component, sectionData };
-            }
-          });
-          setLoadedComponents(componentMap);
+            );
+            setLoadedComponents(componentMap);
+          } else {
+            setLoadedComponents({});
+          }
         }
       } catch (err) {
         setError(err.message);
@@ -222,11 +234,8 @@ const DynamicPageRenderer = () => {
         // New components format
         const normalizedProps = extractComponentData(section);
         const safeProps = buildSafeProps(normalizedProps);
-        // مرر الداتا في كل من data وworkflowData لتوافق كل الكمبوننتات
         const propsToPass = {
           ...safeProps,
-          data: safeProps,
-          workflowData: safeProps,
           renderIcon: safeProps.renderIcon || (() => null),
           openProgramModal: safeProps.openProgramModal || (() => {}),
           openFeatureModal: safeProps.openFeatureModal || (() => {}),

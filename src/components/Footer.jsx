@@ -5,11 +5,14 @@ import {
   Email,
   ArrowUpward,
 } from "@mui/icons-material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SEO from "./SEO";
 
 const Footer = () => {
   const [showTop, setShowTop] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // Scroll to top handler
   const handleScrollTop = () => {
@@ -22,6 +25,27 @@ const Footer = () => {
       setShowTop(window.scrollY > 200);
     };
   }
+
+  // Fetch categories for Quick Links
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const res = await fetch(
+          "http://bellatrix.runasp.net/api/Categories/navbar"
+        );
+        if (!res.ok) throw new Error("Failed to fetch categories");
+        const json = await res.json();
+        setCategories(Array.isArray(json.data) ? json.data : []);
+      } catch (err) {
+        setError(err.message || "Error loading categories");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   return (
     <footer
@@ -76,44 +100,54 @@ const Footer = () => {
             <h4 className="text-xl font-semibold text-slate-100 mb-2">
               Quick Links
             </h4>
-            <div className="flex flex-col gap-2 text-slate-100/80">
-              <a
-                href="#"
-                className="hover:text-white transition-colors duration-300"
-              >
-                Home
-              </a>
-              <a
-                href="#"
-                className="hover:text-white transition-colors duration-300"
-              >
-                Services
-              </a>
-              <a
-                href="#"
-                className="hover:text-white transition-colors duration-300"
-              >
-                Implementation
-              </a>
-              <a
-                href="#"
-                className="hover:text-white transition-colors duration-300"
-              >
-                Training
-              </a>
-              <a
-                href="#"
-                className="hover:text-white transition-colors duration-300"
-              >
-                Industries
-              </a>
-              <a
-                href="#"
-                className="hover:text-white transition-colors duration-300"
-              >
-                About Us
-              </a>
-            </div>
+            <ul className="flex flex-col gap-2 text-slate-100/80">
+              {loading ? (
+                <li className="text-gray-400">Loading...</li>
+              ) : error ? (
+                <li className="text-red-400">{error}</li>
+              ) : categories.length === 0 ? (
+                <li className="text-gray-400">No links available</li>
+              ) : (
+                categories.map((cat) => {
+                  const homePage = Array.isArray(cat.pages)
+                    ? cat.pages.find((p) => p.isHomepage)
+                    : null;
+                  if (homePage) {
+                    return (
+                      <li key={cat.id}>
+                        <a
+                          href={`/pages/${homePage.slug}`}
+                          className="hover:text-white transition-colors duration-300 cursor-pointer"
+                        >
+                          {cat.name}
+                        </a>
+                      </li>
+                    );
+                  }
+                  return (
+                    <li key={cat.id}>
+                      {cat.pages && cat.pages.length > 0 ? (
+                        (() => {
+                          const homePage = cat.pages.find((p) => p.isHomepage);
+                          return homePage ? (
+                            <a
+                              href={`/pages/${homePage.slug}`}
+                              className="hover:text-primary text-gray-200 transition duration-200 cursor-pointer"
+                            >
+                              {cat.name}
+                            </a>
+                          ) : (
+                            <span className="text-gray-400">{cat.name}</span>
+                          );
+                        })()
+                      ) : (
+                        <span className="text-gray-400">{cat.name}</span>
+                      )}
+                    </li>
+                  );
+                })
+              )}
+            </ul>
           </div>
 
           {/* Our Services Column */}

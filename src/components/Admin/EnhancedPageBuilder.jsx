@@ -213,14 +213,13 @@ const EnhancedPageBuilder = () => {
           registryComponents.length
         );
 
-        // Convert registry components to the format expected by the builder
+        // Convert registry components to the format expected by the builder (without icon)
         const formattedComponents = registryComponents.map((comp) => ({
           id: comp.componentType,
           name:
             comp.componentName ||
             comp.componentType.replace(/([A-Z])/g, " $1").trim(),
           description: comp.description,
-          icon: comp.icon,
           componentType: comp.componentType,
           componentName: comp.componentName,
           category: comp.category,
@@ -399,7 +398,6 @@ const EnhancedPageBuilder = () => {
                 id: componentType,
                 name: aboutSchema.displayName,
                 description: aboutSchema.description,
-                icon: aboutSchema.icon,
                 componentType,
                 componentName: aboutSchema.componentName,
                 category: aboutSchema.category,
@@ -416,7 +414,6 @@ const EnhancedPageBuilder = () => {
                 id: componentType,
                 name: generalSchema.displayName,
                 description: generalSchema.description,
-                icon: generalSchema.icon,
                 componentType,
                 componentName: generalSchema.componentName,
                 category: generalSchema.category,
@@ -430,7 +427,6 @@ const EnhancedPageBuilder = () => {
               id: componentType,
               name: componentType.replace(/([A-Z])/g, " $1").trim(), // Add spaces before capital letters
               description: `Component: ${componentType}`,
-              icon,
               componentType,
               componentName: componentType,
               category,
@@ -599,8 +595,8 @@ const EnhancedPageBuilder = () => {
             componentType: component.componentType || "Generic",
             componentName: component.componentName || "New Component",
             orderIndex: component.orderIndex ?? index + 1, // Use API orderIndex or auto-generate
-            isVisible: component.isVisible ?? true, // Default to visible (boolean from API)
-            theme: component.theme ?? 1, // Default to light theme (1=light, 2=dark from API)
+            isVisible: component.isVisible === undefined ? true : Boolean(component.isVisible === true || component.isVisible === 1), // Always boolean
+            theme: component.theme === undefined ? 1 : (component.theme === 2 ? 2 : 1), // Always 1 or 2
           };
 
           // Handle contentJson string conversion for API
@@ -811,14 +807,19 @@ const EnhancedPageBuilder = () => {
 
         while (attempt < MAX_RETRIES && !created) {
           try {
+            // Always use the latest state for isVisible and theme
+            const latestComponent = {
+              ...newComponent,
+              ...pageData.components.find((comp) => comp.id === tempId),
+            };
             const payload = {
               pageId: pageData.id,
-              componentType: newComponent.componentType,
-              componentName: newComponent.componentName,
-              contentJson: newComponent.contentJson,
+              componentType: latestComponent.componentType,
+              componentName: latestComponent.componentName,
+              contentJson: latestComponent.contentJson,
               orderIndex: nextOrderIndex,
-              isVisible: newComponent.isVisible,
-              theme: newComponent.theme,
+              isVisible: latestComponent.isVisible,
+              theme: latestComponent.theme,
             };
 
             console.log(
@@ -994,10 +995,10 @@ const EnhancedPageBuilder = () => {
     ) {
       const component = pageData.components[index];
       if (component?.id && pageData.id) {
-        // Prepare the complete component data structure as expected by the API
+        // Always use the latest state for isVisible and theme
         const updateData = {
           id: component.id,
-          pageId: pageData.id, // Include the page ID from state
+          pageId: pageData.id,
           componentType: component.componentType,
           componentName: component.componentName || "",
           contentJson:
@@ -1006,20 +1007,8 @@ const EnhancedPageBuilder = () => {
               : component.contentJson || JSON.stringify({}),
           orderIndex:
             component.orderIndex !== undefined ? component.orderIndex : index,
-          isVisible:
-            field === "isVisible"
-              ? Boolean(value)
-              : Boolean(
-                  component.isVisible === true || component.isVisible === 1
-                ),
-          theme:
-            field === "theme"
-              ? value === 1
-                ? 1
-                : 2
-              : component.theme === 1
-              ? 1
-              : 2, // Convert to ThemeMode enum: 1=light, 2=dark
+          isVisible: component.isVisible,
+          theme: component.theme,
         };
 
         // Make async API call (don't await to keep UI responsive)
@@ -4503,7 +4492,7 @@ const PageDetailsStep = ({ pageData, onDataChange }) => {
               value={pageData.name}
               onChange={(e) => onDataChange("name", e.target.value)}
               placeholder="Enter page name"
-              className="w-full bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-[var(--color-text-inverse)] placeholder-[var(--color-text-inverse)]/50 focus:border-[var(--color-primary-light)] focus:ring-[var(--color-primary-light)]/20"
+              className="w-full bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-black placeholder-gray-400 focus:border-[var(--color-primary-light)] focus:ring-[var(--color-primary-light)]/20"
             />
           </div>
 
@@ -4518,7 +4507,7 @@ const PageDetailsStep = ({ pageData, onDataChange }) => {
               placeholder="page-url-slug"
               pattern="[a-z0-9-]+"
               title="Slug must only contain lowercase letters, numbers, and dashes."
-              className="w-full bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-[var(--color-text-inverse)] placeholder-[var(--color-text-inverse)]/50 focus:border-[var(--color-primary-light)] focus:ring-[var(--color-primary-light)]/20"
+              className="w-full bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-black placeholder-gray-400 focus:border-[var(--color-primary-light)] focus:ring-[var(--color-primary-light)]/20"
             />
             <p className="text-sm text-[var(--color-text-secondary)] mt-2">
               URL: /{pageData.slug || "page-url-slug"}
@@ -4538,7 +4527,7 @@ const PageDetailsStep = ({ pageData, onDataChange }) => {
               value={pageData.metaTitle}
               onChange={(e) => onDataChange("metaTitle", e.target.value)}
               placeholder="SEO title for search engines"
-              className="w-full bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-[var(--color-text-inverse)] placeholder-[var(--color-text-inverse)]/50 focus:border-[var(--color-primary-light)] focus:ring-[var(--color-primary-light)]/20"
+              className="w-full bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-black placeholder-gray-400 focus:border-[var(--color-primary-light)] focus:ring-[var(--color-primary-light)]/20"
             />
           </div>
           <div></div>
@@ -4553,7 +4542,7 @@ const PageDetailsStep = ({ pageData, onDataChange }) => {
             onChange={(e) => onDataChange("metaDescription", e.target.value)}
             placeholder="SEO description for search engines"
             rows={3}
-            className="block w-full rounded-lg bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-[var(--color-text-inverse)] placeholder-[var(--color-text-inverse)]/50 focus:border-[var(--color-primary-light)] focus:ring-[var(--color-primary-light)]/20 shadow-sm resize-none"
+            className="block w-full rounded-lg bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-black placeholder-gray-400 focus:border-[var(--color-primary-light)] focus:ring-[var(--color-primary-light)]/20 shadow-sm resize-none"
           />
         </div>
 
@@ -4726,7 +4715,6 @@ const SectionsStep = ({
       {
         id: "all",
         name: "All Components",
-        icon: "📄",
         count: searchFilteredComponents.length,
       },
     ];
@@ -4772,13 +4760,11 @@ const SectionsStep = ({
     sortedCategories.forEach((categoryId) => {
       const config = categoryConfig[categoryId] || {
         name: categoryId.charAt(0).toUpperCase() + categoryId.slice(1),
-        icon: "📦",
       };
 
       dynamicCategories.push({
         id: categoryId,
         name: config.name,
-        icon: config.icon,
         count: categoryCounts[categoryId] || 0,
       });
     });
@@ -5098,9 +5084,7 @@ const SectionsStep = ({
                         ? "border-yellow-400/30 bg-yellow-500/5 border-white/20"
                         : "border-purple-400/30 bg-purple-500/5 border-white/20"
                     }`}
-                    style={{
-                      display: isVisible ? "block" : "none",
-                    }}
+                  
                     data-theme={themeClass}
                     data-component-visible={isVisible}
                   >

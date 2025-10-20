@@ -14,7 +14,37 @@ import { Link } from "react-router-dom";
 import { useTheme } from "../context/ThemeContext";
 import { setupSectionThemeDetection } from "../utils/sectionThemeDetection";
 
-const Navbar = ({ industries = [] }) => {
+const Navbar = () => {
+  // Dynamic navbar categories
+  const [categories, setCategories] = useState([]);
+  const [loadingCategories, setLoadingCategories] = useState(true);
+  // Fetch navbar categories from API
+  useEffect(() => {
+    const fetchCategories = async () => {
+      setLoadingCategories(true);
+      try {
+        const res = await fetch(
+          "http://bellatrix.runasp.net/api/Categories/navbar"
+        );
+        const data = await res.json();
+        // Accepts: { data: [...] }, { result: [...] }, or array
+        let cats = [];
+        if (Array.isArray(data)) {
+          cats = data;
+        } else if (Array.isArray(data.data)) {
+          cats = data.data;
+        } else if (Array.isArray(data.result)) {
+          cats = data.result;
+        }
+        setCategories(cats);
+      } catch {
+        setCategories([]);
+      } finally {
+        setLoadingCategories(false);
+      }
+    };
+    fetchCategories();
+  }, []);
   const { theme, toggleTheme } = useTheme();
   const [navbarTheme, setNavbarTheme] = useState("dark");
 
@@ -127,31 +157,10 @@ const Navbar = ({ industries = [] }) => {
   };
 
   // New Services structure
-  const servicesStructure = {
-    support: {
-      title: "Support",
-      items: [
-        { title: "Oracle NetSuite Support", link: "/Support" },
-        { title: "Technical Support", link: "/Support" },
-      ],
-    },
-    consultation: {
-      title: "Consultation",
-      items: [
-        { title: "Implementation", link: "/Implementation" },
-        { title: "Training", link: "/Training" },
-        { title: "NetSuite Consulting", link: "/netsuite-consulting" },
-        { title: "Customization and Development", link: "/customization" },
-        { title: "Integration", link: "/integration" },
-      ],
-    },
-  };
+  // ...removed unused servicesStructure...
 
   // Industries data
-  const industriesData = [
-    { title: "Manufacturing", link: "/industries/manufacturing" },
-    { title: "Retail & E-commerce", link: "/industries/retail" },
-  ];
+  // ...removed unused industriesData...
 
   const handleMenuEnter = (dropdown) => {
     if (timeoutRef.current) {
@@ -167,18 +176,7 @@ const Navbar = ({ industries = [] }) => {
     }, 200);
   };
 
-  const handleSubMenuEnter = (subDropdown) => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-    setOpenSubDropdown(subDropdown);
-  };
-
-  const handleSubMenuLeave = () => {
-    timeoutRef.current = setTimeout(() => {
-      setOpenSubDropdown(null);
-    }, 150);
-  };
+  // ...removed unused handleSubMenuEnter and handleSubMenuLeave...
 
   useEffect(() => {
     return () => {
@@ -303,244 +301,79 @@ const Navbar = ({ industries = [] }) => {
                 Home
               </Link>
 
-              {/* Support Dropdown */}
-              <div
-                className="relative"
-                onMouseEnter={() => handleMenuEnter("support")}
-                onMouseLeave={handleMenuLeave}
-              >
-                <button
-                  className={`flex items-center px-5 py-3 text-sm font-medium rounded-xl transition-colors duration-300 border ${
-                    openDropdown === "support"
-                      ? `${
-                          navbarTheme === "light"
+              {/* Dynamic Categories Dropdowns */}
+              {loadingCategories ? (
+                <span className="px-5 py-3 text-sm text-gray-400">
+                  Loading...
+                </span>
+              ) : Array.isArray(categories) && categories.length > 0 ? (
+                categories.map((cat) => (
+                  <div
+                    className="relative"
+                    key={cat.id}
+                    onMouseEnter={() => handleMenuEnter(cat.id)}
+                    onMouseLeave={handleMenuLeave}
+                  >
+                    <button
+                      className={`flex items-center px-5 py-3 text-sm font-medium rounded-xl transition-colors duration-300 border ${
+                        openDropdown === cat.id
+                          ? navbarTheme === "light"
                             ? "text-[var(--color-text-dark)] border-blue-400/20 shadow"
                             : "text-[var(--color-text-light)] border-blue-400/30 shadow"
-                        }`
-                      : `${
-                          navbarTheme === "light"
-                            ? "text-[var(--color-text-dark)]/90 hover:text-[var(--color-primary)] border-transparent hover:border-black/20"
-                            : "text-[var(--color-text-light)]/90 hover:text-[var(--color-primary-light)] border-transparent hover:border-white/20"
-                        }`
-                  }`}
-                  onClick={() => toggleDropdown("support")}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      toggleDropdown("support");
-                    }
-                  }}
-                  aria-expanded={openDropdown === "support"}
-                  aria-haspopup="true"
-                >
-                  <span>Support Service</span>
-                  <ChevronDownIcon className="ml-1 h-4 w-4" />
-                </button>
-                <AnimatePresence>
-                  {openDropdown === "support" && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="absolute left-0 mt-2 w-56 bg-white/70 backdrop-blur-md border border-gray-200 rounded-xl shadow-lg z-50 py-2"
-                      onMouseEnter={() => handleMenuEnter("support")}
-                      onMouseLeave={handleMenuLeave}
-                      role="menu"
-                      aria-label="Support menu"
+                          : navbarTheme === "light"
+                          ? "text-[var(--color-text-dark)]/90 hover:text-[var(--color-primary)] border-transparent hover:border-black/20"
+                          : "text-[var(--color-text-light)]/90 hover:text-[var(--color-primary-light)] border-transparent hover:border-white/20"
+                      }`}
+                      onClick={() => toggleDropdown(cat.id)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          toggleDropdown(cat.id);
+                        }
+                      }}
+                      aria-expanded={openDropdown === cat.id}
+                      aria-haspopup="true"
                     >
-                      {servicesStructure.support.items.map((item, index) => (
-                        <Link
-                          key={item.title || index}
-                          to={item.link || "#"}
-                          className="block px-5 py-3 text-gray-800 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition-all duration-150 text-base font-medium"
-                          role="menuitem"
-                        >
-                          {item.title}
-                        </Link>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-
-              {/* Consultation Dropdown */}
-              <div
-                className="relative"
-                onMouseEnter={() => handleMenuEnter("consultation")}
-                onMouseLeave={handleMenuLeave}
-              >
-                <button
-                  className={`flex items-center px-5 py-3 text-sm font-medium rounded-xl transition-colors duration-300 border ${
-                    openDropdown === "consultation"
-                      ? `${
-                          navbarTheme === "light"
-                            ? "text-[var(--color-text-dark)] border-blue-400/20 shadow"
-                            : "text-[var(--color-text-light)] border-blue-400/30 shadow"
-                        }`
-                      : `${
-                          navbarTheme === "light"
-                            ? "text-[var(--color-text-dark)]/90 hover:text-[var(--color-primary)] border-transparent hover:border-black/20"
-                            : "text-[var(--color-text-light)]/90 hover:text-[var(--color-primary-light)] border-transparent hover:border-white/20"
-                        }`
-                  }`}
-                  onClick={() => toggleDropdown("consultation")}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      toggleDropdown("consultation");
-                    }
-                  }}
-                  aria-expanded={openDropdown === "consultation"}
-                  aria-haspopup="true"
-                >
-                  <span>Consultation Service</span>
-                  <ChevronDownIcon className="ml-1 h-4 w-4" />
-                </button>
-                <AnimatePresence>
-                  {openDropdown === "consultation" && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="absolute left-0 mt-2 w-56 bg-white/70 backdrop-blur-md border border-gray-200 rounded-xl shadow-lg z-50 py-2"
-                      onMouseEnter={() => handleMenuEnter("consultation")}
-                      onMouseLeave={handleMenuLeave}
-                      role="menu"
-                      aria-label="Consultation menu"
-                    >
-                      {servicesStructure.consultation.items.map(
-                        (item, index) => (
-                          <Link
-                            key={item.title || index}
-                            to={item.link || "#"}
-                            className="block px-5 py-3 text-gray-800 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition-all duration-150 text-base font-medium"
-                            role="menuitem"
-                          >
-                            {item.title}
-                          </Link>
-                        )
+                      <span>{cat.name}</span>
+                      {cat.pages && cat.pages.length > 0 && (
+                        <ChevronDownIcon className="ml-1 h-4 w-4" />
                       )}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-
-              {/* Solutions Dropdown */}
-              <div
-                className="relative"
-                onMouseEnter={() => handleMenuEnter("solutions")}
-                onMouseLeave={handleMenuLeave}
-              >
-                <button
-                  className={`flex items-center px-5 py-3 text-sm font-medium rounded-xl transition-colors duration-300 border ${
-                    openDropdown === "solutions"
-                      ? `${
-                          navbarTheme === "light"
-                            ? "text-[var(--color-text-dark)] border-blue-400/20 shadow"
-                            : "text-[var(--color-text-light)] border-blue-400/30 shadow"
-                        }`
-                      : `${
-                          navbarTheme === "light"
-                            ? "text-[var(--color-text-dark)]/90 hover:text-[var(--color-primary)] border-transparent hover:border-black/20"
-                            : "text-[var(--color-text-light)]/90 hover:text-[var(--color-primary-light)] border-transparent hover:border-white/20"
-                        }`
-                  }`}
-                  onClick={() => toggleDropdown("solutions")}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      toggleDropdown("solutions");
-                    }
-                  }}
-                  aria-expanded={openDropdown === "solutions"}
-                  aria-haspopup="true"
-                >
-                  <span>Solutions</span>
-                  <ChevronDownIcon className="ml-1 h-4 w-4" />
-                </button>
-                <AnimatePresence>
-                  {openDropdown === "solutions" && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="absolute left-0 mt-2 w-56 bg-white/70 backdrop-blur-md border border-gray-200 rounded-xl shadow-lg z-50 py-2"
-                      onMouseEnter={() => handleMenuEnter("solutions")}
-                      onMouseLeave={handleMenuLeave}
-                    >
-                      <Link
-                        to="/Payroll"
-                        className="block px-5 py-3 text-gray-800 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition-all duration-150 text-base font-medium"
-                      >
-                        Payroll
-                      </Link>
-                      <Link
-                        to="/HRSolution"
-                        className="block px-5 py-3 text-gray-800 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition-all duration-150 text-base font-medium"
-                      >
-                        HR
-                      </Link>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-
-              {/* Industries Dropdown */}
-              <div
-                className="relative"
-                onMouseEnter={() => handleMenuEnter("industries")}
-                onMouseLeave={handleMenuLeave}
-              >
-                <button
-                  className={`flex items-center px-5 py-3 text-sm font-medium rounded-xl transition-colors duration-300 border ${
-                    openDropdown === "industries"
-                      ? `${
-                          navbarTheme === "light"
-                            ? "text-[var(--color-text-dark)] border-blue-400/20 shadow"
-                            : "text-[var(--color-text-light)] border-blue-400/30 shadow"
-                        }`
-                      : `${
-                          navbarTheme === "light"
-                            ? "text-[var(--color-text-dark)]/90 hover:text-[var(--color-primary)] border-transparent hover:border-black/20"
-                            : "text-[var(--color-text-light)]/90 hover:text-[var(--color-primary-light)] border-transparent hover:border-white/20"
-                        }`
-                  }`}
-                  onClick={() => toggleDropdown("industries")}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      toggleDropdown("industries");
-                    }
-                  }}
-                  aria-expanded={openDropdown === "industries"}
-                  aria-haspopup="true"
-                >
-                  <span>Industries</span>
-                  <ChevronDownIcon className="ml-1 h-4 w-4" />
-                </button>
-                <AnimatePresence>
-                  {openDropdown === "industries" && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="absolute left-0 mt-2 w-56 bg-white/70 backdrop-blur-md border border-gray-200 rounded-xl shadow-lg z-50 py-2"
-                      onMouseEnter={() => handleMenuEnter("industries")}
-                      onMouseLeave={handleMenuLeave}
-                    >
-                      {industriesData.map((item, index) => (
-                        <Link
-                          key={item.title || index}
-                          to={item.link || "#"}
-                          className="block px-5 py-3 text-gray-800 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition-all duration-150 text-base font-medium"
-                        >
-                          {item.title}
-                        </Link>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
+                    </button>
+                    <AnimatePresence>
+                      {openDropdown === cat.id &&
+                        cat.pages &&
+                        cat.pages.length > 0 && (
+                          <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            className="absolute left-0 mt-2 w-56 bg-white/70 backdrop-blur-md border border-gray-200 rounded-xl shadow-lg z-50 py-2"
+                            onMouseEnter={() => handleMenuEnter(cat.id)}
+                            onMouseLeave={handleMenuLeave}
+                          >
+                            {cat.pages.map((page) => (
+                              <Link
+                                key={page.id}
+                                to={
+                                  page.slug
+                                    ? `/pages/${page.slug}`
+                                    : `/page/${page.id}`
+                                }
+                                className="block px-5 py-3 text-gray-800 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition-all duration-150 text-base font-medium"
+                              >
+                                {page.title}
+                              </Link>
+                            ))}
+                          </motion.div>
+                        )}
+                    </AnimatePresence>
+                  </div>
+                ))
+              ) : (
+                <span className="px-5 py-3 text-sm text-gray-400">
+                  No categories
+                </span>
+              )}
 
               <Link
                 to="/about"
@@ -618,136 +451,57 @@ const Navbar = ({ industries = [] }) => {
                 Home
               </Link>
 
-              {/* Mobile Support Dropdown */}
-              <div className="relative">
-                <button
-                  onClick={() => toggleDropdown("mobileSupport")}
-                  className={`w-full flex justify-between items-center px-4 py-3 text-base font-medium rounded-xl hover:bg-white/10 transition-colors duration-300 border border-white/10 ${
-                    navbarTheme === "light"
-                      ? "text-[var(--color-text-dark)]/90 hover:text-[var(--color-primary)]"
-                      : "text-[var(--color-text-light)]/90 hover:text-[var(--color-text-light)]"
-                  }`}
-                >
-                  <span>Support Service</span>
-                  <ChevronDownIcon className="h-4 w-4" />
-                </button>
-                {openDropdown === "mobileSupport" && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    className="mt-2 ml-4 space-y-2"
-                  >
-                    {servicesStructure.support.items.map((item, index) => (
-                      <Link
-                        key={item.title || index}
-                        to={item.link || "#"}
-                        className="block px-4 py-3 text-sm text-white/70 rounded-lg hover:bg-white/5 hover:text-white border border-white/5 backdrop-blur-sm transition-all duration-300"
-                      >
-                        {item.title}
-                      </Link>
-                    ))}
-                  </motion.div>
-                )}
-              </div>
-
-              {/* Mobile Consultation Dropdown */}
-              <div className="relative">
-                <button
-                  onClick={() => toggleDropdown("mobileConsultation")}
-                  className={`w-full flex justify-between items-center px-4 py-3 text-base font-medium rounded-xl hover:bg-white/10 transition-colors duration-300 border border-white/10 ${
-                    navbarTheme === "light"
-                      ? "text-[var(--color-text-dark)]/90 hover:text-[var(--color-primary)]"
-                      : "text-[var(--color-text-light)]/90 hover:text-[var(--color-text-light)]"
-                  }`}
-                >
-                  <span>Consultation Service</span>
-                  <ChevronDownIcon className="h-4 w-4" />
-                </button>
-                {openDropdown === "mobileConsultation" && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    className="mt-2 ml-4 space-y-2"
-                  >
-                    {servicesStructure.consultation.items.map((item, index) => (
-                      <Link
-                        key={item.title || index}
-                        to={item.link || "#"}
-                        className="block px-4 py-3 text-sm text-white/70 rounded-lg hover:bg-white/5 hover:text-white border border-white/5 backdrop-blur-sm transition-all duration-300"
-                      >
-                        {item.title}
-                      </Link>
-                    ))}
-                  </motion.div>
-                )}
-              </div>
-
-              {/* Mobile Solutions Dropdown */}
-              <div className="relative">
-                <button
-                  onClick={() => toggleDropdown("mobileSolutions")}
-                  className={`w-full flex justify-between items-center px-4 py-3 text-base font-medium rounded-xl hover:bg-white/10 transition-colors duration-300 border border-white/10 ${
-                    navbarTheme === "light"
-                      ? "text-[var(--color-text-dark)]/90 hover:text-[var(--color-primary)]"
-                      : "text-[var(--color-text-light)]/90 hover:text-[var(--color-text-light)]"
-                  }`}
-                >
-                  <span>Solutions</span>
-                  <ChevronDownIcon className="h-4 w-4" />
-                </button>
-                {openDropdown === "mobileSolutions" && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    className="mt-2 ml-4 space-y-2"
-                  >
-                    <Link
-                      to="/Payroll"
-                      className="block px-4 py-3 text-sm text-white/70 rounded-lg hover:bg-white/5 hover:text-white border border-white/5 backdrop-blur-sm transition-all duration-300"
+              {/* Dynamic Mobile Categories Dropdowns */}
+              {loadingCategories ? (
+                <span className="block px-4 py-3 text-base text-gray-400">
+                  Loading...
+                </span>
+              ) : Array.isArray(categories) && categories.length > 0 ? (
+                categories.map((cat) => (
+                  <div className="relative" key={cat.id}>
+                    <button
+                      onClick={() => toggleDropdown(cat.id)}
+                      className={`w-full flex justify-between items-center px-4 py-3 text-base font-medium rounded-xl hover:bg-white/10 transition-colors duration-300 border border-white/10 ${
+                        navbarTheme === "light"
+                          ? "text-[var(--color-text-dark)]/90 hover:text-[var(--color-primary)]"
+                          : "text-[var(--color-text-light)]/90 hover:text-[var(--color-text-light)]"
+                      }`}
                     >
-                      Payroll
-                    </Link>
-                    <Link
-                      to="/HRSolution"
-                      className="block px-4 py-3 text-sm text-white/70 rounded-lg hover:bg-white/5 hover:text-white border border-white/5 backdrop-blur-sm transition-all duration-300"
-                    >
-                      HR
-                    </Link>
-                  </motion.div>
-                )}
-              </div>
-
-              {/* Mobile Industries Dropdown */}
-              <div className="relative">
-                <button
-                  onClick={() => toggleDropdown("mobileIndustries")}
-                  className={`w-full flex justify-between items-center px-4 py-3 text-base font-medium rounded-xl hover:bg-white/10 transition-colors duration-300 border border-white/10 ${
-                    navbarTheme === "light"
-                      ? "text-[var(--color-text-dark)]/90 hover:text-[var(--color-primary)]"
-                      : "text-[var(--color-text-light)]/90 hover:text-[var(--color-text-light)]"
-                  }`}
-                >
-                  <span>Industries</span>
-                  <ChevronDownIcon className="h-4 w-4" />
-                </button>
-                {openDropdown === "mobileIndustries" && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    className="mt-2 ml-4 space-y-2"
-                  >
-                    {industriesData.slice(0, 3).map((item, index) => (
-                      <Link
-                        key={item.title || index}
-                        to={item.link || "#"}
-                        className="block px-4 py-3 text-sm text-white/70 rounded-lg hover:bg-white/5 hover:text-white border border-white/5 backdrop-blur-sm transition-all duration-300"
-                      >
-                        {item.title}
-                      </Link>
-                    ))}
-                  </motion.div>
-                )}
-              </div>
+                      <span>{cat.name}</span>
+                      {cat.pages && cat.pages.length > 0 && (
+                        <ChevronDownIcon className="h-4 w-4" />
+                      )}
+                    </button>
+                    {openDropdown === cat.id &&
+                      cat.pages &&
+                      cat.pages.length > 0 && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          className="mt-2 ml-4 space-y-2"
+                        >
+                          {cat.pages.map((page) => (
+                            <Link
+                              key={page.id}
+                              to={
+                                page.slug
+                                  ? `/pages/${page.slug}`
+                                  : `/page/${page.id}`
+                              }
+                              className="block px-4 py-3 text-sm text-white/70 rounded-lg hover:bg-white/5 hover:text-white border border-white/5 backdrop-blur-sm transition-all duration-300"
+                            >
+                              {page.title}
+                            </Link>
+                          ))}
+                        </motion.div>
+                      )}
+                  </div>
+                ))
+              ) : (
+                <span className="block px-4 py-3 text-base text-gray-400">
+                  No categories
+                </span>
+              )}
 
               <Link
                 to="/about"

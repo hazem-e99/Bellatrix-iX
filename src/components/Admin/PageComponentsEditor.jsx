@@ -1872,39 +1872,37 @@ const AddComponentModal = ({
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {/* Visibility Toggle */}
-                        <div>
-                          <FancyToggle
-                            label="Component Visible"
-                            checked={
-                              formData.isVisible === true ||
-                              formData.isVisible === 1
-                            }
-                            onChange={(val) =>
-                              setFormData((prev) => ({
-                                ...prev,
-                                isVisible: val, // Use boolean values for API compatibility
-                              }))
-                            }
-                            gradient="green"
-                            description="Toggle component visibility on the page"
-                          />
+                        <div className="flex flex-col gap-3 mt-4">
+                          <label className="flex items-center gap-2">
+                            <input
+                              type="checkbox"
+                              checked={formData.isVisible === true}
+                              onChange={(e) =>
+                                setFormData((prev) => ({
+                                  ...prev,
+                                  isVisible: e.target.checked,
+                                }))
+                              }
+                            />
+                            <span>Visible in page</span>
+                          </label>
+                          <label className="flex items-center gap-2">
+                            <input
+                              type="checkbox"
+                              checked={formData.theme === 1}
+                              onChange={(e) =>
+                                setFormData((prev) => ({
+                                  ...prev,
+                                  theme: e.target.checked ? 1 : 2,
+                                }))
+                              }
+                            />
+                            <span>Use Light Theme</span>
+                          </label>
                         </div>
 
                         {/* Theme Toggle */}
-                        <div>
-                          <FancyToggle
-                            label="Light Theme"
-                            checked={formData.theme === 1}
-                            onChange={(val) =>
-                              setFormData((prev) => ({
-                                ...prev,
-                                theme: val ? 1 : 2, // 1=light, 2=dark per ThemeMode enum
-                              }))
-                            }
-                            gradient="blue"
-                            description="Set component theme (light/dark)"
-                          />
-                        </div>
+                        {/* Theme toggle now handled above as a checkbox */}
                       </div>
                     </div>
                   )}

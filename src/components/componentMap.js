@@ -191,6 +191,8 @@ export const loadComponent = async (componentPath) => {
       // ===========================================
       "industries/retail/HeroSection": () =>
         import("./industries/retail/HeroSection"),
+      "industries/retail/SolutionsSection": () =>
+        import("./industries/retail/SolutionsSection"),
 
       // ===========================================
       // COMMON/SHARED COMPONENTS

@@ -1,4 +1,5 @@
 import React from "react";
+import MediaPicker from "../MediaPicker";
 
 const Input = React.forwardRef(
   (
@@ -25,6 +26,28 @@ const Input = React.forwardRef(
       .filter(Boolean)
       .join(" ");
 
+    // If mediaPicker or formField === 'media', render MediaPicker
+    if (props.mediaPicker || props.formField === "media") {
+      return (
+        <div className="w-full">
+          {label && (
+            <label className="block text-sm font-medium text-[oklch(0.75_0.02_260.29)] mb-1">
+              {label}
+            </label>
+          )}
+          <MediaPicker
+            {...props}
+            label={label}
+            error={error}
+            mediaType={props.mediaType || "image"}
+            value={props.value}
+            onChange={props.onChange}
+          />
+          {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
+        </div>
+      );
+    }
+    // Default input
     return (
       <div className="w-full">
         {label && (
@@ -91,7 +114,15 @@ Textarea.displayName = "Textarea";
 
 const Select = React.forwardRef(
   (
-    { className = "", placeholder, label, error, options = [], optionClassName = "", ...props },
+    {
+      className = "",
+      placeholder,
+      label,
+      error,
+      options = [],
+      optionClassName = "",
+      ...props
+    },
     ref
   ) => {
     const baseClasses =
@@ -127,7 +158,11 @@ const Select = React.forwardRef(
             </option>
           )}
           {options.map((option) => (
-            <option key={option.value} value={option.value} className={optionClasses}>
+            <option
+              key={option.value}
+              value={option.value}
+              className={optionClasses}
+            >
               {option.label}
             </option>
           ))}
