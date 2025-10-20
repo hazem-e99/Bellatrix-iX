@@ -6452,21 +6452,6 @@ const ReviewStep = ({ pageData }) => {
         </CardContent>
       </Card>
 
-      {/* JSON Preview */}
-      <Card className="bg-white/5 backdrop-blur-sm border border-white/10 shadow-xl">
-        <CardHeader>
-          <CardTitle className="text-white text-xl font-bold">
-            Request Body Preview
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="bg-gray-900 rounded-lg p-4 overflow-auto max-h-96">
-            <pre className="text-green-400 text-sm">
-              {JSON.stringify(pageData, null, 2)}
-            </pre>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 };
