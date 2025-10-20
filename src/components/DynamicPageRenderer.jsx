@@ -2,7 +2,7 @@ import React, { useState, useEffect, Suspense } from "react";
 import { useParams } from "react-router-dom";
 import pagesAPI from "../lib/pagesAPI";
 import { getComponentPathFromId, loadComponent } from "./componentMap";
-import { normalizeProps, validateProps } from "../utils/normalizeProps";
+import { normalizeProps } from "../utils/normalizeProps";
 
 const DynamicPageRenderer = () => {
   const { slug } = useParams();
@@ -22,19 +22,54 @@ const DynamicPageRenderer = () => {
 
         // The API response is wrapped in an ApiResponse object with a 'data' property
         const pageData = response.data || response;
+        
+        console.log("🌐 [DYNAMIC RENDERER] Full API response:", {
+          slug,
+          response,
+          pageData,
+          hasComponents: !!pageData?.components,
+          componentsCount: pageData?.components?.length || 0,
+          componentsData: pageData?.components?.map(c => ({
+            id: c.id,
+            componentType: c.componentType,
+            componentName: c.componentName,
+            isVisible: c.isVisible,
+            isVisibleType: typeof c.isVisible,
+          })) || [],
+        });
+        
         setPageData(pageData);
 
         // Load components for each section (support both old sections format and new components format)
         let sectionsToRender = pageData.sections || pageData.components || [];
 
-        // Filter by isVisible === true if property exists
-        if (Array.isArray(sectionsToRender) && sectionsToRender.length > 0) {
-          sectionsToRender = sectionsToRender.filter(
-            (section) =>
-              section.isVisible === undefined || section.isVisible === true
-          );
+        console.log("🔍 [COMPONENT LOADING] Original components:", sectionsToRender.map(c => ({
+          name: c.componentName || c.componentType,
+          isVisible: c.isVisible,
+          type: typeof c.isVisible
+        })));
 
-          if (sectionsToRender.length > 0) {
+        // Filter by isVisible === true - only load visible components
+        if (Array.isArray(sectionsToRender) && sectionsToRender.length > 0) {
+          const beforeFilter = sectionsToRender.length;
+          sectionsToRender = sectionsToRender.filter(
+            (section) => {
+              const isVisible = section.isVisible === true || section.isVisible === 1;
+              console.log(`🔍 [LOADING FILTER] ${section.componentName || section.componentType}: isVisible=${section.isVisible} (${typeof section.isVisible}) -> ${isVisible ? 'LOADING' : 'SKIPPING'}`);
+              return isVisible;
+            }
+          );
+          console.log(`🔍 [LOADING RESULT] ${beforeFilter} -> ${sectionsToRender.length} components will be loaded`);
+          
+          // Additional debugging
+          if (sectionsToRender.length === 0) {
+            console.warn("⚠️ [WARNING] No visible components to load! All components may be hidden.");
+          }
+        } else {
+          console.warn("⚠️ [WARNING] No components found for loading");
+        }
+
+        if (sectionsToRender.length > 0) {
             const componentPromises = sectionsToRender.map(
               async (section, index) => {
                 // Handle new components format
@@ -90,7 +125,6 @@ const DynamicPageRenderer = () => {
           } else {
             setLoadedComponents({});
           }
-        }
       } catch (err) {
         setError(err.message);
       } finally {
@@ -277,14 +311,55 @@ const DynamicPageRenderer = () => {
     );
   };
 
+  // Get the filtered components that were used for loading
+  const getFilteredComponents = () => {
+    let sectionsToRender = pageData.sections || pageData.components || [];
+    
+    console.log("🔍 [DYNAMIC RENDERER] Original components:", sectionsToRender.map(c => ({
+      name: c.componentName || c.componentType,
+      isVisible: c.isVisible,
+      type: typeof c.isVisible
+    })));
+    
+    // Apply filtering logic - only show components with isVisible: true
+    if (Array.isArray(sectionsToRender) && sectionsToRender.length > 0) {
+      const beforeFilter = sectionsToRender.length;
+      sectionsToRender = sectionsToRender.filter(
+        (section) => {
+          const isVisible = section.isVisible === true || section.isVisible === 1;
+          console.log(`🔍 [FILTER] ${section.componentName || section.componentType}: isVisible=${section.isVisible} (${typeof section.isVisible}) -> ${isVisible ? 'INCLUDED' : 'EXCLUDED'}`);
+          return isVisible;
+        }
+      );
+      console.log(`🔍 [FILTER RESULT] ${beforeFilter} -> ${sectionsToRender.length} components`);
+      
+      // Additional debugging
+      if (sectionsToRender.length === 0) {
+        console.warn("⚠️ [WARNING] No visible components found! All components may be hidden.");
+      }
+    } else {
+      console.warn("⚠️ [WARNING] No components found in pageData");
+    }
+    
+    return sectionsToRender;
+  };
+
+  const filteredComponents = getFilteredComponents();
+
+  console.log("🎨 [FINAL RENDERING] About to render components:", {
+    totalComponents: (pageData.components || pageData.sections || []).length,
+    filteredComponents: filteredComponents.length,
+    willRender: filteredComponents.length > 0
+  });
+
   return (
     <div>
       {/* Render sections directly without any wrapper - let each component handle its own styling */}
-      {(pageData.sections && pageData.sections.length > 0) ||
-      (pageData.components && pageData.components.length > 0) ? (
-        (pageData.components || pageData.sections).map((section, index) =>
-          renderSection(section, index)
-        )
+      {filteredComponents.length > 0 ? (
+        filteredComponents.map((section, index) => {
+          console.log(`🎨 [RENDERING] Component ${index + 1}: ${section.componentName || section.componentType}`);
+          return renderSection(section, index);
+        })
       ) : (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
           <div className="text-center py-12">
