@@ -5,6 +5,98 @@ const PayrollStepper = ({ steps = [], title, description }) => {
   const [current, setCurrent] = useState(0);
   const [defaultData, setDefaultData] = useState(null);
 
+  // Static default data for immediate display
+  const staticDefaultData = {
+    title: "Streamlined Payroll Workflow",
+    description: "Follow our step-by-step process to automate your entire payroll lifecycle efficiently",
+    steps: [
+      {
+        title: "Employee Data Import",
+        stepTitle: "Employee Data Import",
+        description: "Easily onboard and manage employee records in one place.",
+        stepDescription: "Import employee data from spreadsheets or integrated HR systems. Supports bulk uploads and data validation with real-time error checking.",
+        features: [
+          "Bulk import from Excel/CSV",
+          "Data validation",
+          "Duplicate detection",
+          "HR system integration"
+        ],
+        automated: "Reduces manual work by 80%",
+        compliant: "Built-in regulatory compliance"
+      },
+      {
+        title: "Time & Attendance Sync",
+        stepTitle: "Time & Attendance Sync",
+        description: "Integrate timesheets and attendance for accurate payroll.",
+        stepDescription: "Syncs with your time tracking tools to ensure accurate hours and leave data for every employee. Supports multiple time tracking systems.",
+        features: [
+          "Real-time sync",
+          "Multiple time systems",
+          "Leave management",
+          "Overtime calculation"
+        ],
+        automated: "Automated time tracking integration",
+        compliant: "Accurate compliance reporting"
+      },
+      {
+        title: "Salary & Tax Calculation",
+        stepTitle: "Salary & Tax Auto-Calculation",
+        description: "Automate salary, tax, and deduction calculations.",
+        stepDescription: "Calculates gross and net pay, taxes, and deductions automatically based on your rules and local compliance. Handles complex tax scenarios.",
+        features: [
+          "Auto tax calculation",
+          "Compliance built-in",
+          "Deduction management",
+          "Bonus processing"
+        ],
+        automated: "100% automated calculations",
+        compliant: "Tax law compliance guaranteed"
+      },
+      {
+        title: "Approval Workflows",
+        stepTitle: "Approval Workflows",
+        description: "Streamline approvals with role-based access.",
+        stepDescription: "Multi-level approval flows for payroll runs, with notifications and audit trails. Customizable approval hierarchies.",
+        features: [
+          "Multi-level approval",
+          "Email notifications",
+          "Audit trails",
+          "Role-based access"
+        ],
+        automated: "Automated approval routing",
+        compliant: "Complete audit trail"
+      },
+      {
+        title: "Payment Execution",
+        stepTitle: "Payment Execution",
+        description: "Execute payments securely through integrated bank APIs.",
+        stepDescription: "Initiate salary payments directly from the platform with secure, bank-level integrations. Supports multiple payment methods.",
+        features: [
+          "Bank API integration",
+          "Multiple payment methods",
+          "Secure transactions",
+          "Payment tracking"
+        ],
+        automated: "One-click payment processing",
+        compliant: "Bank-level security compliance"
+      },
+      {
+        title: "Payslip & Reporting",
+        stepTitle: "Payslip Generation & Reporting",
+        description: "Generate payslips and compliance-ready reports instantly.",
+        stepDescription: "Employees get digital payslips; admins get downloadable, compliance-ready reports. Customizable templates and automated distribution.",
+        features: [
+          "Digital payslips",
+          "Custom templates",
+          "Auto distribution",
+          "Compliance reports"
+        ],
+        automated: "Instant report generation",
+        compliant: "Regulatory compliance ready"
+      }
+    ]
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -13,7 +105,7 @@ const PayrollStepper = ({ steps = [], title, description }) => {
         setDefaultData(data.coreWorkflow);
       } catch (error) {
         console.error("Failed to load payroll data:", error);
-        setDefaultData({ steps: [] });
+        setDefaultData(staticDefaultData);
       }
     };
     fetchData();
@@ -21,11 +113,11 @@ const PayrollStepper = ({ steps = [], title, description }) => {
 
   // PRIORITIZE props data over default data for real-time preview
   const displaySteps = useMemo(
-    () => (steps.length > 0 ? steps : defaultData?.steps || []),
+    () => (steps.length > 0 ? steps : defaultData?.steps || staticDefaultData.steps),
     [steps, defaultData?.steps]
   );
-  const displayTitle = title || defaultData?.title || "Payroll Process Steps";
-  const displayDescription = description || defaultData?.description || "";
+  const displayTitle = title || defaultData?.title || staticDefaultData.title;
+  const displayDescription = description || defaultData?.description || staticDefaultData.description;
 
   // Debug logging for real-time updates
   console.log("🎯 [PayrollStepper] Component received data:", {
