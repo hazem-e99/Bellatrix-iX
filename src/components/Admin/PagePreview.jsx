@@ -1490,10 +1490,12 @@ const PagePreview = ({
                     pageData.components.map((c) => c.componentType)
                   );
 
-                  // In PagePreview (admin context), show all components including hidden ones
-                  // This allows admins to see and manage all components regardless of visibility
-                  const componentsToRender = pageData.components;
-                  console.log("🔧 [ADMIN PREVIEW] Showing all components including hidden ones for admin management");
+                  // Filter components to only show visible ones (isVisible: true)
+                  // This matches the behavior of public pages
+                  const componentsToRender = pageData.components.filter(
+                    (component) => component.isVisible === true || component.isVisible === 1
+                  );
+                  console.log(`👁️ [PREVIEW] Showing ${componentsToRender.length}/${pageData.components.length} visible components`);
                   
                   return componentsToRender.map((component, index) => {
                     console.log(

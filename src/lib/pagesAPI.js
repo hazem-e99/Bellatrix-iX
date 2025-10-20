@@ -99,6 +99,9 @@ const pagesAPI = {
                 cleanComponent.componentName || `Component ${index + 1}`,
               orderIndex: index + 1, // Always use sequential 1-based index to avoid duplicates
               contentJson: "",
+              // Add isVisible and theme from component data
+              isVisible: cleanComponent.isVisible !== undefined ? cleanComponent.isVisible : true,
+              theme: cleanComponent.theme !== undefined ? cleanComponent.theme : 1,
             };
 
             // Handle contentJson serialization properly
@@ -281,7 +284,11 @@ const pagesAPI = {
         theme: componentData.theme !== undefined ? componentData.theme : 1,
       };
 
-      console.log("🆕 [API CREATE] Creating component with data:", createData);
+      console.log("🆕 [API CREATE] Creating component with data:", {
+        createData,
+        isVisibleValue: createData.isVisible,
+        isVisibleType: typeof createData.isVisible,
+      });
 
       const response = await api.post(
         `/Pages/${pageId}/components`,
@@ -334,6 +341,8 @@ const pagesAPI = {
         componentId,
         updateData,
         originalData: componentData,
+        isVisibleValue: updateData.isVisible,
+        isVisibleType: typeof updateData.isVisible,
       });
 
       const response = await api.put(

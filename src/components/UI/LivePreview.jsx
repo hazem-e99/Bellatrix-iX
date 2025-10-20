@@ -2049,8 +2049,15 @@ const LivePreview = ({
 }) => {
   const [refreshKey, setRefreshKey] = useState(0);
 
+  // Filter visible components
+  const visibleComponents = components.filter(component => 
+    component.isVisible === true || component.isVisible === 1
+  );
+
   console.log("🔍 [LIVE PREVIEW] Received components:", {
-    count: components.length,
+    total: components.length,
+    visible: visibleComponents.length,
+    hidden: components.length - visibleComponents.length,
     components: components.map((c) => ({
       type: c.componentType,
       hasContentJson: !!c.contentJson,
@@ -2103,7 +2110,7 @@ const LivePreview = ({
         <div
           className={`bg-white dark:bg-gray-900 rounded-lg min-h-[400px] ${previewClasses[previewMode]}`}
         >
-          {components.length === 0 ? (
+          {visibleComponents.length === 0 ? (
             <div className="flex items-center justify-center h-64 text-gray-400">
               <div className="text-center">
                 <EyeIcon className="h-12 w-12 mx-auto mb-4 opacity-50" />
@@ -2113,7 +2120,7 @@ const LivePreview = ({
             </div>
           ) : (
             <div key={refreshKey} className="space-y-0">
-              {components.map((component, index) => {
+              {visibleComponents.map((component, index) => {
                 // Enhanced real-time data extraction
                 const extractComponentData = (component) => {
                   console.log("🔄 [REALTIME EXTRACTION] Component data:", {

@@ -93,10 +93,9 @@ const EnhancedPageBuilder = () => {
             component.orderIndex !== undefined
               ? component.orderIndex
               : componentIndex,
-          isVisible: Boolean(
-            component.isVisible === true || component.isVisible === 1
-          ),
-          theme: component.theme === 1 ? 1 : 2,
+          // Use current component state for isVisible and theme
+          isVisible: Boolean(component.isVisible === true || component.isVisible === 1),
+          theme: component.theme || 1,
         };
 
         console.log("💾 [AUTO-SAVE] Saving component:", {
@@ -1007,8 +1006,9 @@ const EnhancedPageBuilder = () => {
               : component.contentJson || JSON.stringify({}),
           orderIndex:
             component.orderIndex !== undefined ? component.orderIndex : index,
-          isVisible: component.isVisible,
-          theme: component.theme,
+          // Use the new value from checkbox for isVisible and theme
+          isVisible: field === "isVisible" ? Boolean(value === true || value === 1) : Boolean(component.isVisible === true || component.isVisible === 1),
+          theme: field === "theme" ? value : component.theme,
         };
 
         // Make async API call (don't await to keep UI responsive)
@@ -1084,10 +1084,8 @@ const EnhancedPageBuilder = () => {
           ),
           orderIndex:
             component.orderIndex !== undefined ? component.orderIndex : index,
-          isVisible: Boolean(
-            component.isVisible === true || component.isVisible === 1
-          ),
-          theme: component.theme === 1 ? 1 : 2,
+          isVisible: Boolean(component.isVisible === true || component.isVisible === 1),
+          theme: component.theme || 1,
         };
 
         pagesAPI.updatePageComponent(component.id, updateData).catch(() => {});
@@ -3696,7 +3694,7 @@ const EnhancedPageBuilder = () => {
           currentComponent.isVisible === true ||
             currentComponent.isVisible === 1
         ),
-        theme: currentComponent.theme === 1 ? 1 : 2,
+        theme: currentComponent.theme || 1,
       };
 
       console.log(
