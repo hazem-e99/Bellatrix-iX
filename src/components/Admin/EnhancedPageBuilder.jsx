@@ -3872,7 +3872,11 @@ const EnhancedPageBuilder = () => {
       }
 
       // Apply default values to ensure no null, undefined, or empty values
-      const createPageDTO = applyDefaultValues(pageData, status);
+      let createPageDTO = applyDefaultValues(pageData, status);
+      // If saving as draft, force isPublished to false
+      if (status === "draft") {
+        createPageDTO = { ...createPageDTO, isPublished: false };
+      }
 
       // Validate required fields - use helper function to ensure lock is reset on validation errors
       const validateAndReturn = (message) => {
@@ -4995,59 +4999,7 @@ const SectionsStep = ({
             <CardTitle className="text-white text-xl font-bold">
               Component Configuration ({pageData.components.length})
             </CardTitle>
-            <div className="flex items-center space-x-2">
-              {pageData.components.length > 1 && (
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => {
-                    // Auto-fix orderIndexes
-                    const updatedComponents = pageData.components.map(
-                      (component, index) => ({
-                        ...component,
-                        orderIndex: index + 1,
-                      })
-                    );
-                    // Update all components with fixed indexes
-                    updatedComponents.forEach((comp, index) => {
-                      onUpdateComponent(index, "orderIndex", index + 1);
-                    });
-                  }}
-                  className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-orange-500/20 hover:border-orange-400 transition-all duration-200"
-                >
-                  <ArrowPathIcon className="h-4 w-4 mr-2" />
-                  Fix Order
-                </Button>
-              )}
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => setIsEditMode(!isEditMode)}
-                className={`backdrop-blur-sm transition-all duration-200 mr-2 ${
-                  isEditMode
-                    ? "bg-blue-500/20 border-blue-400 text-blue-300 hover:bg-blue-500/30"
-                    : "bg-gray-500/20 border-gray-400 text-gray-300 hover:bg-gray-500/30"
-                }`}
-              >
-                {isEditMode ? "👁️ View Mode" : "✏️ Edit Mode"}
-              </Button>
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() =>
-                  onAddComponent({
-                    componentType: "Generic",
-                    componentName: "New Component",
-                    icon: "📄",
-                    category: "content",
-                  })
-                }
-                className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-green-500/20 hover:border-green-400 transition-all duration-200"
-              >
-                <PlusIcon className="h-4 w-4 mr-2" />
-                Add Component
-              </Button>
-            </div>
+            
           </div>
         </CardHeader>
         <CardContent className="h-[600px] flex flex-col">
@@ -5099,22 +5051,8 @@ const SectionsStep = ({
                         </h4>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => openNewInputModal(component, index)}
-                          className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-purple-500/20 hover:border-purple-400 transition-all duration-200"
-                        >
-                          ⚙️ Configure
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => onDuplicateComponent(index)}
-                          className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-green-500/20 hover:border-green-400 transition-all duration-200"
-                        >
-                          <DocumentDuplicateIcon className="h-4 w-4" />
-                        </Button>
+                      
+                       
                         <Button
                           size="sm"
                           variant="outline"

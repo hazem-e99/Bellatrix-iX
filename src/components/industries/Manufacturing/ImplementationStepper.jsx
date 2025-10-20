@@ -97,12 +97,8 @@ const ImplementationStepper = ({ implementationProcess }) => {
                     : 'bg-white text-gray-500 border-gray-300 hover:border-gray-400'
                   }`}
               >
-                {idx <= current ? (
-                  <div className="text-white">
-                    {typeof steps[idx]?.icon === 'string' 
-                      ? steps[idx]?.icon 
-                      : steps[idx]?.icon?.icon || steps[idx]?.icon?.svg || 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2'}
-                  </div>
+                {idx <= current && React.isValidElement(steps[idx]?.icon) ? (
+                  <div className="text-white">{steps[idx]?.icon}</div>
                 ) : (
                   <span className="font-semibold">{idx + 1}</span>
                 )}

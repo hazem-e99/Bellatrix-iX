@@ -322,7 +322,7 @@ export const ComponentToggles = ({
       {/* Theme Section */}
       <div className="flex flex-col items-center space-y-2">
         <label className="text-xs font-semibold text-gray-300 uppercase tracking-wider">
-          Theme Mode
+          Navbar Color Mode
         </label>
         <ThemeToggle
           theme={theme}
