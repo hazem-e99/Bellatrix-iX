@@ -986,15 +986,7 @@ const PageComponentsEditor = ({
           </p>
         </div>
         <div className="flex items-center space-x-2">
-          <Button
-            onClick={repairOrderIndices}
-            className="bg-yellow-600 hover:bg-yellow-700 text-white flex items-center space-x-1 text-sm px-3 py-1"
-            disabled={loading || saving}
-            title="Fix component order conflicts"
-          >
-            <Cog6ToothIcon className="h-3 w-3" />
-            <span>Fix Order</span>
-          </Button>
+         
           <Button
             onClick={() => loadComponents(true)}
             className="bg-gray-600 hover:bg-gray-700 text-white flex items-center space-x-1 text-sm px-3 py-1"

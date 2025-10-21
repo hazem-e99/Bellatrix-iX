@@ -351,19 +351,19 @@ const Navbar = () => {
                             onMouseEnter={() => handleMenuEnter(cat.id)}
                             onMouseLeave={handleMenuLeave}
                           >
-                            {cat.pages.map((page) => (
-                              <Link
-                                key={page.id}
-                                to={
-                                  page.slug
-                                    ? `/pages/${page.slug}`
-                                    : `/page/${page.id}`
-                                }
-                                className="block px-5 py-3 text-gray-800 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition-all duration-150 text-base font-medium"
-                              >
-                                {page.title}
-                              </Link>
-                            ))}
+                            {cat.pages
+                              ?.filter((page) => page.isPublished === true) // ✅ يعرض بس الصفحات المنشورة
+                              .map((page) => (
+                                <Link
+                                  key={page.id}
+                                  to={
+                                    page.slug ? `/${page.slug}` : `/${page.id}`
+                                  }
+                                  className="block px-5 py-3 text-gray-800 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition-all duration-150 text-base font-medium"
+                                >
+                                  {page.title}
+                                </Link>
+                              ))}
                           </motion.div>
                         )}
                     </AnimatePresence>
@@ -483,11 +483,7 @@ const Navbar = () => {
                           {cat.pages.map((page) => (
                             <Link
                               key={page.id}
-                              to={
-                                page.slug
-                                  ? `/pages/${page.slug}`
-                                  : `/page/${page.id}`
-                              }
+                              to={page.slug ? `/${page.slug}` : `/${page.id}`}
                               className="block px-4 py-3 text-sm text-white/70 rounded-lg hover:bg-white/5 hover:text-white border border-white/5 backdrop-blur-sm transition-all duration-300"
                             >
                               {page.title}

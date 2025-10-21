@@ -94,7 +94,9 @@ const EnhancedPageBuilder = () => {
               ? component.orderIndex
               : componentIndex,
           // Use current component state for isVisible and theme
-          isVisible: Boolean(component.isVisible === true || component.isVisible === 1),
+          isVisible: Boolean(
+            component.isVisible === true || component.isVisible === 1
+          ),
           theme: component.theme || 1,
         };
 
@@ -594,8 +596,14 @@ const EnhancedPageBuilder = () => {
             componentType: component.componentType || "Generic",
             componentName: component.componentName || "New Component",
             orderIndex: component.orderIndex ?? index + 1, // Use API orderIndex or auto-generate
-            isVisible: component.isVisible === undefined ? true : Boolean(component.isVisible === true || component.isVisible === 1), // Always boolean
-            theme: component.theme === undefined ? 1 : (component.theme === 2 ? 2 : 1), // Always 1 or 2
+            isVisible:
+              component.isVisible === undefined
+                ? true
+                : Boolean(
+                    component.isVisible === true || component.isVisible === 1
+                  ), // Always boolean
+            theme:
+              component.theme === undefined ? 1 : component.theme === 2 ? 2 : 1, // Always 1 or 2
           };
 
           // Handle contentJson string conversion for API
@@ -1007,7 +1015,12 @@ const EnhancedPageBuilder = () => {
           orderIndex:
             component.orderIndex !== undefined ? component.orderIndex : index,
           // Use the new value from checkbox for isVisible and theme
-          isVisible: field === "isVisible" ? Boolean(value === true || value === 1) : Boolean(component.isVisible === true || component.isVisible === 1),
+          isVisible:
+            field === "isVisible"
+              ? Boolean(value === true || value === 1)
+              : Boolean(
+                  component.isVisible === true || component.isVisible === 1
+                ),
           theme: field === "theme" ? value : component.theme,
         };
 
@@ -1084,7 +1097,9 @@ const EnhancedPageBuilder = () => {
           ),
           orderIndex:
             component.orderIndex !== undefined ? component.orderIndex : index,
-          isVisible: Boolean(component.isVisible === true || component.isVisible === 1),
+          isVisible: Boolean(
+            component.isVisible === true || component.isVisible === 1
+          ),
           theme: component.theme || 1,
         };
 
@@ -4999,7 +5014,6 @@ const SectionsStep = ({
             <CardTitle className="text-white text-xl font-bold">
               Component Configuration ({pageData.components.length})
             </CardTitle>
-            
           </div>
         </CardHeader>
         <CardContent className="h-[600px] flex flex-col">
@@ -5034,7 +5048,6 @@ const SectionsStep = ({
                         ? "border-yellow-400/30 bg-yellow-500/5 border-white/20"
                         : "border-purple-400/30 bg-purple-500/5 border-white/20"
                     }`}
-                  
                     data-theme={themeClass}
                     data-component-visible={isVisible}
                   >
@@ -5051,8 +5064,6 @@ const SectionsStep = ({
                         </h4>
                       </div>
                       <div className="flex items-center space-x-2">
-                      
-                       
                         <Button
                           size="sm"
                           variant="outline"
@@ -6387,7 +6398,6 @@ const ReviewStep = ({ pageData }) => {
           )}
         </CardContent>
       </Card>
-
     </div>
   );
 };

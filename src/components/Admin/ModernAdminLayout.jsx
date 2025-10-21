@@ -65,6 +65,14 @@ const ModernAdminLayout = () => {
       description: "Content Management",
     },
     {
+      id: "categories",
+      name: "Categories",
+      path: "/admin/categories",
+      icon: ViewColumnsIcon,
+      iconSolid: ViewColumnsIconSolid,
+      description: "Manage Categories",
+    },
+    {
       id: "messages",
       name: "Messages",
       path: "/admin/messages",

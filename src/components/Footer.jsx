@@ -116,7 +116,7 @@ const Footer = () => {
                     return (
                       <li key={cat.id}>
                         <a
-                          href={`/pages/${homePage.slug}`}
+                          href={`/${homePage.slug}`}
                           className="hover:text-white transition-colors duration-300 cursor-pointer"
                         >
                           {cat.name}
