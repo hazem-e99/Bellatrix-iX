@@ -62,6 +62,11 @@ const EnhancedPageBuilder = () => {
     components: [],
   });
 
+  // Slug validation state
+  const [slugChecking, setSlugChecking] = useState(false);
+  const [slugAvailable, setSlugAvailable] = useState(true);
+  const [slugError, setSlugError] = useState("");
+
   // Debounced auto-save system
   const autoSaveTimeoutRef = useRef(null);
 
@@ -671,6 +676,49 @@ const EnhancedPageBuilder = () => {
     }
   };
 
+  // Slug checking function
+  const checkSlugAvailability = async (slug, excludeId = null) => {
+    if (!slug || slug.trim() === "") {
+      setSlugAvailable(true);
+      setSlugError("");
+      return;
+    }
+
+    setSlugChecking(true);
+    setSlugError("");
+
+    try {
+      const response = await pagesAPI.checkSlugExists(slug, excludeId);
+      const isAvailable = !response.data;
+      setSlugAvailable(isAvailable);
+      
+      if (!isAvailable) {
+        setSlugError("This slug is already in use. Please choose a different one.");
+      }
+    } catch (error) {
+      console.error("Error checking slug availability:", error);
+      setSlugError("Unable to verify slug availability. Please try again.");
+      setSlugAvailable(false);
+    } finally {
+      setSlugChecking(false);
+    }
+  };
+
+  // Debounced slug checking effect
+  useEffect(() => {
+    if (!pageData.slug || pageData.slug.trim() === "") {
+      setSlugAvailable(true);
+      setSlugError("");
+      return;
+    }
+
+    const timeoutId = setTimeout(() => {
+      checkSlugAvailability(pageData.slug, pageData.id);
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
+  }, [pageData.slug, pageData.id]);
+
   const handlePageDataChange = (field, value) => {
     // Handle slug input specially
     if (field === "slug") {
@@ -680,6 +728,10 @@ const EnhancedPageBuilder = () => {
           ...prev,
           slug: value,
         }));
+        // Clear previous slug error when user starts typing
+        if (slugError) {
+          setSlugError("");
+        }
       } else {
         showToast(
           "Slug must only contain lowercase letters, numbers, and dashes.",
@@ -4003,8 +4055,15 @@ const EnhancedPageBuilder = () => {
           pageData.categoryId !== null && pageData.categoryId !== undefined
         );
       case 2:
-        // Page details can be empty; defaults will be applied
-        return true;
+        // Page details validation - require valid slug
+        return (
+          pageData.slug && 
+          pageData.slug.trim() !== "" && 
+          /^[a-z0-9-]+$/.test(pageData.slug) &&
+          slugAvailable && 
+          !slugChecking &&
+          !slugError
+        );
       case 3:
         // Sections optional
         return true;
@@ -4044,6 +4103,9 @@ const EnhancedPageBuilder = () => {
           <PageDetailsStep
             pageData={pageData}
             onDataChange={handlePageDataChange}
+            slugChecking={slugChecking}
+            slugAvailable={slugAvailable}
+            slugError={slugError}
           />
         );
       case 3:
@@ -4491,7 +4553,13 @@ const CategorySelector = ({ value, onChange }) => {
 };
 
 // Step 1: Page Details
-const PageDetailsStep = ({ pageData, onDataChange }) => {
+const PageDetailsStep = ({ 
+  pageData, 
+  onDataChange, 
+  slugChecking, 
+  slugAvailable, 
+  slugError 
+}) => {
   return (
     <Card className="bg-[var(--color-white)]/5 backdrop-blur-sm border border-[var(--color-white-10)] shadow-xl">
       <CardHeader>
@@ -4517,21 +4585,52 @@ const PageDetailsStep = ({ pageData, onDataChange }) => {
             <label className="block text-sm font-semibold text-[var(--color-text-inverse)] mb-2">
               URL Slug *
             </label>
-            <Input
-              type="text"
-              value={pageData.slug}
-              onChange={(e) => onDataChange("slug", e.target.value)}
-              placeholder="page-url-slug"
-              pattern="[a-z0-9-]+"
-              title="Slug must only contain lowercase letters, numbers, and dashes."
-              className="w-full bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-black placeholder-gray-400 focus:border-[var(--color-primary-light)] focus:ring-[var(--color-primary-light)]/20"
-            />
+            <div className="relative">
+              <Input
+                type="text"
+                value={pageData.slug}
+                onChange={(e) => onDataChange("slug", e.target.value)}
+                placeholder="page-url-slug"
+                pattern="[a-z0-9-]+"
+                title="Slug must only contain lowercase letters, numbers, and dashes."
+                className={`w-full bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-black placeholder-gray-400 focus:border-[var(--color-primary-light)] focus:ring-[var(--color-primary-light)]/20 ${
+                  slugError ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : 
+                  slugAvailable && pageData.slug ? 'border-green-500 focus:border-green-500 focus:ring-green-500/20' : ''
+                }`}
+              />
+              {slugChecking && (
+                <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                  <ArrowPathIcon className="h-4 w-4 text-gray-400 animate-spin" />
+                </div>
+              )}
+              {!slugChecking && pageData.slug && (
+                <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                  {slugAvailable ? (
+                    <CheckIcon className="h-4 w-4 text-green-500" />
+                  ) : (
+                    <ExclamationTriangleIcon className="h-4 w-4 text-red-500" />
+                  )}
+                </div>
+              )}
+            </div>
             <p className="text-sm text-[var(--color-text-secondary)] mt-2">
               URL: /{pageData.slug || "page-url-slug"}
             </p>
             <p className="text-xs text-[var(--color-text-light)] mt-1">
               Slug must only contain lowercase letters, numbers, and dashes.
             </p>
+            {slugError && (
+              <p className="text-xs text-red-400 mt-1 flex items-center">
+                <ExclamationTriangleIcon className="h-3 w-3 mr-1" />
+                {slugError}
+              </p>
+            )}
+            {!slugError && slugAvailable && pageData.slug && (
+              <p className="text-xs text-green-400 mt-1 flex items-center">
+                <CheckIcon className="h-3 w-3 mr-1" />
+                Slug is available
+              </p>
+            )}
           </div>
         </div>
 

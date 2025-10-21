@@ -439,6 +439,37 @@ const pagesAPI = {
   },
 
   /**
+   * Check if a slug already exists
+   * @param {string} slug - The slug to check
+   * @param {number} excludeId - Optional page ID to exclude from check (for updates)
+   * @returns {Promise<Object>} Response with exists property
+   */
+  async checkSlugExists(slug, excludeId = null) {
+    try {
+      const queryParams = new URLSearchParams();
+      queryParams.append("slug", slug);
+      if (excludeId) {
+        queryParams.append("excludeId", excludeId);
+      }
+
+      const response = await api.get(`/Pages/check-slug?${queryParams.toString()}`);
+      return response.data;
+    } catch (error) {
+      // If endpoint doesn't exist, fallback to checking all pages
+      try {
+        const allPages = await this.getPages();
+        const exists = allPages.some(page => 
+          page.slug === slug && (!excludeId || page.id !== excludeId)
+        );
+        return { data: exists };
+      } catch (fallbackError) {
+        console.error("Error checking slug existence:", fallbackError);
+        return { data: false }; // Default to available if we can't check
+      }
+    }
+  },
+
+  /**
    * Search pages (legacy method for compatibility)
    * @param {string} query - Search query
    * @returns {Promise<Array>} Search results
