@@ -27,6 +27,7 @@ const Navbar = () => {
           "http://bellatrix.runasp.net/api/Categories/navbar"
         );
         const data = await res.json();
+        console.log(data);
         // Accepts: { data: [...] }, { result: [...] }, or array
         let cats = [];
         if (Array.isArray(data)) {
@@ -370,9 +371,7 @@ const Navbar = () => {
                   </div>
                 ))
               ) : (
-                <span className="px-5 py-3 text-sm text-gray-400">
-                  No categories
-                </span>
+                <span style={{ display: "none" }} />
               )}
 
               <Link

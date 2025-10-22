@@ -163,7 +163,6 @@ function CategoriesManagement() {
               <th className="px-6 py-4">Name</th>
               <th className="px-6 py-4">Description</th>
               <th className="px-6 py-4">Sort Order</th>
-              <th className="px-6 py-4">Created Date</th>
               <th className="px-6 py-4 rounded-tr-2xl">Actions</th>
             </tr>
           </thead>
@@ -202,11 +201,7 @@ function CategoriesManagement() {
                   <td className="px-6 py-4">{cat.name}</td>
                   <td className="px-6 py-4 text-gray-300">{cat.description}</td>
                   <td className="px-6 py-4">{cat.sortOrder}</td>
-                  <td className="px-6 py-4 text-gray-400">
-                    {cat.createdAt
-                      ? new Date(cat.createdAt).toLocaleString()
-                      : "-"}
-                  </td>
+                
                   <td className="px-6 py-4 space-x-2">
                     <button
                       className="inline-block px-3 py-1 rounded-lg bg-[var(--color-primary)] text-white font-medium shadow hover:bg-[var(--color-primary-light)] transition"
