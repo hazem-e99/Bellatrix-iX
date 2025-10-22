@@ -684,6 +684,14 @@ const EnhancedPageBuilder = () => {
       return;
     }
 
+    // Validate slug format before making API call
+    const slugRegex = /^[a-z0-9-]+$/;
+    if (!slugRegex.test(slug)) {
+      setSlugError("Slug must only contain lowercase letters, numbers, and dashes.");
+      setSlugAvailable(false);
+      return;
+    }
+
     setSlugChecking(true);
     setSlugError("");
 

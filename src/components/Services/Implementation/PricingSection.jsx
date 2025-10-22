@@ -114,7 +114,7 @@ const PricingSection = ({ data = {} }) => {
                 </div>
 
                 <ul className="space-y-4 mb-8">
-                  {plan.features.map((feature, i) => (
+                  {(plan.features || []).map((feature, i) => (
                     <li key={i} className="flex items-center">
                       <svg
                         className="w-5 h-5 text-green-500 mr-3"

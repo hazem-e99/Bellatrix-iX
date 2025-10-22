@@ -247,7 +247,7 @@ const ModernAdminLayout = () => {
               <Button
                 variant="ghost"
                 size="icon"
-                className="lg:hidden"
+                className="lg:hidden text-white hover:text-white hover:bg-white/20 transition-colors duration-200"
                 onClick={() => setSidebarOpen(true)}
               >
                 <Bars3Icon className="h-5 w-5" />
@@ -270,7 +270,7 @@ const ModernAdminLayout = () => {
                 variant="ghost"
                 size="icon"
                 onClick={toggleTheme}
-                className="text-[var(--color-text-inverse)] hover:text-[var(--color-text-inverse)] hover:bg-[var(--color-white-10)]"
+                className="text-white hover:text-white hover:bg-white/20 transition-colors duration-200"
                 title="Toggle Dark/Light Mode"
               >
                 {isDark ? (
@@ -285,13 +285,13 @@ const ModernAdminLayout = () => {
                 variant="ghost"
                 size="icon"
                 onClick={toggleColorTheme}
-                className="text-[var(--color-text-inverse)] hover:text-[var(--color-text-inverse)] hover:bg-[var(--color-white-10)]"
+                className="text-white hover:text-white hover:bg-white/20 transition-colors duration-200"
                 title={`Switch to ${
                   theme === "default" ? "Purple" : "Default"
                 } Theme`}
               >
                 <div
-                  className={`h-5 w-5 rounded-full border-2 border-current ${
+                  className={`h-5 w-5 rounded-full border-2 border-white ${
                     theme === "purple"
                       ? "bg-gradient-to-r from-purple-500 to-purple-700"
                       : "bg-gradient-to-r from-blue-500 to-blue-700"
@@ -305,14 +305,14 @@ const ModernAdminLayout = () => {
                   variant="ghost"
                   size="icon"
                   onClick={() => setNotificationsOpen(!notificationsOpen)}
-                  className="text-[var(--color-text-inverse)] hover:text-[var(--color-text-inverse)] hover:bg-[var(--color-white-10)]"
+                  className="text-white hover:text-white hover:bg-white/20 transition-colors duration-200"
                 >
                   <BellIcon className="h-5 w-5" />
                   {unreadCount + legacyUnreadCount > 0 && (
-                    <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-[var(--color-primary)] ring-2 ring-[var(--color-text-inverse)]" />
+                    <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500 ring-2 ring-white" />
                   )}
                   {unreadCount + legacyUnreadCount > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-[var(--tw-red-500)] text-[var(--color-text-inverse)] text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium">
                       {unreadCount + legacyUnreadCount > 9
                         ? "9+"
                         : unreadCount + legacyUnreadCount}
@@ -373,7 +373,7 @@ const ModernAdminLayout = () => {
                 <Button
                   variant="ghost"
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
-                  className="flex items-center space-x-2 text-[var(--color-text-inverse)] hover:text-[var(--color-text-inverse)] hover:bg-[var(--color-white-10)]"
+                  className="flex items-center space-x-2 text-white hover:text-white hover:bg-white/20 transition-colors duration-200"
                 >
                   <UserCircleIcon className="h-6 w-6" />
                   <ChevronDownIcon className="h-4 w-4" />
