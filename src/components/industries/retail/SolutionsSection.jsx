@@ -4,7 +4,16 @@ import SEO from "../../SEO";
 const SolutionsSection = ({ data, activeSolution, setActiveSolution }) => {
   // Ensure data is safe and provide fallback
   const safeData = data || {};
-  const netSuiteSolutions = safeData.netSuiteSolutions || [];
+  
+  // Safely extract solutions with proper array validation
+  let netSuiteSolutions = [];
+  if (Array.isArray(safeData.netSuiteSolutions)) {
+    netSuiteSolutions = safeData.netSuiteSolutions;
+  } else if (Array.isArray(safeData.solutions)) {
+    netSuiteSolutions = safeData.solutions;
+  } else if (Array.isArray(safeData.items)) {
+    netSuiteSolutions = safeData.items;
+  }
   
   // Default solutions if none provided
   const defaultSolutions = [
