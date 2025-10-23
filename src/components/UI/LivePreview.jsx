@@ -94,6 +94,8 @@ const ComponentPreview = ({
 
   // Component registry mapping - All available components for preview
   const componentRegistry = {
+         // Add WhyChooseSection for preview
+  WhyChooseSection: ImplementationWhyChoose,
     // ===========================================
     // ABOUT PAGE COMPONENTS
     // ===========================================
@@ -152,8 +154,7 @@ const ComponentPreview = ({
     TrainingWhyChooseSection: TrainingWhyChoose,
 
     // Integration Components
-    ServiceGrid: ServiceGrid,
-    ImplementationCTASection: ImplementationCTA,
+    // (Customization and Integration components removed)
 
     // ===========================================
     // INDUSTRY COMPONENTS - MANUFACTURING
@@ -177,9 +178,9 @@ const ComponentPreview = ({
     RetailIndustryStatsSection: RetailIndustryStats,
     RetailChallengesSection: RetailChallenges,
     RetailSolutionsSection: RetailSolutions,
-  // RetailFeaturesSection: RetailFeatures,
-  // RetailCaseStudies: RetailCaseStudies,
-  // RetailCaseStudiesSection: RetailCaseStudies,
+    // RetailFeaturesSection: RetailFeatures,
+    // RetailCaseStudies: RetailCaseStudies,
+    // RetailCaseStudiesSection: RetailCaseStudies,
     RetailImplementationSection: RetailImplementation,
     RetailCTASection: RetailCTA,
 
@@ -471,113 +472,124 @@ const ComponentPreview = ({
           return transformedHRHeroData;
         }
 
-         case "PayrollWorkflowSection": {
-           console.log(
-             "🎯 [PayrollWorkflowSection TRANSFORM] Input data:",
-             componentData
-           );
-           const transformedPayrollWorkflowData = {
-             workflowData: {
-               title:
-                 componentData.title ||
-                 "Payroll System Built for All Industries",
-               description:
-                 componentData.description ||
-                 "Streamline your entire payroll lifecycle — from onboarding to salary disbursement — with a secure, intuitive platform.",
-               steps: componentData.steps || [
-                 {
-                   title: "Employee Data Import",
-                   stepTitle: "Employee Data Import",
-                   description: "Easily onboard and manage employee records in one place.",
-                   stepDescription: "Import employee data from spreadsheets or integrated HR systems. Supports bulk uploads and data validation with real-time error checking.",
-                   features: [
-                     "Bulk import from Excel/CSV",
-                     "Data validation",
-                     "Duplicate detection",
-                     "HR system integration"
-                   ],
-                   automated: "Reduces manual work by 80%",
-                   compliant: "Built-in regulatory compliance"
-                 },
-                 {
-                   title: "Time & Attendance Sync",
-                   stepTitle: "Time & Attendance Sync",
-                   description: "Integrate timesheets and attendance for accurate payroll.",
-                   stepDescription: "Syncs with your time tracking tools to ensure accurate hours and leave data for every employee. Supports multiple time tracking systems.",
-                   features: [
-                     "Real-time sync",
-                     "Multiple time systems",
-                     "Leave management",
-                     "Overtime calculation"
-                   ],
-                   automated: "Automated time tracking integration",
-                   compliant: "Accurate compliance reporting"
-                 },
-                 {
-                   title: "Salary & Tax Calculation",
-                   stepTitle: "Salary & Tax Auto-Calculation",
-                   description: "Automate salary, tax, and deduction calculations.",
-                   stepDescription: "Calculates gross and net pay, taxes, and deductions automatically based on your rules and local compliance. Handles complex tax scenarios.",
-                   features: [
-                     "Auto tax calculation",
-                     "Compliance built-in",
-                     "Deduction management",
-                     "Bonus processing"
-                   ],
-                   automated: "100% automated calculations",
-                   compliant: "Tax law compliance guaranteed"
-                 },
-                 {
-                   title: "Approval Workflows",
-                   stepTitle: "Approval Workflows",
-                   description: "Streamline approvals with role-based access.",
-                   stepDescription: "Multi-level approval flows for payroll runs, with notifications and audit trails. Customizable approval hierarchies.",
-                   features: [
-                     "Multi-level approval",
-                     "Email notifications",
-                     "Audit trails",
-                     "Role-based access"
-                   ],
-                   automated: "Automated approval routing",
-                   compliant: "Complete audit trail"
-                 },
-                 {
-                   title: "Payment Execution",
-                   stepTitle: "Payment Execution",
-                   description: "Execute payments securely through integrated bank APIs.",
-                   stepDescription: "Initiate salary payments directly from the platform with secure, bank-level integrations. Supports multiple payment methods.",
-                   features: [
-                     "Bank API integration",
-                     "Multiple payment methods",
-                     "Secure transactions",
-                     "Payment tracking"
-                   ],
-                   automated: "One-click payment processing",
-                   compliant: "Bank-level security compliance"
-                 },
-                 {
-                   title: "Payslip & Reporting",
-                   stepTitle: "Payslip Generation & Reporting",
-                   description: "Generate payslips and compliance-ready reports instantly.",
-                   stepDescription: "Employees get digital payslips; admins get downloadable, compliance-ready reports. Customizable templates and automated distribution.",
-                   features: [
-                     "Digital payslips",
-                     "Custom templates",
-                     "Auto distribution",
-                     "Compliance reports"
-                   ],
-                   automated: "Instant report generation",
-                   compliant: "Regulatory compliance ready"
-                 }
-               ],
-             },
-           };
-           console.log(
-             "✅ [PayrollWorkflowSection TRANSFORM] Output data:",
-             transformedPayrollWorkflowData
-           );
-           return transformedPayrollWorkflowData;
-         }
+        case "PayrollWorkflowSection": {
+          console.log(
+            "🎯 [PayrollWorkflowSection TRANSFORM] Input data:",
+            componentData
+          );
+          const transformedPayrollWorkflowData = {
+            workflowData: {
+              title:
+                componentData.title ||
+                "Payroll System Built for All Industries",
+              description:
+                componentData.description ||
+                "Streamline your entire payroll lifecycle — from onboarding to salary disbursement — with a secure, intuitive platform.",
+              steps: componentData.steps || [
+                {
+                  title: "Employee Data Import",
+                  stepTitle: "Employee Data Import",
+                  description:
+                    "Easily onboard and manage employee records in one place.",
+                  stepDescription:
+                    "Import employee data from spreadsheets or integrated HR systems. Supports bulk uploads and data validation with real-time error checking.",
+                  features: [
+                    "Bulk import from Excel/CSV",
+                    "Data validation",
+                    "Duplicate detection",
+                    "HR system integration",
+                  ],
+                  automated: "Reduces manual work by 80%",
+                  compliant: "Built-in regulatory compliance",
+                },
+                {
+                  title: "Time & Attendance Sync",
+                  stepTitle: "Time & Attendance Sync",
+                  description:
+                    "Integrate timesheets and attendance for accurate payroll.",
+                  stepDescription:
+                    "Syncs with your time tracking tools to ensure accurate hours and leave data for every employee. Supports multiple time tracking systems.",
+                  features: [
+                    "Real-time sync",
+                    "Multiple time systems",
+                    "Leave management",
+                    "Overtime calculation",
+                  ],
+                  automated: "Automated time tracking integration",
+                  compliant: "Accurate compliance reporting",
+                },
+                {
+                  title: "Salary & Tax Calculation",
+                  stepTitle: "Salary & Tax Auto-Calculation",
+                  description:
+                    "Automate salary, tax, and deduction calculations.",
+                  stepDescription:
+                    "Calculates gross and net pay, taxes, and deductions automatically based on your rules and local compliance. Handles complex tax scenarios.",
+                  features: [
+                    "Auto tax calculation",
+                    "Compliance built-in",
+                    "Deduction management",
+                    "Bonus processing",
+                  ],
+                  automated: "100% automated calculations",
+                  compliant: "Tax law compliance guaranteed",
+                },
+                {
+                  title: "Approval Workflows",
+                  stepTitle: "Approval Workflows",
+                  description: "Streamline approvals with role-based access.",
+                  stepDescription:
+                    "Multi-level approval flows for payroll runs, with notifications and audit trails. Customizable approval hierarchies.",
+                  features: [
+                    "Multi-level approval",
+                    "Email notifications",
+                    "Audit trails",
+                    "Role-based access",
+                  ],
+                  automated: "Automated approval routing",
+                  compliant: "Complete audit trail",
+                },
+                {
+                  title: "Payment Execution",
+                  stepTitle: "Payment Execution",
+                  description:
+                    "Execute payments securely through integrated bank APIs.",
+                  stepDescription:
+                    "Initiate salary payments directly from the platform with secure, bank-level integrations. Supports multiple payment methods.",
+                  features: [
+                    "Bank API integration",
+                    "Multiple payment methods",
+                    "Secure transactions",
+                    "Payment tracking",
+                  ],
+                  automated: "One-click payment processing",
+                  compliant: "Bank-level security compliance",
+                },
+                {
+                  title: "Payslip & Reporting",
+                  stepTitle: "Payslip Generation & Reporting",
+                  description:
+                    "Generate payslips and compliance-ready reports instantly.",
+                  stepDescription:
+                    "Employees get digital payslips; admins get downloadable, compliance-ready reports. Customizable templates and automated distribution.",
+                  features: [
+                    "Digital payslips",
+                    "Custom templates",
+                    "Auto distribution",
+                    "Compliance reports",
+                  ],
+                  automated: "Instant report generation",
+                  compliant: "Regulatory compliance ready",
+                },
+              ],
+            },
+          };
+          console.log(
+            "✅ [PayrollWorkflowSection TRANSFORM] Output data:",
+            transformedPayrollWorkflowData
+          );
+          return transformedPayrollWorkflowData;
+        }
 
         case "PayrollStepperSection": {
           console.log(
@@ -1162,9 +1174,14 @@ const ComponentPreview = ({
           );
           const transformedData = {
             title: componentData.title || "NetSuite Manufacturing Solutions",
-            subtitle: componentData.subtitle || "Comprehensive ERP solutions for manufacturers",
-            description: componentData.description || "Our NetSuite solutions are specifically designed to address manufacturing challenges and streamline your operations.",
-            solutions: componentData.solutions || componentData.items || [
+            subtitle:
+              componentData.subtitle ||
+              "Comprehensive ERP solutions for manufacturers",
+            description:
+              componentData.description ||
+              "Our NetSuite solutions are specifically designed to address manufacturing challenges and streamline your operations.",
+            solutions: componentData.solutions ||
+              componentData.items || [
                 {
                   title: "Production Management",
                   description: "End-to-end production planning and execution",
@@ -1174,16 +1191,24 @@ const ComponentPreview = ({
                 {
                   title: "Inventory Control",
                   description: "Advanced inventory management capabilities",
-                features: ["Multi-location", "Serial tracking", "Cycle counting"],
-                benefits: "30% reduction in inventory costs",
-              },
-              {
-                title: "Quality Assurance",
-                description: "Comprehensive quality control systems",
-                features: ["Quality gates", "Defect tracking", "Compliance reporting"],
-                benefits: "99.5% quality achievement rate",
-              },
-            ],
+                  features: [
+                    "Multi-location",
+                    "Serial tracking",
+                    "Cycle counting",
+                  ],
+                  benefits: "30% reduction in inventory costs",
+                },
+                {
+                  title: "Quality Assurance",
+                  description: "Comprehensive quality control systems",
+                  features: [
+                    "Quality gates",
+                    "Defect tracking",
+                    "Compliance reporting",
+                  ],
+                  benefits: "99.5% quality achievement rate",
+                },
+              ],
           };
           console.log(
             "✅ [ManufacturingSolutionsSection TRANSFORM] Output data:",
@@ -1300,40 +1325,44 @@ const ComponentPreview = ({
           );
           const transformedData = {
             data: {
-              items: componentData.items || componentData.caseStudies || [
-                {
-                  title: "Automotive Parts Manufacturer",
-                  company: "ABC Motors",
-                  industry: "Automotive",
-                  challenge: "Complex multi-location inventory management",
-                  solution: "NetSuite Advanced Manufacturing with WMS",
-                  results: "40% reduction in inventory carrying costs",
-                  timeline: "6 months",
-                  image: "/images/case-study-1.jpg",
-                },
-                {
-                  title: "Electronics Manufacturer",
-                  company: "TechCorp",
-                  industry: "Electronics",
-                  challenge: "Manual production planning and scheduling",
-                  solution: "NetSuite Manufacturing Edition with custom workflows",
-                  results: "60% improvement in on-time delivery",
-                  timeline: "4 months",
-                  image: "/images/case-study-2.jpg",
-                },
-                {
-                  title: "Food & Beverage Producer",
-                  company: "FreshFoods Inc",
-                  industry: "Food & Beverage",
-                  challenge: "Quality control and compliance tracking",
-                  solution: "NetSuite Quality Management Suite",
-                  results: "99.5% quality achievement rate",
-                  timeline: "3 months",
-                  image: "/images/case-study-3.jpg",
-                },
-              ],
+              items: componentData.items ||
+                componentData.caseStudies || [
+                  {
+                    title: "Automotive Parts Manufacturer",
+                    company: "ABC Motors",
+                    industry: "Automotive",
+                    challenge: "Complex multi-location inventory management",
+                    solution: "NetSuite Advanced Manufacturing with WMS",
+                    results: "40% reduction in inventory carrying costs",
+                    timeline: "6 months",
+                    image: "/images/case-study-1.jpg",
+                  },
+                  {
+                    title: "Electronics Manufacturer",
+                    company: "TechCorp",
+                    industry: "Electronics",
+                    challenge: "Manual production planning and scheduling",
+                    solution:
+                      "NetSuite Manufacturing Edition with custom workflows",
+                    results: "60% improvement in on-time delivery",
+                    timeline: "4 months",
+                    image: "/images/case-study-2.jpg",
+                  },
+                  {
+                    title: "Food & Beverage Producer",
+                    company: "FreshFoods Inc",
+                    industry: "Food & Beverage",
+                    challenge: "Quality control and compliance tracking",
+                    solution: "NetSuite Quality Management Suite",
+                    results: "99.5% quality achievement rate",
+                    timeline: "3 months",
+                    image: "/images/case-study-3.jpg",
+                  },
+                ],
               title: componentData.title || "Manufacturing Success Stories",
-              description: componentData.description || "See how we've helped manufacturing companies transform their operations with NetSuite solutions.",
+              description:
+                componentData.description ||
+                "See how we've helped manufacturing companies transform their operations with NetSuite solutions.",
             },
           };
           console.log(
@@ -1358,9 +1387,15 @@ const ComponentPreview = ({
             componentData
           );
           const transformedData = {
-            title: componentData.title || "Ready to Transform Your Manufacturing Operations?",
-            subtitle: componentData.subtitle || "Get started with our manufacturing experts",
-            description: componentData.description || "Contact our manufacturing specialists to learn how NetSuite can optimize your operations",
+            title:
+              componentData.title ||
+              "Ready to Transform Your Manufacturing Operations?",
+            subtitle:
+              componentData.subtitle ||
+              "Get started with our manufacturing experts",
+            description:
+              componentData.description ||
+              "Contact our manufacturing specialists to learn how NetSuite can optimize your operations",
             ctaButton: componentData.ctaButton || {
               text: "Get Started",
               link: "/contact",
@@ -1370,20 +1405,27 @@ const ComponentPreview = ({
               {
                 icon: "💡",
                 title: "Free Assessment",
-                description: "Comprehensive evaluation of your manufacturing processes",
+                description:
+                  "Comprehensive evaluation of your manufacturing processes",
               },
               {
                 icon: "⚡",
                 title: "Rapid Implementation",
-                description: "Get up and running faster with our proven methodology",
+                description:
+                  "Get up and running faster with our proven methodology",
               },
               {
                 icon: "🛠️",
                 title: "Ongoing Support",
-                description: "Continuous optimization and support for your success",
+                description:
+                  "Continuous optimization and support for your success",
               },
             ],
-            trustedBy: componentData.trustedBy || ["Fortune 500 Manufacturers", "SMEs", "Startups"],
+            trustedBy: componentData.trustedBy || [
+              "Fortune 500 Manufacturers",
+              "SMEs",
+              "Startups",
+            ],
           };
           console.log(
             "✅ [ManufacturingCTASection TRANSFORM] Output data:",
@@ -1458,38 +1500,40 @@ const ComponentPreview = ({
           );
           const transformedData = {
             data: {
-              retailFeatures: componentData.features || componentData.items || [
-                {
-                  title: "Point of Sale",
-                  description: "Modern POS system with offline capability",
-                  icon: "💳",
-                },
-                {
-                  title: "E-commerce Integration",
-                  description: "Seamless online and offline experience",
-                  icon: "🛒",
-                },
-                {
-                  title: "Inventory Management",
-                  description: "Real-time inventory tracking across channels",
-                  icon: "📦",
-                },
-                {
-                  title: "Customer Analytics",
-                  description: "Advanced customer insights and behavior analysis",
-                  icon: "📊",
-                },
-                {
-                  title: "Omnichannel Support",
-                  description: "Unified experience across all touchpoints",
-                  icon: "🔄",
-                },
-                {
-                  title: "Mobile Commerce",
-                  description: "Mobile-optimized shopping experience",
-                  icon: "📱",
-                },
-              ],
+              retailFeatures: componentData.features ||
+                componentData.items || [
+                  {
+                    title: "Point of Sale",
+                    description: "Modern POS system with offline capability",
+                    icon: "💳",
+                  },
+                  {
+                    title: "E-commerce Integration",
+                    description: "Seamless online and offline experience",
+                    icon: "🛒",
+                  },
+                  {
+                    title: "Inventory Management",
+                    description: "Real-time inventory tracking across channels",
+                    icon: "📦",
+                  },
+                  {
+                    title: "Customer Analytics",
+                    description:
+                      "Advanced customer insights and behavior analysis",
+                    icon: "📊",
+                  },
+                  {
+                    title: "Omnichannel Support",
+                    description: "Unified experience across all touchpoints",
+                    icon: "🔄",
+                  },
+                  {
+                    title: "Mobile Commerce",
+                    description: "Mobile-optimized shopping experience",
+                    icon: "📱",
+                  },
+                ],
             },
             title: componentData.title || "Retail Features",
             description:
@@ -1590,332 +1634,6 @@ const ComponentPreview = ({
             onClick: componentData.onClick || (() => {}),
           };
           console.log("✅ [CTAButton TRANSFORM] Output data:", transformedData);
-          return transformedData;
-        }
-
-        case "ServiceGrid": {
-          console.log("🎯 [ServiceGrid TRANSFORM] Input data:", componentData);
-          const transformedData = {
-            data: {
-              services: componentData.services || [
-                {
-                  title: "NetSuite Implementation",
-                  description:
-                    "Complete NetSuite setup and configuration tailored to your business needs.",
-                  icon: "🚀",
-                  features: [
-                    "System Configuration",
-                    "Data Migration",
-                    "Custom Workflows",
-                    "User Training",
-                  ],
-                },
-                {
-                  title: "Training & Support",
-                  description:
-                    "Comprehensive training programs to maximize your NetSuite investment.",
-                  icon: "📚",
-                  features: [
-                    "User Training",
-                    "Admin Training",
-                    "Custom Reports",
-                    "Ongoing Support",
-                  ],
-                },
-              ],
-            },
-          };
-          console.log(
-            "✅ [ServiceGrid TRANSFORM] Output data:",
-            transformedData
-          );
-          return transformedData;
-        }
-
-        case "ImplementationCTASection": {
-          console.log(
-            "🎯 [ImplementationCTASection TRANSFORM] Input data:",
-            componentData
-          );
-          const transformedData = {
-            cta: componentData.cta || {
-              title: "Ready to Transform Your Business?",
-              subtitle:
-                "Get started with our comprehensive NetSuite implementation services today.",
-              buttonText: "Start Your Implementation",
-              buttonLink: "/contact",
-            },
-          };
-          console.log(
-            "✅ [ImplementationCTASection TRANSFORM] Output data:",
-            transformedData
-          );
-          return transformedData;
-        }
-
-        case "CustomizationHeroSection": {
-          console.log(
-            "🎯 [CustomizationHeroSection TRANSFORM] Input data:",
-            componentData
-          );
-          const transformedData = {
-            hero: componentData.hero || {
-              title: "NetSuite Customization Services",
-              subtitle: "Tailored Solutions for Your Business",
-              description:
-                "Transform your NetSuite system with custom solutions designed specifically for your unique business requirements.",
-            },
-            services: componentData.services || {
-              title: "Our Customization Services",
-              items: [
-                {
-                  title: "Custom Fields & Forms",
-                  description:
-                    "Create custom fields and forms to capture your specific business data.",
-                  icon: "📝",
-                },
-                {
-                  title: "Custom Scripts",
-                  description:
-                    "Develop custom scripts to automate your business processes.",
-                  icon: "⚙️",
-                },
-                {
-                  title: "Custom Workflows",
-                  description:
-                    "Design custom workflows to streamline your operations.",
-                  icon: "🔄",
-                },
-              ],
-            },
-          };
-          console.log(
-            "✅ [CustomizationHeroSection TRANSFORM] Output data:",
-            transformedData
-          );
-          return transformedData;
-        }
-
-        case "TrainingProgramsSection": {
-          console.log(
-            "🎯 [TrainingProgramsSection TRANSFORM] Input data:",
-            componentData
-          );
-          const transformedData = {
-            programsSection: componentData.programsSection || {
-              title: "Training Programs",
-              description: "Comprehensive training programs designed to enhance your skills and knowledge.",
-              image: "/images/traning.jpg",
-            },
-            trainingPrograms: componentData.trainingPrograms || {
-              programs: componentData.programs || [
-                {
-                  id: 1,
-                  title: "Basic User Training",
-                  description: "Learn the fundamentals of NetSuite",
-                  duration: "2 days",
-                  level: "Beginner",
-                },
-                {
-                  id: 2,
-                  title: "Advanced Configuration",
-                  description: "Master advanced NetSuite configuration",
-                  duration: "3 days",
-                  level: "Advanced",
-                },
-                {
-                  id: 3,
-                  title: "Customization & Scripting",
-                  description: "Learn NetSuite customization and scripting",
-                  duration: "4 days",
-                  level: "Expert",
-                },
-                {
-                  id: 4,
-                  title: "Integration Training",
-                  description: "Master NetSuite integrations",
-                  duration: "3 days",
-                  level: "Advanced",
-                },
-              ],
-            },
-            data: componentData,
-          };
-          console.log(
-            "✅ [TrainingProgramsSection TRANSFORM] Output data:",
-            transformedData
-          );
-          return transformedData;
-        }
-
-        case "TrainingKeyModulesSection": {
-          console.log(
-            "🎯 [TrainingKeyModulesSection TRANSFORM] Input data:",
-            componentData
-          );
-          const transformedData = {
-            keyModulesSection: componentData.keyModulesSection || {
-              title: "Key Training Modules",
-              subtitle: "Master essential NetSuite concepts and features",
-            },
-            keyModules: componentData.keyModules || [],
-            data: componentData,
-          };
-          console.log(
-            "✅ [TrainingKeyModulesSection TRANSFORM] Output data:",
-            transformedData
-          );
-          return transformedData;
-        }
-
-        case "TrainingWhyChooseSection": {
-          console.log(
-            "🎯 [TrainingWhyChooseSection TRANSFORM] Input data:",
-            componentData
-          );
-          const transformedData = {
-            whyChooseSection: componentData.whyChooseSection || {
-              title: "Why Choose Our Training",
-              subtitle: "Expert-led programs with proven results",
-            },
-            trainingFeatures: componentData.trainingFeatures || [],
-            data: componentData,
-          };
-          console.log(
-            "✅ [TrainingWhyChooseSection TRANSFORM] Output data:",
-            transformedData
-          );
-          return transformedData;
-        }
-
-        case "IntegrationTypesSection": {
-          console.log(
-            "🎯 [IntegrationTypesSection TRANSFORM] Input data:",
-            componentData
-          );
-          const transformedData = {
-            title: componentData.title || "Integration Types",
-            subtitle:
-              componentData.subtitle || "Multiple ways to connect NetSuite",
-            items: componentData.items || [],
-            data: componentData,
-          };
-          console.log(
-            "✅ [IntegrationTypesSection TRANSFORM] Output data:",
-            transformedData
-          );
-          return transformedData;
-        }
-
-        case "IntegrationBenefitsSection": {
-          console.log(
-            "🎯 [IntegrationBenefitsSection TRANSFORM] Input data:",
-            componentData
-          );
-          const transformedData = {
-            title: componentData.title || "Integration Benefits",
-            subtitle: componentData.subtitle || "Why integrate with NetSuite",
-            items: componentData.items || [],
-            data: componentData,
-          };
-          console.log(
-            "✅ [IntegrationBenefitsSection TRANSFORM] Output data:",
-            transformedData
-          );
-          return transformedData;
-        }
-
-        case "IntegrationPopularSection": {
-          console.log(
-            "🎯 [IntegrationPopularSection TRANSFORM] Input data:",
-            componentData
-          );
-          const transformedData = {
-            title: componentData.title || "Popular Integrations",
-            subtitle:
-              componentData.subtitle || "Connect with leading platforms",
-            platforms: componentData.platforms || [],
-            data: componentData,
-          };
-          console.log(
-            "✅ [IntegrationPopularSection TRANSFORM] Output data:",
-            transformedData
-          );
-          return transformedData;
-        }
-
-        case "IntegrationCtaSection": {
-          console.log(
-            "🎯 [IntegrationCtaSection TRANSFORM] Input data:",
-            componentData
-          );
-          const transformedData = {
-            title: componentData.title || "Ready to Integrate?",
-            subtitle: componentData.subtitle || "Let's connect your systems",
-            buttonText: componentData.buttonText || "Get Started",
-            data: componentData,
-          };
-          console.log(
-            "✅ [IntegrationCtaSection TRANSFORM] Output data:",
-            transformedData
-          );
-          return transformedData;
-        }
-
-        case "CustomizationServicesSection": {
-          console.log(
-            "🎯 [CustomizationServicesSection TRANSFORM] Input data:",
-            componentData
-          );
-          const transformedData = {
-            title: componentData.title || "Our Customization Services",
-            subtitle:
-              componentData.subtitle || "Tailored solutions for your business",
-            items: componentData.items || [],
-            data: componentData,
-          };
-          console.log(
-            "✅ [CustomizationServicesSection TRANSFORM] Output data:",
-            transformedData
-          );
-          return transformedData;
-        }
-
-        case "CustomizationProcessSection": {
-          console.log(
-            "🎯 [CustomizationProcessSection TRANSFORM] Input data:",
-            componentData
-          );
-          const transformedData = {
-            title: componentData.title || "Our Customization Process",
-            subtitle:
-              componentData.subtitle || "Systematic approach to customization",
-            steps: componentData.steps || [],
-            data: componentData,
-          };
-          console.log(
-            "✅ [CustomizationProcessSection TRANSFORM] Output data:",
-            transformedData
-          );
-          return transformedData;
-        }
-
-        case "CustomizationCtaSection": {
-          console.log(
-            "🎯 [CustomizationCtaSection TRANSFORM] Input data:",
-            componentData
-          );
-          const transformedData = {
-            title: componentData.title || "Ready to Customize?",
-            subtitle:
-              componentData.subtitle || "Transform your NetSuite experience",
-            buttonText: componentData.buttonText || "Start Customization",
-            data: componentData,
-          };
-          console.log(
-            "✅ [CustomizationCtaSection TRANSFORM] Output data:",
-            transformedData
-          );
           return transformedData;
         }
 
@@ -2050,8 +1768,8 @@ const LivePreview = ({
   const [refreshKey, setRefreshKey] = useState(0);
 
   // Filter visible components
-  const visibleComponents = components.filter(component => 
-    component.isVisible === true || component.isVisible === 1
+  const visibleComponents = components.filter(
+    (component) => component.isVisible === true || component.isVisible === 1
   );
 
   console.log("🔍 [LIVE PREVIEW] Received components:", {

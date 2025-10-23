@@ -28,6 +28,14 @@ const EditPageModal = ({ isOpen, onClose, page, onSave, showToast }) => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  // Add a key to force remount PageComponentsEditor when components change
+  const [componentsKey, setComponentsKey] = useState(0);
+
+  // Handler to be passed to PageComponentsEditor to force refresh
+  const handleComponentsSave = async () => {
+    setComponentsKey((k) => k + 1); // force remount
+    if (onSave) await onSave();
+  };
 
   // Load categories on component mount
   useEffect(() => {
@@ -433,10 +441,11 @@ const EditPageModal = ({ isOpen, onClose, page, onSave, showToast }) => {
           </div>
         ) : (
           <PageComponentsEditor
+            key={componentsKey}
             pageId={page.id}
             pageName={formData.name}
             onClose={handleBackToPage}
-            onSave={onSave}
+            onSave={handleComponentsSave}
             showToast={showToast}
           />
         )}

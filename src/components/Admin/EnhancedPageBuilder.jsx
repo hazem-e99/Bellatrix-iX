@@ -1,4 +1,10 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import { DndContext } from "@dnd-kit/core";
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { DraggableComponent } from "./DraggableComponent";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   PlusIcon,
@@ -687,7 +693,9 @@ const EnhancedPageBuilder = () => {
     // Validate slug format before making API call
     const slugRegex = /^[a-z0-9-]+$/;
     if (!slugRegex.test(slug)) {
-      setSlugError("Slug must only contain lowercase letters, numbers, and dashes.");
+      setSlugError(
+        "Slug must only contain lowercase letters, numbers, and dashes."
+      );
       setSlugAvailable(false);
       return;
     }
@@ -699,9 +707,11 @@ const EnhancedPageBuilder = () => {
       const response = await pagesAPI.checkSlugExists(slug, excludeId);
       const isAvailable = !response.data;
       setSlugAvailable(isAvailable);
-      
+
       if (!isAvailable) {
-        setSlugError("This slug is already in use. Please choose a different one.");
+        setSlugError(
+          "This slug is already in use. Please choose a different one."
+        );
       }
     } catch (error) {
       console.error("Error checking slug availability:", error);
@@ -3953,6 +3963,26 @@ const EnhancedPageBuilder = () => {
         createPageDTO = { ...createPageDTO, isPublished: false };
       }
 
+      // Unified required fields check for publish
+      if (
+        status === "published" &&
+        (!createPageDTO.name ||
+          !createPageDTO.name.trim() ||
+          !createPageDTO.categoryId ||
+          !createPageDTO.metaTitle ||
+          !createPageDTO.metaTitle.trim() ||
+          !createPageDTO.metaDescription ||
+          !createPageDTO.metaDescription.trim())
+      ) {
+        showToast(
+          "Please fill in all required page data before publishing.",
+          "error"
+        );
+        setLoading(false);
+        setIsPublishing(false);
+        isSavingRef.current = false;
+        return;
+      }
 
       // Validate required fields - use helper function to ensure lock is reset on validation errors
       const validateAndReturn = (message) => {
@@ -3978,7 +4008,10 @@ const EnhancedPageBuilder = () => {
       }
 
       // SEO Meta Description required validation
-      if (!createPageDTO.metaDescription || !createPageDTO.metaDescription.trim()) {
+      if (
+        !createPageDTO.metaDescription ||
+        !createPageDTO.metaDescription.trim()
+      ) {
         return validateAndReturn("SEO Meta Description is required.");
       }
 
@@ -4076,10 +4109,10 @@ const EnhancedPageBuilder = () => {
       case 2:
         // Page details validation - require valid slug
         return (
-          pageData.slug && 
-          pageData.slug.trim() !== "" && 
+          pageData.slug &&
+          pageData.slug.trim() !== "" &&
           /^[a-z0-9-]+$/.test(pageData.slug) &&
-          slugAvailable && 
+          slugAvailable &&
           !slugChecking &&
           !slugError
         );
@@ -4549,16 +4582,32 @@ const CategorySelector = ({ value, onChange }) => {
     return (
       <div className="flex flex-col items-center justify-center gap-6 bg-[var(--color-brand-dark-navy)] border-2 border-[var(--color-primary)] rounded-2xl p-8 text-center mt-10 shadow-xl max-w-2xl mx-auto animate-fade-slide">
         <div className="flex flex-col items-center gap-2">
-          <h2 className="text-2xl font-bold text-[var(--color-primary-light)] mb-1">No Categories Found</h2>
+          <h2 className="text-2xl font-bold text-[var(--color-primary-light)] mb-1">
+            No Categories Found
+          </h2>
           <p className="text-lg text-[var(--color-text-secondary)] font-medium mb-2">
-            You must create at least one category before you can create a new page.
+            You must create at least one category before you can create a new
+            page.
           </p>
         </div>
         <button
-          onClick={() => navigate('/admin/categories')}
+          onClick={() => navigate("/admin/categories")}
           className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] text-[var(--color-text-inverse)] font-bold rounded-xl shadow hover:from-[var(--color-primary-light)] hover:to-[var(--color-primary)] hover:text-[var(--color-text-primary)] transition-all duration-200 text-lg mt-2 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-light)] focus:ring-offset-2"
         >
-          <svg xmlns='http://www.w3.org/2000/svg' className='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 4v16m8-8H4' /></svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 4v16m8-8H4"
+            />
+          </svg>
           Add Category
         </button>
       </div>
@@ -4591,12 +4640,12 @@ const CategorySelector = ({ value, onChange }) => {
 };
 
 // Step 1: Page Details
-const PageDetailsStep = ({ 
-  pageData, 
-  onDataChange, 
-  slugChecking, 
-  slugAvailable, 
-  slugError 
+const PageDetailsStep = ({
+  pageData,
+  onDataChange,
+  slugChecking,
+  slugAvailable,
+  slugError,
 }) => {
   return (
     <Card className="bg-[var(--color-white)]/5 backdrop-blur-sm border border-[var(--color-white-10)] shadow-xl">
@@ -4632,8 +4681,11 @@ const PageDetailsStep = ({
                 pattern="[a-z0-9-]+"
                 title="Slug must only contain lowercase letters, numbers, and dashes."
                 className={`w-full bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-black placeholder-gray-400 focus:border-[var(--color-primary-light)] focus:ring-[var(--color-primary-light)]/20 ${
-                  slugError ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : 
-                  slugAvailable && pageData.slug ? 'border-green-500 focus:border-green-500 focus:ring-green-500/20' : ''
+                  slugError
+                    ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
+                    : slugAvailable && pageData.slug
+                    ? "border-green-500 focus:border-green-500 focus:ring-green-500/20"
+                    : ""
                 }`}
               />
               {slugChecking && (
@@ -6472,16 +6524,6 @@ const ReviewStep = ({ pageData }) => {
                 : ""}
               )
             </CardTitle>
-            <button
-              onClick={() => setIsEditMode(!isEditMode)}
-              className={`px-3 py-1 rounded text-sm transition-all duration-200 ${
-                isEditMode
-                  ? "bg-blue-500/20 text-blue-300 border border-blue-400 hover:bg-blue-500/30"
-                  : "bg-gray-500/20 text-gray-300 border border-gray-400 hover:bg-gray-500/30"
-              }`}
-            >
-              {isEditMode ? "👁️ View Mode" : "✏️ Edit Mode"}
-            </button>
           </div>
         </CardHeader>
         <CardContent>
@@ -6493,45 +6535,74 @@ const ReviewStep = ({ pageData }) => {
               </p>
             </div>
           ) : (
-            <div className="space-y-3">
-              {pageData.components.map((component, index) => {
-                const isVisible =
-                  component.isVisible === true || component.isVisible === 1;
-                const themeClass = component.theme === 1 ? "light" : "dark";
-
-                return (
-                  <div
-                    key={index}
-                    className={`flex items-center space-x-3 p-3 rounded-lg border transition-all duration-300 ${
-                      !isVisible
-                        ? "bg-red-500/10 border-red-400/30 opacity-60"
-                        : component.theme === 1
-                        ? "bg-yellow-500/10 border-yellow-400/30"
-                        : "bg-purple-500/10 border-purple-400/30"
-                    }`}
-                    style={{
-                      display: isVisible ? "flex" : "none",
-                    }}
-                    data-theme={themeClass}
-                  >
-                    <div className="text-xl">
-                      {getComponentIcon(component.componentType)}
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="text-white font-medium">
-                        {component.componentName}
-                      </h4>
-                      <p className="text-gray-400 text-sm">
-                        {component.componentType}
-                      </p>
-                    </div>
-                    <div className="text-gray-400 text-sm">
-                      Order: {component.orderIndex}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+            <>
+              {/* Drag-and-drop reorderable list */}
+              <DndContext
+                onDragEnd={({ active, over }) => {
+                  if (!over || active.id === over.id) return;
+                  const oldIndex = pageData.components.findIndex(
+                    (c, i) => i === Number(active.id)
+                  );
+                  const newIndex = pageData.components.findIndex(
+                    (c, i) => i === Number(over.id)
+                  );
+                  if (oldIndex === -1 || newIndex === -1) return;
+                  const newComponents = [...pageData.components];
+                  const [moved] = newComponents.splice(oldIndex, 1);
+                  newComponents.splice(newIndex, 0, moved);
+                  // Update orderIndex for all components
+                  const reordered = newComponents.map((c, idx) => ({
+                    ...c,
+                    orderIndex: idx + 1,
+                  }));
+                  setPageData((prev) => ({ ...prev, components: reordered }));
+                }}
+              >
+                <SortableContext
+                  items={pageData.components.map((_, idx) => idx.toString())}
+                  strategy={verticalListSortingStrategy}
+                >
+                  {pageData.components.map((component, index) => {
+                    const isVisible =
+                      component.isVisible === true || component.isVisible === 1;
+                    const themeClass = component.theme === 1 ? "light" : "dark";
+                    return (
+                      <DraggableComponent key={index} id={index.toString()}>
+                        <div
+                          className={`flex items-center space-x-3 p-3 rounded-lg border transition-all duration-300 ${
+                            !isVisible
+                              ? "bg-red-500/10 border-red-400/30 opacity-60"
+                              : component.theme === 1
+                              ? "bg-yellow-500/10 border-yellow-400/30"
+                              : "bg-purple-500/10 border-purple-400/30"
+                          }`}
+                          style={{ display: isVisible ? "flex" : "none" }}
+                          data-theme={themeClass}
+                        >
+                          <div
+                            className="text-xl cursor-move"
+                            title="Drag to reorder"
+                          >
+                            {getComponentIcon(component.componentType)}
+                          </div>
+                          <div className="flex-1">
+                            <h4 className="text-white font-medium">
+                              {component.componentName}
+                            </h4>
+                            <p className="text-gray-400 text-sm">
+                              {component.componentType}
+                            </p>
+                          </div>
+                          <div className="text-gray-400 text-sm">
+                            Order: {component.orderIndex}
+                          </div>
+                        </div>
+                      </DraggableComponent>
+                    );
+                  })}
+                </SortableContext>
+              </DndContext>
+            </>
           )}
         </CardContent>
       </Card>

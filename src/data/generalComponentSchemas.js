@@ -4,6 +4,437 @@
  */
 
 export const generalComponentSchemas = {
+  ImplementationModal: {
+    componentName: "ImplementationModal",
+    category: "implementation",
+    icon: "📩",
+    displayName: "Implementation Modal",
+    description: "Contact modal for implementation service page",
+    schema: {
+      type: "object",
+      properties: {
+        title: {
+          type: "string",
+          label: "Title",
+          placeholder: "Contact Us",
+          formField: "text",
+        },
+        subtitle: {
+          type: "string",
+          label: "Subtitle",
+          placeholder: "Let's discuss your project",
+          formField: "text",
+        },
+      },
+    },
+    defaultData: {
+      title: "Contact Us",
+      subtitle: "Let's discuss your project",
+    },
+  },
+  // Implementation Components
+  HeroSection: {
+    componentName: "HeroSection",
+    category: "implementation",
+    icon: "🎬",
+    displayName: "Implementation Hero Section",
+    description: "Hero section for implementation service page",
+    schema: {
+      type: "object",
+      properties: {
+        backgroundVideo: {
+          type: "string",
+          label: "Background Video URL",
+          placeholder: "/Videos/HomeHeroSectionV.mp4",
+          formField: "media",
+          mediaType: "video",
+        },
+        titleParts: {
+          type: "array",
+          label: "Title Parts",
+          items: { type: "string", label: "Title Part", formField: "text" },
+          formField: "array-text",
+        },
+        description: {
+          type: "string",
+          label: "Description",
+          placeholder:
+            "We don't just implement solutions—we craft digital experiences that transform the way you do business",
+          formField: "textarea",
+        },
+        ctaButton: {
+          type: "object",
+          label: "CTA Button",
+          properties: {
+            text: {
+              type: "string",
+              label: "Button Text",
+              placeholder: "Start Implementation",
+              formField: "text",
+            },
+            icon: { type: "string", label: "Button Icon", formField: "text" },
+            variant: {
+              type: "string",
+              label: "Button Variant",
+              formField: "select",
+              options: [
+                { value: "primary", label: "Primary" },
+                { value: "secondary", label: "Secondary" },
+              ],
+            },
+          },
+          formField: "object",
+        },
+      },
+    },
+    defaultData: {
+      backgroundVideo: "/Videos/HomeHeroSectionV.mp4",
+      titleParts: ["Where", "Vision", "Meets", "Reality"],
+      description:
+        "We don't just implement solutions—we craft digital experiences that transform the way you do business",
+      ctaButton: {
+        text: "Start Implementation",
+        icon: "M13 7l5 5m0 0l-5 5m5-5H6",
+        variant: "primary",
+      },
+    },
+  },
+  ProcessSection: {
+    componentName: "ProcessSection",
+    category: "implementation",
+    icon: "🔄",
+    displayName: "Implementation Process Section",
+    description: "Process section for implementation service page",
+    schema: {
+      type: "object",
+      properties: {
+        title: {
+          type: "string",
+          label: "Title",
+          placeholder: "Our Implementation Process",
+          formField: "text",
+        },
+        subtitle: {
+          type: "string",
+          label: "Subtitle",
+          placeholder:
+            "A proven methodology for seamless business transformation",
+          formField: "text",
+        },
+        image: {
+          type: "string",
+          label: "Image URL",
+          placeholder: "/Videos/implementation/implementProcess.jpg",
+          formField: "media",
+          mediaType: "image",
+        },
+        steps: {
+          type: "array",
+          label: "Steps",
+          items: {
+            type: "object",
+            properties: {
+              title: { type: "string", label: "Step Title", formField: "text" },
+              description: {
+                type: "string",
+                label: "Step Description",
+                formField: "textarea",
+              },
+            },
+          },
+          formField: "array",
+        },
+        ctaButton: {
+          type: "string",
+          label: "CTA Button Text",
+          placeholder: "Start Your Journey",
+          formField: "text",
+        },
+      },
+    },
+    defaultData: {
+      title: "Our Implementation Process",
+      subtitle: "A proven methodology for seamless business transformation",
+      image: "/Videos/implementation/implementProcess.jpg",
+      steps: [],
+      ctaButton: "Start Your Journey",
+    },
+  },
+  WhyChooseSection: {
+    componentName: "WhyChooseSection",
+    category: "implementation",
+    icon: "🤝",
+    displayName: "Why Choose Section",
+    description: "Why choose us section for implementation service page",
+    schema: {
+      type: "object",
+      properties: {
+        title: {
+          type: "string",
+          label: "Title",
+          placeholder: "Why Choose Bellatrix for Implementation?",
+          formField: "text",
+        },
+        subtitle: {
+          type: "string",
+          label: "Subtitle",
+          placeholder:
+            "We bring years of expertise, proven methodologies, and cutting-edge solutions to ensure your implementation success",
+          formField: "text",
+        },
+        image: {
+          type: "string",
+          label: "Image URL",
+          placeholder: "/Videos/implementation/whyChoese.jpg",
+          formField: "media",
+          mediaType: "image",
+        },
+        features: {
+          type: "array",
+          label: "Features",
+          items: {
+            type: "object",
+            properties: {
+              title: {
+                type: "string",
+                label: "Feature Title",
+                formField: "text",
+              },
+              description: {
+                type: "string",
+                label: "Feature Description",
+                formField: "textarea",
+              },
+              icon: { type: "string", label: "Icon", formField: "text" },
+            },
+          },
+          formField: "array",
+        },
+      },
+    },
+    defaultData: {
+      title: "Why Choose Bellatrix for Implementation?",
+      subtitle:
+        "We bring years of expertise, proven methodologies, and cutting-edge solutions to ensure your implementation success",
+      image: "/Videos/implementation/whyChoese.jpg",
+      features: [],
+    },
+  },
+  PricingSection: {
+    componentName: "PricingSection",
+    category: "implementation",
+    icon: "💵",
+    displayName: "Implementation Pricing Section",
+    description: "Pricing section for implementation service page",
+    schema: {
+      type: "object",
+      properties: {
+        title: {
+          type: "string",
+          label: "Title",
+          placeholder: "Implementation Pricing",
+          formField: "text",
+        },
+        subtitle: {
+          type: "string",
+          label: "Subtitle",
+          placeholder:
+            "Choose the perfect implementation plan that fits your business needs and budget",
+          formField: "text",
+        },
+        plans: {
+          type: "array",
+          label: "Plans",
+          items: {
+            type: "object",
+            properties: {
+              name: { type: "string", label: "Plan Name", formField: "text" },
+              description: {
+                type: "string",
+                label: "Plan Description",
+                formField: "textarea",
+              },
+              price: { type: "string", label: "Price", formField: "text" },
+              priceNote: {
+                type: "string",
+                label: "Price Note",
+                formField: "text",
+              },
+              features: {
+                type: "array",
+                label: "Features",
+                items: { type: "string", label: "Feature", formField: "text" },
+                formField: "array-text",
+              },
+              isPopular: {
+                type: "boolean",
+                label: "Is Most Popular?",
+                formField: "checkbox",
+              },
+              ctaText: {
+                type: "string",
+                label: "CTA Button Text",
+                formField: "text",
+              },
+            },
+          },
+          formField: "array",
+        },
+        additionalInfo: {
+          type: "object",
+          label: "Additional Info",
+          properties: {
+            note: { type: "string", label: "Note", formField: "text" },
+            contactText: {
+              type: "string",
+              label: "Contact Text",
+              formField: "text",
+            },
+          },
+          formField: "object",
+        },
+      },
+    },
+    defaultData: {
+      title: "Implementation Pricing",
+      subtitle:
+        "Choose the perfect implementation plan that fits your business needs and budget",
+      plans: [],
+      additionalInfo: {
+        note: "All plans include free consultation and project scoping",
+        contactText:
+          "Need a custom solution? Contact our team for personalized pricing",
+      },
+    },
+  },
+  CtaSection: {
+    componentName: "CtaSection",
+    category: "implementation",
+    icon: "🚀",
+    displayName: "Implementation CTA Section",
+    description: "Call-to-action section for implementation service page",
+    schema: {
+      type: "object",
+      properties: {
+        title: {
+          type: "string",
+          label: "CTA Title",
+          placeholder: "Ready for a Seamless NetSuite Implementation?",
+          formField: "text",
+          required: true,
+        },
+        subtitle: {
+          type: "string",
+          label: "CTA Subtitle",
+          placeholder:
+            "Transform your business operations with our expert NetSuite implementation services.",
+          formField: "text",
+        },
+        description: {
+          type: "string",
+          label: "CTA Description",
+          placeholder:
+            "Get a detailed proposal within 24 hours with 99.9% success rate.",
+          formField: "textarea",
+        },
+        ctaButton: {
+          type: "object",
+          label: "Primary CTA Button",
+          properties: {
+            text: {
+              type: "string",
+              label: "Button Text",
+              placeholder: "Get Started Today",
+              formField: "text",
+            },
+            link: {
+              type: "string",
+              label: "Button Link",
+              placeholder: "/contact",
+              formField: "text",
+            },
+            variant: {
+              type: "string",
+              label: "Button Style",
+              formField: "select",
+              options: [
+                { value: "primary", label: "Primary Button" },
+                { value: "secondary", label: "Secondary Button" },
+                { value: "outline", label: "Outline Button" },
+              ],
+            },
+          },
+          formField: "object",
+        },
+        features: {
+          type: "array",
+          label: "Features (Items)",
+          items: {
+            type: "object",
+            properties: {
+              title: {
+                type: "string",
+                label: "Feature Title",
+                placeholder: "Quick Response",
+                formField: "text",
+              },
+              description: {
+                type: "string",
+                label: "Feature Description",
+                placeholder: "Get a detailed proposal within 24 hours",
+                formField: "text",
+              },
+              icon: {
+                type: "string",
+                label: "Icon",
+                placeholder: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z",
+                formField: "text",
+              },
+            },
+          },
+          formField: "array",
+          minItems: 1,
+          maxItems: 6,
+        },
+        trustedBy: {
+          type: "array",
+          label: "Trusted By",
+          items: {
+            type: "string",
+            label: "Trusted By Name",
+            formField: "text",
+          },
+          formField: "array-text",
+        },
+      },
+    },
+    defaultData: {
+      title: "Ready for a Seamless NetSuite Implementation?",
+      subtitle:
+        "Transform your business operations with our expert NetSuite implementation services. Let's turn your vision into reality with proven methodologies and dedicated support.",
+      description: "",
+      ctaButton: { text: "Get Started Today", link: null, variant: "primary" },
+      features: [
+        {
+          title: "Quick Response",
+          description: "Get a detailed proposal within 24 hours",
+          icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z",
+        },
+        {
+          title: "Proven Success",
+          description: "99.9% implementation success rate",
+          icon: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z",
+        },
+        {
+          title: "Expert Support",
+          description: "Dedicated team of certified professionals",
+          icon:
+            "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z",
+        },
+      ],
+      trustedBy: [],
+    },
+  },
   RetailCTASection: {
     componentName: "RetailCTA",
     category: "retail",
@@ -53,7 +484,8 @@ export const generalComponentSchemas = {
               description: {
                 type: "string",
                 label: "Feature Description",
-                placeholder: "Comprehensive evaluation of your retail processes",
+                placeholder:
+                  "Comprehensive evaluation of your retail processes",
                 formField: "text",
               },
             },
@@ -101,7 +533,8 @@ export const generalComponentSchemas = {
         {
           title: "Free Assessment",
           description: "Comprehensive evaluation of your retail processes",
-          icon: "M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4",
+          icon:
+            "M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4",
         },
         {
           title: "Rapid Implementation",
@@ -111,7 +544,8 @@ export const generalComponentSchemas = {
         {
           title: "Ongoing Support",
           description: "Continuous optimization and support for your success",
-          icon: "M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
+          icon:
+            "M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
         },
       ],
       ctaButton: {
@@ -405,7 +839,6 @@ export const generalComponentSchemas = {
                 label: "Pain Point Title",
                 formField: "text",
               },
-            
             },
           },
         },
@@ -1537,7 +1970,8 @@ export const generalComponentSchemas = {
         description: {
           type: "string",
           label: "Section Description",
-          placeholder: "See how we've helped manufacturing companies transform their operations",
+          placeholder:
+            "See how we've helped manufacturing companies transform their operations",
           formField: "textarea",
         },
         items: {
@@ -1607,7 +2041,8 @@ export const generalComponentSchemas = {
     },
     defaultData: {
       title: "Manufacturing Success Stories",
-      description: "See how we've helped manufacturing companies transform their operations with NetSuite solutions.",
+      description:
+        "See how we've helped manufacturing companies transform their operations with NetSuite solutions.",
       items: [
         {
           title: "Automotive Parts Manufacturer",

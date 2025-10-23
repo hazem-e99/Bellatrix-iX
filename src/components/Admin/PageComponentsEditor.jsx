@@ -621,6 +621,9 @@ const PageComponentsEditor = ({
 
       setShowAddModal(false);
       showToast("Component added successfully", "success");
+      if (typeof onSave === "function") {
+        onSave();
+      }
     } catch (error) {
       console.error("❌ [ADD COMPONENT] Final error:", error);
 
