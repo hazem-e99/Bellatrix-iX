@@ -519,11 +519,17 @@ const PageComponentsEditor = ({
         componentType: componentData.componentType || "Generic",
         componentName: componentData.componentName || "New Component",
         contentJson:
-          componentData.contentJson ||
-          JSON.stringify({ title: "", content: "" }),
+          typeof componentData.contentJson === "string"
+            ? componentData.contentJson
+            : JSON.stringify(
+                componentData.contentJson || { title: "", content: "" }
+              ),
         orderIndex: nextOrderIndex,
-        isVisible: componentData.isVisible ?? true,
-        theme: componentData.theme ?? 1,
+        isVisible:
+          typeof componentData.isVisible === "boolean"
+            ? componentData.isVisible
+            : !!componentData.isVisible,
+        theme: Number(componentData.theme) || 1,
         pending: true, // Mark as pending
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
@@ -542,10 +548,18 @@ const PageComponentsEditor = ({
             pageId: parseInt(pageId),
             componentType: optimisticItem.componentType,
             componentName: optimisticItem.componentName,
-            contentJson: optimisticItem.contentJson,
+            contentJson:
+              typeof optimisticItem.contentJson === "string"
+                ? optimisticItem.contentJson
+                : JSON.stringify(
+                    optimisticItem.contentJson || { title: "", content: "" }
+                  ),
             orderIndex: nextOrderIndex,
-            isVisible: optimisticItem.isVisible,
-            theme: optimisticItem.theme,
+            isVisible:
+              typeof optimisticItem.isVisible === "boolean"
+                ? optimisticItem.isVisible
+                : !!optimisticItem.isVisible,
+            theme: Number(optimisticItem.theme) || 1,
           };
 
           console.log(
@@ -585,20 +599,26 @@ const PageComponentsEditor = ({
 
           if (isDuplicateKey && attempt < MAX_RETRIES - 1) {
             console.warn(
-              "🔄 [RETRY] Duplicate order index detected, refetching components..."
+              "🔄 [RETRY] Duplicate order index detected, normalizing all order indices..."
             );
 
-            // Refetch latest components and recalculate order index
-            const refreshedComponents = await pagesAPI.getPageComponents(
-              pageId
-            );
-            const refreshedMax = refreshedComponents.length
-              ? Math.max(...refreshedComponents.map((c) => c.orderIndex ?? 0))
-              : -1;
-            nextOrderIndex = refreshedMax + 1;
-
+            // Refetch latest components
+            const refreshedComponents = await pagesAPI.getPageComponents(pageId);
+            // Normalize all order indices to be unique and sequential
+            const normalized = refreshedComponents
+              .sort((a, b) => (a.orderIndex ?? 0) - (b.orderIndex ?? 0))
+              .map((c, idx) => ({ ...c, orderIndex: idx }));
+            // Update all components in backend
+            for (const comp of normalized) {
+              await pagesAPI.updatePageComponent(comp.id, {
+                ...comp,
+                orderIndex: comp.orderIndex,
+              });
+            }
+            // Recalculate nextOrderIndex
+            nextOrderIndex = normalized.length;
             console.log(
-              "🔄 [RETRY] Recalculated nextOrderIndex:",
+              "🔄 [RETRY] Normalized all order indices. Next orderIndex:",
               nextOrderIndex
             );
             attempt++;
@@ -989,7 +1009,6 @@ const PageComponentsEditor = ({
           </p>
         </div>
         <div className="flex items-center space-x-2">
-         
           <Button
             onClick={() => loadComponents(true)}
             className="bg-gray-600 hover:bg-gray-700 text-white flex items-center space-x-1 text-sm px-3 py-1"
