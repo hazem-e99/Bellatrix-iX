@@ -102,9 +102,29 @@ function CategoriesManagement() {
     fetchCategories();
   }, []);
 
+  // Check if category name already exists
+  const isCategoryNameExists = (name) => {
+    return categories.some(cat => 
+      cat.name.toLowerCase().trim() === name.toLowerCase().trim()
+    );
+  };
+
   // Add Category
   const handleAddCategory = async (e) => {
     e.preventDefault();
+    
+    // Validate category name
+    if (!addForm.name.trim()) {
+      toast.error("Category name is required");
+      return;
+    }
+
+    // Check for duplicate name
+    if (isCategoryNameExists(addForm.name)) {
+      toast.error(`Category "${addForm.name}" already exists. Please choose a different name.`);
+      return;
+    }
+
     setSaving(true);
     try {
       const token = localStorage.getItem("adminToken");
@@ -114,19 +134,32 @@ function CategoriesManagement() {
           "Content-Type": "application/json",
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
-        body: JSON.stringify(addForm),
+        body: JSON.stringify({
+          ...addForm,
+          name: addForm.name.trim() // Trim whitespace
+        }),
       });
+      
       const data = await res.json();
-      if (data.success) {
+      
+      if (res.ok && data.success) {
         toast.success("Category added successfully");
         setShowAddModal(false);
         setAddForm({ name: "", description: "", sortOrder: 0 });
         fetchCategories();
       } else {
-        toast.error(data.message || "An error occurred while adding");
+        // Handle specific error cases
+        if (data.message && data.message.includes("duplicate")) {
+          toast.error(`Category "${addForm.name}" already exists. Please choose a different name.`);
+        } else if (data.message && data.message.includes("unique")) {
+          toast.error(`Category "${addForm.name}" already exists. Please choose a different name.`);
+        } else {
+          toast.error(data.message || "An error occurred while adding the category");
+        }
       }
-    } catch {
-      toast.error("Failed to add category");
+    } catch (error) {
+      console.error("Add category error:", error);
+      toast.error("Failed to add category. Please try again.");
     } finally {
       setSaving(false);
     }
@@ -141,7 +174,7 @@ function CategoriesManagement() {
           </h2>
           <input
             type="text"
-            className="mt-1 w-full sm:w-64 border border-gray-300 rounded px-3 py-2 text-sm text-black"
+            className="mt-1 w-full sm:w-64 border border-gray-300 rounded px-3 py-2 text-sm text-black bg-white placeholder-gray-500"
             placeholder="Search categories..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -149,7 +182,7 @@ function CategoriesManagement() {
           />
         </div>
         <button
-          className="inline-flex items-center justify-center rounded-lg text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-blue-600 text-white hover:bg-blue-700 focus-visible:ring-blue-500 h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white"
+          className="inline-flex items-center justify-center rounded-lg text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-blue-600 text-white hover:bg-blue-700 focus-visible:ring-blue-500 h-10 px-4 py-2"
           onClick={() => setShowAddModal(true)}
         >
           + Add New Category
@@ -198,9 +231,9 @@ function CategoriesManagement() {
                   <td className="px-6 py-4 font-semibold text-[var(--color-primary-light)]">
                     {cat.id}
                   </td>
-                  <td className="px-6 py-4">{cat.name}</td>
+                  <td className="px-6 py-4 text-white">{cat.name}</td>
                   <td className="px-6 py-4 text-gray-300">{cat.description}</td>
-                  <td className="px-6 py-4">{cat.sortOrder}</td>
+                  <td className="px-6 py-4 text-white">{cat.sortOrder}</td>
                 
                   <td className="px-6 py-4 space-x-2">
                     <button
@@ -258,7 +291,7 @@ function CategoriesManagement() {
                         </p>
                         <div className="flex justify-end space-x-2">
                           <button
-                            className="px-4 py-2"
+                            className="px-4 py-2 text-gray-700 bg-gray-200 hover:bg-gray-300 rounded"
                             onClick={() => setShowDeleteModal(false)}
                             disabled={deleting}
                           >
@@ -327,7 +360,7 @@ function CategoriesManagement() {
       >
         <form onSubmit={handleAddCategory} className="space-y-4 p-2">
           <input
-            className="w-full border p-2 rounded"
+            className="w-full border p-2 rounded text-black"
             placeholder="Name"
             value={addForm.name}
             onChange={(e) =>
@@ -336,7 +369,7 @@ function CategoriesManagement() {
             required
           />
           <input
-            className="w-full border p-2 rounded"
+            className="w-full border p-2 rounded text-black"
             placeholder="Description"
             value={addForm.description}
             onChange={(e) =>
@@ -344,7 +377,7 @@ function CategoriesManagement() {
             }
           />
           <input
-            className="w-full border p-2 rounded"
+            className="w-full border p-2 rounded text-black"
             placeholder="Sort Order"
             type="number"
             value={addForm.sortOrder}
@@ -355,7 +388,7 @@ function CategoriesManagement() {
           <div className="flex justify-end space-x-2">
             <button
               type="button"
-              className="px-4 py-2"
+              className="px-4 py-2 text-gray-700 bg-gray-200 hover:bg-gray-300 rounded"
               onClick={() => setShowAddModal(false)}
             >
               Cancel
@@ -383,6 +416,22 @@ function CategoriesManagement() {
           <form
             onSubmit={async (e) => {
               e.preventDefault();
+              
+              // Validate category name
+              if (!editForm.name.trim()) {
+                toast.error("Category name is required");
+                return;
+              }
+
+              // Check for duplicate name (excluding current category)
+              const otherCategories = categories.filter(cat => cat.id !== editId);
+              if (otherCategories.some(cat => 
+                cat.name.toLowerCase().trim() === editForm.name.toLowerCase().trim()
+              )) {
+                toast.error(`Category "${editForm.name}" already exists. Please choose a different name.`);
+                return;
+              }
+
               setSaving(true);
               try {
                 const token = localStorage.getItem("adminToken");
@@ -395,20 +444,29 @@ function CategoriesManagement() {
                   body: JSON.stringify({
                     id: editId,
                     ...editForm,
+                    name: editForm.name.trim() // Trim whitespace
                   }),
                 });
+                
                 const data = await res.json();
-                if (data.success) {
+                
+                if (res.ok && data.success) {
                   toast.success("Category updated successfully");
                   setShowEditModal(false);
                   fetchCategories();
                 } else {
-                  toast.error(
-                    data.message || "An error occurred while updating"
-                  );
+                  // Handle specific error cases
+                  if (data.message && data.message.includes("duplicate")) {
+                    toast.error(`Category "${editForm.name}" already exists. Please choose a different name.`);
+                  } else if (data.message && data.message.includes("unique")) {
+                    toast.error(`Category "${editForm.name}" already exists. Please choose a different name.`);
+                  } else {
+                    toast.error(data.message || "An error occurred while updating the category");
+                  }
                 }
-              } catch {
-                toast.error("Failed to update category");
+              } catch (error) {
+                console.error("Update category error:", error);
+                toast.error("Failed to update category. Please try again.");
               } finally {
                 setSaving(false);
               }
@@ -416,7 +474,7 @@ function CategoriesManagement() {
             className="space-y-4 p-2"
           >
             <input
-              className="w-full border p-2 rounded"
+              className="w-full border p-2 rounded text-black"
               placeholder="Name"
               value={editForm.name}
               onChange={(e) =>
@@ -425,7 +483,7 @@ function CategoriesManagement() {
               required
             />
             <input
-              className="w-full border p-2 rounded"
+              className="w-full border p-2 rounded text-black"
               placeholder="Description"
               value={editForm.description}
               onChange={(e) =>
@@ -433,7 +491,7 @@ function CategoriesManagement() {
               }
             />
             <input
-              className="w-full border p-2 rounded"
+              className="w-full border p-2 rounded text-black"
               placeholder="Sort Order"
               type="number"
               value={editForm.sortOrder}
@@ -447,7 +505,7 @@ function CategoriesManagement() {
             <div className="flex justify-end space-x-2">
               <button
                 type="button"
-                className="px-4 py-2"
+                className="px-4 py-2 text-gray-700 bg-gray-200 hover:bg-gray-300 rounded"
                 onClick={() => setShowEditModal(false)}
               >
                 Cancel

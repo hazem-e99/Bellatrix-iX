@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { motion as Motion } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   Cog6ToothIcon,
   UserGroupIcon,
@@ -337,130 +337,178 @@ const SettingsManagement = () => {
   );
 
   const renderPermissionSettings = () => (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Roles Management */}
-      <Card className="dark:bg-gray-800 dark:border-gray-700">
+      <Card className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm border-white/20 shadow-xl">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="dark:text-white">User Roles</CardTitle>
-            <Button size="sm" onClick={openAddRole}>Add Role</Button>
+            <div className="flex items-center space-x-3">
+              <div className="p-2 bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-lg">
+                <ShieldCheckIcon className="h-6 w-6 text-blue-400" />
+              </div>
+              <div>
+                <CardTitle className="text-white text-xl font-bold">User Roles</CardTitle>
+                <p className="text-gray-300 text-sm mt-1">Manage user permissions and access levels</p>
+              </div>
+            </div>
+            <Button 
+              size="sm" 
+              onClick={openAddRole}
+              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-lg hover:shadow-blue-500/25"
+            >
+              <UserGroupIcon className="h-4 w-4 mr-2" />
+              Add Role
+            </Button>
           </div>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
-            {permissionSettings.roles.map((role) => (
-              <div
+          <div className="grid gap-6">
+            {permissionSettings.roles.map((role, index) => (
+              <motion.div
                 key={role.id}
-                className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
+                className="group relative overflow-hidden bg-gradient-to-r from-white/10 to-white/5 backdrop-blur-sm border border-white/20 rounded-xl p-6 hover:from-white/15 hover:to-white/10 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10 hover:-translate-y-1"
               >
-                <div className="flex-1">
-                  <div className="flex items-center space-x-3">
-                    <ShieldCheckIcon className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-                    <div>
-                      <h4 className="font-medium text-gray-900 dark:text-white">
-                        {role.name}
-                      </h4>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
-                        {role.users} user{role.users !== 1 ? "s" : ""} •{" "}
-                        {role.permissions.length} permission
-                        {role.permissions.length !== 1 ? "s" : ""}
-                      </p>
+                {/* Background Pattern */}
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                
+                <div className="relative flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center space-x-4 mb-4">
+                      <div className="p-3 bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-xl group-hover:from-blue-500/30 group-hover:to-blue-600/30 transition-all duration-300">
+                        <ShieldCheckIcon className="h-6 w-6 text-blue-400" />
+                      </div>
+                      <div>
+                        <h4 className="text-lg font-semibold text-white group-hover:text-blue-100 transition-colors duration-300">
+                          {role.name}
+                        </h4>
+                        <div className="flex items-center space-x-4 mt-1">
+                          <div className="flex items-center space-x-2 text-sm text-gray-300">
+                            <UserGroupIcon className="h-4 w-4" />
+                            <span>{role.users} user{role.users !== 1 ? "s" : ""}</span>
+                          </div>
+                          <div className="flex items-center space-x-2 text-sm text-gray-300">
+                            <ShieldCheckIcon className="h-4 w-4" />
+                            <span>{role.permissions.length} permission{role.permissions.length !== 1 ? "s" : ""}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Enhanced Permission Badges */}
+                    <div className="flex flex-wrap gap-2">
+                      {role.permissions.map((permission, permIndex) => (
+                        <motion.span
+                          key={permission}
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ duration: 0.2, delay: permIndex * 0.05 }}
+                          className="inline-flex items-center px-3 py-1.5 text-xs font-medium bg-gradient-to-r from-blue-500/20 to-blue-600/20 text-blue-300 rounded-full border border-blue-400/30 hover:from-blue-500/30 hover:to-blue-600/30 transition-all duration-200"
+                        >
+                          <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mr-2" />
+                          {permission.replace("_", " ")}
+                        </motion.span>
+                      ))}
                     </div>
                   </div>
-                  <div className="mt-2 flex flex-wrap gap-1">
-                    {role.permissions.map((permission) => (
-                      <span
-                        key={permission}
-                        className="text-xs px-2 py-1 bg-blue-100 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded"
-                      >
-                        {permission.replace("_", " ")}
-                      </span>
-                    ))}
+                  
+                  <div className="flex items-center space-x-2 ml-4">
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={() => openEditRole(role)}
+                      className="text-gray-300 hover:text-blue-400 hover:bg-blue-500/10 border border-transparent hover:border-blue-400/30 transition-all duration-200"
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-red-400 hover:text-red-300 hover:bg-red-500/10 border border-transparent hover:border-red-400/30 transition-all duration-200"
+                    >
+                      Delete
+                    </Button>
                   </div>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <Button variant="ghost" size="sm" onClick={() => openEditRole(role)}>
-                    Edit
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="text-red-600 hover:text-red-700"
-                  >
-                    Delete
-                  </Button>
-                </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </CardContent>
       </Card>
 
-      {/* Security Settings */}
-      <Card className="dark:bg-gray-800 dark:border-gray-700">
+      {/* Permission Settings */}
+      <Card className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm border-white/20 shadow-xl">
         <CardHeader>
-          <CardTitle className="dark:text-white">Security Settings</CardTitle>
+          <div className="flex items-center space-x-3">
+            <div className="p-2 bg-gradient-to-br from-gray-500/20 to-gray-600/20 rounded-lg">
+              <Cog6ToothIcon className="h-6 w-6 text-gray-400" />
+            </div>
+            <div>
+              <CardTitle className="text-white text-xl font-bold">Permission Settings</CardTitle>
+              <p className="text-gray-300 text-sm mt-1">Configure default permissions and security settings</p>
+            </div>
+          </div>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <label className="text-sm font-medium text-gray-900 dark:text-white">
-                  Require approval for new users
-                </label>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  New user accounts must be approved by an administrator
-                </p>
+          <div className="space-y-6">
+            <div className="flex items-center justify-between p-4 bg-gradient-to-r from-white/5 to-white/10 rounded-lg border border-white/10">
+              <div className="flex items-center space-x-3">
+                <div className="w-2 h-2 bg-green-400 rounded-full" />
+                <span className="text-white font-medium">Require Admin Approval for New Users</span>
               </div>
               <button
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 ${
+                  permissionSettings.requireApproval ? "bg-blue-600" : "bg-gray-600"
+                }`}
                 onClick={() =>
                   setPermissionSettings({
                     ...permissionSettings,
                     requireApproval: !permissionSettings.requireApproval,
                   })
                 }
-                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                  permissionSettings.requireApproval
-                    ? "bg-blue-600"
-                    : "bg-gray-200 dark:bg-gray-700"
-                }`}
               >
                 <span
-                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                    permissionSettings.requireApproval
-                      ? "translate-x-6"
-                      : "translate-x-1"
+                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 ${
+                    permissionSettings.requireApproval ? "translate-x-6" : "translate-x-1"
                   }`}
                 />
               </button>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Select
-                label="Default Role for New Users"
-                value={permissionSettings.defaultRole}
-                onChange={(e) =>
-                  setPermissionSettings({
-                    ...permissionSettings,
-                    defaultRole: e.target.value,
-                  })
-                }
-                options={permissionSettings.roles.map((role) => ({
-                  value: role.name,
-                  label: role.name,
-                }))}
-              />
-              <Input
-                label="Session Timeout (hours)"
-                type="number"
-                value={permissionSettings.sessionTimeout}
-                onChange={(e) =>
-                  setPermissionSettings({
-                    ...permissionSettings,
-                    sessionTimeout: parseInt(e.target.value),
-                  })
-                }
-                placeholder="24"
-              />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-300">Default Role for New Users</label>
+                <Select
+                  value={permissionSettings.defaultRole}
+                  onChange={(e) =>
+                    setPermissionSettings({
+                      ...permissionSettings,
+                      defaultRole: e.target.value,
+                    })
+                  }
+                  options={permissionSettings.roles.map((role) => ({
+                    value: role.name,
+                    label: role.name,
+                  }))}
+                  className="bg-white/5 border-white/20 text-white"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-300">Session Timeout (hours)</label>
+                <Input
+                  type="number"
+                  value={permissionSettings.sessionTimeout}
+                  onChange={(e) =>
+                    setPermissionSettings({
+                      ...permissionSettings,
+                      sessionTimeout: parseInt(e.target.value),
+                    })
+                  }
+                  placeholder="24"
+                  className="bg-white/5 border-white/20 text-white"
+                />
+              </div>
             </div>
           </div>
         </CardContent>
@@ -468,7 +516,10 @@ const SettingsManagement = () => {
 
       {/* Actions */}
       <div className="flex justify-end">
-        <Button onClick={handleSavePermissions}>
+        <Button 
+          onClick={handleSavePermissions}
+          className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-lg hover:shadow-blue-500/25 px-8 py-3"
+        >
           Save Permission Settings
         </Button>
       </div>
@@ -514,7 +565,7 @@ const SettingsManagement = () => {
                   {tab.description}
                 </div>
                 {isActive && (
-                  <Motion.div
+                  <motion.div
                     className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-500"
                     layoutId="activeTab"
                   />
@@ -526,7 +577,7 @@ const SettingsManagement = () => {
       </div>
 
       {/* Tab Content */}
-      <Motion.div
+      <motion.div
         key={activeTab}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -537,7 +588,7 @@ const SettingsManagement = () => {
           {activeTab === "permissions" && renderPermissionSettings()}
           {/* integrations tab removed */}
         </div>
-      </Motion.div>
+      </motion.div>
 
       {/* Toast Notification */}
       <Toast
@@ -549,42 +600,80 @@ const SettingsManagement = () => {
 
       {/* Add/Edit Role Modal */}
       <Modal isOpen={isRoleModalOpen} onClose={closeRoleModal} title={editingRoleId != null ? "Edit Role" : "Add Role"}>
-        <div className="space-y-4">
-          <div>
+        <div className="space-y-6">
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-300">Role Name</label>
             <Input
-              label="Role Name"
               placeholder="Enter role name"
               value={roleForm.name}
               onChange={(e) => setRoleForm((prev) => ({ ...prev, name: e.target.value }))}
+              className="bg-white/5 border-white/20 text-white placeholder-gray-400"
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-[oklch(0.75_0.02_260.29)] mb-2">
-              Permissions
-            </label>
-            <div className="grid grid-cols-2 gap-2">
+          <div className="space-y-3">
+            <label className="block text-sm font-medium text-gray-300">Permissions</label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {availablePermissions.map((perm) => {
                 const checked = roleForm.permissions.includes(perm);
                 return (
-                  <label key={perm} className="flex items-center space-x-2 text-sm text-white/90">
-                    <input
-                      type="checkbox"
-                      className="h-4 w-4 rounded border-white/30 bg-transparent"
-                      checked={checked}
-                      onChange={() => togglePermissionInForm(perm)}
-                    />
-                    <span className="capitalize">{perm.replace("_", " ")}</span>
-                  </label>
+                  <motion.label 
+                    key={perm} 
+                    className={`flex items-center space-x-3 p-3 rounded-lg border transition-all duration-200 cursor-pointer ${
+                      checked 
+                        ? 'bg-blue-500/20 border-blue-400/50 text-blue-300' 
+                        : 'bg-white/5 border-white/20 text-gray-300 hover:bg-white/10 hover:border-white/30'
+                    }`}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <div className="relative">
+                      <input
+                        type="checkbox"
+                        className="sr-only"
+                        checked={checked}
+                        onChange={() => togglePermissionInForm(perm)}
+                      />
+                      <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all duration-200 ${
+                        checked 
+                          ? 'bg-blue-500 border-blue-500' 
+                          : 'border-white/30 bg-transparent'
+                      }`}>
+                        {checked && (
+                          <motion.svg
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            className="w-3 h-3 text-white"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </motion.svg>
+                        )}
+                      </div>
+                    </div>
+                    <span className="capitalize font-medium">{perm.replace("_", " ")}</span>
+                  </motion.label>
                 );
               })}
             </div>
           </div>
         </div>
 
-        <ModalFooter className="mt-6">
-          <Button variant="ghost" onClick={closeRoleModal}>Cancel</Button>
-          <Button onClick={saveRoleFromForm}>{editingRoleId != null ? "Save Changes" : "Add Role"}</Button>
+        <ModalFooter className="mt-8">
+          <Button 
+            variant="ghost" 
+            onClick={closeRoleModal}
+            className="text-gray-300 hover:text-white hover:bg-white/10 border border-transparent hover:border-white/20"
+          >
+            Cancel
+          </Button>
+          <Button 
+            onClick={saveRoleFromForm}
+            className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-lg hover:shadow-blue-500/25"
+          >
+            {editingRoleId != null ? "Save Changes" : "Add Role"}
+          </Button>
         </ModalFooter>
       </Modal>
     </div>
