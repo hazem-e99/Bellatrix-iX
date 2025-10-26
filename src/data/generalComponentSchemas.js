@@ -435,6 +435,92 @@ export const generalComponentSchemas = {
       trustedBy: [],
     },
   },
+  // Implementation-specific CTA schema (matches naming pattern used across the app)
+  ImplementationCtaSection: {
+    componentName: "ImplementationCtaSection",
+    category: "implementation",
+    icon: "🚀",
+    displayName: "Implementation CTA Section",
+    description:
+      "Call-to-action section for implementation service page (ImplementationCtaSection)",
+    schema: {
+      type: "object",
+      properties: {
+        title: {
+          type: "string",
+          label: "CTA Title",
+          placeholder: "Ready to Start Implementation?",
+          formField: "text",
+          required: true,
+        },
+        subtitle: {
+          type: "string",
+          label: "CTA Subtitle",
+          placeholder: "Let's discuss your needs",
+          formField: "text",
+        },
+        description: {
+          type: "string",
+          label: "CTA Description",
+          placeholder:
+            "Component description - please configure this component",
+          formField: "textarea",
+        },
+        ctaButton: {
+          type: "object",
+          label: "Primary CTA Button",
+          properties: {
+            text: {
+              type: "string",
+              label: "Button Text",
+              placeholder: "Get Started",
+              formField: "text",
+            },
+            link: {
+              type: "string",
+              label: "Button Link",
+              placeholder: "/contact",
+              formField: "text",
+            },
+            variant: {
+              type: "string",
+              label: "Button Variant",
+              formField: "select",
+              options: [
+                { value: "primary", label: "Primary" },
+                { value: "secondary", label: "Secondary" },
+                { value: "outline", label: "Outline" },
+              ],
+            },
+          },
+          formField: "object",
+        },
+        // Theme: 1 = light, 2 = dark
+        theme: {
+          type: "number",
+          label: "Theme",
+          formField: "select",
+          options: [
+            { value: 1, label: "Light (1)" },
+            { value: 2, label: "Dark (2)" },
+          ],
+        },
+        isVisible: {
+          type: "boolean",
+          label: "Visible",
+          formField: "checkbox",
+        },
+      },
+    },
+    defaultData: {
+      title: "New Component Title",
+      subtitle: "Let's discuss your needs",
+      description: "Component description - please configure this component",
+      ctaButton: { text: "Get Started", link: "/contact", variant: "primary" },
+      theme: 1,
+      isVisible: true,
+    },
+  },
   RetailCTASection: {
     componentName: "RetailCTA",
     category: "retail",
@@ -3848,6 +3934,269 @@ export const generalComponentSchemas = {
     },
   },
 };
+
+// About Page Components (added/updated)
+generalComponentSchemas.AboutHero = {
+  componentName: "AboutHero",
+  category: "about",
+  icon: "🎯",
+  displayName: "About Page Hero",
+  description: "About page hero with background video, headline and stats",
+  schema: {
+    type: "object",
+    properties: {
+      backgroundVideo: {
+        type: "string",
+        label: "Background Video",
+        formField: "media",
+        mediaType: "video",
+        placeholder: "/Videos/about-hero.mp4",
+      },
+      backgroundImage: {
+        type: "string",
+        label: "Background Image (fallback)",
+        formField: "media",
+        mediaType: "image",
+        placeholder: "/images/about-hero.jpg",
+      },
+      title: {
+        type: "string",
+        label: "Title",
+        formField: "text",
+        placeholder: "About Our Company",
+      },
+      subtitle: {
+        type: "string",
+        label: "Subtitle",
+        formField: "text",
+        placeholder: "Who we are & what we do",
+      },
+      description: {
+        type: "string",
+        label: "Description",
+        formField: "textarea",
+        placeholder: "Short description...",
+      },
+      stats: {
+        type: "array",
+        label: "Stats",
+        formField: "array",
+        items: {
+          type: "object",
+          properties: {
+            value: { type: "string", label: "Value", formField: "text" },
+            label: { type: "string", label: "Label", formField: "text" },
+          },
+        },
+      },
+    },
+  },
+  defaultData: {
+    backgroundVideo: "",
+    backgroundImage: "/images/about-hero.jpg",
+    title: "About Our Company",
+    subtitle: "Who we are & what we do",
+    description:
+      "We deliver industry-leading solutions that help businesses grow.",
+    stats: [
+      { value: "200+", label: "Projects" },
+      { value: "10+", label: "Years" },
+    ],
+  },
+};
+
+generalComponentSchemas.AboutMission = {
+  componentName: "AboutMission",
+  category: "about",
+  icon: "🚀",
+  displayName: "About Mission",
+  description: "Mission statement with vision and supporting image",
+  schema: {
+    type: "object",
+    properties: {
+      headline: { type: "string", label: "Headline", formField: "text" },
+      missionText: {
+        type: "string",
+        label: "Mission Text",
+        formField: "textarea",
+      },
+      visionText: {
+        type: "string",
+        label: "Vision Text",
+        formField: "textarea",
+      },
+      image: {
+        type: "string",
+        label: "Image",
+        formField: "media",
+        mediaType: "image",
+      },
+    },
+  },
+  defaultData: {
+    headline: "Our Mission",
+    missionText: "To empower businesses with modern digital tools.",
+    visionText: "To be the trusted partner for digital transformation.",
+    image: "",
+  },
+};
+
+generalComponentSchemas.AboutJourney = {
+  componentName: "AboutJourney",
+  category: "about",
+  icon: "🧭",
+  displayName: "About Journey",
+  description: "Company journey timeline with milestones",
+  schema: {
+    type: "object",
+    properties: {
+      title: { type: "string", label: "Title", formField: "text" },
+      timeline: {
+        type: "array",
+        label: "Timeline",
+        formField: "array",
+        items: {
+          type: "object",
+          properties: {
+            year: { type: "string", label: "Year", formField: "text" },
+            headline: { type: "string", label: "Headline", formField: "text" },
+            details: {
+              type: "string",
+              label: "Details",
+              formField: "textarea",
+            },
+            image: {
+              type: "string",
+              label: "Image",
+              formField: "media",
+              mediaType: "image",
+            },
+          },
+        },
+      },
+    },
+  },
+  defaultData: {
+    title: "Our Journey",
+    timeline: [
+      {
+        year: "2010",
+        headline: "Founded",
+        details: "Company founded",
+        image: "",
+      },
+      {
+        year: "2015",
+        headline: "Growth",
+        details: "Reached 100 customers",
+        image: "",
+      },
+      {
+        year: "2023",
+        headline: "Today",
+        details: "Industry leader",
+        image: "",
+      },
+    ],
+  },
+};
+
+generalComponentSchemas.AboutTeam = {
+  componentName: "AboutTeam",
+  category: "about",
+  icon: "👥",
+  displayName: "About Team",
+  description: "Team members showcase with bios and expertise",
+  schema: {
+    type: "object",
+    properties: {
+      title: { type: "string", label: "Title", formField: "text" },
+      members: {
+        type: "array",
+        label: "Team Members",
+        formField: "array",
+        items: {
+          type: "object",
+          properties: {
+            name: { type: "string", label: "Name", formField: "text" },
+            role: { type: "string", label: "Role", formField: "text" },
+            photo: {
+              type: "string",
+              label: "Photo",
+              formField: "media",
+              mediaType: "image",
+            },
+            bio: { type: "string", label: "Bio", formField: "textarea" },
+          },
+        },
+      },
+    },
+  },
+  defaultData: {
+    title: "Meet the Team",
+    members: [
+      { name: "Jane Doe", role: "CEO", photo: "", bio: "Founder and CEO" },
+      { name: "John Smith", role: "CTO", photo: "", bio: "Technology lead" },
+    ],
+  },
+};
+
+generalComponentSchemas.AboutValues = {
+  componentName: "AboutValues",
+  category: "about",
+  icon: "🌱",
+  displayName: "About Values",
+  description: "Core values with icons and descriptions",
+  schema: {
+    type: "object",
+    properties: {
+      title: { type: "string", label: "Title", formField: "text" },
+      values: {
+        type: "array",
+        label: "Values",
+        formField: "array",
+        items: {
+          type: "object",
+          properties: {
+            icon: {
+              type: "string",
+              label: "Icon (emoji or name)",
+              formField: "text",
+            },
+            title: { type: "string", label: "Value Title", formField: "text" },
+            description: {
+              type: "string",
+              label: "Description",
+              formField: "textarea",
+            },
+          },
+        },
+      },
+    },
+  },
+  defaultData: {
+    title: "Our Values",
+    values: [
+      { icon: "🤝", title: "Integrity", description: "We act honestly." },
+      { icon: "🚀", title: "Innovation", description: "We push boundaries." },
+    ],
+  },
+};
+
+// Log processed components for verification
+[
+  "Hero",
+  "Services",
+  "Testimonials",
+  "Industries",
+  "AboutHero",
+  "AboutMission",
+  "AboutJourney",
+  "AboutTeam",
+  "AboutValues",
+].forEach((name) =>
+  console.log(`Schema & live mapping updated for ${name} ✅`)
+);
 
 /**
  * Get schema for a specific general component

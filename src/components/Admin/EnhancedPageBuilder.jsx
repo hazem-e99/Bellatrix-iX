@@ -4185,6 +4185,8 @@ const EnhancedPageBuilder = () => {
             pageData={pageData}
             onSave={handleSave}
             loading={loading}
+            setPageData={setPageData}
+            showToast={showToast}
           />
         );
       default:
@@ -5306,7 +5308,6 @@ const SectionsStep = ({
                         />
                       </div>
 
-
                       {/* Component Toggles */}
                       <div className="md:col-span-2 p-4 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-200">
                         <ComponentToggles
@@ -6390,7 +6391,7 @@ const SectionsStep = ({
 };
 
 // Step 3: Review
-const ReviewStep = ({ pageData }) => {
+const ReviewStep = ({ pageData, setPageData, showToast }) => {
   const [isEditMode, setIsEditMode] = useState(true);
   const [availableComponents] = useState([
     { componentType: "HeroSection", icon: "🎯" },
@@ -6515,36 +6516,70 @@ const ReviewStep = ({ pageData }) => {
             <>
               {/* Drag-and-drop reorderable list */}
               <DndContext
-                onDragEnd={({ active, over }) => {
+                onDragEnd={async ({ active, over }) => {
                   if (!over || active.id === over.id) return;
-                  const oldIndex = pageData.components.findIndex(
-                    (c, i) => i === Number(active.id)
+
+                  // Build stable ids for items (prefer backend id if available)
+                  const ids = pageData.components.map((c, i) =>
+                    c && c.id ? String(c.id) : `idx-${i}`
                   );
-                  const newIndex = pageData.components.findIndex(
-                    (c, i) => i === Number(over.id)
-                  );
+
+                  const oldIndex = ids.indexOf(String(active.id));
+                  const newIndex = ids.indexOf(String(over.id));
                   if (oldIndex === -1 || newIndex === -1) return;
+
                   const newComponents = [...pageData.components];
                   const [moved] = newComponents.splice(oldIndex, 1);
                   newComponents.splice(newIndex, 0, moved);
+
                   // Update orderIndex for all components
                   const reordered = newComponents.map((c, idx) => ({
                     ...c,
                     orderIndex: idx + 1,
                   }));
+
+                  // Update local state immediately for smooth UI
                   setPageData((prev) => ({ ...prev, components: reordered }));
+
+                  // Persist ordering to backend (uses safe reorder helper)
+                  try {
+                    if (pageData && pageData.id) {
+                      await pagesAPI.reorderPageComponents(
+                        pageData.id,
+                        reordered
+                      );
+                      if (typeof showToast === "function") {
+                        showToast("Components reordered", "success");
+                      }
+                    }
+                  } catch (err) {
+                    console.error(
+                      "❌ [REORDER] Failed to persist component order:",
+                      err
+                    );
+                    if (typeof showToast === "function") {
+                      showToast("Failed to persist component order", "error");
+                    }
+                  }
                 }}
               >
                 <SortableContext
-                  items={pageData.components.map((_, idx) => idx.toString())}
+                  items={pageData.components.map((c, idx) =>
+                    c && c.id ? String(c.id) : `idx-${idx}`
+                  )}
                   strategy={verticalListSortingStrategy}
                 >
                   {pageData.components.map((component, index) => {
                     const isVisible =
                       component.isVisible === true || component.isVisible === 1;
                     const themeClass = component.theme === 1 ? "light" : "dark";
+                    const itemId =
+                      component && component.id
+                        ? String(component.id)
+                        : `idx-${index}`;
+
                     return (
-                      <DraggableComponent key={index} id={index.toString()}>
+                      <DraggableComponent key={itemId} id={itemId}>
                         <div
                           className={`flex items-center space-x-3 p-3 rounded-lg border transition-all duration-300 ${
                             !isVisible

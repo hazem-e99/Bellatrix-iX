@@ -603,7 +603,9 @@ const PageComponentsEditor = ({
             );
 
             // Refetch latest components
-            const refreshedComponents = await pagesAPI.getPageComponents(pageId);
+            const refreshedComponents = await pagesAPI.getPageComponents(
+              pageId
+            );
             // Normalize all order indices to be unique and sequential
             const normalized = refreshedComponents
               .sort((a, b) => (a.orderIndex ?? 0) - (b.orderIndex ?? 0))

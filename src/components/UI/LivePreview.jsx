@@ -94,8 +94,8 @@ const ComponentPreview = ({
 
   // Component registry mapping - All available components for preview
   const componentRegistry = {
-         // Add WhyChooseSection for preview
-  WhyChooseSection: ImplementationWhyChoose,
+    // Add WhyChooseSection for preview
+    WhyChooseSection: ImplementationWhyChoose,
     // ===========================================
     // ABOUT PAGE COMPONENTS
     // ===========================================
@@ -146,10 +146,16 @@ const ComponentPreview = ({
     ImplementationWhyChooseSection: ImplementationWhyChoose,
     ImplementationPricingSection: ImplementationPricing,
     ImplementationCtaSection: ImplementationCta,
+    // Service grid used in some pages
+    ServiceGrid: ServiceGrid,
+    ServiceGridSection: ServiceGrid,
 
     // Training Components
     TrainingHeroSection: TrainingHero,
     TrainingProgramsSection: TrainingPrograms,
+    // Alias: some pages/store entries use plain "ProgramsSection" as the componentType
+    ProgramsSection: TrainingPrograms,
+    ProgramsSectionSection: TrainingPrograms,
     TrainingKeyModulesSection: TrainingKeyModules,
     TrainingWhyChooseSection: TrainingWhyChoose,
 
@@ -1029,6 +1035,77 @@ const ComponentPreview = ({
           return transformedTrainingHeroData;
         }
 
+        // Support both saved componentType aliases: "TrainingProgramsSection" and "ProgramsSection"
+        case "TrainingProgramsSection":
+        case "ProgramsSection": {
+          console.log(
+            "🎯 [TrainingProgramsSection/ProgramsSection TRANSFORM] Input data:",
+            componentData
+          );
+
+          // Normalize section metadata (programsSection) and the list of programs
+          const section =
+            componentData.programsSection ||
+            componentData.data?.programsSection ||
+            componentData.section ||
+            {};
+
+          // trainingPrograms may be provided in multiple shapes: { programs: [...] } or an array directly
+          const rawPrograms =
+            componentData.trainingPrograms?.programs ||
+            componentData.trainingPrograms ||
+            componentData.programs ||
+            componentData.items ||
+            [];
+
+          const programs = Array.isArray(rawPrograms)
+            ? rawPrograms
+            : typeof rawPrograms === "string"
+            ? rawPrograms
+                .split(/[;\n,]+/)
+                .map((s, i) => ({ id: i, title: s.trim() }))
+                .filter(Boolean)
+            : [];
+
+          const transformedProgramsData = {
+            programsSection: {
+              title:
+                section.title ||
+                componentData.title ||
+                componentData.data?.title ||
+                "Training Programs",
+              description:
+                section.description ||
+                componentData.description ||
+                componentData.data?.description ||
+                "Comprehensive training programs to upskill your team.",
+              image:
+                section.image ||
+                componentData.image ||
+                componentData.data?.image ||
+                "/images/traning.jpg",
+              Professional_Badge:
+                section.Professional_Badge ||
+                componentData.Professional_Badge ||
+                "Professional",
+            },
+            trainingPrograms: {
+              programs,
+            },
+            // helper props expected by the component
+            openProgramModal:
+              componentData.openProgramModal ||
+              (() => console.log("Open program modal")),
+            renderIcon: componentData.renderIcon || undefined,
+          };
+
+          console.log(
+            "✅ [TrainingProgramsSection/ProgramsSection TRANSFORM] Output data:",
+            transformedProgramsData
+          );
+          return transformedProgramsData;
+        }
+
         // Industries Components
         case "ManufacturingHeroSection": {
           console.log(
@@ -1111,12 +1188,58 @@ const ComponentPreview = ({
             "🎯 [ImplementationWhyChooseSection TRANSFORM] Input data:",
             componentData
           );
+          // Normalize features/benefits into `data.features` as array of objects
+          const rawFeatures =
+            componentData.features ||
+            componentData.items ||
+            componentData.benefits ||
+            [];
+
+          const normalizedFeatures = (() => {
+            if (Array.isArray(rawFeatures)) {
+              return rawFeatures.map((f, idx) => {
+                if (!f) return { number: idx + 1, title: "", description: "" };
+                if (typeof f === "string") {
+                  return { number: idx + 1, title: f, description: "" };
+                }
+                return {
+                  number: f.number || f.id || idx + 1,
+                  title: f.title || f.name || f.heading || "",
+                  description: f.description || f.desc || f.subtitle || "",
+                  icon: f.icon || f.iconName || f.iconClass || undefined,
+                };
+              });
+            }
+
+            if (typeof rawFeatures === "string") {
+              return rawFeatures
+                .split(/[;,\n]+/)
+                .map((s, i) => ({
+                  number: i + 1,
+                  title: s.trim(),
+                  description: "",
+                }))
+                .filter((x) => x.title);
+            }
+
+            return [];
+          })();
+
           const transformedData = {
             data: {
-              benefits: componentData.benefits || [],
-              title: componentData.title || "Why Choose Our Implementation",
-              description:
-                componentData.description || "Benefits of our services",
+              title:
+                componentData.title ||
+                componentData.data?.title ||
+                "Why Choose Bellatrix for Implementation?",
+              subtitle:
+                componentData.subtitle ||
+                componentData.data?.subtitle ||
+                "We bring years of expertise, proven methodologies, and cutting-edge solutions to ensure your implementation success",
+              image:
+                componentData.image ||
+                componentData.data?.image ||
+                "/Videos/implementation/whyChoese.jpg",
+              features: normalizedFeatures,
             },
           };
           console.log(
@@ -1131,14 +1254,90 @@ const ComponentPreview = ({
             "🎯 [ImplementationPricingSection TRANSFORM] Input data:",
             componentData
           );
+          // Normalize plans and ensure each plan.features is an array
+          const rawPlans = componentData.plans || [];
+          const normalizedPlans = Array.isArray(rawPlans)
+            ? rawPlans.map((p) => {
+                const plan = { ...(p || {}) };
+                let features = plan.features;
+
+                // If features is a comma/semicolon/newline separated string, split it
+                if (typeof features === "string") {
+                  features = features
+                    .split(/[;,\n]+/) // split on comma, semicolon, or newline
+                    .map((s) => s.trim())
+                    .filter(Boolean);
+                }
+
+                // Ensure features is an array
+                if (!Array.isArray(features)) {
+                  features = [];
+                }
+
+                return {
+                  ...plan,
+                  features,
+                };
+              })
+            : [];
+
           const transformedData = {
             data: {
               title: componentData.title || "Implementation Pricing",
-              plans: componentData.plans || [],
+              plans: normalizedPlans,
             },
           };
           console.log(
             "✅ [ImplementationPricingSection TRANSFORM] Output data:",
+            transformedData
+          );
+          return transformedData;
+        }
+
+        case "ServiceGrid":
+        case "ServiceGridSection": {
+          console.log("🎯 [ServiceGrid TRANSFORM] Input data:", componentData);
+          // Normalize to { data: { services: [...] , title, subtitle } }
+          const services =
+            Array.isArray(componentData.services) &&
+            componentData.services.length
+              ? componentData.services
+              : componentData.data?.services || componentData.items || [];
+
+          const normalizedServices = services.map((s) => {
+            // If a service features field is a string, split into array
+            const featuresRaw = s?.features || s?.items || [];
+            let features = featuresRaw;
+            if (typeof featuresRaw === "string") {
+              features = featuresRaw
+                .split(/[;,\n]+/)
+                .map((x) => x.trim())
+                .filter(Boolean);
+            }
+            return {
+              title: s?.title || s?.name || "Service",
+              description: s?.description || s?.desc || "",
+              icon: s?.icon || "⚙️",
+              features: Array.isArray(features) ? features : [],
+            };
+          });
+
+          const transformedData = {
+            data: {
+              services: normalizedServices,
+              title:
+                componentData.title ||
+                componentData.data?.title ||
+                "Our Services",
+              subtitle:
+                componentData.subtitle ||
+                componentData.data?.subtitle ||
+                "Comprehensive NetSuite solutions to drive your business forward",
+            },
+          };
+
+          console.log(
+            "✅ [ServiceGrid TRANSFORM] Output data:",
             transformedData
           );
           return transformedData;
@@ -1851,26 +2050,72 @@ const LivePreview = ({
 
                   let rawData = {};
 
-                  // Always use the latest contentJson from form
+                  // Always use the latest content from form.
+                  // Accept both stringified JSON (contentJson) and already-parsed objects
+                  // Also fall back to `content` field when available.
                   if (component.contentJson) {
-                    try {
-                      rawData = JSON.parse(component.contentJson);
+                    if (typeof component.contentJson === "string") {
+                      try {
+                        rawData = JSON.parse(component.contentJson);
+                        console.log(
+                          "✅ [REALTIME EXTRACTION] Parsed contentJson string for",
+                          component.componentType,
+                          ":",
+                          rawData
+                        );
+                      } catch (err) {
+                        console.error(
+                          "❌ [REALTIME EXTRACTION] JSON parse error for contentJson:",
+                          err
+                        );
+                        rawData = {};
+                      }
+                    } else if (typeof component.contentJson === "object") {
+                      // contentJson already parsed by other parts of the app
+                      rawData = component.contentJson;
                       console.log(
-                        "✅ [REALTIME EXTRACTION] Parsed content for",
+                        "ℹ️ [REALTIME EXTRACTION] Using parsed contentJson object for",
                         component.componentType,
                         ":",
                         rawData
                       );
-                    } catch (err) {
-                      console.error(
-                        "❌ [REALTIME EXTRACTION] JSON parse error:",
-                        err
+                    } else {
+                      console.warn(
+                        "⚠️ [REALTIME EXTRACTION] Unsupported contentJson type for",
+                        component.componentType,
+                        typeof component.contentJson
                       );
-                      rawData = {};
+                    }
+                  } else if (component.content) {
+                    // Some code paths use `content` instead of contentJson
+                    if (typeof component.content === "string") {
+                      try {
+                        rawData = JSON.parse(component.content);
+                        console.log(
+                          "✅ [REALTIME EXTRACTION] Parsed content string fallback for",
+                          component.componentType,
+                          ":",
+                          rawData
+                        );
+                      } catch (err) {
+                        console.error(
+                          "❌ [REALTIME EXTRACTION] JSON parse error for content fallback:",
+                          err
+                        );
+                        rawData = {};
+                      }
+                    } else if (typeof component.content === "object") {
+                      rawData = component.content;
+                      console.log(
+                        "ℹ️ [REALTIME EXTRACTION] Using content object fallback for",
+                        component.componentType,
+                        ":",
+                        rawData
+                      );
                     }
                   } else {
                     console.warn(
-                      "⚠️ [REALTIME EXTRACTION] No contentJson found for",
+                      "⚠️ [REALTIME EXTRACTION] No contentJson or content found for",
                       component.componentType
                     );
                   }
