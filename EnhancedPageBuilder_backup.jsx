@@ -2297,743 +2297,763 @@ const EnhancedPageBuilder = () => {
           },
         ],
       },
+    };
 
-  };
+    const getDefaultDataForComponent = (componentType) => {
+      // Use the generated default data
+      const defaultData = generateDefaultDataFromJSON();
 
-  const getDefaultDataForComponent = (componentType) => {
-    // Use the generated default data
-    const defaultData = generateDefaultDataFromJSON();
+      // Get component-specific data
+      const componentData = defaultData[componentType];
 
-    // Get component-specific data
-    const componentData = defaultData[componentType];
-
-    if (!componentData) {
-      console.warn(
-        `No default data defined for component: ${componentType}. Available components:`,
-        Object.keys(defaultData)
-      );
-      return {
-        title: "New Component Title",
-        description: "Component description - please configure this component",
-        content: "This component needs to be configured with proper data.",
-        _isPlaceholder: true,
-      };
-    }
-
-    return componentData;
-  };
-
-  // Helper function to set nested object values
-  const setNestedValue = (obj, path, value) => {
-    const keys = path.split(".");
-    const lastKey = keys.pop();
-    const target = keys.reduce((acc, key) => {
-      // Handle array indices
-      if (key.includes("[") && key.includes("]")) {
-        const [arrayKey, indexStr] = key.split("[");
-        const index = parseInt(indexStr.replace("]", ""));
-        if (!acc[arrayKey]) acc[arrayKey] = [];
-        if (!acc[arrayKey][index]) acc[arrayKey][index] = {};
-        return acc[arrayKey][index];
-      }
-      if (!acc[key]) acc[key] = {};
-      return acc[key];
-    }, obj);
-
-    if (lastKey.includes("[") && lastKey.includes("]")) {
-      const [arrayKey, indexStr] = lastKey.split("[");
-      const index = parseInt(indexStr.replace("]", ""));
-      if (!target[arrayKey]) target[arrayKey] = [];
-      target[arrayKey][index] = value;
-    } else {
-      target[lastKey] = value;
-    }
-
-    return obj;
-  };
-
-  // Dynamic Input Generator for component-specific data
-  const renderDynamicInputs = (
-    data,
-    prefix = "",
-    level = 0,
-    componentIndex = null
-  ) => {
-    if (!data || typeof data !== "object") return null;
-
-    return Object.entries(data).map(([key, value]) => {
-      const fieldPath = prefix ? `${prefix}.${key}` : key;
-      const indentClass = level > 0 ? `ml-${level * 4}` : "";
-
-      if (Array.isArray(value)) {
-        return (
-          <div key={fieldPath} className={`mb-4 ${indentClass}`}>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              {key.charAt(0).toUpperCase() +
-                key.slice(1).replace(/([A-Z])/g, " $1")}{" "}
-              (Array)
-            </label>
-            <div className="border border-gray-200 rounded-lg p-3 bg-gray-50">
-              {value.map((item, index) => (
-                <div
-                  key={`${fieldPath}[${index}]`}
-                  className="mb-3 p-2 border border-gray-100 rounded bg-white"
-                >
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-xs font-medium text-gray-600">
-                      Item {index + 1}
-                    </span>
-                    <button
-                      onClick={() =>
-                        handleRemoveArrayItem(fieldPath, index, componentIndex)
-                      }
-                      className="text-red-500 hover:text-red-700 text-xs px-2 py-1 rounded hover:bg-red-50"
-                      type="button"
-                    >
-                      Remove
-                    </button>
-                  </div>
-                  {renderDynamicInputs(
-                    item,
-                    `${fieldPath}[${index}]`,
-                    level + 1,
-                    componentIndex
-                  )}
-                </div>
-              ))}
-              <button
-                onClick={() =>
-                  handleAddArrayItem(fieldPath, value[0] || {}, componentIndex)
-                }
-                className="mt-2 px-3 py-1 bg-blue-500 text-white rounded text-sm hover:bg-blue-600"
-                type="button"
-              >
-                Add {key.slice(0, -1)} {/* Remove 's' from plural */}
-              </button>
-            </div>
-          </div>
+      if (!componentData) {
+        console.warn(
+          `No default data defined for component: ${componentType}. Available components:`,
+          Object.keys(defaultData)
         );
+        return {
+          title: "New Component Title",
+          description:
+            "Component description - please configure this component",
+          content: "This component needs to be configured with proper data.",
+          _isPlaceholder: true,
+        };
       }
 
-      if (typeof value === "object" && value !== null) {
+      return componentData;
+    };
+
+    // Helper function to set nested object values
+    const setNestedValue = (obj, path, value) => {
+      const keys = path.split(".");
+      const lastKey = keys.pop();
+      const target = keys.reduce((acc, key) => {
+        // Handle array indices
+        if (key.includes("[") && key.includes("]")) {
+          const [arrayKey, indexStr] = key.split("[");
+          const index = parseInt(indexStr.replace("]", ""));
+          if (!acc[arrayKey]) acc[arrayKey] = [];
+          if (!acc[arrayKey][index]) acc[arrayKey][index] = {};
+          return acc[arrayKey][index];
+        }
+        if (!acc[key]) acc[key] = {};
+        return acc[key];
+      }, obj);
+
+      if (lastKey.includes("[") && lastKey.includes("]")) {
+        const [arrayKey, indexStr] = lastKey.split("[");
+        const index = parseInt(indexStr.replace("]", ""));
+        if (!target[arrayKey]) target[arrayKey] = [];
+        target[arrayKey][index] = value;
+      } else {
+        target[lastKey] = value;
+      }
+
+      return obj;
+    };
+
+    // Dynamic Input Generator for component-specific data
+    const renderDynamicInputs = (
+      data,
+      prefix = "",
+      level = 0,
+      componentIndex = null
+    ) => {
+      if (!data || typeof data !== "object") return null;
+
+      return Object.entries(data).map(([key, value]) => {
+        const fieldPath = prefix ? `${prefix}.${key}` : key;
+        const indentClass = level > 0 ? `ml-${level * 4}` : "";
+
+        if (Array.isArray(value)) {
+          return (
+            <div key={fieldPath} className={`mb-4 ${indentClass}`}>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                {key.charAt(0).toUpperCase() +
+                  key.slice(1).replace(/([A-Z])/g, " $1")}{" "}
+                (Array)
+              </label>
+              <div className="border border-gray-200 rounded-lg p-3 bg-gray-50">
+                {value.map((item, index) => (
+                  <div
+                    key={`${fieldPath}[${index}]`}
+                    className="mb-3 p-2 border border-gray-100 rounded bg-white"
+                  >
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-xs font-medium text-gray-600">
+                        Item {index + 1}
+                      </span>
+                      <button
+                        onClick={() =>
+                          handleRemoveArrayItem(
+                            fieldPath,
+                            index,
+                            componentIndex
+                          )
+                        }
+                        className="text-red-500 hover:text-red-700 text-xs px-2 py-1 rounded hover:bg-red-50"
+                        type="button"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                    {renderDynamicInputs(
+                      item,
+                      `${fieldPath}[${index}]`,
+                      level + 1,
+                      componentIndex
+                    )}
+                  </div>
+                ))}
+                <button
+                  onClick={() =>
+                    handleAddArrayItem(
+                      fieldPath,
+                      value[0] || {},
+                      componentIndex
+                    )
+                  }
+                  className="mt-2 px-3 py-1 bg-blue-500 text-white rounded text-sm hover:bg-blue-600"
+                  type="button"
+                >
+                  Add {key.slice(0, -1)} {/* Remove 's' from plural */}
+                </button>
+              </div>
+            </div>
+          );
+        }
+
+        if (typeof value === "object" && value !== null) {
+          return (
+            <div key={fieldPath} className={`mb-4 ${indentClass}`}>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                {key.charAt(0).toUpperCase() +
+                  key.slice(1).replace(/([A-Z])/g, " $1")}
+              </label>
+              <div className="border border-gray-200 rounded-lg p-3 bg-gray-50">
+                {renderDynamicInputs(
+                  value,
+                  fieldPath,
+                  level + 1,
+                  componentIndex
+                )}
+              </div>
+            </div>
+          );
+        }
+
+        // Handle primitive values (string, number, boolean)
         return (
           <div key={fieldPath} className={`mb-4 ${indentClass}`}>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               {key.charAt(0).toUpperCase() +
                 key.slice(1).replace(/([A-Z])/g, " $1")}
             </label>
-            <div className="border border-gray-200 rounded-lg p-3 bg-gray-50">
-              {renderDynamicInputs(value, fieldPath, level + 1, componentIndex)}
-            </div>
+            {typeof value === "boolean" ? (
+              <input
+                type="checkbox"
+                checked={value}
+                onChange={(e) =>
+                  handleInputChange(fieldPath, e.target.checked, componentIndex)
+                }
+                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              />
+            ) : value && typeof value === "string" && value.length > 100 ? (
+              <textarea
+                value={value}
+                onChange={(e) =>
+                  handleInputChange(fieldPath, e.target.value, componentIndex)
+                }
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                rows={3}
+              />
+            ) : (
+              <input
+                type={typeof value === "number" ? "number" : "text"}
+                value={value || ""}
+                onChange={(e) =>
+                  handleInputChange(
+                    fieldPath,
+                    typeof value === "number"
+                      ? Number(e.target.value)
+                      : e.target.value,
+                    componentIndex
+                  )
+                }
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder={`Enter ${key
+                  .replace(/([A-Z])/g, " $1")
+                  .toLowerCase()}`}
+              />
+            )}
           </div>
         );
-      }
-
-      // Handle primitive values (string, number, boolean)
-      return (
-        <div key={fieldPath} className={`mb-4 ${indentClass}`}>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            {key.charAt(0).toUpperCase() +
-              key.slice(1).replace(/([A-Z])/g, " $1")}
-          </label>
-          {typeof value === "boolean" ? (
-            <input
-              type="checkbox"
-              checked={value}
-              onChange={(e) =>
-                handleInputChange(fieldPath, e.target.checked, componentIndex)
-              }
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-            />
-          ) : value && typeof value === "string" && value.length > 100 ? (
-            <textarea
-              value={value}
-              onChange={(e) =>
-                handleInputChange(fieldPath, e.target.value, componentIndex)
-              }
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              rows={3}
-            />
-          ) : (
-            <input
-              type={typeof value === "number" ? "number" : "text"}
-              value={value || ""}
-              onChange={(e) =>
-                handleInputChange(
-                  fieldPath,
-                  typeof value === "number"
-                    ? Number(e.target.value)
-                    : e.target.value,
-                  componentIndex
-                )
-              }
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder={`Enter ${key
-                .replace(/([A-Z])/g, " $1")
-                .toLowerCase()}`}
-            />
-          )}
-        </div>
-      );
-    });
-  };
-
-  // Handle input changes with real-time preview update
-  const handleInputChange = (fieldPath, value, componentIndex) => {
-    if (componentIndex !== null && pageData.components[componentIndex]) {
-      const component = pageData.components[componentIndex];
-
-      console.log("🔄 [INPUT CHANGE]", {
-        componentType: component.componentType,
-        fieldPath,
-        value,
-        componentIndex,
       });
+    };
 
-      // Parse current content data
-      let currentData;
-      try {
-        currentData = component.contentJson
-          ? JSON.parse(component.contentJson)
-          : getDefaultDataForComponent(component.componentType);
-      } catch (error) {
-        console.error("Error parsing component data:", error);
-        currentData = getDefaultDataForComponent(component.componentType);
+    // Handle input changes with real-time preview update
+    const handleInputChange = (fieldPath, value, componentIndex) => {
+      if (componentIndex !== null && pageData.components[componentIndex]) {
+        const component = pageData.components[componentIndex];
+
+        console.log("🔄 [INPUT CHANGE]", {
+          componentType: component.componentType,
+          fieldPath,
+          value,
+          componentIndex,
+        });
+
+        // Parse current content data
+        let currentData;
+        try {
+          currentData = component.contentJson
+            ? JSON.parse(component.contentJson)
+            : getDefaultDataForComponent(component.componentType);
+        } catch (error) {
+          console.error("Error parsing component data:", error);
+          currentData = getDefaultDataForComponent(component.componentType);
+        }
+
+        // Create updated data with the new value
+        const updatedData = { ...currentData };
+        setNestedValue(updatedData, fieldPath, value);
+
+        console.log("✅ [INPUT CHANGE] Updated data:", updatedData);
+
+        // Update the component with new data using updateComponent directly
+        updateComponent(
+          componentIndex,
+          "contentJson",
+          JSON.stringify(updatedData, null, 2)
+        );
       }
+    };
 
-      // Create updated data with the new value
-      const updatedData = { ...currentData };
-      setNestedValue(updatedData, fieldPath, value);
+    // Handle adding new array items
+    const handleAddArrayItem = (
+      fieldPath,
+      templateItem = {},
+      componentIndex
+    ) => {
+      if (componentIndex !== null && pageData.components[componentIndex]) {
+        const component = pageData.components[componentIndex];
 
-      console.log("✅ [INPUT CHANGE] Updated data:", updatedData);
+        // Parse current content data
+        let currentData;
+        try {
+          currentData = component.contentJson
+            ? JSON.parse(component.contentJson)
+            : getDefaultDataForComponent(component.componentType);
+        } catch (error) {
+          currentData = getDefaultDataForComponent(component.componentType);
+        }
 
-      // Update the component with new data using updateComponent directly
-      updateComponent(
-        componentIndex,
-        "contentJson",
-        JSON.stringify(updatedData, null, 2)
-      );
-    }
-  };
+        const updatedData = { ...currentData };
+        const keys = fieldPath.split(".");
+        const target = keys.reduce((acc, key) => {
+          if (!acc[key]) acc[key] = [];
+          return acc[key];
+        }, updatedData);
 
-  // Handle adding new array items
-  const handleAddArrayItem = (fieldPath, templateItem = {}, componentIndex) => {
-    if (componentIndex !== null && pageData.components[componentIndex]) {
-      const component = pageData.components[componentIndex];
+        if (Array.isArray(target)) {
+          target.push(
+            typeof templateItem === "object"
+              ? { ...templateItem }
+              : templateItem
+          );
+        }
 
-      // Parse current content data
-      let currentData;
-      try {
-        currentData = component.contentJson
-          ? JSON.parse(component.contentJson)
-          : getDefaultDataForComponent(component.componentType);
-      } catch (error) {
-        currentData = getDefaultDataForComponent(component.componentType);
+        // Update the component with new data
+        updateComponent(
+          componentIndex,
+          "contentJson",
+          JSON.stringify(updatedData, null, 2)
+        );
       }
+    };
 
-      const updatedData = { ...currentData };
-      const keys = fieldPath.split(".");
-      const target = keys.reduce((acc, key) => {
-        if (!acc[key]) acc[key] = [];
-        return acc[key];
-      }, updatedData);
+    // Handle removing array items
+    const handleRemoveArrayItem = (fieldPath, index, componentIndex) => {
+      if (componentIndex !== null && pageData.components[componentIndex]) {
+        const component = pageData.components[componentIndex];
 
-      if (Array.isArray(target)) {
-        target.push(
-          typeof templateItem === "object" ? { ...templateItem } : templateItem
+        // Parse current content data
+        let currentData;
+        try {
+          currentData = component.contentJson
+            ? JSON.parse(component.contentJson)
+            : getDefaultDataForComponent(component.componentType);
+        } catch (error) {
+          currentData = getDefaultDataForComponent(component.componentType);
+        }
+
+        const updatedData = { ...currentData };
+        const keys = fieldPath.split(".");
+        const target = keys.reduce((acc, key) => acc[key], updatedData);
+
+        if (Array.isArray(target)) {
+          target.splice(index, 1);
+        }
+
+        // Update the component with new data
+        updateComponent(
+          componentIndex,
+          "contentJson",
+          JSON.stringify(updatedData, null, 2)
+        );
+      }
+    };
+
+    const saveComponentData = (updatedData) => {
+      const componentIndex = editingComponent.index;
+      const updatedComponents = [...pageData.components];
+      const currentComponent = updatedComponents[componentIndex];
+
+      // Update the component with new content data
+      updatedComponents[componentIndex] = {
+        ...currentComponent,
+        content: updatedData,
+        contentJson: JSON.stringify(updatedData, null, 2), // Update contentJson for API
+      };
+
+      // Update local state immediately for responsive UI
+      setPageData((prev) => ({
+        ...prev,
+        components: updatedComponents,
+      }));
+
+      // Make API call to persist changes if component has ID
+      if (currentComponent?.id && pageData.id) {
+        const updateData = {
+          id: currentComponent.id,
+          pageId: pageData.id,
+          componentType: currentComponent.componentType,
+          componentName: currentComponent.componentName || "",
+          contentJson: JSON.stringify(updatedData, null, 2),
+          orderIndex:
+            currentComponent.orderIndex !== undefined
+              ? currentComponent.orderIndex
+              : componentIndex,
+          isVisible: Boolean(
+            currentComponent.isVisible === true ||
+              currentComponent.isVisible === 1
+          ),
+          theme: currentComponent.theme === 1 ? 1 : 2,
+        };
+
+        console.log(
+          `🔄 [EDIT SAVE] Updating component ${currentComponent.id} with edited data:`,
+          {
+            componentId: currentComponent.id,
+            updateData,
+            originalData: updatedData,
+          }
+        );
+
+        // Make async API call
+        pagesAPI
+          .updatePageComponent(currentComponent.id, updateData)
+          .then(() => {
+            console.log(
+              `✅ [EDIT SAVE] Component ${currentComponent.id} updated successfully`
+            );
+            showToast("Section data saved successfully", "success");
+          })
+          .catch((error) => {
+            console.error(
+              `❌ [EDIT SAVE] Failed to update component ${currentComponent.id}:`,
+              error
+            );
+            showToast(`Failed to save section data: ${error.message}`, "error");
+
+            // Revert the local changes on API failure
+            setPageData((prevData) => {
+              const revertedComponents = [...prevData.components];
+              revertedComponents[componentIndex] = currentComponent; // Revert to original component
+              return {
+                ...prevData,
+                components: revertedComponents,
+              };
+            });
+          });
+      } else {
+        console.log(
+          `⚠️ [EDIT SAVE] Skipping API update for component without ID:`,
+          {
+            componentId: currentComponent?.id,
+            pageId: pageData.id,
+            reason: !currentComponent?.id
+              ? "Component not saved to database yet"
+              : "No page ID available",
+          }
+        );
+        showToast(
+          "Section data updated locally (will be saved when page is published)",
+          "info"
         );
       }
 
-      // Update the component with new data
-      updateComponent(
-        componentIndex,
-        "contentJson",
-        JSON.stringify(updatedData, null, 2)
-      );
-    }
-  };
+      setShowSectionEditor(false);
+      setEditingComponent(null);
+    };
 
-  // Handle removing array items
-  const handleRemoveArrayItem = (fieldPath, index, componentIndex) => {
-    if (componentIndex !== null && pageData.components[componentIndex]) {
+    // Function to open new input modal
+    const openNewInputModal = (component, componentIndex) => {
+      console.log(
+        "🆕 [NEW MODAL] Opening new input modal for component:",
+        component
+      );
+      setCurrentComponent({
+        ...component,
+        type: component.componentType,
+        index: componentIndex,
+      });
+      setShowNewInputModal(true);
+    };
+
+    // Function to handle delete confirmation
+    const handleDeleteClick = async (componentIndex) => {
+      console.log("🗑️ [DELETE CLICK] Component to delete:", componentIndex);
       const component = pageData.components[componentIndex];
 
-      // Parse current content data
-      let currentData;
       try {
-        currentData = component.contentJson
-          ? JSON.parse(component.contentJson)
-          : getDefaultDataForComponent(component.componentType);
+        setLoading(true);
+        console.log("🚀 [DELETE API] Deleting component:", component);
+
+        // Create updated components array without the deleted component
+        const updatedComponents = pageData.components.filter(
+          (_, index) => index !== componentIndex
+        );
+
+        // Update order indices for remaining components
+        const reorderedComponents = updatedComponents.map((comp, index) => ({
+          ...comp,
+          orderIndex: index + 1,
+        }));
+
+        // Update page data
+        const updatedPageData = {
+          ...pageData,
+          components: reorderedComponents,
+        };
+
+        setPageData(updatedPageData);
+        showToast("Component deleted successfully", "success");
+
+        console.log("✅ [DELETE API] Component deleted successfully");
       } catch (error) {
-        currentData = getDefaultDataForComponent(component.componentType);
+        console.error("❌ [DELETE API] Error deleting component:", error);
+        showToast("Failed to delete component", "error");
+      } finally {
+        setLoading(false);
       }
-
-      const updatedData = { ...currentData };
-      const keys = fieldPath.split(".");
-      const target = keys.reduce((acc, key) => acc[key], updatedData);
-
-      if (Array.isArray(target)) {
-        target.splice(index, 1);
-      }
-
-      // Update the component with new data
-      updateComponent(
-        componentIndex,
-        "contentJson",
-        JSON.stringify(updatedData, null, 2)
-      );
-    }
-  };
-
-  const saveComponentData = (updatedData) => {
-    const componentIndex = editingComponent.index;
-    const updatedComponents = [...pageData.components];
-    const currentComponent = updatedComponents[componentIndex];
-
-    // Update the component with new content data
-    updatedComponents[componentIndex] = {
-      ...currentComponent,
-      content: updatedData,
-      contentJson: JSON.stringify(updatedData, null, 2), // Update contentJson for API
     };
 
-    // Update local state immediately for responsive UI
-    setPageData((prev) => ({
-      ...prev,
-      components: updatedComponents,
-    }));
+    // Legacy removeComponent function for backward compatibility
+    const removeComponent = (componentIndex) => {
+      handleDeleteClick(componentIndex);
+    };
 
-    // Make API call to persist changes if component has ID
-    if (currentComponent?.id && pageData.id) {
-      const updateData = {
-        id: currentComponent.id,
-        pageId: pageData.id,
-        componentType: currentComponent.componentType,
-        componentName: currentComponent.componentName || "",
-        contentJson: JSON.stringify(updatedData, null, 2),
-        orderIndex:
-          currentComponent.orderIndex !== undefined
-            ? currentComponent.orderIndex
-            : componentIndex,
-        isVisible: Boolean(
-          currentComponent.isVisible === true ||
-            currentComponent.isVisible === 1
-        ),
-        theme: currentComponent.theme === 1 ? 1 : 2,
+    const duplicateComponent = (componentIndex) => {
+      const componentToDuplicate = pageData.components[componentIndex];
+      const newComponent = {
+        ...componentToDuplicate,
+        // Don't assign orderIndex here, as it will be handled during save
       };
 
-      console.log(
-        `🔄 [EDIT SAVE] Updating component ${currentComponent.id} with edited data:`,
-        {
-          componentId: currentComponent.id,
-          updateData,
-          originalData: updatedData,
-        }
-      );
+      // Add to the components array
+      setPageData((prev) => {
+        const updatedComponents = [...prev.components, newComponent];
 
-      // Make async API call
-      pagesAPI
-        .updatePageComponent(currentComponent.id, updateData)
-        .then(() => {
-          console.log(
-            `✅ [EDIT SAVE] Component ${currentComponent.id} updated successfully`
-          );
-          showToast("Section data saved successfully", "success");
-        })
-        .catch((error) => {
-          console.error(
-            `❌ [EDIT SAVE] Failed to update component ${currentComponent.id}:`,
-            error
-          );
-          showToast(`Failed to save section data: ${error.message}`, "error");
+        // Re-assign all orderIndex values to ensure they're sequential
+        return {
+          ...prev,
+          components: updatedComponents.map((component, index) => ({
+            ...component,
+            orderIndex: index + 1,
+          })),
+        };
+      });
 
-          // Revert the local changes on API failure
-          setPageData((prevData) => {
-            const revertedComponents = [...prevData.components];
-            revertedComponents[componentIndex] = currentComponent; // Revert to original component
-            return {
-              ...prevData,
-              components: revertedComponents,
-            };
-          });
-        });
-    } else {
-      console.log(
-        `⚠️ [EDIT SAVE] Skipping API update for component without ID:`,
-        {
-          componentId: currentComponent?.id,
-          pageId: pageData.id,
-          reason: !currentComponent?.id
-            ? "Component not saved to database yet"
-            : "No page ID available",
-        }
-      );
-      showToast(
-        "Section data updated locally (will be saved when page is published)",
-        "info"
-      );
-    }
+      showToast("Section duplicated successfully", "success");
+    };
 
-    setShowSectionEditor(false);
-    setEditingComponent(null);
-  };
+    const moveComponent = (fromIndex, toIndex) => {
+      const components = [...pageData.components];
+      const [movedComponent] = components.splice(fromIndex, 1);
+      components.splice(toIndex, 0, movedComponent);
 
-  // Function to open new input modal
-  const openNewInputModal = (component, componentIndex) => {
-    console.log(
-      "🆕 [NEW MODAL] Opening new input modal for component:",
-      component
-    );
-    setCurrentComponent({
-      ...component,
-      type: component.componentType,
-      index: componentIndex,
-    });
-    setShowNewInputModal(true);
-  };
-
-  // Function to handle delete confirmation
-  const handleDeleteClick = async (componentIndex) => {
-    console.log("🗑️ [DELETE CLICK] Component to delete:", componentIndex);
-    const component = pageData.components[componentIndex];
-
-    try {
-      setLoading(true);
-      console.log("🚀 [DELETE API] Deleting component:", component);
-
-      // Create updated components array without the deleted component
-      const updatedComponents = pageData.components.filter(
-        (_, index) => index !== componentIndex
-      );
-
-      // Update order indices for remaining components
-      const reorderedComponents = updatedComponents.map((comp, index) => ({
-        ...comp,
-        orderIndex: index + 1,
+      // Always re-assign all orderIndex values after reordering to ensure they're sequential
+      const reorderedComponents = components.map((component, index) => ({
+        ...component,
+        orderIndex: index + 1, // Ensure orderIndex values are sequential and 1-based
       }));
 
-      // Update page data
-      const updatedPageData = {
-        ...pageData,
+      setPageData((prev) => ({
+        ...prev,
         components: reorderedComponents,
-      };
-
-      setPageData(updatedPageData);
-      showToast("Component deleted successfully", "success");
-
-      console.log("✅ [DELETE API] Component deleted successfully");
-    } catch (error) {
-      console.error("❌ [DELETE API] Error deleting component:", error);
-      showToast("Failed to delete component", "error");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Legacy removeComponent function for backward compatibility
-  const removeComponent = (componentIndex) => {
-    handleDeleteClick(componentIndex);
-  };
-
-  const duplicateComponent = (componentIndex) => {
-    const componentToDuplicate = pageData.components[componentIndex];
-    const newComponent = {
-      ...componentToDuplicate,
-      // Don't assign orderIndex here, as it will be handled during save
+      }));
     };
 
-    // Add to the components array
-    setPageData((prev) => {
-      const updatedComponents = [...prev.components, newComponent];
-
-      // Re-assign all orderIndex values to ensure they're sequential
-      return {
-        ...prev,
-        components: updatedComponents.map((component, index) => ({
-          ...component,
-          orderIndex: index + 1,
-        })),
-      };
-    });
-
-    showToast("Section duplicated successfully", "success");
-  };
-
-  const moveComponent = (fromIndex, toIndex) => {
-    const components = [...pageData.components];
-    const [movedComponent] = components.splice(fromIndex, 1);
-    components.splice(toIndex, 0, movedComponent);
-
-    // Always re-assign all orderIndex values after reordering to ensure they're sequential
-    const reorderedComponents = components.map((component, index) => ({
-      ...component,
-      orderIndex: index + 1, // Ensure orderIndex values are sequential and 1-based
-    }));
-
-    setPageData((prev) => ({
-      ...prev,
-      components: reorderedComponents,
-    }));
-  };
-
-  const handleSave = async (status = "draft") => {
-    // Prevent multiple simultaneous API calls
-    if (isSavingRef.current) {
-      console.log(
-        "Save operation already in progress, ignoring duplicate call"
-      );
-      return;
-    }
-
-    try {
-      // Mark that we're currently saving
-      isSavingRef.current = true;
-
-      // Set appropriate loading state
-      if (status === "published") {
-        setIsPublishing(true);
-      } else {
-        setLoading(true);
+    const handleSave = async (status = "draft") => {
+      // Prevent multiple simultaneous API calls
+      if (isSavingRef.current) {
+        console.log(
+          "Save operation already in progress, ignoring duplicate call"
+        );
+        return;
       }
 
-      // Apply default values to ensure no null, undefined, or empty values
-      const createPageDTO = applyDefaultValues(pageData, status);
+      try {
+        // Mark that we're currently saving
+        isSavingRef.current = true;
 
-      // Validate required fields - use helper function to ensure lock is reset on validation errors
-      const validateAndReturn = (message) => {
-        showToast(message, "error");
-        // Reset states before returning from validation error
+        // Set appropriate loading state
+        if (status === "published") {
+          setIsPublishing(true);
+        } else {
+          setLoading(true);
+        }
+
+        // Apply default values to ensure no null, undefined, or empty values
+        const createPageDTO = applyDefaultValues(pageData, status);
+
+        // Validate required fields - use helper function to ensure lock is reset on validation errors
+        const validateAndReturn = (message) => {
+          showToast(message, "error");
+          // Reset states before returning from validation error
+          setLoading(false);
+          setIsPublishing(false);
+          isSavingRef.current = false;
+          return;
+        };
+
+        if (!createPageDTO.name || !createPageDTO.name.trim()) {
+          return validateAndReturn("Page name is required");
+        }
+
+        if (!createPageDTO.categoryId) {
+          return validateAndReturn("Please select a category");
+        }
+
+        // Validate slug format after applying defaults
+        if (!/^[a-z0-9-]+$/.test(createPageDTO.slug)) {
+          return validateAndReturn(
+            "Generated slug contains invalid characters. Please check the page name."
+          );
+        }
+
+        // Validate components and orderIndex uniqueness
+        if (createPageDTO.components && createPageDTO.components.length > 0) {
+          const orderIndexes = new Set();
+          for (let i = 0; i < createPageDTO.components.length; i++) {
+            const comp = createPageDTO.components[i];
+
+            // Check component type
+            if (!comp.componentType?.trim()) {
+              return validateAndReturn(
+                "Component " + (i + 1) + " is missing component type"
+              );
+            }
+
+            // Check component name
+            if (!comp.componentName?.trim()) {
+              return validateAndReturn(
+                "Component " + (i + 1) + " is missing component name"
+              );
+            }
+
+            // Check content
+            if (!comp.content || typeof comp.content !== "object") {
+              return validateAndReturn(
+                "Component " + (i + 1) + " has invalid content"
+              );
+            }
+
+            // Check orderIndex uniqueness
+            const orderIndex = comp.orderIndex;
+            if (orderIndexes.has(orderIndex)) {
+              return validateAndReturn(
+                "Duplicate order index found: " +
+                  orderIndex +
+                  ". Each component must have a unique order index."
+              );
+            }
+            orderIndexes.add(orderIndex);
+          }
+        }
+
+        console.log("🚀 Final data being sent to API:", createPageDTO);
+        console.log("📊 Component summary:", {
+          totalComponents: createPageDTO.components?.length || 0,
+          componentTypes:
+            createPageDTO.components?.map((c) => c.componentType) || [],
+          orderIndexes:
+            createPageDTO.components?.map((c) => c.orderIndex) || [],
+        });
+
+        // Make the API call to create page with components
+        await pagesAPI.createPage(createPageDTO);
+        console.log("✅ Page created successfully!");
+
+        // Show appropriate success message based on status
+        if (status === "published") {
+          showToast("Page published successfully", "success");
+        } else {
+          showToast(
+            'Page "' + createPageDTO.name + '" saved as draft successfully!',
+            "success"
+          );
+        }
+
+        // Navigate to pages management after a brief delay
+        setTimeout(() => {
+          navigate("/admin/pages");
+        }, 1500);
+      } catch (error) {
+        console.error("❌ Failed to save page:", error);
+        showToast(error.message || "Failed to save page", "error");
+      } finally {
+        // Reset loading states and save lock
         setLoading(false);
         setIsPublishing(false);
         isSavingRef.current = false;
-        return;
-      };
-
-      if (!createPageDTO.name || !createPageDTO.name.trim()) {
-        return validateAndReturn("Page name is required");
       }
+    };
 
-      if (!createPageDTO.categoryId) {
-        return validateAndReturn("Please select a category");
+    const isStepValid = (step) => {
+      switch (step) {
+        case 1:
+          // Require category selection
+          return (
+            pageData.categoryId !== null && pageData.categoryId !== undefined
+          );
+        case 2:
+          // Page details can be empty; defaults will be applied
+          return true;
+        case 3:
+          // Sections optional
+          return true;
+        case 4:
+          // Review step always valid
+          return true;
+        default:
+          return false;
       }
+    };
 
-      // Validate slug format after applying defaults
-      if (!/^[a-z0-9-]+$/.test(createPageDTO.slug)) {
-        return validateAndReturn(
-          "Generated slug contains invalid characters. Please check the page name."
-        );
+    const renderStepContent = () => {
+      switch (currentStep) {
+        case 1:
+          return (
+            <Card className="bg-white/5 backdrop-blur-sm border border-white/10 shadow-xl">
+              <CardHeader>
+                <CardTitle className="text-white text-xl font-bold">
+                  Category
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CategorySelector
+                  value={pageData.categoryId}
+                  onChange={(id) => handlePageDataChange("categoryId", id)}
+                />
+                {!pageData.categoryId && (
+                  <div className="mt-3 text-xs text-red-300">
+                    Please select a category to continue.
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          );
+        case 2:
+          return (
+            <PageDetailsStep
+              pageData={pageData}
+              onDataChange={handlePageDataChange}
+            />
+          );
+        case 3:
+          return (
+            <SectionsStep
+              pageData={pageData}
+              availableComponents={availableComponents}
+              onAddComponent={addComponent}
+              onUpdateComponent={updateComponent}
+              onRemoveComponent={removeComponent}
+              onDuplicateComponent={duplicateComponent}
+              onMoveComponent={moveComponent}
+              componentSchemas={componentSchemas}
+              showNewInputModal={showNewInputModal}
+              setShowNewInputModal={setShowNewInputModal}
+              currentComponent={currentComponent}
+              openNewInputModal={openNewInputModal}
+              useNewInputSystemState={useNewInputSystemState}
+              setUseNewInputSystemState={setUseNewInputSystemState}
+            />
+          );
+        case 4:
+          return (
+            <ReviewStep
+              pageData={pageData}
+              onSave={handleSave}
+              loading={loading}
+            />
+          );
+        default:
+          return null;
       }
+    };
 
-      // Validate components and orderIndex uniqueness
-      if (createPageDTO.components && createPageDTO.components.length > 0) {
-        const orderIndexes = new Set();
-        for (let i = 0; i < createPageDTO.components.length; i++) {
-          const comp = createPageDTO.components[i];
-
-          // Check component type
-          if (!comp.componentType?.trim()) {
-            return validateAndReturn(
-              "Component " + (i + 1) + " is missing component type"
-            );
-          }
-
-          // Check component name
-          if (!comp.componentName?.trim()) {
-            return validateAndReturn(
-              "Component " + (i + 1) + " is missing component name"
-            );
-          }
-
-          // Check content
-          if (!comp.content || typeof comp.content !== "object") {
-            return validateAndReturn(
-              "Component " + (i + 1) + " has invalid content"
-            );
-          }
-
-          // Check orderIndex uniqueness
-          const orderIndex = comp.orderIndex;
-          if (orderIndexes.has(orderIndex)) {
-            return validateAndReturn(
-              "Duplicate order index found: " +
-                orderIndex +
-                ". Each component must have a unique order index."
-            );
-          }
-          orderIndexes.add(orderIndex);
-        }
-      }
-
-      console.log("🚀 Final data being sent to API:", createPageDTO);
-      console.log("📊 Component summary:", {
-        totalComponents: createPageDTO.components?.length || 0,
-        componentTypes:
-          createPageDTO.components?.map((c) => c.componentType) || [],
-        orderIndexes: createPageDTO.components?.map((c) => c.orderIndex) || [],
-      });
-
-      // Make the API call to create page with components
-      await pagesAPI.createPage(createPageDTO);
-      console.log("✅ Page created successfully!");
-
-      // Show appropriate success message based on status
-      if (status === "published") {
-        showToast("Page published successfully", "success");
-      } else {
-        showToast(
-          'Page "' + createPageDTO.name + '" saved as draft successfully!',
-          "success"
-        );
-      }
-
-      // Navigate to pages management after a brief delay
-      setTimeout(() => {
-        navigate("/admin/pages");
-      }, 1500);
-    } catch (error) {
-      console.error("❌ Failed to save page:", error);
-      showToast(error.message || "Failed to save page", "error");
-    } finally {
-      // Reset loading states and save lock
-      setLoading(false);
-      setIsPublishing(false);
-      isSavingRef.current = false;
-    }
-  };
-
-  const isStepValid = (step) => {
-    switch (step) {
-      case 1:
-        // Require category selection
-        return (
-          pageData.categoryId !== null && pageData.categoryId !== undefined
-        );
-      case 2:
-        // Page details can be empty; defaults will be applied
-        return true;
-      case 3:
-        // Sections optional
-        return true;
-      case 4:
-        // Review step always valid
-        return true;
-      default:
-        return false;
-    }
-  };
-
-  const renderStepContent = () => {
-    switch (currentStep) {
-      case 1:
-        return (
-          <Card className="bg-white/5 backdrop-blur-sm border border-white/10 shadow-xl">
-            <CardHeader>
-              <CardTitle className="text-white text-xl font-bold">
-                Category
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CategorySelector
-                value={pageData.categoryId}
-                onChange={(id) => handlePageDataChange("categoryId", id)}
-              />
-              {!pageData.categoryId && (
-                <div className="mt-3 text-xs text-red-300">
-                  Please select a category to continue.
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        );
-      case 2:
-        return (
-          <PageDetailsStep
-            pageData={pageData}
-            onDataChange={handlePageDataChange}
-          />
-        );
-      case 3:
-        return (
-          <SectionsStep
-            pageData={pageData}
-            availableComponents={availableComponents}
-            onAddComponent={addComponent}
-            onUpdateComponent={updateComponent}
-            onRemoveComponent={removeComponent}
-            onDuplicateComponent={duplicateComponent}
-            onMoveComponent={moveComponent}
-            componentSchemas={componentSchemas}
-            showNewInputModal={showNewInputModal}
-            setShowNewInputModal={setShowNewInputModal}
-            currentComponent={currentComponent}
-            openNewInputModal={openNewInputModal}
-            useNewInputSystemState={useNewInputSystemState}
-            setUseNewInputSystemState={setUseNewInputSystemState}
-          />
-        );
-      case 4:
-        return (
-          <ReviewStep
-            pageData={pageData}
-            onSave={handleSave}
-            loading={loading}
-          />
-        );
-      default:
-        return null;
-    }
-  };
-
-  return (
-    <MediaInputDetector>
-      <div
-        className="admin-component min-h-screen bg-[var(--color-brand-dark-navy)] relative overflow-hidden"
-        data-dashboard="true"
-      >
-        <div className="relative z-10 p-6">
-          {/* Header */}
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-[var(--color-text-inverse)] mb-4 tracking-tight">
-              Enhanced Page Builder
-            </h1>
-            <p className="text-lg text-[var(--color-text-secondary)] leading-relaxed">
-              Create dynamic pages with customizable sections and rich content
-            </p>
-          </div>
-
-          {/* Progress Bar */}
-          <div className="mb-10">
-            <div className="w-full h-2 bg-[var(--color-text-secondary)] rounded-full overflow-hidden">
-              <div
-                className="h-full bg-[var(--color-primary)] transition-all duration-500"
-                style={{
-                  width: `${
-                    ((currentStep - 1) / (steps.length - 1)) * 100 || 0
-                  }%`,
-                }}
-              />
+    return (
+      <MediaInputDetector>
+        <div
+          className="admin-component min-h-screen bg-[var(--color-brand-dark-navy)] relative overflow-hidden"
+          data-dashboard="true"
+        >
+          <div className="relative z-10 p-6">
+            {/* Header */}
+            <div className="text-center mb-8">
+              <h1 className="text-4xl font-bold text-[var(--color-text-inverse)] mb-4 tracking-tight">
+                Enhanced Page Builder
+              </h1>
+              <p className="text-lg text-[var(--color-text-secondary)] leading-relaxed">
+                Create dynamic pages with customizable sections and rich content
+              </p>
             </div>
-            <div
-              className="mt-4 grid"
-              style={{
-                gridTemplateColumns: `repeat(${steps.length}, minmax(0, 1fr))`,
-              }}
-            >
-              {steps.map((step) => {
-                const isCompleted = step.id < currentStep;
-                const isCurrent = step.id === currentStep;
-                const isFuture = step.id > currentStep;
 
-                return (
-                  <div
-                    key={step.id}
-                    className="flex items-start space-x-3 group"
-                  >
-                    {/* Interactive Step Circle */}
-                    <button
-                      onClick={() => handleStepClick(step.id)}
-                      disabled={isFuture}
-                      className={`
+            {/* Progress Bar */}
+            <div className="mb-10">
+              <div className="w-full h-2 bg-[var(--color-text-secondary)] rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-[var(--color-primary)] transition-all duration-500"
+                  style={{
+                    width: `${
+                      ((currentStep - 1) / (steps.length - 1)) * 100 || 0
+                    }%`,
+                  }}
+                />
+              </div>
+              <div
+                className="mt-4 grid"
+                style={{
+                  gridTemplateColumns: `repeat(${steps.length}, minmax(0, 1fr))`,
+                }}
+              >
+                {steps.map((step) => {
+                  const isCompleted = step.id < currentStep;
+                  const isCurrent = step.id === currentStep;
+                  const isFuture = step.id > currentStep;
+
+                  return (
+                    <div
+                      key={step.id}
+                      className="flex items-start space-x-3 group"
+                    >
+                      {/* Interactive Step Circle */}
+                      <button
+                        onClick={() => handleStepClick(step.id)}
+                        disabled={isFuture}
+                        className={`
                         flex items-center justify-center w-9 h-9 rounded-full border-2 
                         transition-all duration-200 transform
                         ${
@@ -3045,25 +3065,27 @@ const EnhancedPageBuilder = () => {
                         }
                         group-hover:shadow-lg
                       `}
-                      title={
-                        isCompleted
-                          ? `Go back to ${step.title}`
-                          : isCurrent
-                          ? `Current step: ${step.title}`
-                          : `Complete current steps first`
-                      }
-                    >
-                      {isCompleted ? (
-                        <CheckIcon className="h-5 w-5" />
-                      ) : (
-                        <span className="text-xs font-semibold">{step.id}</span>
-                      )}
-                    </button>
+                        title={
+                          isCompleted
+                            ? `Go back to ${step.title}`
+                            : isCurrent
+                            ? `Current step: ${step.title}`
+                            : `Complete current steps first`
+                        }
+                      >
+                        {isCompleted ? (
+                          <CheckIcon className="h-5 w-5" />
+                        ) : (
+                          <span className="text-xs font-semibold">
+                            {step.id}
+                          </span>
+                        )}
+                      </button>
 
-                    {/* Step Info with Enhanced Styling */}
-                    <div className="flex-1 min-w-0 transition-all duration-200">
-                      <div
-                        className={`
+                      {/* Step Info with Enhanced Styling */}
+                      <div className="flex-1 min-w-0 transition-all duration-200">
+                        <div
+                          className={`
                           text-sm font-semibold transition-colors duration-200
                           ${
                             isCompleted
@@ -3073,11 +3095,11 @@ const EnhancedPageBuilder = () => {
                               : "text-[var(--color-text-light)]"
                           }
                         `}
-                      >
-                        {step.title}
-                      </div>
-                      <div
-                        className={`
+                        >
+                          {step.title}
+                        </div>
+                        <div
+                          className={`
                           text-xs transition-colors duration-200
                           ${
                             isCompleted
@@ -3087,696 +3109,704 @@ const EnhancedPageBuilder = () => {
                               : "text-[var(--color-text-muted)]"
                           }
                         `}
-                      >
-                        {step.description}
+                        >
+                          {step.description}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
-          </div>
 
-          {/* Step Content */}
-          <div className="w-full">{renderStepContent()}</div>
+            {/* Step Content */}
+            <div className="w-full">{renderStepContent()}</div>
 
-          {/* Navigation */}
-          <div className="flex items-center justify-between w-full mt-8">
-            <Button
-              variant="outline"
-              onClick={handlePrevious}
-              disabled={currentStep === 1}
-              className="bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-[var(--color-text-inverse)] hover:bg-[var(--color-white-20)] hover:border-[var(--color-white-30)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Previous
-            </Button>
-
-            <div className="flex items-center space-x-4">
+            {/* Navigation */}
+            <div className="flex items-center justify-between w-full mt-8">
               <Button
                 variant="outline"
-                onClick={() => navigate("/admin/pages")}
-                className="bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-[var(--color-text-inverse)] hover:bg-[var(--color-white-20)] hover:border-[var(--color-white-30)] transition-all duration-200"
+                onClick={handlePrevious}
+                disabled={currentStep === 1}
+                className="bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-[var(--color-text-inverse)] hover:bg-[var(--color-white-20)] hover:border-[var(--color-white-30)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Cancel
+                Previous
               </Button>
 
-              {currentStep >= 2 && pageData.components.length > 0 && (
+              <div className="flex items-center space-x-4">
                 <Button
                   variant="outline"
-                  onClick={() => setShowPagePreview(true)}
-                  className="bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-[var(--color-text-inverse)] hover:bg-[var(--color-primary)]/20 hover:border-[var(--color-primary-light)] transition-all duration-200"
+                  onClick={() => navigate("/admin/pages")}
+                  className="bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-[var(--color-text-inverse)] hover:bg-[var(--color-white-20)] hover:border-[var(--color-white-30)] transition-all duration-200"
                 >
-                  <EyeIcon className="h-4 w-4 mr-2" />
-                  Preview Page
+                  Cancel
                 </Button>
-              )}
 
-              {currentStep < steps.length ? (
-                <Button
-                  onClick={handleNext}
-                  disabled={!isStepValid(currentStep)}
-                  className="bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] hover:from-[var(--color-primary-dark)] hover:to-[var(--color-active)] text-[var(--color-text-inverse)] shadow-lg shadow-[var(--color-primary)]/25 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  Next
-                </Button>
-              ) : (
-                <div className="flex space-x-3">
+                {currentStep >= 2 && pageData.components.length > 0 && (
                   <Button
                     variant="outline"
-                    onClick={() => handleSave("draft")}
-                    loading={loading && !isPublishing}
-                    disabled={
-                      !isStepValid(currentStep) || isPublishing || loading
-                    }
-                    className="bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-[var(--color-text-inverse)] hover:bg-[var(--color-white-20)] hover:border-[var(--color-white-30)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    onClick={() => setShowPagePreview(true)}
+                    className="bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-[var(--color-text-inverse)] hover:bg-[var(--color-primary)]/20 hover:border-[var(--color-primary-light)] transition-all duration-200"
                   >
-                    {loading && !isPublishing ? "Saving..." : "Save as Draft"}
+                    <EyeIcon className="h-4 w-4 mr-2" />
+                    Preview Page
                   </Button>
+                )}
+
+                {currentStep < steps.length ? (
                   <Button
-                    onClick={() => handleSave("published")}
-                    loading={isPublishing}
-                    disabled={
-                      !isStepValid(currentStep) || isPublishing || loading
-                    }
-                    className="bg-gradient-to-r from-[var(--tw-green-500)] to-[var(--tw-green-600)] hover:from-[var(--tw-green-600)] hover:to-[var(--tw-green-700)] text-[var(--color-text-inverse)] shadow-lg shadow-[var(--tw-green-500)]/25 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    onClick={handleNext}
+                    disabled={!isStepValid(currentStep)}
+                    className="bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] hover:from-[var(--color-primary-dark)] hover:to-[var(--color-active)] text-[var(--color-text-inverse)] shadow-lg shadow-[var(--color-primary)]/25 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {isPublishing ? "Publishing..." : "Publish Page"}
+                    Next
                   </Button>
-                </div>
-              )}
+                ) : (
+                  <div className="flex space-x-3">
+                    <Button
+                      variant="outline"
+                      onClick={() => handleSave("draft")}
+                      loading={loading && !isPublishing}
+                      disabled={
+                        !isStepValid(currentStep) || isPublishing || loading
+                      }
+                      className="bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-[var(--color-text-inverse)] hover:bg-[var(--color-white-20)] hover:border-[var(--color-white-30)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {loading && !isPublishing ? "Saving..." : "Save as Draft"}
+                    </Button>
+                    <Button
+                      onClick={() => handleSave("published")}
+                      loading={isPublishing}
+                      disabled={
+                        !isStepValid(currentStep) || isPublishing || loading
+                      }
+                      className="bg-gradient-to-r from-[var(--tw-green-500)] to-[var(--tw-green-600)] hover:from-[var(--tw-green-600)] hover:to-[var(--tw-green-700)] text-[var(--color-text-inverse)] shadow-lg shadow-[var(--tw-green-500)]/25 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {isPublishing ? "Publishing..." : "Publish Page"}
+                    </Button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Section Data Editor Modal */}
-        {showSectionEditor && editingComponent && (
-          <Modal
-            isOpen={showSectionEditor}
-            onClose={() => {
-              setShowSectionEditor(false);
-              setEditingComponent(null);
-            }}
-            title={`Configure ${editingComponent.componentName}`}
-            maxWidth="4xl"
-          >
-            <div className="p-6">
-              {/* Toggle between old and new input system */}
-              <div className="mb-6 p-4 bg-gray-50 rounded-lg">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="text-sm font-medium text-gray-900">
-                      Input System
-                    </h3>
-                    <p className="text-sm text-gray-500">
-                      Choose between legacy and new component-specific input
-                      system
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => setUseNewInputSystem(!useNewInputSystem)}
-                    className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
-                      useNewInputSystem ? "bg-blue-600" : "bg-gray-200"
-                    }`}
-                  >
-                    <span
-                      className={`inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
-                        useNewInputSystem ? "translate-x-5" : "translate-x-0"
+          {/* Section Data Editor Modal */}
+          {showSectionEditor && editingComponent && (
+            <Modal
+              isOpen={showSectionEditor}
+              onClose={() => {
+                setShowSectionEditor(false);
+                setEditingComponent(null);
+              }}
+              title={`Configure ${editingComponent.componentName}`}
+              maxWidth="4xl"
+            >
+              <div className="p-6">
+                {/* Toggle between old and new input system */}
+                <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-sm font-medium text-gray-900">
+                        Input System
+                      </h3>
+                      <p className="text-sm text-gray-500">
+                        Choose between legacy and new component-specific input
+                        system
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => setUseNewInputSystem(!useNewInputSystem)}
+                      className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                        useNewInputSystem ? "bg-blue-600" : "bg-gray-200"
                       }`}
-                    />
-                  </button>
+                    >
+                      <span
+                        className={`inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                          useNewInputSystem ? "translate-x-5" : "translate-x-0"
+                        }`}
+                      />
+                    </button>
+                  </div>
+                  <div className="mt-2">
+                    <span className="text-xs text-gray-600">
+                      {useNewInputSystem
+                        ? "Using New Component-Specific System"
+                        : "Using Legacy System"}
+                    </span>
+                  </div>
                 </div>
-                <div className="mt-2">
-                  <span className="text-xs text-gray-600">
-                    {useNewInputSystem
-                      ? "Using New Component-Specific System"
-                      : "Using Legacy System"}
-                  </span>
-                </div>
+
+                {/* Conditional rendering based on system choice */}
+                {useNewInputSystem ? (
+                  <div className="space-y-6">
+                    <div className="border-b border-gray-200 pb-4">
+                      <h3 className="text-lg font-medium text-gray-900">
+                        {editingComponent.componentName} Configuration
+                      </h3>
+                      <p className="text-sm text-gray-600">
+                        Configure component-specific settings and data
+                      </p>
+                    </div>
+
+                    {/* Dynamic inputs based on component data structure */}
+                    <div className="max-h-96 overflow-y-auto">
+                      {(() => {
+                        try {
+                          const componentData = editingComponent.contentJson
+                            ? JSON.parse(editingComponent.contentJson)
+                            : getDefaultDataForComponent(
+                                editingComponent.componentType
+                              );
+
+                          const componentIndex = pageData.components.findIndex(
+                            (comp) => comp.id === editingComponent.id
+                          );
+
+                          return renderDynamicInputs(
+                            componentData,
+                            "",
+                            0,
+                            componentIndex
+                          );
+                        } catch (error) {
+                          console.error(
+                            "Error rendering dynamic inputs:",
+                            error
+                          );
+                          const defaultData = getDefaultDataForComponent(
+                            editingComponent.componentType
+                          );
+                          const componentIndex = pageData.components.findIndex(
+                            (comp) => comp.id === editingComponent.id
+                          );
+                          return renderDynamicInputs(
+                            defaultData,
+                            "",
+                            0,
+                            componentIndex
+                          );
+                        }
+                      })()}
+                    </div>
+                  </div>
+                ) : (
+                  <SectionDataEditor
+                    isOpen={true}
+                    onClose={() => {}}
+                    section={{
+                      name: editingComponent.componentName,
+                      componentId: editingComponent.componentType,
+                      icon: editingComponent.componentInfo?.icon || "📄",
+                      data:
+                        editingComponent.content ||
+                        (editingComponent.contentJson
+                          ? JSON.parse(editingComponent.contentJson)
+                          : {}),
+                    }}
+                    onSave={saveComponentData}
+                  />
+                )}
               </div>
 
-              {/* Conditional rendering based on system choice */}
-              {useNewInputSystem ? (
-                <div className="space-y-6">
-                  <div className="border-b border-gray-200 pb-4">
-                    <h3 className="text-lg font-medium text-gray-900">
-                      {editingComponent.componentName} Configuration
-                    </h3>
-                    <p className="text-sm text-gray-600">
-                      Configure component-specific settings and data
-                    </p>
-                  </div>
-
-                  {/* Dynamic inputs based on component data structure */}
-                  <div className="max-h-96 overflow-y-auto">
-                    {(() => {
-                      try {
-                        const componentData = editingComponent.contentJson
-                          ? JSON.parse(editingComponent.contentJson)
-                          : getDefaultDataForComponent(
-                              editingComponent.componentType
-                            );
-
-                        const componentIndex = pageData.components.findIndex(
-                          (comp) => comp.id === editingComponent.id
-                        );
-
-                        return renderDynamicInputs(
-                          componentData,
-                          "",
-                          0,
-                          componentIndex
-                        );
-                      } catch (error) {
-                        console.error("Error rendering dynamic inputs:", error);
-                        const defaultData = getDefaultDataForComponent(
-                          editingComponent.componentType
-                        );
-                        const componentIndex = pageData.components.findIndex(
-                          (comp) => comp.id === editingComponent.id
-                        );
-                        return renderDynamicInputs(
-                          defaultData,
-                          "",
-                          0,
-                          componentIndex
-                        );
-                      }
-                    })()}
-                  </div>
-                </div>
-              ) : (
-                <SectionDataEditor
-                  isOpen={true}
-                  onClose={() => {}}
-                  section={{
-                    name: editingComponent.componentName,
-                    componentId: editingComponent.componentType,
-                    icon: editingComponent.componentInfo?.icon || "📄",
-                    data:
-                      editingComponent.content ||
-                      (editingComponent.contentJson
-                        ? JSON.parse(editingComponent.contentJson)
-                        : {}),
+              <ModalFooter>
+                <Button
+                  variant="secondary"
+                  onClick={() => {
+                    setShowSectionEditor(false);
+                    setEditingComponent(null);
                   }}
-                  onSave={saveComponentData}
-                />
-              )}
-            </div>
-
-            <ModalFooter>
-              <Button
-                variant="secondary"
-                onClick={() => {
-                  setShowSectionEditor(false);
-                  setEditingComponent(null);
-                }}
-              >
-                Cancel
-              </Button>
-              <Button
-                variant="primary"
-                onClick={() => {
-                  setShowSectionEditor(false);
-                  setEditingComponent(null);
-                }}
-              >
-                Save Changes
-              </Button>
-            </ModalFooter>
-          </Modal>
-        )}
-
-        {/* Page Preview Modal */}
-        <PagePreview
-          isOpen={showPagePreview}
-          onClose={() => setShowPagePreview(false)}
-          pageData={pageData}
-          availableComponents={availableComponents}
-        />
-
-        {/* Toast Notification */}
-        {toast && (
-          <Toast
-            message={toast.message}
-            type={toast.type}
-            onClose={() => setToast(null)}
-          />
-        )}
-      </div>
-    </MediaInputDetector>
-  );
-};
-
-// Category selector that fetches from backend swagger endpoints
-const CategorySelector = ({ value, onChange }) => {
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const load = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const res = await api.get("/Categories");
-        const list = Array.isArray(res.data) ? res.data : [];
-
-        // Filter out "Home" and "About" categories
-        const filteredList = list.filter((category) => {
-          const name = category.name?.toLowerCase();
-          const slug = category.slug?.toLowerCase();
-          return (
-            name !== "home" &&
-            name !== "about" &&
-            slug !== "home" &&
-            slug !== "about"
-          );
-        });
-
-        setCategories(filteredList);
-      } catch (e) {
-        setError(e.message || "Failed to load categories");
-      } finally {
-        setLoading(false);
-      }
-    };
-    load();
-  }, []);
-
-  if (loading) {
-    return <div className="text-white/80 text-sm">Loading categories...</div>;
-  }
-  if (error) {
-    return <div className="text-red-300 text-sm">{error}</div>;
-  }
-
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-      {categories.map((c) => (
-        <button
-          key={c.id}
-          onClick={() => onChange(c.id)}
-          className={`text-left p-4 rounded-lg border transition ${
-            value === c.id
-              ? "border-[var(--color-primary-light)] bg-[var(--color-primary)]/10"
-              : "border-[var(--color-white-10)] hover:border-[var(--color-white-20)] bg-[var(--color-white)]/5"
-          }`}
-        >
-          <div className="text-[var(--color-text-inverse)] font-semibold">
-            {c.name}
-          </div>
-          {c.description && (
-            <div className="text-[var(--color-text-inverse)]/70 text-sm mt-1">
-              {c.description}
-            </div>
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="primary"
+                  onClick={() => {
+                    setShowSectionEditor(false);
+                    setEditingComponent(null);
+                  }}
+                >
+                  Save Changes
+                </Button>
+              </ModalFooter>
+            </Modal>
           )}
-        </button>
-      ))}
-    </div>
-  );
-};
 
-// Step 1: Page Details
-const PageDetailsStep = ({ pageData, onDataChange }) => {
-  return (
-    <Card className="bg-[var(--color-white)]/5 backdrop-blur-sm border border-[var(--color-white-10)] shadow-xl">
-      <CardHeader>
-        <CardTitle className="text-[var(--color-text-inverse)] text-xl font-bold">
-          Page Details
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label className="block text-sm font-semibold text-[var(--color-text-inverse)] mb-2">
-              Page Name *
-            </label>
-            <Input
-              value={pageData.name}
-              onChange={(e) => onDataChange("name", e.target.value)}
-              placeholder="Enter page name"
-              className="w-full bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-[var(--color-text-inverse)] placeholder-[var(--color-text-inverse)]/50 focus:border-[var(--color-primary-light)] focus:ring-[var(--color-primary-light)]/20"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-semibold text-[var(--color-text-inverse)] mb-2">
-              URL Slug *
-            </label>
-            <Input
-              type="text"
-              value={pageData.slug}
-              onChange={(e) => onDataChange("slug", e.target.value)}
-              placeholder="page-url-slug"
-              pattern="[a-z0-9-]+"
-              title="Slug must only contain lowercase letters, numbers, and dashes."
-              className="w-full bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-[var(--color-text-inverse)] placeholder-[var(--color-text-inverse)]/50 focus:border-[var(--color-primary-light)] focus:ring-[var(--color-primary-light)]/20"
-            />
-            <p className="text-sm text-[var(--color-text-secondary)] mt-2">
-              URL: /{pageData.slug || "page-url-slug"}
-            </p>
-            <p className="text-xs text-[var(--color-text-light)] mt-1">
-              Slug must only contain lowercase letters, numbers, and dashes.
-            </p>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label className="block text-sm font-semibold text-[var(--color-text-inverse)] mb-2">
-              SEO Meta Title
-            </label>
-            <Input
-              value={pageData.metaTitle}
-              onChange={(e) => onDataChange("metaTitle", e.target.value)}
-              placeholder="SEO title for search engines"
-              className="w-full bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-[var(--color-text-inverse)] placeholder-[var(--color-text-inverse)]/50 focus:border-[var(--color-primary-light)] focus:ring-[var(--color-primary-light)]/20"
-            />
-          </div>
-          <div></div>
-        </div>
-
-        <div>
-          <label className="block text-sm font-semibold text-[var(--color-text-inverse)] mb-2">
-            SEO Meta Description
-          </label>
-          <textarea
-            value={pageData.metaDescription}
-            onChange={(e) => onDataChange("metaDescription", e.target.value)}
-            placeholder="SEO description for search engines"
-            rows={3}
-            className="block w-full rounded-lg bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-[var(--color-text-inverse)] placeholder-[var(--color-text-inverse)]/50 focus:border-[var(--color-primary-light)] focus:ring-[var(--color-primary-light)]/20 shadow-sm resize-none"
+          {/* Page Preview Modal */}
+          <PagePreview
+            isOpen={showPagePreview}
+            onClose={() => setShowPagePreview(false)}
+            pageData={pageData}
+            availableComponents={availableComponents}
           />
-        </div>
 
-        <div className="flex items-center space-x-4">
-          <label className="flex items-center">
-            <input
-              type="checkbox"
-              checked={pageData.isHomepage}
-              onChange={(e) => onDataChange("isHomepage", e.target.checked)}
-              className="h-4 w-4 text-[var(--color-primary)] focus:ring-[var(--color-primary)] border-[var(--color-border-secondary)] rounded"
+          {/* Toast Notification */}
+          {toast && (
+            <Toast
+              message={toast.message}
+              type={toast.type}
+              onClose={() => setToast(null)}
             />
-            <span className="ml-2 text-sm text-[var(--color-text-inverse)]">
-              Set as Homepage
-            </span>
-          </label>
+          )}
         </div>
-      </CardContent>
-    </Card>
-  );
-};
-
-// Step 2: Sections with detailed component forms
-const SectionsStep = ({
-  pageData,
-  availableComponents,
-  onAddComponent,
-  onUpdateComponent,
-  onRemoveComponent,
-  onDuplicateComponent,
-  componentSchemas = {},
-  // New Input System Props
-  showNewInputModal,
-  setShowNewInputModal,
-  currentComponent,
-  openNewInputModal,
-  useNewInputSystemState,
-  setUseNewInputSystemState,
-}) => {
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [searchTerm, setSearchTerm] = useState("");
-  const [isEditMode, setIsEditMode] = useState(true);
-
-  // Handle real-time updates from modal inputs
-  const handleModalInputChange = (field, value, componentIndex) => {
-    console.log(
-      `🔄 [MODAL UPDATE] Component ${componentIndex}, Field: ${field}, Value:`,
-      value
-    );
-
-    // Get current component data
-    const currentData = pageData.components[componentIndex];
-
-    // Parse existing contentJson or create new object
-    let updatedContent = {};
-    try {
-      updatedContent = currentData.contentJson
-        ? JSON.parse(currentData.contentJson)
-        : {};
-    } catch (error) {
-      console.warn(
-        "Failed to parse contentJson, creating new object:",
-        error.message
-      );
-      updatedContent = {};
-    }
-
-    // Update the field
-    updatedContent[field] = value;
-
-    // Convert back to JSON and update component
-    const newContentJson = JSON.stringify(updatedContent, null, 2);
-    onUpdateComponent(componentIndex, "contentJson", newContentJson);
-
-    console.log(
-      `✅ [MODAL UPDATE] Component ${componentIndex} updated with:`,
-      updatedContent
+      </MediaInputDetector>
     );
   };
 
-  // Simple renderDynamicInputs function for the modal
-  const renderDynamicInputs = (
-    data,
-    fieldPath = "",
-    level = 0,
-    componentIndex
-  ) => {
-    if (!data || typeof data !== "object") {
-      return <div>No configuration available for this component</div>;
+  // Category selector that fetches from backend swagger endpoints
+  const CategorySelector = ({ value, onChange }) => {
+    const [categories, setCategories] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+      const load = async () => {
+        try {
+          setLoading(true);
+          setError(null);
+          const res = await api.get("/Categories");
+          const list = Array.isArray(res.data) ? res.data : [];
+
+          // Filter out "Home" and "About" categories
+          const filteredList = list.filter((category) => {
+            const name = category.name?.toLowerCase();
+            const slug = category.slug?.toLowerCase();
+            return (
+              name !== "home" &&
+              name !== "about" &&
+              slug !== "home" &&
+              slug !== "about"
+            );
+          });
+
+          setCategories(filteredList);
+        } catch (e) {
+          setError(e.message || "Failed to load categories");
+        } finally {
+          setLoading(false);
+        }
+      };
+      load();
+    }, []);
+
+    if (loading) {
+      return <div className="text-white/80 text-sm">Loading categories...</div>;
+    }
+    if (error) {
+      return <div className="text-red-300 text-sm">{error}</div>;
     }
 
     return (
-      <div className="space-y-4">
-        {Object.entries(data).map(([key, value]) => (
-          <div key={key} className="border border-gray-200 p-3 rounded">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {key}
-            </label>
-            {typeof value === "string" && (
-              <input
-                type="text"
-                defaultValue={value}
-                onChange={(e) =>
-                  handleModalInputChange(key, e.target.value, componentIndex)
-                }
-                className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
-              />
-            )}
-            {typeof value === "boolean" && (
-              <input
-                type="checkbox"
-                defaultChecked={value}
-                onChange={(e) =>
-                  handleModalInputChange(key, e.target.checked, componentIndex)
-                }
-                className="h-4 w-4 text-blue-600"
-              />
-            )}
-            {Array.isArray(value) && (
-              <div className="space-y-2">
-                <div className="text-sm text-gray-600">
-                  Array with {value.length} items
-                </div>
-                <button className="px-2 py-1 bg-blue-500 text-white rounded text-sm">
-                  Add Item
-                </button>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {categories.map((c) => (
+          <button
+            key={c.id}
+            onClick={() => onChange(c.id)}
+            className={`text-left p-4 rounded-lg border transition ${
+              value === c.id
+                ? "border-[var(--color-primary-light)] bg-[var(--color-primary)]/10"
+                : "border-[var(--color-white-10)] hover:border-[var(--color-white-20)] bg-[var(--color-white)]/5"
+            }`}
+          >
+            <div className="text-[var(--color-text-inverse)] font-semibold">
+              {c.name}
+            </div>
+            {c.description && (
+              <div className="text-[var(--color-text-inverse)]/70 text-sm mt-1">
+                {c.description}
               </div>
             )}
-            {typeof value === "object" &&
-              value !== null &&
-              !Array.isArray(value) && (
-                <div className="pl-4 border-l-2 border-gray-200">
-                  {renderDynamicInputs(
-                    value,
-                    `${fieldPath}.${key}`,
-                    level + 1,
-                    componentIndex
-                  )}
-                </div>
-              )}
-          </div>
+          </button>
         ))}
       </div>
     );
   };
 
-  // Dynamic category generation based on available components
-  const categories = React.useMemo(() => {
-    // Get components that match search term (if any)
-    const searchFilteredComponents = searchTerm.trim()
-      ? availableComponents.filter((comp) => {
-          const search = searchTerm.toLowerCase().trim();
-          return (
-            comp.name.toLowerCase().includes(search) ||
-            comp.componentType.toLowerCase().includes(search) ||
-            comp.category.toLowerCase().includes(search) ||
-            comp.description.toLowerCase().includes(search)
-          );
-        })
-      : availableComponents;
+  // Step 1: Page Details
+  const PageDetailsStep = ({ pageData, onDataChange }) => {
+    return (
+      <Card className="bg-[var(--color-white)]/5 backdrop-blur-sm border border-[var(--color-white-10)] shadow-xl">
+        <CardHeader>
+          <CardTitle className="text-[var(--color-text-inverse)] text-xl font-bold">
+            Page Details
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-semibold text-[var(--color-text-inverse)] mb-2">
+                Page Name *
+              </label>
+              <Input
+                value={pageData.name}
+                onChange={(e) => onDataChange("name", e.target.value)}
+                placeholder="Enter page name"
+                className="w-full bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-[var(--color-text-inverse)] placeholder-[var(--color-text-inverse)]/50 focus:border-[var(--color-primary-light)] focus:ring-[var(--color-primary-light)]/20"
+              />
+            </div>
 
-    // Count components per category (considering search filter)
-    const categoryCounts = {};
-    searchFilteredComponents.forEach((comp) => {
-      categoryCounts[comp.category] = (categoryCounts[comp.category] || 0) + 1;
-    });
+            <div>
+              <label className="block text-sm font-semibold text-[var(--color-text-inverse)] mb-2">
+                URL Slug *
+              </label>
+              <Input
+                type="text"
+                value={pageData.slug}
+                onChange={(e) => onDataChange("slug", e.target.value)}
+                placeholder="page-url-slug"
+                pattern="[a-z0-9-]+"
+                title="Slug must only contain lowercase letters, numbers, and dashes."
+                className="w-full bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-[var(--color-text-inverse)] placeholder-[var(--color-text-inverse)]/50 focus:border-[var(--color-primary-light)] focus:ring-[var(--color-primary-light)]/20"
+              />
+              <p className="text-sm text-[var(--color-text-secondary)] mt-2">
+                URL: /{pageData.slug || "page-url-slug"}
+              </p>
+              <p className="text-xs text-[var(--color-text-light)] mt-1">
+                Slug must only contain lowercase letters, numbers, and dashes.
+              </p>
+            </div>
+          </div>
 
-    // Start with "All Components"
-    const dynamicCategories = [
-      {
-        id: "all",
-        name: "All Components",
-        icon: "📄",
-        count: searchFilteredComponents.length,
-      },
-    ];
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-semibold text-[var(--color-text-inverse)] mb-2">
+                SEO Meta Title
+              </label>
+              <Input
+                value={pageData.metaTitle}
+                onChange={(e) => onDataChange("metaTitle", e.target.value)}
+                placeholder="SEO title for search engines"
+                className="w-full bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-[var(--color-text-inverse)] placeholder-[var(--color-text-inverse)]/50 focus:border-[var(--color-primary-light)] focus:ring-[var(--color-primary-light)]/20"
+              />
+            </div>
+            <div></div>
+          </div>
 
-    // Extract unique categories from available components
-    const uniqueCategories = [
-      ...new Set(
-        availableComponents
-          .map((comp) => comp.category)
-          .filter((category) => category && category !== "all")
-      ),
-    ];
+          <div>
+            <label className="block text-sm font-semibold text-[var(--color-text-inverse)] mb-2">
+              SEO Meta Description
+            </label>
+            <textarea
+              value={pageData.metaDescription}
+              onChange={(e) => onDataChange("metaDescription", e.target.value)}
+              placeholder="SEO description for search engines"
+              rows={3}
+              className="block w-full rounded-lg bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-[var(--color-text-inverse)] placeholder-[var(--color-text-inverse)]/50 focus:border-[var(--color-primary-light)] focus:ring-[var(--color-primary-light)]/20 shadow-sm resize-none"
+            />
+          </div>
 
-    // Define category icons and display names
-    const categoryConfig = {
-      layout: { name: "Layout", icon: "🎯" },
-      content: { name: "Content", icon: "📝" },
-      pricing: { name: "Pricing", icon: "💰" },
-      faq: { name: "FAQ", icon: "❓" },
-      cta: { name: "Call to Action", icon: "🚀" },
-      about: { name: "About", icon: "👥" },
-      hero: { name: "Hero", icon: "🌟" },
-      solution: { name: "Solution", icon: "⚡" },
-      services: { name: "Services", icon: "🔧" },
-      industry: { name: "Industry", icon: "🏭" },
-      features: { name: "Features", icon: "✨" },
-      testimonials: { name: "Testimonials", icon: "💬" },
-      contact: { name: "Contact", icon: "📞" },
-      team: { name: "Team", icon: "👥" },
-      portfolio: { name: "Portfolio", icon: "🎨" },
-      blog: { name: "Blog", icon: "📰" },
-      footer: { name: "Footer", icon: "🔗" },
-      header: { name: "Header", icon: "📋" },
-      navigation: { name: "Navigation", icon: "🧭" },
+          <div className="flex items-center space-x-4">
+            <label className="flex items-center">
+              <input
+                type="checkbox"
+                checked={pageData.isHomepage}
+                onChange={(e) => onDataChange("isHomepage", e.target.checked)}
+                className="h-4 w-4 text-[var(--color-primary)] focus:ring-[var(--color-primary)] border-[var(--color-border-secondary)] rounded"
+              />
+              <span className="ml-2 text-sm text-[var(--color-text-inverse)]">
+                Set as Homepage
+              </span>
+            </label>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  };
+
+  // Step 2: Sections with detailed component forms
+  const SectionsStep = ({
+    pageData,
+    availableComponents,
+    onAddComponent,
+    onUpdateComponent,
+    onRemoveComponent,
+    onDuplicateComponent,
+    componentSchemas = {},
+    // New Input System Props
+    showNewInputModal,
+    setShowNewInputModal,
+    currentComponent,
+    openNewInputModal,
+    useNewInputSystemState,
+    setUseNewInputSystemState,
+  }) => {
+    const [selectedCategory, setSelectedCategory] = useState("all");
+    const [searchTerm, setSearchTerm] = useState("");
+    const [isEditMode, setIsEditMode] = useState(true);
+
+    // Handle real-time updates from modal inputs
+    const handleModalInputChange = (field, value, componentIndex) => {
+      console.log(
+        `🔄 [MODAL UPDATE] Component ${componentIndex}, Field: ${field}, Value:`,
+        value
+      );
+
+      // Get current component data
+      const currentData = pageData.components[componentIndex];
+
+      // Parse existing contentJson or create new object
+      let updatedContent = {};
+      try {
+        updatedContent = currentData.contentJson
+          ? JSON.parse(currentData.contentJson)
+          : {};
+      } catch (error) {
+        console.warn(
+          "Failed to parse contentJson, creating new object:",
+          error.message
+        );
+        updatedContent = {};
+      }
+
+      // Update the field
+      updatedContent[field] = value;
+
+      // Convert back to JSON and update component
+      const newContentJson = JSON.stringify(updatedContent, null, 2);
+      onUpdateComponent(componentIndex, "contentJson", newContentJson);
+
+      console.log(
+        `✅ [MODAL UPDATE] Component ${componentIndex} updated with:`,
+        updatedContent
+      );
     };
 
-    // Sort categories by count (descending) for better UX
-    const sortedCategories = uniqueCategories.sort(
-      (a, b) => (categoryCounts[b] || 0) - (categoryCounts[a] || 0)
-    );
+    // Simple renderDynamicInputs function for the modal
+    const renderDynamicInputs = (
+      data,
+      fieldPath = "",
+      level = 0,
+      componentIndex
+    ) => {
+      if (!data || typeof data !== "object") {
+        return <div>No configuration available for this component</div>;
+      }
 
-    // Add categories that exist in components
-    sortedCategories.forEach((categoryId) => {
-      const config = categoryConfig[categoryId] || {
-        name: categoryId.charAt(0).toUpperCase() + categoryId.slice(1),
-        icon: "📦",
+      return (
+        <div className="space-y-4">
+          {Object.entries(data).map(([key, value]) => (
+            <div key={key} className="border border-gray-200 p-3 rounded">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                {key}
+              </label>
+              {typeof value === "string" && (
+                <input
+                  type="text"
+                  defaultValue={value}
+                  onChange={(e) =>
+                    handleModalInputChange(key, e.target.value, componentIndex)
+                  }
+                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                />
+              )}
+              {typeof value === "boolean" && (
+                <input
+                  type="checkbox"
+                  defaultChecked={value}
+                  onChange={(e) =>
+                    handleModalInputChange(
+                      key,
+                      e.target.checked,
+                      componentIndex
+                    )
+                  }
+                  className="h-4 w-4 text-blue-600"
+                />
+              )}
+              {Array.isArray(value) && (
+                <div className="space-y-2">
+                  <div className="text-sm text-gray-600">
+                    Array with {value.length} items
+                  </div>
+                  <button className="px-2 py-1 bg-blue-500 text-white rounded text-sm">
+                    Add Item
+                  </button>
+                </div>
+              )}
+              {typeof value === "object" &&
+                value !== null &&
+                !Array.isArray(value) && (
+                  <div className="pl-4 border-l-2 border-gray-200">
+                    {renderDynamicInputs(
+                      value,
+                      `${fieldPath}.${key}`,
+                      level + 1,
+                      componentIndex
+                    )}
+                  </div>
+                )}
+            </div>
+          ))}
+        </div>
+      );
+    };
+
+    // Dynamic category generation based on available components
+    const categories = React.useMemo(() => {
+      // Get components that match search term (if any)
+      const searchFilteredComponents = searchTerm.trim()
+        ? availableComponents.filter((comp) => {
+            const search = searchTerm.toLowerCase().trim();
+            return (
+              comp.name.toLowerCase().includes(search) ||
+              comp.componentType.toLowerCase().includes(search) ||
+              comp.category.toLowerCase().includes(search) ||
+              comp.description.toLowerCase().includes(search)
+            );
+          })
+        : availableComponents;
+
+      // Count components per category (considering search filter)
+      const categoryCounts = {};
+      searchFilteredComponents.forEach((comp) => {
+        categoryCounts[comp.category] =
+          (categoryCounts[comp.category] || 0) + 1;
+      });
+
+      // Start with "All Components"
+      const dynamicCategories = [
+        {
+          id: "all",
+          name: "All Components",
+          icon: "📄",
+          count: searchFilteredComponents.length,
+        },
+      ];
+
+      // Extract unique categories from available components
+      const uniqueCategories = [
+        ...new Set(
+          availableComponents
+            .map((comp) => comp.category)
+            .filter((category) => category && category !== "all")
+        ),
+      ];
+
+      // Define category icons and display names
+      const categoryConfig = {
+        layout: { name: "Layout", icon: "🎯" },
+        content: { name: "Content", icon: "📝" },
+        pricing: { name: "Pricing", icon: "💰" },
+        faq: { name: "FAQ", icon: "❓" },
+        cta: { name: "Call to Action", icon: "🚀" },
+        about: { name: "About", icon: "👥" },
+        hero: { name: "Hero", icon: "🌟" },
+        solution: { name: "Solution", icon: "⚡" },
+        services: { name: "Services", icon: "🔧" },
+        industry: { name: "Industry", icon: "🏭" },
+        features: { name: "Features", icon: "✨" },
+        testimonials: { name: "Testimonials", icon: "💬" },
+        contact: { name: "Contact", icon: "📞" },
+        team: { name: "Team", icon: "👥" },
+        portfolio: { name: "Portfolio", icon: "🎨" },
+        blog: { name: "Blog", icon: "📰" },
+        footer: { name: "Footer", icon: "🔗" },
+        header: { name: "Header", icon: "📋" },
+        navigation: { name: "Navigation", icon: "🧭" },
       };
 
-      dynamicCategories.push({
-        id: categoryId,
-        name: config.name,
-        icon: config.icon,
-        count: categoryCounts[categoryId] || 0,
+      // Sort categories by count (descending) for better UX
+      const sortedCategories = uniqueCategories.sort(
+        (a, b) => (categoryCounts[b] || 0) - (categoryCounts[a] || 0)
+      );
+
+      // Add categories that exist in components
+      sortedCategories.forEach((categoryId) => {
+        const config = categoryConfig[categoryId] || {
+          name: categoryId.charAt(0).toUpperCase() + categoryId.slice(1),
+          icon: "📦",
+        };
+
+        dynamicCategories.push({
+          id: categoryId,
+          name: config.name,
+          icon: config.icon,
+          count: categoryCounts[categoryId] || 0,
+        });
       });
-    });
 
-    return dynamicCategories;
-  }, [availableComponents, searchTerm]);
+      return dynamicCategories;
+    }, [availableComponents, searchTerm]);
 
-  return (
-    <div className="space-y-6">
-      {/* Available Components */}
-      <Card className="bg-white/5 backdrop-blur-sm border border-white/10 shadow-xl">
-        <CardHeader>
-          <CardTitle className="text-white text-xl font-bold">
-            Available Components
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {availableComponents.map((component) => (
-              <div
-                key={component.id}
-                className="p-4 border border-white/20 rounded-xl cursor-pointer hover:bg-white/10 hover:border-white/30 transition-all duration-200 group"
-                onClick={() => onAddComponent(component)}
-              >
-                <div className="flex items-center space-x-3">
-                  <div className="text-2xl group-hover:scale-110 transition-transform duration-200">
-                    {component.icon}
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="text-base font-semibold text-white mb-1">
-                      {component.name}
-                    </h4>
-                    <p className="text-sm text-gray-300 leading-relaxed">
-                      {component.description}
-                    </p>
-                    <div className="mt-2">
-                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-500/20 text-blue-300">
-                        {component.category}
-                      </span>
+    return (
+      <div className="space-y-6">
+        {/* Available Components */}
+        <Card className="bg-white/5 backdrop-blur-sm border border-white/10 shadow-xl">
+          <CardHeader>
+            <CardTitle className="text-white text-xl font-bold">
+              Available Components
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {availableComponents.map((component) => (
+                <div
+                  key={component.id}
+                  className="p-4 border border-white/20 rounded-xl cursor-pointer hover:bg-white/10 hover:border-white/30 transition-all duration-200 group"
+                  onClick={() => onAddComponent(component)}
+                >
+                  <div className="flex items-center space-x-3">
+                    <div className="text-2xl group-hover:scale-110 transition-transform duration-200">
+                      {component.icon}
                     </div>
+                    <div className="flex-1">
+                      <h4 className="text-base font-semibold text-white mb-1">
+                        {component.name}
+                      </h4>
+                      <p className="text-sm text-gray-300 leading-relaxed">
+                        {component.description}
+                      </p>
+                      <div className="mt-2">
+                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-500/20 text-blue-300">
+                          {component.category}
+                        </span>
+                      </div>
+                    </div>
+                    <PlusIcon className="h-5 w-5 text-white/60 group-hover:text-white transition-colors" />
                   </div>
-                  <PlusIcon className="h-5 w-5 text-white/60 group-hover:text-white transition-colors" />
                 </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  };
+
+  // Step 3: Review
+  const ReviewStep = ({ pageData }) => {
+    const [isEditMode, setIsEditMode] = useState(true);
+
+    return (
+      <div className="space-y-6">
+        {/* Page Summary */}
+        <Card className="bg-white/5 backdrop-blur-sm border border-white/10 shadow-xl">
+          <CardHeader>
+            <CardTitle className="text-white text-xl font-bold">
+              Page Summary
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-1">
+                  Page Name
+                </label>
+                <p className="text-white font-semibold">{pageData.name}</p>
               </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-    </div>
-  );
-};
-
-// Step 3: Review
-const ReviewStep = ({ pageData }) => {
-  const [isEditMode, setIsEditMode] = useState(true);
-
-  return (
-    <div className="space-y-6">
-      {/* Page Summary */}
-      <Card className="bg-white/5 backdrop-blur-sm border border-white/10 shadow-xl">
-        <CardHeader>
-          <CardTitle className="text-white text-xl font-bold">
-            Page Summary
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-400 mb-1">
-                Page Name
-              </label>
-              <p className="text-white font-semibold">{pageData.name}</p>
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-1">
+                  URL Slug
+                </label>
+                <p className="text-white font-semibold">/{pageData.slug}</p>
+              </div>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-400 mb-1">
-                URL Slug
-              </label>
-              <p className="text-white font-semibold">/{pageData.slug}</p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
-  );
-};
+          </CardContent>
+        </Card>
+      </div>
+    );
+  };
 
-export default EnhancedPageBuilder;
+  export default EnhancedPageBuilder;
 
   // Helper function to set nested object values
   const setNestedValue = (obj, path, value) => {

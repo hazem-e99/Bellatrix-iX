@@ -431,14 +431,6 @@ const DynamicPageRenderer = () => {
             ctaButton: props.ctaButton,
           },
         };
-      case "ManufacturingIndustryStatsSection":
-        return {
-          data: {
-            title: props.title,
-            subtitle: props.subtitle,
-            stats: props.stats || [],
-          },
-        };
       case "ManufacturingChallengesSection":
         return {
           data: {
@@ -455,33 +447,7 @@ const DynamicPageRenderer = () => {
             solutions: props.solutions || [],
           },
         };
-      case "ManufacturingCaseStudiesSection":
-        return {
-          data: {
-            title: props.title,
-            subtitle: props.subtitle,
-            caseStudies: props.caseStudies || [],
-          },
-        };
-      case "ManufacturingImplementationProcessSection":
-        return {
-          data: {
-            title: props.title,
-            subtitle: props.subtitle,
-            steps: props.steps || [],
-          },
-        };
-      case "ManufacturingCTASection":
-        return {
-          title: props.title,
-          subtitle: props.subtitle,
-          description: props.description,
-          ctaButton: props.ctaButton,
-          features: props.features,
-          trustedBy: props.trustedBy,
-          openContactModal: props.openContactModal || (() => {}),
-        };
-
+      
       // ========== RETAIL COMPONENTS ==========
       case "RetailHeroSection":
         return {

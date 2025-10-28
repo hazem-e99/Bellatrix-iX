@@ -12,7 +12,7 @@ const ProgramsSection = ({
 }) => {
   // Use provided renderIcon or fallback to default
   const iconRenderer = renderIcon || defaultRenderIcon;
-  
+
   // Add null checks and fallbacks for data
   const programs = trainingPrograms?.programs || [];
   const sectionData = programsSection || {};
@@ -39,19 +39,40 @@ const ProgramsSection = ({
       />
       <section className="bg-gray-50 py-12 light-section">
         {/* DEBUG: Show actual image URL being used */}
-        <div style={{ display: "none" }}>
-          Image URL: {sectionData?.image}
-        </div>
+        <div style={{ display: "none" }}>Image URL: {sectionData?.image}</div>
         <div className="container mx-auto px-6">
           <header className="text-center mb-10">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
-              {sectionData?.title ? sectionData.title.split(" ")[0] : "Training"}{" "}
-              <span className="text-blue-600">
-                {sectionData?.title ? sectionData.title.split(" ")[1] : "Programs"}
-              </span>
+              {
+                // Render the title in three parts: first word, second word (styled), and the remaining words on the next line
+                (() => {
+                  const rawTitle = sectionData?.title || "Training Programs";
+                  const parts = rawTitle.split(" ");
+                  const first = parts[0] || "Training";
+                  const second = parts[1] || "Programs";
+                  const rest = parts.slice(2).join(" ");
+                  return (
+                    <>
+                      <span className="inline-block">{first}</span>{" "}
+                      <span className="inline-block text-blue-600">
+                        {second}
+                      </span>
+                      {rest ? (
+                        <>
+                          <br />
+                          <span className="inline-block  animate-gradient-text-reverse">
+                            {rest}
+                          </span>
+                        </>
+                      ) : null}
+                    </>
+                  );
+                })()
+              }
             </h2>
             <p className="text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto">
-              {sectionData?.description || "Comprehensive training programs designed to enhance your skills and knowledge."}
+              {sectionData?.description ||
+                "Comprehensive training programs designed to enhance your skills and knowledge."}
             </p>
           </header>
 
@@ -152,7 +173,9 @@ const ProgramsSection = ({
                       "M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z",
                       "w-4 h-4"
                     )}
-                    <span>{sectionData?.Professional_Badge || "Professional"}</span>
+                    <span>
+                      {sectionData?.Professional_Badge || "Professional"}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -168,7 +191,9 @@ const ProgramsSection = ({
                       program={program}
                       index={index}
                       renderIcon={iconRenderer}
-                      onClick={() => openProgramModal && openProgramModal(program)}
+                      onClick={() =>
+                        openProgramModal && openProgramModal(program)
+                      }
                     />
                   ))
                 ) : (
@@ -177,7 +202,8 @@ const ProgramsSection = ({
                       No training programs available at the moment.
                     </div>
                     <div className="text-gray-400 text-sm mt-2">
-                      Please check back later or contact us for more information.
+                      Please check back later or contact us for more
+                      information.
                     </div>
                   </div>
                 )}

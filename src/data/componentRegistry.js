@@ -135,15 +135,20 @@ export const componentRegistry = {
       description:
         "Company journey timeline with beginning, growth, and today sections",
       dataStructure: {
-        beginningTitle: "string",
-        beginningText: "string",
-        growthTitle: "string",
-        growthText: "string",
-        todayTitle: "string",
-        todayText: "string",
-        imageUrl: "string",
+        title: "string",
+        description: "string",
+        milestones: "array", // title, date, description
+      },
+      defaultData: {
+        title: "Our Journey",
+        description: "How we evolved to deliver enterprise solutions",
+        milestones: [
+          { title: "Founded", date: "2010", description: "Company founded" },
+          { title: "Growth", date: "2015", description: "Expanded services" },
+        ],
       },
     },
+
     AboutTeamSection: {
       componentType: "AboutTeamSection",
       componentName: "About Team",
@@ -712,19 +717,19 @@ export const componentRegistry = {
       filePath: "src/components/industries/retail/CTASection.jsx",
       description: "Retail CTA section",
     },
-    RetailIndustryStats: {
-      componentType: "RetailIndustryStats",
-      componentName: "Retail Stats",
-      category: "stats",
-      icon: "📊",
-      filePath: "src/components/industries/retail/IndustryStats.jsx",
-      description: "Retail industry statistics",
-      dataStructure: {
-        title: "string",
-        description: "string",
-        stats: "array", // value, label, description
-      },
-    },
+    // RetailIndustryStats: {
+    //   componentType: "RetailIndustryStats",
+    //   componentName: "Retail Stats",
+    //   category: "stats",
+    //   icon: "📊",
+    //   filePath: "src/components/industries/retail/IndustryStats.jsx",
+    //   description: "Retail industry statistics",
+    //   dataStructure: {
+    //     title: "string",
+    //     description: "string",
+    //     stats: "array", // value, label, description
+    //   },
+    // },
     RetailChallengesSection: {
       componentType: "RetailChallengesSection",
       componentName: "Retail Challenges",
@@ -777,58 +782,12 @@ export const componentRegistry = {
         caseStudies: "array", // title, description, company, results
       },
     },
-    RetailImplementationSection: {
-      componentType: "RetailImplementationSection",
-      componentName: "Retail Implementation",
-      category: "process",
-      icon: "📋",
-      filePath: "src/components/industries/retail/ImplementationSection.jsx",
-      description: "Retail implementation process",
-      dataStructure: {
-        title: "string",
-        description: "string",
-        steps: "array", // title, description, step
-      },
-    },
   },
 
   // ===========================================
   // COMMON/SHARED COMPONENTS
   // ===========================================
-  Common: {
-    SEO: {
-      componentType: "SEO",
-      componentName: "SEO Meta Tags",
-      category: "seo",
-      icon: "🔍",
-      filePath: "src/components/SEO.jsx",
-      description: "SEO meta tags for page optimization",
-      dataStructure: {
-        title: "string",
-        description: "string",
-        keywords: "string",
-        ogTitle: "string",
-        ogDescription: "string",
-        ogImage: "string",
-        twitterCard: "string",
-        canonicalUrl: "string",
-      },
-    },
-    CTAButton: {
-      componentType: "CTAButton",
-      componentName: "CTA Button",
-      category: "buttons",
-      icon: "🔘",
-      filePath: "src/components/CTAButton.jsx",
-      description: "Call-to-action button with variants",
-      dataStructure: {
-        text: "string",
-        variant: "string",
-        icon: "string",
-        onClick: "function",
-      },
-    },
-  },
+  // Common/shared components cleaned: CTAButton removed from registry
 };
 
 /**
@@ -891,7 +850,7 @@ export const componentCategories = [
   { id: "forms", label: "Forms", icon: "📋" },
   { id: "ui", label: "UI Components", icon: "🎨" },
   { id: "buttons", label: "Buttons", icon: "🔘" },
-  { id: "seo", label: "SEO", icon: "🔍" },
+  // SEO category removed (SEO meta component not available in builder)
 ];
 
 export default componentRegistry;

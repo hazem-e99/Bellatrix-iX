@@ -41,7 +41,7 @@ const PricingSection = ({ data = {} }) => {
     propsData: data,
     hasDefaultData: !!defaultData,
     finalData: pricing,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
   return (
     <>
@@ -61,12 +61,18 @@ const PricingSection = ({ data = {} }) => {
         <div className="container mx-auto px-6 relative z-10">
           <header className="text-center mb-10">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--color-text-inverse)] mb-4">
-              Implementation{" "}
-              <span className="text-[var(--color-primary-light)]">Pricing</span>
+              {data.title || (
+                <>
+                  Implementation{" "}
+                  <span className="text-[var(--color-primary-light)]">
+                    Pricing
+                  </span>
+                </>
+              )}
             </h2>
             <p className="text-lg text-[var(--color-text-light)] leading-relaxed max-w-3xl mx-auto">
-              Choose the perfect implementation plan that fits your business
-              needs and budget
+              {data.description ||
+                "Choose the perfect implementation plan that fits your business needs and budget"}
             </p>
           </header>
           {/* Pricing Cards */}
@@ -112,27 +118,45 @@ const PricingSection = ({ data = {} }) => {
                   </div>
                 </header>
                 <ul className="space-y-4 mb-8" role="list">
-                  {(plan.features || []).map((feature, i) => (
-                    <li key={i} className="flex items-center" role="listitem">
-                      <svg
-                        className="w-5 h-5 text-[var(--color-success)] mr-3"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        aria-hidden="true"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                      <span className="text-[var(--color-text-light)]">
-                        {feature}
-                      </span>
-                    </li>
-                  ))}
+                  {(() => {
+                    const featuresRaw = plan.features || plan.items || [];
+                    let featuresArray = [];
+                    if (Array.isArray(featuresRaw)) {
+                      featuresArray = featuresRaw;
+                    } else if (typeof featuresRaw === "string") {
+                      featuresArray = featuresRaw
+                        .split(/[;,\n]+/)
+                        .map((s) => s.trim())
+                        .filter(Boolean);
+                    } else if (featuresRaw && typeof featuresRaw === "object") {
+                      // if it's an object, try to extract string values or titles
+                      featuresArray = Object.values(featuresRaw).map((v) =>
+                        typeof v === "string" ? v : v?.title || v?.name || ""
+                      );
+                    }
+
+                    return featuresArray.map((feature, i) => (
+                      <li key={i} className="flex items-center" role="listitem">
+                        <svg
+                          className="w-5 h-5 text-[var(--color-success)] mr-3"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          aria-hidden="true"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                        <span className="text-[var(--color-text-light)]">
+                          {feature}
+                        </span>
+                      </li>
+                    ));
+                  })()}
                 </ul>
                 <button
                   className={`w-full ${

@@ -63,15 +63,12 @@ export const idToPathMap = {
   // ===========================================
   ManufacturingHeroSection: "industries/Manufacturing/HeroSection",
   ManufacturingIndustryStats: "industries/Manufacturing/IndustryStats",
-  ManufacturingIndustryStatsSection: "industries/Manufacturing/IndustryStats",
   ManufacturingChallengesSection: "industries/Manufacturing/ChallengesSection",
   ManufacturingSolutionsSection: "industries/Manufacturing/SolutionsSection",
   ManufacturingCaseStudies: "industries/Manufacturing/CaseStudies",
-  ManufacturingCaseStudiesSection: "industries/Manufacturing/CaseStudies",
   ManufacturingImplementationProcess:
     "industries/Manufacturing/ImplementationProcess",
-  ManufacturingImplementationProcessSection:
-    "industries/Manufacturing/ImplementationProcess",
+
   ManufacturingCTASection: "industries/Manufacturing/CTASection",
 
   // ===========================================
@@ -80,14 +77,13 @@ export const idToPathMap = {
   RetailHeroSection: "industries/retail/HeroSection",
   RetailChallengesSection: "industries/retail/ChallengesSection",
   RetailSolutionsSection: "industries/retail/SolutionsSection",
-  RetailImplementationSection: "industries/retail/ImplementationSection",
   RetailCTASection: "industries/retail/CTASection",
 
   // ===========================================
   // COMMON/SHARED COMPONENTS
   // ===========================================
   // ...existing code...
-  CTAButton: "CTAButton",
+  // CTAButton removed from builder component map
 };
 
 export const getComponentPathFromId = (componentId) =>
@@ -197,8 +193,7 @@ export const loadComponent = async (componentPath) => {
       // ===========================================
       // COMMON/SHARED COMPONENTS
       // ===========================================
-      // SEO: () => import("./SEO"), // Removed
-      CTAButton: () => import("./CTAButton"),
+      // CTAButton loader removed so CTAButton is not available in the builder
     };
 
     const loader = componentMap[componentPath];

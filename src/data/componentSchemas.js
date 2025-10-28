@@ -309,6 +309,7 @@ export const componentSchemas = {
   TrainingHeroSection: {
     heroContent: {
       title: "Professional Training Programs",
+      subtitle: "Professional ERP Education & Skills Development",
       description:
         "Empower your team with comprehensive training solutions designed to enhance skills and drive success",
     },
@@ -405,22 +406,7 @@ export const componentSchemas = {
     ],
   },
 
-  ManufacturingIndustryStatsSection: {
-    title: "Manufacturing Industry Stats",
-    subtitle: "The state of manufacturing today",
-    stats: [
-      {
-        label: "Digital Transformation",
-        value: "73%",
-        description: "of manufacturers are investing in digital transformation",
-      },
-      {
-        label: "Efficiency Gains",
-        value: "25%",
-        description: "average efficiency improvement with ERP systems",
-      },
-    ],
-  },
+
 
   ManufacturingImplementationProcess: {
     title: "Manufacturing Implementation Process",
@@ -775,18 +761,6 @@ export const componentSchemas = {
   },
 
   // Common/Shared Components
-  SEO: {
-    title: "Page Title - Your Business Name",
-    description:
-      "A compelling description of your page content that appears in search results and social media shares.",
-    keywords: "netsuite, erp, implementation, consulting, business software",
-    ogTitle: "Social Media Title - Your Business",
-    ogDescription:
-      "Description that appears when shared on social media platforms.",
-    ogImage: "/images/social-share-image.jpg",
-    twitterCard: "summary_large_image",
-    canonicalUrl: "https://yourwebsite.com/current-page",
-  },
 
   ContactForm: {
     title: "Contact Us",
@@ -883,113 +857,134 @@ export const componentSchemas = {
     fullWidth: false,
     onClick: null, // function
     href: "", // for link buttons
-    target: "_self" // _self, _blank
+    target: "_self", // _self, _blank
   },
 
   // HR Components
   HRBenefitsSection: {
     title: "Why Choose Our HR Solution?",
-    description: "Discover the key advantages that make our HR platform the smart choice for modern businesses of all sizes and industries.",
+    description:
+      "Discover the key advantages that make our HR platform the smart choice for modern businesses of all sizes and industries.",
     features: [
       {
         title: "Automated Workflows",
-        description: "Streamline HR processes with intelligent automation that reduces manual work and improves accuracy",
-        icon: "⚙️"
+        description:
+          "Streamline HR processes with intelligent automation that reduces manual work and improves accuracy",
+        icon: "⚙️",
       },
       {
         title: "Employee Self-Service",
-        description: "Empower employees with self-service capabilities for leave requests, benefits, and personal information updates",
-        icon: "👤"
+        description:
+          "Empower employees with self-service capabilities for leave requests, benefits, and personal information updates",
+        icon: "👤",
       },
       {
         title: "Compliance Management",
-        description: "Stay compliant with automated reporting and tracking for labor laws and regulations",
-        icon: "📋"
+        description:
+          "Stay compliant with automated reporting and tracking for labor laws and regulations",
+        icon: "📋",
       },
       {
         title: "Performance Analytics",
-        description: "Get insights into employee performance with comprehensive reporting and analytics",
-        icon: "📊"
+        description:
+          "Get insights into employee performance with comprehensive reporting and analytics",
+        icon: "📊",
       },
       {
         title: "Scalable Platform",
-        description: "Grow your business with a platform that scales from small teams to large enterprises",
-        icon: "📈"
+        description:
+          "Grow your business with a platform that scales from small teams to large enterprises",
+        icon: "📈",
       },
       {
         title: "24/7 Support",
-        description: "Get expert support whenever you need it with our dedicated customer success team",
-        icon: "🤝"
-      }
-    ]
+        description:
+          "Get expert support whenever you need it with our dedicated customer success team",
+        icon: "🤝",
+      },
+    ],
   },
 
   HRModulesSection: {
     title: "Product Modules",
-    description: "Our platform is built from modular components to cover every aspect of HR, payroll, and compliance—choose what fits your business best.",
+    description:
+      "Our platform is built from modular components to cover every aspect of HR, payroll, and compliance—choose what fits your business best.",
     modules: [
       {
         icon: "👥",
         title: "Employee Management",
-        desc: "Comprehensive employee records, profiles, and lifecycle management from onboarding to offboarding."
+        desc:
+          "Comprehensive employee records, profiles, and lifecycle management from onboarding to offboarding.",
       },
       {
         icon: "💰",
-        title: "Payroll Processing", 
-        desc: "Automated payroll calculations, tax deductions, and salary disbursements with compliance features."
+        title: "Payroll Processing",
+        desc:
+          "Automated payroll calculations, tax deductions, and salary disbursements with compliance features.",
       },
       {
         icon: "📊",
         title: "Performance Analytics",
-        desc: "Track employee performance, KPIs, and generate insightful reports for better decision making."
+        desc:
+          "Track employee performance, KPIs, and generate insightful reports for better decision making.",
       },
       {
         icon: "📋",
         title: "Compliance Tracking",
-        desc: "Stay compliant with labor laws, regulations, and industry standards with automated tracking."
+        desc:
+          "Stay compliant with labor laws, regulations, and industry standards with automated tracking.",
       },
       {
         icon: "📈",
         title: "Recruitment Management",
-        desc: "Streamline your hiring process with applicant tracking and candidate management tools."
+        desc:
+          "Streamline your hiring process with applicant tracking and candidate management tools.",
       },
       {
         icon: "🎓",
         title: "Training & Development",
-        desc: "Manage employee training programs, certifications, and skill development initiatives."
-      }
-    ]
+        desc:
+          "Manage employee training programs, certifications, and skill development initiatives.",
+      },
+    ],
   },
 
   HRUseCasesSection: {
     title: "HR Use Cases",
-    description: "Explore how our HR solution addresses common business challenges and scenarios.",
+    description:
+      "Explore how our HR solution addresses common business challenges and scenarios.",
     useCases: [
       {
         title: "Employee Onboarding",
-        desc: "Streamline new hire processes with automated workflows, document collection, and structured orientation programs."
+        desc:
+          "Streamline new hire processes with automated workflows, document collection, and structured orientation programs.",
       },
       {
         title: "Performance Management",
-        desc: "Track employee performance with goal setting, regular reviews, and 360-degree feedback systems."
+        desc:
+          "Track employee performance with goal setting, regular reviews, and 360-degree feedback systems.",
       },
       {
         title: "Payroll Automation",
-        desc: "Automate salary calculations, tax deductions, and compliance with labor regulations."
+        desc:
+          "Automate salary calculations, tax deductions, and compliance with labor regulations.",
       },
       {
         title: "Leave Management",
-        desc: "Manage employee time-off requests, approvals, and tracking with automated policy enforcement."
+        desc:
+          "Manage employee time-off requests, approvals, and tracking with automated policy enforcement.",
       },
       {
         title: "Compliance Reporting",
-        desc: "Generate compliance reports for labor laws, tax regulations, and industry-specific requirements."
+        desc:
+          "Generate compliance reports for labor laws, tax regulations, and industry-specific requirements.",
       },
       {
         title: "Employee Development",
-        desc: "Support career growth with training programs, skill assessments, and development planning."
-      }
-    ]
+        desc:
+          "Support career growth with training programs, skill assessments, and development planning.",
+      },
+    ],
   },
 
   HRPricingSection: {
@@ -1006,12 +1001,12 @@ export const componentSchemas = {
           "Basic Payroll",
           "Time Tracking",
           "Benefits Administration",
-          "Email Support"
+          "Email Support",
         ],
-        isPopular: false
+        isPopular: false,
       },
       {
-        name: "Professional Plan", 
+        name: "Professional Plan",
         price: "$199",
         period: "per month",
         description: "Ideal for growing companies",
@@ -1021,13 +1016,13 @@ export const componentSchemas = {
           "Performance Management",
           "Advanced Reporting",
           "Integration Support",
-          "Phone Support"
+          "Phone Support",
         ],
-        isPopular: true
+        isPopular: true,
       },
       {
         name: "Enterprise Plan",
-        price: "$399", 
+        price: "$399",
         period: "per month",
         description: "For large organizations",
         features: [
@@ -1036,11 +1031,11 @@ export const componentSchemas = {
           "Advanced Security",
           "Dedicated Account Manager",
           "24/7 Priority Support",
-          "Custom Training"
+          "Custom Training",
         ],
-        isPopular: false
-      }
-    ]
+        isPopular: false,
+      },
+    ],
   },
 
   HRFAQSection: {
@@ -1050,41 +1045,49 @@ export const componentSchemas = {
       items: [
         {
           question: "What HR modules are included?",
-          answer: "Our HR solution includes employee management, payroll processing, benefits administration, performance tracking, time & attendance, recruitment, and compliance reporting modules."
+          answer:
+            "Our HR solution includes employee management, payroll processing, benefits administration, performance tracking, time & attendance, recruitment, and compliance reporting modules.",
         },
         {
           question: "How long does implementation take?",
-          answer: "Typical implementation takes 4-8 weeks depending on your organization size and requirements. We provide dedicated support throughout the process."
+          answer:
+            "Typical implementation takes 4-8 weeks depending on your organization size and requirements. We provide dedicated support throughout the process.",
         },
         {
           question: "Is training provided?",
-          answer: "Yes, we provide comprehensive training for all users including administrators and end-users. Training includes online sessions, documentation, and ongoing support."
+          answer:
+            "Yes, we provide comprehensive training for all users including administrators and end-users. Training includes online sessions, documentation, and ongoing support.",
         },
         {
           question: "Can the system integrate with existing tools?",
-          answer: "Yes, our HR platform offers extensive integration capabilities with popular business tools, accounting software, and other enterprise systems."
+          answer:
+            "Yes, our HR platform offers extensive integration capabilities with popular business tools, accounting software, and other enterprise systems.",
         },
         {
           question: "What security measures are in place?",
-          answer: "We implement enterprise-grade security including data encryption, multi-factor authentication, role-based access control, and regular security audits."
+          answer:
+            "We implement enterprise-grade security including data encryption, multi-factor authentication, role-based access control, and regular security audits.",
         },
         {
           question: "Is there mobile access?",
-          answer: "Yes, our platform includes mobile apps for both iOS and Android, allowing employees and managers to access HR functions on the go."
-        }
-      ]
-    }
+          answer:
+            "Yes, our platform includes mobile apps for both iOS and Android, allowing employees and managers to access HR functions on the go.",
+        },
+      ],
+    },
   },
 
   HRCTASection: {
     title: "Ready to Transform Your HR?",
-    subtitle: "Let's discuss your HR needs and find the perfect solution for your organization.",
+    subtitle:
+      "Let's discuss your HR needs and find the perfect solution for your organization.",
     ctaButton: {
       text: "Get Started",
-      link: "/contact"
+      link: "/contact",
     },
-    description: "Join thousands of companies that have streamlined their HR processes with our comprehensive solution."
-  }
+    description:
+      "Join thousands of companies that have streamlined their HR processes with our comprehensive solution.",
+  },
 };
 
 /**

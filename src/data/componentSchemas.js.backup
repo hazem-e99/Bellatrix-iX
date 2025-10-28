@@ -367,22 +367,7 @@ export const componentSchemas = {
     ]
   },
 
-  ManufacturingIndustryStatsSection: {
-    title: "Manufacturing Industry Stats",
-    subtitle: "The state of manufacturing today",
-    stats: [
-      {
-        label: "Digital Transformation",
-        value: "73%",
-        description: "of manufacturers are investing in digital transformation"
-      },
-      {
-        label: "Efficiency Gains",
-        value: "25%",
-        description: "average efficiency improvement with ERP systems"
-      }
-    ]
-  },
+ 
 
   // About Page Specific Components
   AboutHeroSection: {

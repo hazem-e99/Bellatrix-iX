@@ -67,7 +67,6 @@ import ManufacturingCTA from "../industries/Manufacturing/CTASection";
 
 // Industries Components - Retail
 import RetailHero from "../industries/retail/HeroSection";
-import RetailIndustryStats from "../industries/retail/IndustryStats";
 import RetailChallenges from "../industries/retail/ChallengesSection";
 import RetailSolutions from "../industries/retail/SolutionsSection";
 import RetailFeatures from "../industries/retail/FeaturesSection";
@@ -76,7 +75,6 @@ import RetailImplementation from "../industries/retail/ImplementationSection";
 import RetailCTA from "../industries/retail/CTASection";
 
 // Common/Shared Components
-import SEO from "../SEO";
 import CTAButton from "../CTAButton";
 
 /**
@@ -146,6 +144,8 @@ const ComponentPreview = ({
     ImplementationWhyChooseSection: ImplementationWhyChoose,
     ImplementationPricingSection: ImplementationPricing,
     ImplementationCtaSection: ImplementationCta,
+    // Alias: some saved pages may use uppercase 'CTA' in the componentType
+    ImplementationCTASection: ImplementationCta,
     // Service grid used in some pages
     ServiceGrid: ServiceGrid,
     ServiceGridSection: ServiceGrid,
@@ -169,36 +169,44 @@ const ComponentPreview = ({
     ManufacturingSolutionsSection: ManufacturingSolutions,
     ManufacturingChallengesSection: ManufacturingChallenges,
     ManufacturingIndustryStats: ManufacturingIndustryStats,
-    ManufacturingIndustryStatsSection: ManufacturingIndustryStats,
     ManufacturingImplementationProcess: ManufacturingImplementationProcess,
-    ManufacturingImplementationProcessSection: ManufacturingImplementationProcess,
     ManufacturingCaseStudies: ManufacturingCaseStudies,
-    ManufacturingCaseStudiesSection: ManufacturingCaseStudies,
     ManufacturingCTASection: ManufacturingCTA,
 
     // ===========================================
     // INDUSTRY COMPONENTS - RETAIL
     // ===========================================
     RetailHeroSection: RetailHero,
-    RetailIndustryStats: RetailIndustryStats,
-    RetailIndustryStatsSection: RetailIndustryStats,
     RetailChallengesSection: RetailChallenges,
     RetailSolutionsSection: RetailSolutions,
     // RetailFeaturesSection: RetailFeatures,
     // RetailCaseStudies: RetailCaseStudies,
     // RetailCaseStudiesSection: RetailCaseStudies,
-    RetailImplementationSection: RetailImplementation,
     RetailCTASection: RetailCTA,
 
     // ===========================================
     // COMMON/SHARED COMPONENTS
     // ===========================================
-    SEO: SEO,
     CTAButton: CTAButton,
   };
 
   // Transform data to component props format
+  // Create a stable JSON snapshot of componentData so nested/mutated fields
+  // trigger the useMemo recompute when their values change (not only object ref)
+  // Compute a JSON snapshot every render (avoid relying on object identity)
+  const componentDataString = (() => {
+    try {
+      return JSON.stringify(componentData || {});
+    } catch {
+      return String(componentData);
+    }
+  })();
+
+  // We intentionally depend on `componentDataString` (a JSON snapshot) in order
+  // to detect deep changes; include componentData as well to satisfy hooks linter.
   const transformedProps = useMemo(() => {
+    // reference the JSON snapshot so it's treated as a real dependency
+    const _componentDataSnapshot = componentDataString;
     if (!componentData) return {};
 
     try {
@@ -628,13 +636,17 @@ const ComponentPreview = ({
                 }))
               : [];
             const transformedPayrollPainPointsData = {
-              title:
-                componentData.title ||
-                'The Payroll <span class="text-[var(--color-primary)]">Struggles</span> We Eliminate',
-              description:
-                componentData.description ||
-                "Our system addresses the most common payroll challenges faced by consultancy firms:",
-              painPoints,
+              // The PayrollPainPoints component expects a single `painPoints` prop
+              // containing { title, description, painPoints: [...] }
+              painPoints: {
+                title:
+                  componentData.title ||
+                  'The Payroll <span class="text-[var(--color-primary)]">Struggles</span> We Eliminate',
+                description:
+                  componentData.description ||
+                  "Our system addresses the most common payroll challenges faced by consultancy firms:",
+                painPoints,
+              },
             };
             console.log(
               "✅ [PayrollPainPointsSection TRANSFORM] Output data:",
@@ -650,10 +662,38 @@ const ComponentPreview = ({
               "🎯 [PayrollFAQSection TRANSFORM] Input data:",
               componentData
             );
+            // Accept multiple possible shapes saved by the builder:
+            // - items: [{ question, answer }]
+            // - faqItems: [{ question, answer }]
+            // - faq: { items: [...] }
+            // Normalize each entry to { question, answer }
+            const rawItems =
+              componentData.items ||
+              componentData.faqItems ||
+              (componentData.faq && componentData.faq.items) ||
+              [];
+
+            const items = Array.isArray(rawItems)
+              ? rawItems.map((it) => ({
+                  question:
+                    it.question || it.q || it.title || it.questionText || "",
+                  answer:
+                    it.answer ||
+                    it.a ||
+                    it.aText ||
+                    it.answerText ||
+                    it.description ||
+                    "",
+                }))
+              : [];
+
             const transformedPayrollFAQData = {
               faqData: {
-                title: componentData.title || "Frequently Asked Questions",
-                items: componentData.items || [],
+                title:
+                  componentData.title ||
+                  componentData.faq?.title ||
+                  "Frequently Asked Questions",
+                items,
               },
             };
             console.log(
@@ -670,14 +710,47 @@ const ComponentPreview = ({
               "🎯 [PayrollCTASection TRANSFORM] Input data:",
               componentData
             );
+            // Normalize features into array of strings to avoid runtime errors
+            const rawFeatures =
+              componentData.features ||
+              componentData.items ||
+              componentData.data?.features ||
+              componentData.data?.items ||
+              [];
+
+            const features = Array.isArray(rawFeatures)
+              ? rawFeatures.map((f) => {
+                  if (typeof f === "string") return f;
+                  if (!f) return "";
+                  // common object shapes: { title }, { text }, { description }
+                  return f.title || f.text || f.description || String(f);
+                })
+              : typeof rawFeatures === "string"
+              ? rawFeatures
+                  .split(/[;\n,]+/)
+                  .map((s) => s.trim())
+                  .filter(Boolean)
+              : [];
+
             const transformedPayrollCTAData = {
               title: componentData.title || "Ready to Transform Your Payroll?",
               subtitle:
                 componentData.subtitle || "Let's discuss your payroll needs",
+              description: componentData.description || "",
+              features:
+                features.length > 0
+                  ? features
+                  : [
+                      "No setup fees",
+                      "30-day money back guarantee",
+                      "24/7 customer support",
+                    ],
+              trustedBy: componentData.trustedBy || [],
               ctaButton: componentData.ctaButton || {
                 text: "Get Started",
                 link: "/contact",
               },
+              data: componentData,
             };
             console.log(
               "✅ [PayrollCTASection TRANSFORM] Output data:",
@@ -787,9 +860,50 @@ const ComponentPreview = ({
             "🎯 [HRPricingSection TRANSFORM] Input data:",
             componentData
           );
+          // Normalize incoming component data: support stringified contentJson, nested data, or direct pricing array
+          const effectiveData = (() => {
+            try {
+              // If the component was saved with a stringified contentJson
+              if (
+                componentData &&
+                typeof componentData.contentJson === "string"
+              ) {
+                const parsed = JSON.parse(componentData.contentJson || "{}");
+                return { ...componentData, ...parsed };
+              }
+
+              // If componentData itself is a string (rare), try to parse it
+              if (typeof componentData === "string") {
+                return JSON.parse(componentData || "{}");
+              }
+
+              // If the saved structure wraps real payload under `data` or `pricing`
+              if (componentData && componentData.data) {
+                return { ...componentData, ...componentData.data };
+              }
+
+              return componentData || {};
+            } catch (err) {
+              console.warn(
+                "⚠️ [HRPricingSection] Failed to parse componentData:",
+                err,
+                componentData
+              );
+              return componentData || {};
+            }
+          })();
+
           const transformedHRPricingData = {
             data: {
-              pricing: componentData.pricing || [
+              title:
+                effectiveData.title ||
+                componentData.title ||
+                "Implementation Pricing",
+              description:
+                effectiveData.description ||
+                componentData.description ||
+                "Choose the perfect implementation plan that fits your business needs and budget",
+              pricing: effectiveData.pricing || [
                 {
                   name: "Basic Plan",
                   price: "$99",
@@ -918,26 +1032,6 @@ const ComponentPreview = ({
             transformedHeroData
           );
           return transformedHeroData;
-        }
-
-        case "RetailIndustryStats": {
-          console.log(
-            "🎯 [RetailIndustryStats TRANSFORM] Input data:",
-            componentData
-          );
-          const transformedData = {
-            stats: componentData.stats || componentData.items || [],
-            title: componentData.title || "Retail Industry Statistics",
-            subtitle: componentData.subtitle || "Key retail metrics",
-            description:
-              componentData.description ||
-              "Key metrics that demonstrate our retail excellence and industry leadership",
-          };
-          console.log(
-            "✅ [RetailIndustryStats TRANSFORM] Output data:",
-            transformedData
-          );
-          return transformedData;
         }
 
         case "ServicesSection": {
@@ -1764,23 +1858,6 @@ const ComponentPreview = ({
           return transformedData;
         }
 
-        case "RetailImplementationSection": {
-          console.log(
-            "🎯 [RetailImplementationSection TRANSFORM] Input data:",
-            componentData
-          );
-          const transformedData = {
-            steps: componentData.steps || componentData.items || [],
-            title: componentData.title || "Implementation Process",
-            description: componentData.description || "Our proven methodology",
-          };
-          console.log(
-            "✅ [RetailImplementationSection TRANSFORM] Output data:",
-            transformedData
-          );
-          return transformedData;
-        }
-
         case "RetailCTASection": {
           console.log(
             "🎯 [RetailCTASection TRANSFORM] Input data:",
@@ -1806,24 +1883,6 @@ const ComponentPreview = ({
           return transformedData;
         }
 
-        // Common/Shared Components
-        case "SEO": {
-          console.log("🎯 [SEO TRANSFORM] Input data:", componentData);
-          const transformedData = {
-            title: componentData.title || "Page Title",
-            description: componentData.description || "Page description",
-            keywords: componentData.keywords || "",
-            ogTitle: componentData.ogTitle || componentData.title,
-            ogDescription:
-              componentData.ogDescription || componentData.description,
-            ogImage: componentData.ogImage || "",
-            twitterCard: componentData.twitterCard || "summary",
-            canonicalUrl: componentData.canonicalUrl || "",
-          };
-          console.log("✅ [SEO TRANSFORM] Output data:", transformedData);
-          return transformedData;
-        }
-
         case "CTAButton": {
           console.log("🎯 [CTAButton TRANSFORM] Input data:", componentData);
           const transformedData = {
@@ -1846,7 +1905,7 @@ const ComponentPreview = ({
       setError(`Failed to transform component props: ${error.message}`);
       return {};
     }
-  }, [componentType, componentData]);
+  }, [componentType, componentDataString, componentData]);
 
   // Get component from registry
   const Component = componentRegistry[componentType];
@@ -1934,7 +1993,7 @@ const ComponentPreview = ({
     <div className={`component-preview ${className}`}>
       <AnimatePresence mode="wait">
         <motion.div
-          key={`${componentType}-${JSON.stringify(componentData)}`}
+          key={`${componentType}-${componentDataString}`}
           initial={{ opacity: 0.7 }}
           animate={{ opacity: isVisible ? 1 : 0.5 }}
           transition={{ duration: 0.2 }}
@@ -2147,7 +2206,46 @@ const LivePreview = ({
                     );
                   }
 
-                  return rawData;
+                  // Merge top-level component fields (some parts of the app
+                  // update fields directly on the component instead of
+                  // serializing them into `contentJson`). This ensures the
+                  // live preview sees edits whether they're saved to
+                  // `contentJson` or to top-level props like `caseStudies`.
+                  const mergedData = {
+                    ...rawData,
+                    // top-level simple fields
+                    ...(component.title ? { title: component.title } : {}),
+                    ...(component.subtitle
+                      ? { subtitle: component.subtitle }
+                      : {}),
+                    ...(component.description
+                      ? { description: component.description }
+                      : {}),
+                    // common list keys used by case studies / lists
+                    ...(component.caseStudies
+                      ? { caseStudies: component.caseStudies }
+                      : {}),
+                    ...(component.items ? { items: component.items } : {}),
+                    ...(component.data && typeof component.data === "object"
+                      ? component.data
+                      : {}),
+                  };
+
+                  if (
+                    Object.keys(mergedData).length !==
+                    Object.keys(rawData).length
+                  ) {
+                    console.log(
+                      "🔁 [REALTIME EXTRACTION] Merged top-level component fields for",
+                      component.componentType,
+                      {
+                        rawKeys: Object.keys(rawData),
+                        mergedKeys: Object.keys(mergedData),
+                      }
+                    );
+                  }
+
+                  return mergedData;
                 };
 
                 let componentData = extractComponentData(component);

@@ -113,9 +113,21 @@ const PagePreview = ({
   const [loadedComponents, setLoadedComponents] = useState({});
   const [trainingData, setTrainingData] = useState(null);
 
+  // Deep snapshot of components to detect nested changes (helps when the
+  // pageData.components array is mutated in-place by the builder).
+  const componentsSnapshot = React.useMemo(() => {
+    try {
+      return JSON.stringify(pageData?.components || []);
+    } catch {
+      // Fallback to length if serialization fails
+      return String((pageData?.components || []).length || 0);
+    }
+  }, [pageData]);
+
   useEffect(() => {
     console.log("🔄 [EFFECT] PagePreview useEffect triggered");
     console.log("🔄 [EFFECT] isOpen:", isOpen);
+    console.log("🔄 [EFFECT] componentsSnapshot (deep):", componentsSnapshot);
     console.log(
       "🔄 [EFFECT] pageData.components exists:",
       !!pageData.components
@@ -129,6 +141,7 @@ const PagePreview = ({
       JSON.parse(JSON.stringify(pageData))
     );
 
+    // If preview is open and we have components (or the deep snapshot changed), reload
     if (isOpen && pageData.components) {
       console.log(
         "🔄 [EFFECT] Starting component loading and training data loading"
@@ -139,7 +152,7 @@ const PagePreview = ({
       console.log("🔄 [EFFECT] Skipping loading - conditions not met");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen, pageData.components, pageData]);
+  }, [isOpen, componentsSnapshot, pageData]);
 
   // Load training data as fallback
   const loadTrainingData = async () => {
@@ -414,6 +427,28 @@ const PagePreview = ({
     }
 
     console.log("🎯 [DEBUG] Final raw data before normalization:", rawData);
+
+    // Merge top-level component fields into rawData so edits saved to
+    // component.title / component.description / component.items etc. are
+    // reflected immediately in the preview even when the builder stores
+    // these values on the component object rather than inside contentJson.
+    rawData = {
+      ...rawData,
+      ...(component.title !== undefined ? { title: component.title } : {}),
+      ...(component.description !== undefined
+        ? { description: component.description }
+        : {}),
+      ...(component.items ? { items: component.items } : {}),
+      ...(component.caseStudies ? { caseStudies: component.caseStudies } : {}),
+      ...(component.data ? { data: component.data } : {}),
+      ...(component.programs ? { programs: component.programs } : {}),
+      ...(component.features ? { features: component.features } : {}),
+    };
+
+    console.log(
+      "🔁 [MERGE] After merging top-level props into rawData:",
+      rawData
+    );
 
     // Use normalizeProps to map the raw data to the correct component props
     const normalizedData = normalizeProps(component.componentType, rawData);
@@ -1200,11 +1235,24 @@ const PagePreview = ({
       });
     }
 
+    // Compute a per-component JSON snapshot to use as the render key.
+    // Use a plain, synchronous computation (not a Hook) because this
+    // function is an inner render helper — Hooks aren't allowed here.
+    const componentKeySnapshot = (() => {
+      try {
+        return JSON.stringify(component);
+      } catch {
+        return `${component.componentType}-${
+          component.orderIndex || index || Math.random()
+        }`;
+      }
+    })();
+
     console.log("🎨 ========== [DEBUG END] renderComponent ==========");
 
     return (
       <motion.div
-        key={index}
+        key={componentKeySnapshot}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: index * 0.1 }}
@@ -1493,15 +1541,20 @@ const PagePreview = ({
                   // Filter components to only show visible ones (isVisible: true)
                   // This matches the behavior of public pages
                   const componentsToRender = pageData.components.filter(
-                    (component) => component.isVisible === true || component.isVisible === 1
+                    (component) =>
+                      component.isVisible === true || component.isVisible === 1
                   );
-                  console.log(`👁️ [PREVIEW] Showing ${componentsToRender.length}/${pageData.components.length} visible components`);
-                  
+                  console.log(
+                    `👁️ [PREVIEW] Showing ${componentsToRender.length}/${pageData.components.length} visible components`
+                  );
+
                   return componentsToRender.map((component, index) => {
                     console.log(
                       `📋 [RENDER LIST] Processing component ${index + 1}/${
                         componentsToRender.length
-                      }: ${component.componentType} (isVisible: ${component.isVisible})`
+                      }: ${component.componentType} (isVisible: ${
+                        component.isVisible
+                      })`
                     );
                     const result = renderComponent(component, index);
                     console.log(

@@ -33,72 +33,72 @@ export const generalComponentSchemas = {
     },
   },
   // Implementation Components
-  HeroSection: {
-    componentName: "HeroSection",
-    category: "implementation",
-    icon: "🎬",
-    displayName: "Implementation Hero Section",
-    description: "Hero section for implementation service page",
-    schema: {
-      type: "object",
-      properties: {
-        backgroundVideo: {
-          type: "string",
-          label: "Background Video URL",
-          placeholder: "/Videos/HomeHeroSectionV.mp4",
-          formField: "media",
-          mediaType: "video",
-        },
-        titleParts: {
-          type: "array",
-          label: "Title Parts",
-          items: { type: "string", label: "Title Part", formField: "text" },
-          formField: "array-text",
-        },
-        description: {
-          type: "string",
-          label: "Description",
-          placeholder:
-            "We don't just implement solutions—we craft digital experiences that transform the way you do business",
-          formField: "textarea",
-        },
-        ctaButton: {
-          type: "object",
-          label: "CTA Button",
-          properties: {
-            text: {
-              type: "string",
-              label: "Button Text",
-              placeholder: "Start Implementation",
-              formField: "text",
-            },
-            icon: { type: "string", label: "Button Icon", formField: "text" },
-            variant: {
-              type: "string",
-              label: "Button Variant",
-              formField: "select",
-              options: [
-                { value: "primary", label: "Primary" },
-                { value: "secondary", label: "Secondary" },
-              ],
-            },
-          },
-          formField: "object",
-        },
-      },
-    },
-    defaultData: {
-      backgroundVideo: "/Videos/HomeHeroSectionV.mp4",
-      titleParts: ["Where", "Vision", "Meets", "Reality"],
-      description:
-        "We don't just implement solutions—we craft digital experiences that transform the way you do business",
-      ctaButton: {
-        text: "Start Implementation",
-        icon: "M13 7l5 5m0 0l-5 5m5-5H6",
-        variant: "primary",
-      },
-    },
-  },
+  // HeroSection: {
+  //   componentName: "HeroSection",
+  //   category: "implementation",
+  //   icon: "🎬",
+  //   displayName: "Implementation Hero Section",
+  //   description: "Hero section for implementation service page",
+  //   schema: {
+  //     type: "object",
+  //     properties: {
+  //       backgroundVideo: {
+  //         type: "string",
+  //         label: "Background Video URL",
+  //         placeholder: "/Videos/HomeHeroSectionV.mp4",
+  //         formField: "media",
+  //         mediaType: "video",
+  //       },
+  //       titleParts: {
+  //         type: "array",
+  //         label: "Title Parts",
+  //         items: { type: "string", label: "Title Part", formField: "text" },
+  //         formField: "array-text",
+  //       },
+  //       description: {
+  //         type: "string",
+  //         label: "Description",
+  //         placeholder:
+  //           "We don't just implement solutions—we craft digital experiences that transform the way you do business",
+  //         formField: "textarea",
+  //       },
+  //       ctaButton: {
+  //         type: "object",
+  //         label: "CTA Button",
+  //         properties: {
+  //           text: {
+  //             type: "string",
+  //             label: "Button Text",
+  //             placeholder: "Start Implementation",
+  //             formField: "text",
+  //           },
+  //           icon: { type: "string", label: "Button Icon", formField: "text" },
+  //           variant: {
+  //             type: "string",
+  //             label: "Button Variant",
+  //             formField: "select",
+  //             options: [
+  //               { value: "primary", label: "Primary" },
+  //               { value: "secondary", label: "Secondary" },
+  //             ],
+  //           },
+  //         },
+  //         formField: "object",
+  //       },
+  //     },
+  //   },
+  //   defaultData: {
+  //     backgroundVideo: "/Videos/HomeHeroSectionV.mp4",
+  //     titleParts: ["Where", "Vision", "Meets", "Reality"],
+  //     description:
+  //       "We don't just implement solutions—we craft digital experiences that transform the way you do business",
+  //     ctaButton: {
+  //       text: "Start Implementation",
+  //       icon: "M13 7l5 5m0 0l-5 5m5-5H6",
+  //       variant: "primary",
+  //     },
+  //   },
+  // },
   ProcessSection: {
     componentName: "ProcessSection",
     category: "implementation",
@@ -757,6 +757,81 @@ export const generalComponentSchemas = {
       ],
     },
   },
+  PayrollPainPointsSection: {
+    componentName: "PayrollPainPoints",
+    category: "payroll",
+    icon: "⚠️",
+    displayName: "Payroll Pain Points",
+    description: "Common payroll pain points and how we solve them",
+    schema: {
+      type: "object",
+      properties: {
+        title: {
+          type: "string",
+          label: "Title (HTML allowed)",
+          placeholder:
+            'The Payroll <span class="text-[var(--color-primary)]">Struggles</span> We Eliminate',
+          formField: "text",
+        },
+        description: {
+          type: "string",
+          label: "Description",
+          placeholder:
+            "Our system addresses the most common payroll challenges faced by consultancy firms:",
+          formField: "textarea",
+        },
+        painPoints: {
+          type: "array",
+          label: "Pain Points",
+          items: {
+            type: "object",
+            properties: {
+              title: { type: "string", label: "Title", formField: "text" },
+              description: {
+                type: "string",
+                label: "Description",
+                formField: "textarea",
+              },
+              icon: { type: "string", label: "Icon", formField: "text" },
+            },
+          },
+          formField: "array",
+        },
+      },
+    },
+    defaultData: {
+      title:
+        'The Payroll <span class="text-[var(--color-primary)]">Struggles</span> We Eliminate',
+      description:
+        "Our system addresses the most common payroll challenges faced by consultancy firms:",
+      painPoints: [
+        {
+          title: "Data Accuracy",
+          description: "Reduce manual errors in payroll calculations",
+          icon: "🧾",
+        },
+        {
+          title: "Compliance",
+          description: "Stay compliant with tax & labour laws",
+          icon: "📋",
+        },
+        {
+          title: "Time-consuming",
+          description: "Automate repetitive payroll tasks",
+          icon: "⏱️",
+        },
+      ],
+      // `items` is included for backward-compatibility with older page data
+      // (some page templates use `items` instead of `painPoints`). Provide
+      // a clear default first item so the live preview shows content immediately
+      items: [
+        {
+          text: "Delayed salary processing and errors",
+          icon: "time",
+        },
+      ],
+    },
+  },
 
   PayrollWorkflowSection: {
     componentName: "PayrollWorkflow",
@@ -893,59 +968,6 @@ export const generalComponentSchemas = {
     },
   },
 
-  PayrollPainPointsSection: {
-    componentName: "PayrollPainPoints",
-    category: "payroll",
-    icon: "⚠️",
-    displayName: "Payroll Pain Points",
-    description: "Common payroll challenges",
-    schema: {
-      type: "object",
-      properties: {
-        title: {
-          type: "string",
-          label: "Title",
-          placeholder: "Common Challenges",
-          formField: "text",
-        },
-        description: {
-          type: "string",
-          label: "Description",
-          placeholder: "We solve these common challenges",
-          formField: "textarea",
-        },
-        painPoints: {
-          type: "array",
-          label: "Pain Points",
-          items: {
-            type: "object",
-            properties: {
-              title: {
-                type: "string",
-                label: "Pain Point Title",
-                formField: "text",
-              },
-            },
-          },
-        },
-      },
-    },
-    defaultData: {
-      title: "Common Challenges",
-      description: "We solve these common challenges",
-      painPoints: [
-        {
-          title: "Manual Processing",
-          description: "Time-consuming manual payroll processing",
-        },
-        {
-          title: "Calculation Errors",
-          description: "Human errors in salary calculations",
-        },
-      ],
-    },
-  },
-
   PayrollFAQSection: {
     componentName: "PayrollFAQ",
     category: "payroll",
@@ -1024,6 +1046,18 @@ export const generalComponentSchemas = {
           placeholder: "Contact us to learn more",
           formField: "textarea",
         },
+        features: {
+          type: "array",
+          label: "Features / Benefits",
+          items: { type: "string", label: "Feature", formField: "text" },
+          formField: "array-text",
+        },
+        trustedBy: {
+          type: "array",
+          label: "Trusted By (list)",
+          items: { type: "string", label: "Company", formField: "text" },
+          formField: "array-text",
+        },
         ctaButton: {
           type: "object",
           label: "CTA Button",
@@ -1046,6 +1080,12 @@ export const generalComponentSchemas = {
       title: "Ready to Transform Your Payroll?",
       subtitle: "Get started today",
       description: "Contact us to learn more about our payroll solution",
+      features: [
+        "No setup fees",
+        "30-day money back guarantee",
+        "24/7 customer support",
+      ],
+      trustedBy: ["Fortune 500 Companies", "SMEs", "Startups"],
       ctaButton: {
         text: "Get Started",
         link: "/contact",
@@ -2164,6 +2204,92 @@ export const generalComponentSchemas = {
     },
   },
 
+  ManufacturingImplementationProcess: {
+    componentName: "ManufacturingImplementationProcess",
+    category: "manufacturing",
+    icon: "📋",
+    displayName: "Manufacturing Implementation Process",
+    description:
+      "Step-by-step implementation process for manufacturing projects",
+    schema: {
+      type: "object",
+      properties: {
+        title: {
+          type: "string",
+          label: "Section Title",
+          placeholder: "Manufacturing Implementation Process",
+          formField: "text",
+        },
+        description: {
+          type: "string",
+          label: "Section Description",
+          placeholder:
+            "Our proven methodology for manufacturing implementations",
+          formField: "textarea",
+        },
+        processSteps: {
+          type: "array",
+          label: "Process Steps",
+          items: {
+            type: "object",
+            properties: {
+              step: { type: "string", label: "Step ID", formField: "text" },
+              title: { type: "string", label: "Step Title", formField: "text" },
+              description: {
+                type: "string",
+                label: "Step Description",
+                formField: "textarea",
+              },
+              duration: {
+                type: "string",
+                label: "Duration",
+                formField: "text",
+              },
+              icon: { type: "string", label: "Icon", formField: "text" },
+            },
+          },
+          formField: "array",
+          minItems: 1,
+          maxItems: 12,
+        },
+      },
+    },
+    defaultData: {
+      title: "Manufacturing Implementation Process",
+      description: "Our proven methodology for manufacturing implementations",
+      processSteps: [
+        {
+          step: "Discovery",
+          title: "Requirements Analysis",
+          description: "Deep dive into your manufacturing processes",
+          duration: "2-3 weeks",
+          icon: "🔍",
+        },
+        {
+          step: "Design",
+          title: "Solution Design",
+          description: "Custom solution architecture for your needs",
+          duration: "3-4 weeks",
+          icon: "🎯",
+        },
+        {
+          step: "Build",
+          title: "Configuration & Development",
+          description: "System configuration and customization",
+          duration: "6-8 weeks",
+          icon: "⚙️",
+        },
+        {
+          step: "Deploy",
+          title: "Go-Live & Support",
+          description: "Deployment and post-implementation support",
+          duration: "2-3 weeks",
+          icon: "🚀",
+        },
+      ],
+    },
+  },
+
   // Retail Components
   RetailIndustryStats: {
     componentName: "RetailIndustryStats",
@@ -3125,74 +3251,6 @@ export const generalComponentSchemas = {
   },
 
   // Common/Shared Components
-  SEO: {
-    componentName: "SEO",
-    category: "seo",
-    icon: "🔍",
-    displayName: "SEO Meta Tags",
-    description: "SEO meta tags and page optimization settings",
-    schema: {
-      type: "object",
-      properties: {
-        title: {
-          type: "string",
-          label: "Page Title",
-          placeholder: "Your Page Title | Bellatrix NetSuite Solutions",
-          required: true,
-          formField: "text",
-        },
-        description: {
-          type: "string",
-          label: "Meta Description",
-          placeholder: "Page description for search engines and social sharing",
-          required: true,
-          formField: "textarea",
-        },
-        keywords: {
-          type: "string",
-          label: "Keywords",
-          placeholder: "NetSuite, ERP, implementation, consulting",
-          formField: "text",
-        },
-        ogTitle: {
-          type: "string",
-          label: "Open Graph Title",
-          placeholder: "Social sharing title",
-          formField: "text",
-        },
-        ogDescription: {
-          type: "string",
-          label: "Open Graph Description",
-          placeholder: "Social sharing description",
-          formField: "textarea",
-        },
-        ogImage: {
-          type: "string",
-          label: "Open Graph Image",
-          placeholder: "/images/social-share.jpg",
-          formField: "media",
-          mediaType: "image",
-        },
-        canonicalUrl: {
-          type: "string",
-          label: "Canonical URL",
-          placeholder: "https://bellatrix.com/page-url",
-          formField: "url",
-        },
-      },
-    },
-    defaultData: {
-      title: "Bellatrix NetSuite Solutions",
-      description:
-        "Expert Oracle NetSuite consulting and implementation services to transform your business operations.",
-      keywords:
-        "NetSuite, ERP, Oracle, implementation, consulting, business transformation",
-      ogTitle: "Bellatrix NetSuite Solutions",
-      ogDescription:
-        "Expert Oracle NetSuite consulting and implementation services",
-      ogImage: "/images/social-share.jpg",
-    },
-  },
 
   // Remaining Services Components
   Training: {

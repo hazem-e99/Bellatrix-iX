@@ -32,15 +32,40 @@ const PayrollCTA = ({
     buttonText: ctaButton?.text || "Start Free Trial",
     buttonLink: ctaButton?.link || "/payroll/trial",
     variant: validateVariant(ctaButton?.variant || "primary"),
-    features: features || [
-      "No setup fees",
-      "30-day money back guarantee",
-      "24/7 customer support",
-    ],
+    // Normalize features so component can safely map over them
+    features: (function normalizeFeatures(input) {
+      if (Array.isArray(input)) {
+        return input.map((f) => {
+          if (typeof f === "string") return f;
+          if (!f) return "";
+          return f.title || f.text || f.description || String(f);
+        });
+      }
+      if (typeof input === "string") {
+        return input
+          .split(/[;\n,]+/)
+          .map((s) => s.trim())
+          .filter(Boolean);
+      }
+      if (input && typeof input === "object") {
+        // object -> take values as strings (fallback)
+        return Object.values(input).map((v) => String(v));
+      }
+      return [
+        "No setup fees",
+        "30-day money back guarantee",
+        "24/7 customer support",
+      ];
+    })(features),
     trustedBy: trustedBy || ["Fortune 500 Companies", "SMEs", "Startups"],
   };
 
-  console.log("✅ [PayrollCTA Fixed] Final data:", finalData);
+  // Extra debug showing normalized features
+  console.log("✅ [PayrollCTA Fixed] Final data:", {
+    ...finalData,
+    features: finalData.features,
+    trustedBy: finalData.trustedBy,
+  });
 
   // Check if title and description contain HTML and render accordingly
   const titleHTML = smartRender(finalData.title);

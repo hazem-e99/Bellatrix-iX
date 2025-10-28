@@ -445,10 +445,15 @@ export const normalizeProps = (componentType, contentJson) => {
             data.hero?.title ||
             data.title ||
             "Professional Training Programs",
-          description:
-            data.heroContent?.description ||
+          subtitle:
+            data.heroContent?.subtitle ||
             data.hero?.subtitle ||
             data.subtitle ||
+            "Professional ERP Education & Skills Development",
+          description:
+            data.heroContent?.description ||
+            data.hero?.description ||
+            data.description ||
             "Empower your team with comprehensive training solutions designed to enhance skills and drive success",
         },
         backgroundVideo:
@@ -456,7 +461,7 @@ export const normalizeProps = (componentType, contentJson) => {
           data.bgVideo ||
           data.heroContent?.backgroundVideo ||
           "/trainingHeroSectionTwo.mp4",
-        // ADD: Proper CTA button handling with form data
+        // Proper CTA button handling with form data
         ctaButton: data.ctaButton
           ? {
               text: data.ctaButton.text || "Start Learning Today",
@@ -608,6 +613,21 @@ export const normalizeProps = (componentType, contentJson) => {
         "A structured approach to successful implementation",
       phases: data.process?.phases || data.phases || data.steps || [],
     }),
+
+    // Manufacturing-specific implementation process: Some builders save the
+    // steps under different keys (processSteps, steps, items). The
+    // manufacturing component expects a `data` prop with a `steps` array
+    // (see `ImplementationProcess.jsx` -> useComponentData('implementationProcess', data, ...)).
+    ManufacturingImplementationProcess: (data) => {
+      const steps = data.processSteps || data.steps || data.items || [];
+      return {
+        data: {
+          steps,
+        },
+        title: data.title || "Implementation Process",
+        description: data.description || "Our proven methodology",
+      };
+    },
 
     ImplementationBenefitsSection: (data) => ({
       title: data.benefits?.title || data.title || "Implementation Benefits",
@@ -772,7 +792,9 @@ export const normalizeProps = (componentType, contentJson) => {
         additionalContent: data?.additionalContent || "",
         image: data?.image || "",
         stats: Array.isArray(data?.stats) ? data.stats : [],
-        missionPoints: Array.isArray(data?.missionPoints) ? data.missionPoints : []
+        missionPoints: Array.isArray(data?.missionPoints)
+          ? data.missionPoints
+          : [],
       };
 
       console.log("🔄 [AboutMissionSection DEBUG] Field processing:", {
@@ -781,12 +803,16 @@ export const normalizeProps = (componentType, contentJson) => {
         descriptionProcessed: `"${data?.description}" -> "${processedData.description}"`,
         visionProcessed: `"${data?.vision}" -> "${processedData.vision}"`,
         imageProcessed: `"${data?.image}" -> "${processedData.image}"`,
-        statsProcessed: `${data?.stats?.length || 0} items -> ${processedData.stats.length} items`,
-        missionPointsProcessed: `${data?.missionPoints?.length || 0} items -> ${processedData.missionPoints.length} items`
+        statsProcessed: `${data?.stats?.length || 0} items -> ${
+          processedData.stats.length
+        } items`,
+        missionPointsProcessed: `${data?.missionPoints?.length || 0} items -> ${
+          processedData.missionPoints.length
+        } items`,
       });
 
       const normalized = {
-        data: processedData
+        data: processedData,
       };
 
       console.log("✅ [AboutMissionSection DEBUG] Final normalized output:", {
@@ -801,8 +827,8 @@ export const normalizeProps = (componentType, contentJson) => {
           additionalContent: !!normalized.data.additionalContent,
           image: !!normalized.data.image,
           stats: Array.isArray(normalized.data.stats),
-          missionPoints: Array.isArray(normalized.data.missionPoints)
-        }
+          missionPoints: Array.isArray(normalized.data.missionPoints),
+        },
       });
 
       return normalized;

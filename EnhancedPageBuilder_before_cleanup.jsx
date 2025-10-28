@@ -2805,28 +2805,7 @@ const EnhancedPageBuilder = () => {
         ],
       },
       // Manufacturing Sections
-      ManufacturingIndustryStatsSection: {
-        title: "Manufacturing Industry Stats",
-        subtitle: "The state of manufacturing today",
-        stats: [
-          {
-            label: "Digital Transformation",
-            value: "73%",
-            description:
-              "of manufacturers are investing in digital transformation",
-          },
-          {
-            label: "Efficiency Gains",
-            value: "25%",
-            description: "average efficiency improvement with ERP systems",
-          },
-          {
-            label: "Cost Reduction",
-            value: "30%",
-            description: "average cost reduction in operations",
-          },
-        ],
-      },
+   
 
       ManufacturingChallengesSection: {
         title: "Manufacturing Challenges",
@@ -2878,54 +2857,8 @@ const EnhancedPageBuilder = () => {
         ],
       },
 
-      ManufacturingCaseStudiesSection: {
-        title: "Manufacturing Case Studies",
-        subtitle: "Success stories from our clients",
-        caseStudies: [
-          {
-            company: "TechManufacturing Inc.",
-            industry: "Electronics",
-            challenge: "Complex multi-level BOM management",
-            solution: "Advanced manufacturing module implementation",
-            results: "40% reduction in production planning time",
-          },
-          {
-            company: "AutoParts Ltd.",
-            industry: "Automotive",
-            challenge: "Quality control across multiple plants",
-            solution: "Integrated quality management system",
-            results: "60% improvement in quality metrics",
-          },
-        ],
-      },
-
-      ManufacturingImplementationProcessSection: {
-        title: "Manufacturing Implementation",
-        subtitle: "Specialized implementation for manufacturers",
-        description: "Our manufacturing-specific implementation approach",
-        phases: [
-          {
-            title: "Manufacturing Assessment",
-            description: "Analyze current manufacturing processes",
-            duration: "2 weeks",
-          },
-          {
-            title: "System Configuration",
-            description: "Configure manufacturing modules",
-            duration: "4 weeks",
-          },
-          {
-            title: "Data Migration",
-            description: "Migrate manufacturing data",
-            duration: "2 weeks",
-          },
-          {
-            title: "Training & Go-Live",
-            description: "Train users and launch system",
-            duration: "2 weeks",
-          },
-        ],
-      },
+ 
+    
 
       ManufacturingCTASection: {
         title: "Transform Your Manufacturing Operations",
@@ -3068,33 +3001,33 @@ const EnhancedPageBuilder = () => {
         ],
       },
 
-      RetailImplementationSection: {
-        title: "Retail Implementation",
-        subtitle: "Specialized retail implementation",
-        description: "Our retail-specific implementation approach",
-        phases: [
-          {
-            title: "Retail Assessment",
-            description: "Analyze current retail operations",
-            duration: "2 weeks",
-          },
-          {
-            title: "Channel Integration",
-            description: "Integrate all sales channels",
-            duration: "4 weeks",
-          },
-          {
-            title: "Inventory Setup",
-            description: "Configure inventory management",
-            duration: "2 weeks",
-          },
-          {
-            title: "Go-Live Support",
-            description: "Launch and provide ongoing support",
-            duration: "2 weeks",
-          },
-        ],
-      },
+      // RetailImplementationSection: {
+      //   title: "Retail Implementation",
+      //   subtitle: "Specialized retail implementation",
+      //   description: "Our retail-specific implementation approach",
+      //   phases: [
+      //     {
+      //       title: "Retail Assessment",
+      //       description: "Analyze current retail operations",
+      //       duration: "2 weeks",
+      //     },
+      //     {
+      //       title: "Channel Integration",
+      //       description: "Integrate all sales channels",
+      //       duration: "4 weeks",
+      //     },
+      //     {
+      //       title: "Inventory Setup",
+      //       description: "Configure inventory management",
+      //       duration: "2 weeks",
+      //     },
+      //     {
+      //       title: "Go-Live Support",
+      //       description: "Launch and provide ongoing support",
+      //       duration: "2 weeks",
+      //     },
+      //   ],
+      // },
 
       RetailCTASection: {
         title: "Transform Your Retail Business",
