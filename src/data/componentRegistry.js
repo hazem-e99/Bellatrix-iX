@@ -3,6 +3,7 @@
  * Comprehensive list of all available components extracted from the project
  * This registry will be used to populate the "Available Components" section in the dashboard
  */
+import { getGeneralComponentSchema } from "./generalComponentSchemas";
 
 export const componentRegistry = {
   // ===========================================
@@ -766,8 +767,12 @@ export const componentRegistry = {
       dataStructure: {
         title: "string",
         description: "string",
-        features: "array", // title, description, icon
+        retailFeatures: "array", // title, description, icon, benefits
       },
+      // attach enhanced schema/defaultData if available in generalComponentSchemas
+      hasEnhancedSchema: !!getGeneralComponentSchema("RetailFeaturesSection"),
+      schema: getGeneralComponentSchema("RetailFeaturesSection")?.schema,
+      defaultData: getGeneralComponentSchema("RetailFeaturesSection")?.defaultData,
     },
     RetailCaseStudies: {
       componentType: "RetailCaseStudies",
@@ -781,6 +786,10 @@ export const componentRegistry = {
         description: "string",
         caseStudies: "array", // title, description, company, results
       },
+      // attach enhanced schema/defaultData if available in generalComponentSchemas
+      hasEnhancedSchema: !!getGeneralComponentSchema("RetailCaseStudies"),
+      schema: getGeneralComponentSchema("RetailCaseStudies")?.schema,
+      defaultData: getGeneralComponentSchema("RetailCaseStudies")?.defaultData,
     },
   },
 
