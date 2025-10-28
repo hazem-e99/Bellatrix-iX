@@ -19,8 +19,10 @@ export const ThemeProvider = ({ children }) => {
     const savedTheme = localStorage.getItem("bellatrix-theme");
     const savedDarkMode = localStorage.getItem("bellatrix-dark-mode");
 
-    if (savedTheme && (savedTheme === "default" || savedTheme === "purple")) {
-      setTheme(savedTheme);
+    // Accept both "dark" and legacy "purple" theme names
+    if (savedTheme && (savedTheme === "default" || savedTheme === "dark" || savedTheme === "purple")) {
+      // Normalize purple to dark
+      setTheme(savedTheme === "purple" ? "dark" : savedTheme);
     }
 
     if (savedDarkMode) {
@@ -33,7 +35,8 @@ export const ThemeProvider = ({ children }) => {
 
   // Update document data-theme attribute and localStorage when theme changes
   useEffect(() => {
-    if (theme === "purple") {
+    // Note: Still using "purple" as the data-theme attribute for CSS compatibility
+    if (theme === "dark" || theme === "purple") {
       document.documentElement.setAttribute("data-theme", "purple");
     } else {
       document.documentElement.removeAttribute("data-theme");
@@ -54,9 +57,10 @@ export const ThemeProvider = ({ children }) => {
   const toggleTheme = (newTheme) => {
     if (
       typeof newTheme === "string" &&
-      (newTheme === "default" || newTheme === "purple")
+      (newTheme === "default" || newTheme === "dark" || newTheme === "purple")
     ) {
-      setTheme(newTheme);
+      // Normalize purple to dark
+      setTheme(newTheme === "purple" ? "dark" : newTheme);
     } else {
       // Legacy toggle for dark/light mode
       setIsDark(!isDark);
@@ -64,7 +68,7 @@ export const ThemeProvider = ({ children }) => {
   };
 
   const toggleColorTheme = () => {
-    setTheme(theme === "default" ? "purple" : "default");
+    setTheme(theme === "default" ? "dark" : "default");
   };
 
   const value = {
@@ -73,7 +77,7 @@ export const ThemeProvider = ({ children }) => {
     toggleTheme,
     toggleColorTheme,
     setTheme,
-    isDarkTheme: theme === "purple", // Helper for theme-specific logic
+    isDarkTheme: theme === "dark" || theme === "purple", // Helper for dark theme detection
   };
 
   return (
