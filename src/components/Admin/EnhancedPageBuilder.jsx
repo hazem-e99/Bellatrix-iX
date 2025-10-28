@@ -508,6 +508,9 @@ const EnhancedPageBuilder = () => {
           "HRPricingSection",
           "HRFAQSection",
           "HRCTASection",
+          // Retail components (enhanced schemas)
+          "RetailFeaturesSection",
+          "RetailCaseStudies",
         ];
 
         generalComponents.forEach((compType) => {
@@ -2779,7 +2782,6 @@ const EnhancedPageBuilder = () => {
         ],
       },
       // Manufacturing Sections
-   
 
       ManufacturingChallengesSectionAlt: {
         title: "Manufacturing Challenges",
@@ -2830,10 +2832,6 @@ const EnhancedPageBuilder = () => {
           },
         ],
       },
-
-    
-
-    
 
       ManufacturingCTASection: {
         title: "Transform Your Manufacturing Operations",
@@ -4426,11 +4424,13 @@ const EnhancedPageBuilder = () => {
                     name: editingComponent.componentName,
                     componentId: editingComponent.componentType,
                     icon: editingComponent.componentInfo?.icon || "📄",
+                    // Prefer explicit content, then parsed contentJson, then any enhanced schema defaultData
                     data:
                       editingComponent.content ||
                       (editingComponent.contentJson
                         ? JSON.parse(editingComponent.contentJson)
-                        : {}),
+                        : componentSchemas[editingComponent.componentType]
+                            ?.defaultData || {}),
                   }}
                   onSave={saveComponentData}
                 />

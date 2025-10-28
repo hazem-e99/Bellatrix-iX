@@ -772,7 +772,8 @@ export const componentRegistry = {
       // attach enhanced schema/defaultData if available in generalComponentSchemas
       hasEnhancedSchema: !!getGeneralComponentSchema("RetailFeaturesSection"),
       schema: getGeneralComponentSchema("RetailFeaturesSection")?.schema,
-      defaultData: getGeneralComponentSchema("RetailFeaturesSection")?.defaultData,
+      defaultData: getGeneralComponentSchema("RetailFeaturesSection")
+        ?.defaultData,
     },
     RetailCaseStudies: {
       componentType: "RetailCaseStudies",
