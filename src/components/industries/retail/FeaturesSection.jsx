@@ -114,17 +114,21 @@ const FeaturesSection = ({ data }) => {
                 </div>
                 <div className="flex-1">
                   <h3 className="text-xl font-bold text-white mb-2">
-                    {typeof feature.title === 'string'
+                    {typeof feature.title === "string"
                       ? feature.title
-                      : feature.title?.title || feature.title?.name || 'Feature Title'}
+                      : feature.title?.title ||
+                        feature.title?.name ||
+                        "Feature Title"}
                   </h3>
                   <p className="text-gray-300 mb-4">
-                    {typeof feature.description === 'string'
+                    {typeof feature.description === "string"
                       ? feature.description
-                      : feature.description?.description || feature.description?.desc || 'Feature Description'}
+                      : feature.description?.description ||
+                        feature.description?.desc ||
+                        "Feature Description"}
                   </p>
                   <div className="grid grid-cols-2 gap-2">
-                    {feature.benefits.map((benefit, i) => (
+                    {(feature.benefits || []).map((benefit, i) => (
                       <div key={i} className="flex items-center space-x-2">
                         <div
                           className="w-1.5 h-1.5 rounded-full theme-feature-dot"
@@ -134,9 +138,12 @@ const FeaturesSection = ({ data }) => {
                           }}
                         ></div>
                         <span className="text-sm text-gray-300">
-                          {typeof benefit === 'string'
+                          {typeof benefit === "string"
                             ? benefit
-                            : benefit?.benefit || benefit?.name || benefit?.title || 'Benefit'}
+                            : benefit?.benefit ||
+                              benefit?.name ||
+                              benefit?.title ||
+                              "Benefit"}
                         </span>
                       </div>
                     ))}

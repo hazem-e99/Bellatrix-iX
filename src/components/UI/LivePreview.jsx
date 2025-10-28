@@ -179,8 +179,8 @@ const ComponentPreview = ({
     RetailHeroSection: RetailHero,
     RetailChallengesSection: RetailChallenges,
     RetailSolutionsSection: RetailSolutions,
-    // RetailFeaturesSection: RetailFeatures,
-    // RetailCaseStudies: RetailCaseStudies,
+    RetailFeaturesSection: RetailFeatures,
+    RetailCaseStudies: RetailCaseStudies,
     // RetailCaseStudiesSection: RetailCaseStudies,
     RetailCTASection: RetailCTA,
 
@@ -1846,10 +1846,13 @@ const ComponentPreview = ({
             componentData
           );
           const transformedData = {
-            caseStudies: componentData.caseStudies || componentData.items || [],
-            title: componentData.title || "Retail Success Stories",
-            description:
-              componentData.description || "See how we've helped others",
+            data: {
+              caseStudies:
+                componentData.caseStudies || componentData.items || [],
+              title: componentData.title || "Retail Success Stories",
+              description:
+                componentData.description || "See how we've helped others",
+            },
           };
           console.log(
             "✅ [RetailCaseStudies TRANSFORM] Output data:",
@@ -1907,8 +1910,29 @@ const ComponentPreview = ({
     }
   }, [componentType, componentDataString, componentData]);
 
-  // Get component from registry
-  const Component = componentRegistry[componentType];
+  // Get component from registry with tolerant alias resolution
+  const resolveComponentFromRegistry = (type) => {
+    // direct match
+    if (componentRegistry[type]) return componentRegistry[type];
+    // common alias fixes
+    const candidates = [];
+    // normalize CTA casing differences
+    candidates.push(type.replace(/CTA/g, "Cta"));
+    candidates.push(type.replace(/Cta/g, "CTA"));
+    // strip trailing 'Section'
+    candidates.push(type.replace(/Section$/, ""));
+    // try singular/plural fallback
+    candidates.push(type.replace(/sSection$/, "Section"));
+    // lowercase key
+    candidates.push(type.charAt(0).toUpperCase() + type.slice(1));
+
+    for (const c of candidates) {
+      if (componentRegistry[c]) return componentRegistry[c];
+    }
+    return null;
+  };
+
+  const Component = resolveComponentFromRegistry(componentType);
 
   // Error boundary wrapper
   const ErrorBoundaryWrapper = ({ children }) => {

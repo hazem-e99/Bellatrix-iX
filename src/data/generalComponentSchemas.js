@@ -2859,6 +2859,192 @@ export const generalComponentSchemas = {
         },
       ],
     },
+
+    // Retail Industry Components
+    RetailFeaturesSection: {
+      componentName: "RetailFeaturesSection",
+      category: "retail",
+      icon: "🛍️",
+      displayName: "Retail Features",
+      description:
+        "Key retail features and value propositions with optional benefit lists",
+      schema: {
+        type: "object",
+        properties: {
+          title: {
+            type: "string",
+            label: "Title",
+            placeholder: "Retail Features",
+            formField: "text",
+          },
+          subtitle: {
+            type: "string",
+            label: "Subtitle",
+            placeholder: "Solutions built for modern retail operations",
+            formField: "text",
+          },
+          retailFeatures: {
+            type: "array",
+            label: "Features",
+            items: {
+              type: "object",
+              properties: {
+                id: { type: "string", label: "Feature ID", formField: "text" },
+                title: {
+                  type: "string",
+                  label: "Feature Title",
+                  formField: "text",
+                },
+                description: {
+                  type: "string",
+                  label: "Feature Description",
+                  formField: "textarea",
+                },
+                icon: { type: "string", label: "Icon", formField: "text" },
+                benefits: {
+                  type: "array",
+                  label: "Benefits",
+                  items: { type: "string", formField: "text" },
+                  formField: "array",
+                },
+              },
+            },
+            formField: "array",
+          },
+        },
+      },
+      defaultData: {
+        title: "Retail Features",
+        subtitle: "Solutions built for modern retail operations",
+        retailFeatures: [
+          {
+            id: "feature-1",
+            title: "Omnichannel POS",
+            description:
+              "Unified point-of-sale across online and in-store channels",
+            icon: "🧾",
+            benefits: [
+              "Faster checkout",
+              "Inventory sync",
+              "Flexible payments",
+            ],
+          },
+          {
+            id: "feature-2",
+            title: "Inventory Optimization",
+            description: "Real-time stock visibility across locations",
+            icon: "📦",
+            benefits: ["Reduce stockouts", "Lower carrying costs"],
+          },
+        ],
+      },
+    },
+
+    RetailCaseStudies: {
+      componentName: "RetailCaseStudies",
+      category: "retail",
+      icon: "📚",
+      displayName: "Retail Case Studies",
+      description: "Customer success stories and retail case studies",
+      schema: {
+        type: "object",
+        properties: {
+          title: {
+            type: "string",
+            label: "Title",
+            placeholder: "Retail Case Studies",
+            formField: "text",
+          },
+          description: {
+            type: "string",
+            label: "Description",
+            placeholder: "How our solutions helped customers",
+            formField: "textarea",
+          },
+          caseStudies: {
+            type: "array",
+            label: "Case Studies",
+            items: {
+              type: "object",
+              properties: {
+                id: { type: "string", label: "Case ID", formField: "text" },
+                title: {
+                  type: "string",
+                  label: "Case Title",
+                  formField: "text",
+                },
+                company: {
+                  type: "string",
+                  label: "Company",
+                  formField: "text",
+                },
+                industry: {
+                  type: "string",
+                  label: "Industry",
+                  formField: "text",
+                },
+                quote: {
+                  type: "string",
+                  label: "Quote",
+                  formField: "textarea",
+                },
+                challenge: {
+                  type: "string",
+                  label: "Challenge",
+                  formField: "textarea",
+                },
+                solution: {
+                  type: "string",
+                  label: "Solution",
+                  formField: "textarea",
+                },
+                description: {
+                  type: "string",
+                  label: "Description",
+                  formField: "textarea",
+                },
+                results: {
+                  type: "array",
+                  label: "Results",
+                  items: { type: "string", formField: "text" },
+                  formField: "array",
+                },
+                image: {
+                  type: "string",
+                  label: "Image URL",
+                  formField: "media",
+                  mediaType: "image",
+                },
+              },
+            },
+            formField: "array",
+          },
+        },
+      },
+      defaultData: {
+        title: "Retail Success Stories",
+        description:
+          "Real-world examples of how we helped retail customers scale and optimize operations.",
+        caseStudies: [
+          {
+            id: "case-1",
+            title: "Modernizing Checkout for Local Retailer",
+            company: "Corner Store Co.",
+            industry: "Retail",
+            quote:
+              "We reduced checkout time by 40% and improved inventory accuracy.",
+            challenge: "Slow checkout and inventory mismatches across stores.",
+            solution:
+              "Unified POS and real-time inventory synchronization across locations.",
+            description:
+              "Implemented unified POS and inventory sync across three stores.",
+            results: ["40% faster checkout", "Improved inventory accuracy"],
+            image:
+              "https://images.unsplash.com/photo-1523275335684-37898b6baf30",
+          },
+        ],
+      },
+    },
   },
 
   // Testimonials Components
