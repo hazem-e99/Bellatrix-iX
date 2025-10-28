@@ -8,14 +8,16 @@ console.log("🎨 Theme Switcher Test Script loaded!");
 
 // Test functions
 window.testThemeSwitcher = {
-  // Switch to purple theme
-  activatePurple: () => {
+  // Switch to black/dark theme
+  activateDark: () => {
     document.documentElement.setAttribute("data-theme", "purple");
-    console.log("💜 Purple theme activated!");
+    console.log("� Black/Dark theme activated!");
     console.log("CSS Variables should now be:");
-    console.log("--color-brand-dark-navy: #2e004f");
-    console.log("--color-brand-variant: #3d006b");
-    console.log("--color-brand-accent: #4b0082");
+    console.log("--color-brand-dark-navy: #0a0a0a");
+    console.log("--color-brand-variant: #262626");
+    console.log("--color-brand-accent: #333333");
+    console.log("--color-text-primary: #ffffff (white text)");
+    console.log("--color-bg-primary: #0a0a0a (black background)");
   },
 
   // Switch back to default (blue) theme
@@ -33,7 +35,7 @@ window.testThemeSwitcher = {
     let isBlue = true;
     const interval = setInterval(() => {
       if (isBlue) {
-        window.testThemeSwitcher.activatePurple();
+        window.testThemeSwitcher.activateDark();
       } else {
         window.testThemeSwitcher.activateBlue();
       }
@@ -71,6 +73,14 @@ window.testThemeSwitcher = {
       "--color-brand-accent:",
       style.getPropertyValue("--color-brand-accent")
     );
+    console.log(
+      "--color-text-primary:",
+      style.getPropertyValue("--color-text-primary")
+    );
+    console.log(
+      "--color-bg-primary:",
+      style.getPropertyValue("--color-bg-primary")
+    );
 
     const theme = root.getAttribute("data-theme");
     console.log("Current theme:", theme || "default (blue)");
@@ -80,7 +90,7 @@ window.testThemeSwitcher = {
 // Usage instructions
 console.log(`
 📋 Usage Instructions:
-1. testThemeSwitcher.activatePurple() - Switch to purple theme
+1. testThemeSwitcher.activateDark() - Switch to black/dark theme
 2. testThemeSwitcher.activateBlue() - Switch to blue theme  
 3. testThemeSwitcher.demo() - Auto-switching demo
 4. testThemeSwitcher.checkValues() - Check current values
@@ -96,5 +106,6 @@ console.log(`
 
 🔄 All elements should smoothly transition (0.6s) between themes:
 - Blue theme: Navy blues, cyans, and blue accents
-- Purple theme: Deep purples, light purples, and purple accents
+- Black/Dark theme: Black backgrounds with white text, gray accents
+- Text automatically becomes white on dark backgrounds for readability
 `);

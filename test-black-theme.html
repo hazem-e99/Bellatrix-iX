@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>اختبار الثيم الأسود</title>
+  <link rel="stylesheet" href="./src/styles/theme-colors.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      padding: 2rem;
+      background: linear-gradient(135deg, var(--color-bg-primary, #f5f5f5), var(--color-bg-secondary, #e8e8e8));
+      color: var(--color-text-primary, #111827);
+      min-height: 100vh;
+      transition: all 0.6s ease;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      color: var(--color-primary, #2563eb);
+      margin-bottom: 2rem;
+      font-size: 2.5rem;
+      text-align: center;
+    }
+
+    .controls {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      border: 2px solid var(--color-primary, #2563eb);
+      background: var(--color-primary, #2563eb);
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+    }
+
+    button:hover {
+      background: var(--color-hover, #1d4ed8);
+      border-color: var(--color-hover, #1d4ed8);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .theme-info {
+      background: var(--color-bg-surface, white);
+      padding: 2rem;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      border: 1px solid var(--color-border-primary, #e5e7eb);
+    }
+
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .color-card {
+      background: var(--color-bg-surface, white);
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 1px solid var(--color-border-primary, #e5e7eb);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .color-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    .color-card h3 {
+      color: var(--color-text-primary, #111827);
+      margin-bottom: 1rem;
+      font-size: 1.25rem;
+    }
+
+    .color-card p {
+      color: var(--color-text-secondary, #374151);
+      line-height: 1.6;
+    }
+
+    .color-sample {
+      width: 100%;
+      height: 100px;
+      border-radius: 8px;
+      margin-top: 1rem;
+      border: 2px solid var(--color-border-secondary, #d1d5db);
+    }
+
+    .primary-sample {
+      background: var(--color-primary, #2563eb);
+    }
+
+    .bg-sample {
+      background: var(--color-bg-primary, #ffffff);
+      border: 2px solid var(--color-border-primary, #e5e7eb);
+    }
+
+    .text-sample {
+      background: var(--color-bg-surface, #f9fafb);
+      color: var(--color-text-primary, #111827);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .status {
+      text-align: center;
+      padding: 1rem;
+      background: var(--color-primary-bg, #eff6ff);
+      border-radius: 8px;
+      margin-top: 2rem;
+      color: var(--color-text-primary, #111827);
+      font-weight: 600;
+    }
+
+    code {
+      background: var(--color-bg-secondary, #f3f4f6);
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      color: var(--color-text-primary, #111827);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎨 اختبار الثيم الأسود</h1>
+    
+    <div class="controls">
+      <button onclick="activateDefault()">الثيم الافتراضي (أزرق) 💙</button>
+      <button onclick="activateDark()">الثيم الأسود 🖤</button>
+      <button onclick="toggleTheme()">تبديل الثيم 🔄</button>
+    </div>
+
+    <div class="theme-info">
+      <h2 style="margin-bottom: 1rem;">معلومات الثيم الحالي</h2>
+      <p><strong>الثيم النشط:</strong> <code id="current-theme">default</code></p>
+      <p style="margin-top: 0.5rem;"><strong>اللون الأساسي:</strong> <code id="primary-color">#2563eb</code></p>
+      <p style="margin-top: 0.5rem;"><strong>لون النص:</strong> <code id="text-color">#111827</code></p>
+      <p style="margin-top: 0.5rem;"><strong>لون الخلفية:</strong> <code id="bg-color">#ffffff</code></p>
+    </div>
+
+    <div class="color-grid">
+      <div class="color-card">
+        <h3>اللون الأساسي</h3>
+        <p>اللون المستخدم في الأزرار والروابط</p>
+        <div class="color-sample primary-sample"></div>
+      </div>
+
+      <div class="color-card">
+        <h3>لون الخلفية</h3>
+        <p>الخلفية الرئيسية للصفحة</p>
+        <div class="color-sample bg-sample"></div>
+      </div>
+
+      <div class="color-card">
+        <h3>النص والقراءة</h3>
+        <p>وضوح النص على الخلفية</p>
+        <div class="color-sample text-sample">
+          نص تجريبي 📝
+        </div>
+      </div>
+
+      <div class="color-card">
+        <h3>البطاقات والعناصر</h3>
+        <p>الحدود والظلال</p>
+        <div class="color-sample" style="background: var(--color-bg-surface); display: flex; align-items: center; justify-content: center;">
+          <span style="color: var(--color-text-secondary);">محتوى البطاقة</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="status">
+      جميع التحولات بين الثيمات سلسة وتستغرق 0.6 ثانية ✨
+    </div>
+  </div>
+
+  <script>
+    // تفعيل الثيم الافتراضي (الأزرق)
+    function activateDefault() {
+      document.documentElement.removeAttribute('data-theme');
+      updateThemeInfo('default (أزرق)');
+      console.log('💙 تم تفعيل الثيم الافتراضي');
+    }
+
+    // تفعيل الثيم الأسود
+    function activateDark() {
+      document.documentElement.setAttribute('data-theme', 'purple');
+      updateThemeInfo('dark (أسود)');
+      console.log('🖤 تم تفعيل الثيم الأسود');
+    }
+
+    // تبديل بين الثيمات
+    function toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      if (currentTheme === 'purple') {
+        activateDefault();
+      } else {
+        activateDark();
+      }
+    }
+
+    // تحديث معلومات الثيم
+    function updateThemeInfo(themeName) {
+      setTimeout(() => {
+        const root = document.documentElement;
+        const styles = getComputedStyle(root);
+        
+        document.getElementById('current-theme').textContent = themeName;
+        document.getElementById('primary-color').textContent = 
+          styles.getPropertyValue('--color-primary').trim() || '#2563eb';
+        document.getElementById('text-color').textContent = 
+          styles.getPropertyValue('--color-text-primary').trim() || '#111827';
+        document.getElementById('bg-color').textContent = 
+          styles.getPropertyValue('--color-bg-primary').trim() || '#ffffff';
+      }, 100);
+    }
+
+    // عرض معلومات في Console
+    console.log(`
+🎨 اختبار الثيم الأسود
+=====================
+
+الأوامر المتاحة:
+- activateDefault() - تفعيل الثيم الافتراضي (الأزرق)
+- activateDark() - تفعيل الثيم الأسود
+- toggleTheme() - التبديل بين الثيمات
+
+الثيمات:
+1. الثيم الافتراضي: أزرق مع خلفية بيضاء
+2. الثيم الأسود: أسود مع نص أبيض للقراءة الواضحة
+
+جرب الأزرار في الصفحة أو استخدم الأوامر في Console!
+    `);
+
+    // تحديث المعلومات عند التحميل
+    updateThemeInfo('default (أزرق)');
+
+    // متابعة تغييرات الثيم
+    const observer = new MutationObserver(() => {
+      const theme = document.documentElement.getAttribute('data-theme');
+      updateThemeInfo(theme === 'purple' ? 'dark (أسود)' : 'default (أزرق)');
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme']
+    });
+  </script>
+</body>
+</html>

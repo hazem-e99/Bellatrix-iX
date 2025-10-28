@@ -280,20 +280,20 @@ const ModernAdminLayout = () => {
                 )}
               </Button>
 
-              {/* Color theme toggle (Default/Purple) */}
+              {/* Color theme toggle (Default/Dark) */}
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={toggleColorTheme}
                 className="text-white hover:text-white hover:bg-white/20 transition-colors duration-200"
                 title={`Switch to ${
-                  theme === "default" ? "Purple" : "Default"
+                  theme === "default" ? "Dark" : "Default"
                 } Theme`}
               >
                 <div
                   className={`h-5 w-5 rounded-full border-2 border-white ${
-                    theme === "purple"
-                      ? "bg-gradient-to-r from-purple-500 to-purple-700"
+                    theme === "dark" || theme === "purple"
+                      ? "bg-gradient-to-r from-gray-800 to-black"
                       : "bg-gradient-to-r from-blue-500 to-blue-700"
                   }`}
                 />

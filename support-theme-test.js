@@ -15,7 +15,7 @@ window.testSupportTheme = {
     const interval = setInterval(() => {
       if (isBlue) {
         document.documentElement.setAttribute("data-theme", "purple");
-        console.log("💜 Switched to purple theme");
+        console.log("� Switched to black/dark theme");
       } else {
         document.documentElement.removeAttribute("data-theme");
         console.log("💙 Switched to blue theme");
@@ -62,15 +62,23 @@ window.testSupportTheme = {
       "--color-cyan-300:",
       style.getPropertyValue("--color-cyan-300")
     );
+    console.log(
+      "--color-text-primary:",
+      style.getPropertyValue("--color-text-primary")
+    );
+    console.log(
+      "--color-bg-primary:",
+      style.getPropertyValue("--color-bg-primary")
+    );
 
     const theme = root.getAttribute("data-theme");
     console.log("Current theme:", theme || "default (blue)");
   },
 
   // Manual theme controls
-  setPurple: () => {
+  setDark: () => {
     document.documentElement.setAttribute("data-theme", "purple");
-    console.log("💜 Purple theme activated!");
+    console.log("� Black/Dark theme activated!");
   },
 
   setBlue: () => {
@@ -82,7 +90,7 @@ window.testSupportTheme = {
 console.log(`
 📋 BellatrixSupportHero Testing Commands:
 1. testSupportTheme.testSwitching() - Auto theme switching test
-2. testSupportTheme.setPurple() - Switch to purple theme
+2. testSupportTheme.setDark() - Switch to black/dark theme
 3. testSupportTheme.setBlue() - Switch to blue theme
 4. testSupportTheme.checkSupportValues() - Check current CSS values
 
@@ -95,6 +103,7 @@ console.log(`
 
 Expected behavior:
 - Blue theme: Navy/deep blue backgrounds with cyan accents
-- Purple theme: Deep purple backgrounds with light purple accents
+- Black/Dark theme: Black backgrounds with white text and gray accents
 - Smooth animated transitions between colors
+- Text automatically becomes white on dark backgrounds for readability
 `);

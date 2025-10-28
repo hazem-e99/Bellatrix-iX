@@ -42,8 +42,9 @@ export const ThemeProvider = ({ children }) => {
   }, [isDark]);
 
   useEffect(() => {
-    // Handle color theme (default/purple)
-    if (theme === "purple") {
+    // Handle color theme (default/dark - previously purple)
+    // Note: Still using "purple" as the data-theme attribute for CSS compatibility
+    if (theme === "dark" || theme === "purple") {
       document.documentElement.setAttribute("data-theme", "purple");
     } else {
       document.documentElement.removeAttribute("data-theme");
@@ -53,7 +54,7 @@ export const ThemeProvider = ({ children }) => {
 
   const toggleTheme = (newTheme) => {
     if (typeof newTheme === "string") {
-      // Named theme switching (default/purple)
+      // Named theme switching (default/dark)
       setTheme(newTheme);
     } else {
       // Legacy dark/light toggle
@@ -62,7 +63,7 @@ export const ThemeProvider = ({ children }) => {
   };
 
   const toggleColorTheme = () => {
-    setTheme(theme === "default" ? "purple" : "default");
+    setTheme(theme === "default" ? "dark" : "default");
   };
 
   return (
@@ -73,6 +74,7 @@ export const ThemeProvider = ({ children }) => {
         toggleTheme,
         toggleColorTheme,
         setTheme,
+        isDarkTheme: theme === "dark" || theme === "purple", // Helper for dark theme detection
       }}
     >
       {children}
