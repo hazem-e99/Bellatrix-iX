@@ -158,7 +158,7 @@ const styles = {
     textTransform: "capitalize",
   },
   headingSpan: {
-    color: "#22d3ee", // cyan-400
+    color: "var(--color-accent-cyan)", // Theme-aware accent color
   },
   paragraph: {
     textAlign: "center",
@@ -193,12 +193,12 @@ const styles = {
     fontWeight: "700",
     marginBottom: "15px",
     letterSpacing: "-1px",
-    borderBottom: "2px solid rgba(34, 211, 238, 0.3)", // cyan-400 with opacity
+    borderBottom: "2px solid var(--color-accent-cyan-light)", // Theme-aware accent with opacity
     paddingBottom: "10px",
     display: "inline-block",
     paddingLeft: "10px",
     paddingRight: "10px",
-    color: "#22d3ee", // cyan-400
+    color: "var(--color-accent-cyan)", // Theme-aware accent color
   },
   list: {
     margin: 0,

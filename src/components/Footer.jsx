@@ -8,6 +8,22 @@ import {
 import { useState, useEffect } from "react";
 import SEO from "./SEO";
 
+// Add inline styles for hover effects
+const footerStyles = `
+  .footer-social-link:hover {
+    background-color: var(--color-hover) !important;
+  }
+  .footer-social-link:hover span {
+    color: var(--color-text-inverse) !important;
+  }
+  .footer-link:hover {
+    color: var(--color-primary) !important;
+  }
+  .footer-scroll-btn:hover {
+    background-color: var(--color-hover) !important;
+  }
+`;
+
 const Footer = () => {
   const [showTop, setShowTop] = useState(false);
   const [categories, setCategories] = useState([]);
@@ -49,9 +65,13 @@ const Footer = () => {
 
   return (
     <footer
-      className="relative bg-slate-900 text-white pt-0 pb-8 px-0 overflow-hidden border-t-4 border-slate-600 shadow-inner"
-      style={{ backgroundColor: "#0f172a" }}
+      className="relative text-white pt-0 pb-8 px-0 overflow-hidden border-t-4 shadow-inner"
+      style={{ 
+        backgroundColor: "var(--color-brand-dark-navy)",
+        borderTopColor: "var(--color-border-secondary)"
+      }}
     >
+      <style>{footerStyles}</style>
       <SEO
         title="Contact Bellatrix | Oracle NetSuite Consulting & Support Information"
         description="Get in touch with Bellatrix for Oracle NetSuite consulting, implementation, and support services. Contact information and company details."
@@ -63,15 +83,26 @@ const Footer = () => {
       />
 
       {/* Top border glow */}
-      <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-slate-600 via-slate-500 to-slate-600 blur-lg opacity-60 z-0" />
+      <div 
+        className="absolute top-0 left-0 w-full h-2 blur-lg opacity-60 z-0"
+        style={{
+          background: "linear-gradient(to right, var(--color-border-secondary), var(--color-primary), var(--color-border-secondary))"
+        }}
+      />
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 py-12">
           {/* Brand Column */}
           <div className="flex flex-col items-center lg:items-start gap-4">
-            <h3 className="text-3xl font-extrabold tracking-tight text-slate-100 drop-shadow">
+            <h3 
+              className="text-3xl font-extrabold tracking-tight drop-shadow"
+              style={{ color: "var(--color-text-inverse)" }}
+            >
               Bellatrix
             </h3>
-            <p className="text-slate-100/80 text-center lg:text-left max-w-xs">
+            <p 
+              className="text-center lg:text-left max-w-xs"
+              style={{ color: "var(--color-text-inverse)", opacity: 0.8 }}
+            >
               Empowering your business with next-gen enterprise software
               solutions.
             </p>
@@ -84,10 +115,18 @@ const Footer = () => {
                 <a
                   key={idx}
                   href={item.href}
-                  className="group p-2 rounded-full bg-slate-800 hover:bg-slate-600 transition-colors duration-300 shadow hover:scale-110"
+                  className="footer-social-link group p-2 rounded-full transition-colors duration-300 shadow hover:scale-110"
+                  style={{
+                    backgroundColor: "var(--color-bg-dark)",
+                  }}
                   aria-label="Social Link"
                 >
-                  <span className="text-slate-300 group-hover:text-white transition-colors duration-300">
+                  <span 
+                    className="transition-colors duration-300"
+                    style={{
+                      color: "var(--color-text-muted)",
+                    }}
+                  >
                     {item.icon}
                   </span>
                 </a>
@@ -97,16 +136,22 @@ const Footer = () => {
 
           {/* Quick Links Column */}
           <div className="flex flex-col items-center lg:items-start gap-3">
-            <h4 className="text-xl font-semibold text-slate-100 mb-2">
+            <h4 
+              className="text-xl font-semibold mb-2"
+              style={{ color: "var(--color-text-inverse)" }}
+            >
               Quick Links
             </h4>
-            <ul className="flex flex-col gap-2 text-slate-100/80">
+            <ul 
+              className="flex flex-col gap-2"
+              style={{ color: "var(--color-text-inverse)", opacity: 0.8 }}
+            >
               {loading ? (
-                <li className="text-gray-400">Loading...</li>
+                <li style={{ color: "var(--color-text-muted)" }}>Loading...</li>
               ) : error ? (
-                <li className="text-red-400">{error}</li>
+                <li style={{ color: "var(--color-error)" }}>{error}</li>
               ) : categories.length === 0 ? (
-                <li className="text-gray-400">No links available</li>
+                <li style={{ color: "var(--color-text-muted)" }}>No links available</li>
               ) : (
                 categories.map((cat) => {
                   const homePage = Array.isArray(cat.pages)
@@ -117,7 +162,10 @@ const Footer = () => {
                       <li key={cat.id}>
                         <a
                           href={`/${homePage.slug}`}
-                          className="hover:text-white transition-colors duration-300 cursor-pointer"
+                          className="footer-link transition-colors duration-300 cursor-pointer"
+                          style={{ 
+                            color: "inherit"
+                          }}
                         >
                           {cat.name}
                         </a>
@@ -132,16 +180,20 @@ const Footer = () => {
                           return homePage ? (
                             <a
                               href={`/pages/${homePage.slug}`}
-                              className="hover:text-primary text-gray-200 transition duration-200 cursor-pointer"
+                              className="footer-link transition duration-200 cursor-pointer"
+                              style={{
+                                color: "var(--color-text-inverse)",
+                                opacity: 0.9
+                              }}
                             >
                               {cat.name}
                             </a>
                           ) : (
-                            <span className="text-gray-400">{cat.name}</span>
+                            <span style={{ color: "var(--color-text-muted)" }}>{cat.name}</span>
                           );
                         })()
                       ) : (
-                        <span className="text-gray-400">{cat.name}</span>
+                        <span style={{ color: "var(--color-text-muted)" }}>{cat.name}</span>
                       )}
                     </li>
                   );
@@ -152,43 +204,55 @@ const Footer = () => {
 
           {/* Our Services Column */}
           <div className="flex flex-col items-center lg:items-start gap-3">
-            <h4 className="text-xl font-semibold text-slate-100 mb-2">
+            <h4 
+              className="text-xl font-semibold mb-2"
+              style={{ color: "var(--color-text-inverse)" }}
+            >
               Our Services
             </h4>
-            <div className="flex flex-col gap-2 text-slate-100/80">
+            <div 
+              className="flex flex-col gap-2"
+              style={{ color: "var(--color-text-inverse)", opacity: 0.8 }}
+            >
               <a
                 href="#"
-                className="hover:text-white transition-colors duration-300"
+                className="footer-link transition-colors duration-300"
+                style={{ color: "inherit" }}
               >
                 Software Implementation
               </a>
               <a
                 href="#"
-                className="hover:text-white transition-colors duration-300"
+                className="footer-link transition-colors duration-300"
+                style={{ color: "inherit" }}
               >
                 Training Programs
               </a>
               <a
                 href="#"
-                className="hover:text-white transition-colors duration-300"
+                className="footer-link transition-colors duration-300"
+                style={{ color: "inherit" }}
               >
                 Technical Support
               </a>
               <a
                 href="#"
-                className="hover:text-white transition-colors duration-300"
+                className="footer-link transition-colors duration-300"
+                style={{ color: "inherit" }}
               >
                 Consulting Services
               </a>
               <a
                 href="#"
-                className="hover:text-white transition-colors duration-300"
+                className="footer-link transition-colors duration-300"
+                style={{ color: "inherit" }}
               >
                 Custom Solutions
               </a>
               <a
                 href="#"
-                className="hover:text-white transition-colors duration-300"
+                className="footer-link transition-colors duration-300"
+                style={{ color: "inherit" }}
               >
                 Maintenance & Updates
               </a>
@@ -196,8 +260,14 @@ const Footer = () => {
           </div>
 
           {/* Contact Column */}
-          <div className="flex flex-col items-center lg:items-start gap-3 text-slate-100/90 text-sm">
-            <h4 className="text-xl font-semibold mb-2 text-slate-100">
+          <div 
+            className="flex flex-col items-center lg:items-start gap-3 text-sm"
+            style={{ color: "var(--color-text-inverse)", opacity: 0.9 }}
+          >
+            <h4 
+              className="text-xl font-semibold mb-2"
+              style={{ color: "var(--color-text-inverse)" }}
+            >
               Contact Us
             </h4>
             <div className="flex flex-col gap-2">
@@ -211,7 +281,16 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        <div className="text-center pt-6 text-slate-100/70 text-xs border-t border-slate-800/40">
+        <div 
+          className="text-center pt-6 text-xs"
+          style={{
+            color: "var(--color-text-inverse)",
+            opacity: 0.7,
+            borderTop: "1px solid",
+            borderColor: "var(--color-border-primary)",
+            borderTopOpacity: 0.4
+          }}
+        >
           <p>
             &copy; {new Date().getFullYear()} Bellatrix. All rights reserved.
           </p>
@@ -220,7 +299,10 @@ const Footer = () => {
         {showTop && (
           <button
             onClick={handleScrollTop}
-            className="fixed bottom-8 right-8 z-50 bg-slate-700 hover:bg-slate-900 text-white p-3 rounded-full shadow-lg hover:scale-110 transition-transform animate-bounce"
+            className="footer-scroll-btn fixed bottom-8 right-8 z-50 text-white p-3 rounded-full shadow-lg hover:scale-110 transition-transform animate-bounce"
+            style={{
+              backgroundColor: "var(--color-primary)",
+            }}
             aria-label="Scroll to top"
           >
             <ArrowUpward />

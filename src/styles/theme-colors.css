@@ -51,14 +51,6 @@
 
   /* Shadow Colors */
   --shadow-blue-500: #3b82f6; /* 55x shadow-blue-500 */
-  --shadow-purple-500: #a855f7; /* Purple equivalent for shadow */
-  
-  /* Additional color variables for purple theme */
-  --tw-red-300: #fca5a5;
-  --tw-red-400: #f87171;
-  --tw-red-500: #ef4444;
-  --tw-red-600: #dc2626;
-  --tw-red-700: #b91c1c;
 
   /* ==================================================
      CUSTOM BRAND COLORS (sorted by frequency)
@@ -66,7 +58,6 @@
 
   /* Primary Brand Colors */
   --color-brand-dark: #001038; /* 65x - Main dark brand color */
-  --color-brand-dark-navy: #001038; /* Main dark navy brand color - matches #001038 */
   --color-brand-midnight: #191970; /* 20x - Midnight blue brand color */
   --color-brand-navy: #001245; /* 5x - Navy variation */
   --color-brand-deep: #000e30; /* 5x - Deep blue variation */
@@ -193,17 +184,17 @@
   --tw-yellow-600: #ca8a04;
   --tw-yellow-700: #a16207;
 
-  /* Tailwind Purple Palette */
-  --tw-purple-50: #faf5ff;
-  --tw-purple-100: #f3e8ff;
-  --tw-purple-200: #e9d5ff;
-  --tw-purple-300: #d8b4fe;
-  --tw-purple-400: #c084fc;
-  --tw-purple-500: #a855f7;
-  --tw-purple-600: #9333ea;
-  --tw-purple-700: #7e22ce;
-  --tw-purple-800: #6b21a8;
-  --tw-purple-900: #581c87;
+  /* Tailwind Purple Palette - Two-Tone System with Full Scale */
+  --tw-purple-50: #f5e6f7; /* lightest - tinted white */
+  --tw-purple-100: #e1b3e8; /* very light purple */
+  --tw-purple-200: #c980d9; /* light purple */
+  --tw-purple-300: #b14dca; /* mid-light purple */
+  --tw-purple-400: #991abb; /* medium purple */
+  --tw-purple-500: #1e0021; /* main primary */
+  --tw-purple-600: #28002b; /* accent/secondary */
+  --tw-purple-700: #3a003d; /* darker mid-tone */
+  --tw-purple-800: #120015; /* very dark */
+  --tw-purple-900: #0c000f; /* deepest/darkest */
 
   /* ==================================================
      SEMANTIC COLOR ALIASES
@@ -253,6 +244,10 @@
   --color-error: var(--tw-red-600);
   --color-info: var(--color-blue-600);
 
+  /* Accent Colors - Theme-aware */
+  --color-accent-cyan: #22d3ee; /* cyan-400 - Default theme (blue) */
+  --color-accent-cyan-light: rgba(34, 211, 238, 0.3); /* cyan with 30% opacity */
+
   /* Interactive States */
   --color-hover: var(--color-blue-700);
   --color-focus: var(--color-blue-500);
@@ -264,102 +259,102 @@
 }
 
 /* ==================================================
-   BLACK/DARK THEME VARIANT
+   PURPLE THEME VARIANT - FULL 1:1 BLUE MAPPING
    ================================================== */
 [data-theme="purple"] {
-  /* Override Blue Palette with Black/Dark Gray Shades */
-  --tw-blue-50: #f5f5f5; /* Very light gray for backgrounds */
-  --tw-blue-100: #e8e8e8; /* Light gray */
-  --tw-blue-200: #d4d4d4; /* Lighter gray */
-  --tw-blue-300: #a3a3a3; /* Medium gray */
-  --tw-blue-400: #525252; /* Dark gray */
-  --tw-blue-500: #262626; /* Very dark gray */
-  --tw-blue-600: #171717; /* Near black */
-  --tw-blue-700: #0a0a0a; /* Almost black */
-  --tw-blue-800: #050505; /* Darker black */
-  --tw-blue-900: #000000; /* Pure black */
+  /* Base Two-Tone Colors */
+  --color-primary: #1e0021; /* primary main */
+  --color-primary-light: #28002b; /* accent/secondary */
+  --color-primary-dark: #3a003d; /* darker mid-tone */
 
-  /* Override Color Blue Palette with Black Shades */
-  --color-blue-50: #f5f5f5;
-  --color-blue-100: #e8e8e8;
-  --color-blue-200: #d4d4d4;
-  --color-blue-300: #a3a3a3;
-  --color-blue-400: #525252;
-  --color-blue-500: #262626;
-  --color-blue-600: #171717;
-  --color-blue-700: #0a0a0a;
-  --color-blue-800: #050505;
-  --color-blue-900: #000000;
+  /* Complete Purple Scale (matching blue 50-900) */
+  --purple-50: #f5e6f7; /* lightest - for backgrounds */
+  --purple-100: #e1b3e8; /* very light - for hover backgrounds */
+  --purple-200: #c980d9; /* light - for borders/subtle accents */
+  --purple-300: #b14dca; /* mid-light - for secondary text */
+  --purple-400: #991abb; /* medium - for icons/badges */
+  --purple-500: #1e0021; /* main primary - buttons/links */
+  --purple-600: #28002b; /* accent - primary hover */
+  --purple-700: #3a003d; /* darker - active states */
+  --purple-800: #120015; /* very dark - text on light bg */
+  --purple-900: #0c000f; /* deepest - headings/emphasis */
 
-  /* Override Semantic Aliases */
-  --color-primary: #171717; /* Near black */
-  --color-primary-light: #262626; /* Dark gray */
-  --color-primary-dark: #000000; /* Pure black */
-  --color-hover: #0a0a0a; /* Almost black for hover */
-  --color-focus: #262626; /* Dark gray for focus */
+  /* 1:1 Blue → Purple Mapping (Tailwind utilities) */
+  --tw-blue-50: var(--purple-50);
+  --tw-blue-100: var(--purple-100);
+  --tw-blue-200: var(--purple-200);
+  --tw-blue-300: var(--purple-300);
+  --tw-blue-400: var(--purple-400);
+  --tw-blue-500: var(--purple-500); /* Primary */
+  --tw-blue-600: var(--purple-600); /* Accent */
+  --tw-blue-700: var(--purple-700);
+  --tw-blue-800: var(--purple-800);
+  --tw-blue-900: var(--purple-900);
 
-  /* Override Interactive States */
-  --color-active: #000000; /* Black for active state */
-  --color-info: #171717; /* Near black for info */
+  /* 1:1 Color Blue Mapping (Custom variables) */
+  --color-blue-50: var(--purple-50);
+  --color-blue-100: var(--purple-100);
+  --color-blue-200: var(--purple-200);
+  --color-blue-300: var(--purple-300);
+  --color-blue-400: var(--purple-400);
+  --color-blue-500: var(--purple-500);
+  --color-blue-600: var(--purple-600);
+  --color-blue-700: var(--purple-700);
+  --color-blue-800: var(--purple-800);
+  --color-blue-900: var(--purple-900);
 
-  /* Override Shadow Colors */
-  --color-shadow: rgba(0, 0, 0, 0.5); /* Black shadow */
-  --shadow-blue-500: rgba(0, 0, 0, 0.5);
+  /* Cyan → Purple Accent Mapping */
+  --tw-cyan-300: var(--purple-200); /* Light accent */
+  --tw-cyan-400: var(--purple-400); /* Medium accent - matches text-cyan-400 */
+  --tw-cyan-500: var(--purple-500); /* Primary */
+  --tw-cyan-600: var(--purple-600); /* Darker accent */
+  --tw-cyan-700: var(--purple-700); /* Deep accent */
 
-  /* Override Brand Colors with Dark Equivalents */
-  --color-brand-dark-navy: #0a0a0a; /* Almost black */
-  --color-brand-midnight: #1a1a1a; /* Very dark gray */
-  --color-brand-variant: #262626; /* Dark gray variant */
-  --color-brand-accent: #333333; /* Medium dark gray */
-  --color-brand-deep: #000000; /* Pure black */
-  --color-brand-navy: #0d0d0d; /* Very dark */
+  --color-cyan-300: var(--purple-200);
+  --color-cyan-400: var(--purple-400);
+  --color-cyan-500: var(--purple-500);
+  --color-cyan-600: var(--purple-600);
+  --color-cyan-700: var(--purple-700);
 
-  /* Override Cyan Colors with Gray Equivalents */
-  --color-cyan-300: #737373; /* Medium gray */
-  --color-cyan-400: #525252; /* Dark gray */
-  --color-cyan-500: #262626; /* Very dark gray */
-  --color-cyan-600: #171717; /* Near black */
-  
-  /* Override Text Colors for Readability */
-  --color-text-primary: #ffffff; /* White text */
-  --color-text-secondary: #e8e8e8; /* Light gray text */
-  --color-text-muted: #a3a3a3; /* Medium gray text */
-  --color-text-light: #737373; /* Darker gray for less important text */
-  
-  /* Override Background Colors */
-  --color-bg-primary: #0a0a0a; /* Almost black background */
-  --color-bg-secondary: #171717; /* Near black secondary background */
-  --color-bg-dark: #000000; /* Pure black */
-  --color-bg-surface: #1a1a1a; /* Very dark surface */
-  
-  /* Override Border Colors */
-  --color-border-primary: #262626; /* Dark border */
-  --color-border-secondary: #333333; /* Slightly lighter border */
-  --color-border-light: #404040; /* Medium dark border */
-  
-  /* Background Overlay Colors */
-  --color-black-10: rgba(255, 255, 255, 0.05); /* Subtle white overlay */
-  --color-black-25: rgba(255, 255, 255, 0.1); /* Light white overlay */
-  --color-black-80: rgba(255, 255, 255, 0.15); /* More visible white overlay */
-  
-  /* White Overlay for Dark Theme */
-  --color-white-10: rgba(255, 255, 255, 0.1);
-  --color-white-20: rgba(255, 255, 255, 0.2);
-  --color-white-30: rgba(255, 255, 255, 0.3);
-  --color-white-40: rgba(255, 255, 255, 0.4);
-  --color-white-50: rgba(255, 255, 255, 0.5);
-}
+  /* Cyan/Blue with Opacity → Purple with Opacity */
+  --color-blue-15: rgba(153, 26, 187, 0.15); /* Purple 400 at 15% */
+  --color-blue-20: rgba(153, 26, 187, 0.2); /* Purple 400 at 20% */
+  --color-blue-40: rgba(153, 26, 187, 0.4); /* Purple 400 at 40% */
+  --color-blue-50: rgba(153, 26, 187, 0.5); /* Purple 400 at 50% */
+  --color-blue-60: rgba(153, 26, 187, 0.6); /* Purple 400 at 60% */
 
-/* ==================================================
-   DASHBOARD-SPECIFIC OVERRIDES
-   ================================================== */
-/* Override text-secondary with text-inverse for Dashboard components only */
-.dashboard,
-[data-dashboard="true"],
-.admin-layout,
-.admin-dashboard,
-.admin-component {
-  --color-text-secondary: var(--color-text-muted) !important;
+  --color-cyan-20: rgba(153, 26, 187, 0.2); /* Purple 400 at 20% */
+  --color-cyan-40: rgba(153, 26, 187, 0.4); /* Purple 400 at 40% */
+  --color-cyan-50: rgba(153, 26, 187, 0.5); /* Purple 400 at 50% */
+
+  /* Accent Colors Override - Purple Theme */
+  --color-accent-cyan: #991abb; /* purple-400 instead of cyan */
+  --color-accent-cyan-light: rgba(153, 26, 187, 0.3); /* purple-400 with 30% opacity */
+
+  /* Semantic Aliases (UI Components) */
+  --color-primary: var(--purple-500); /* Main brand color */
+  --color-primary-light: var(--purple-400); /* Lighter variant */
+  --color-primary-dark: var(--purple-700); /* Darker variant */
+  --color-primary-bg: var(--purple-50); /* Background tint */
+
+  /* Interactive States */
+  --color-hover: var(--purple-600); /* Hover state */
+  --color-focus: var(--purple-400); /* Focus ring */
+  --color-active: var(--purple-700); /* Active/pressed state */
+  --color-info: var(--purple-500); /* Info badges/alerts */
+
+  /* Shadow Colors */
+  --color-shadow: rgba(30, 0, 33, 0.35);
+  --shadow-blue-500: rgba(30, 0, 33, 0.35);
+  --shadow-purple-500: rgba(30, 0, 33, 0.35);
+
+  /* Brand Colors Override */
+  --color-brand-dark-navy: #1e0021; /* Main primary */
+  --color-brand-midnight: #28002b; /* Accent */
+  --color-brand-variant: #3a003d; /* Mid-tone */
+  --color-brand-accent: #120015; /* Dark accent */
+  --color-brand-primary: #1e0021;
+  --color-brand-secondary: #28002b;
 }
 
 /* ==================================================
@@ -376,27 +371,20 @@
    USAGE EXAMPLES & THEME SWITCHING
    ================================================== */
 /*
-  BLACK/DARK THEME ACTIVATION:
-  Add data-theme="purple" to activate the dark/black theme:
-  (Note: Uses "purple" attribute for backwards compatibility)
+  PURPLE THEME ACTIVATION:
+  Add data-theme="purple" to activate the purple theme:
   
   <html data-theme="purple">
   or
   <div data-theme="purple" className="app-container">
   
-  This overrides all blue colors with black/dark gray equivalents:
-  - Primary buttons become black/dark gray instead of blue
-  - Text becomes white for readability on dark backgrounds
-  - Links become dark gray tones instead of blue
-  - Focus states use dark gray shades
-  - All backgrounds become black/dark gray
-  - All other base colors remain accessible with proper contrast
+  This overrides all blue colors with purple equivalents:
+  - Primary buttons become purple instead of blue
+  - Links become purple instead of blue  
+  - Focus states become purple instead of blue
+  - All other colors (white, gray, etc.) remain unchanged
   
   JAVASCRIPT THEME SWITCHING:
-  document.documentElement.setAttribute('data-theme', 'purple'); // Activate dark theme
-  document.documentElement.removeAttribute('data-theme'); // Back to default (blue)
-  
-  Or use ThemeContext:
-  const { toggleColorTheme } = useTheme();
-  toggleColorTheme(); // Toggle between default and dark themes
+  document.documentElement.setAttribute('data-theme', 'purple');
+  document.documentElement.removeAttribute('data-theme'); // back to default
 */
