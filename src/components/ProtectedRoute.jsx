@@ -1,17 +1,29 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import AdminLogin from "../components/Admin/AdminLogin";
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
+import LoadingSpinner from "./ui/LoadingSpinner";
 
 const ProtectedRoute = ({ children }) => {
-  const { token, user } = useSelector((state) => state.auth);
+  const { isAuthenticated, loading } = useAuth();
 
-  // If no token, show login page
-  if (!token) {
-    return <AdminLogin />;
+  // Show loading spinner while checking authentication
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <LoadingSpinner size="lg" />
+          <p className="mt-4 text-gray-600">جاري التحقق من الصلاحيات...</p>
+        </div>
+      </div>
+    );
   }
 
-  // If token exists but no user data, we might want to fetch profile
-  // For now, just render the children if we have a token
+  // If not authenticated, redirect to login page
+  if (!isAuthenticated) {
+    return <Navigate to="/auth/login" replace />;
+  }
+
+  // If authenticated, render the protected content
   return children;
 };
 

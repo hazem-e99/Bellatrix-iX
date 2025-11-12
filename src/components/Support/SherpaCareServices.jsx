@@ -28,7 +28,7 @@ const SherpaCareServices = () => {
         </div>
 
         <div className="max-w-6xl mx-auto px-4 relative z-10">
-          <article className="bg-gradient-to-br from-gray-800/90 via-gray-700/80 to-gray-800/90 rounded-3xl shadow-2xl hover:shadow-blue-500/20 hover:shadow-2xl transition-all duration-500 p-8 md:p-12 border border-gray-600/50 backdrop-blur-sm relative overflow-hidden group">
+          <article className="bg-gray-800 rounded-3xl shadow-2xl hover:shadow-blue-500/20 hover:shadow-2xl transition-all duration-500 p-8 md:p-12 border border-gray-600/50 backdrop-blur-sm relative overflow-hidden group">
             {/* Creative Background Elements */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/30 to-cyan-500/30 rounded-full opacity-20 transform translate-x-16 -translate-y-16 group-hover:opacity-40 transition-opacity duration-500"></div>
             <div className="absolute bottom-0 left-0 w-20 h-20 bg-gradient-to-tr from-purple-500/30 to-blue-500/30 rounded-full opacity-20 transform -translate-x-10 translate-y-10 group-hover:opacity-40 transition-opacity duration-500"></div>

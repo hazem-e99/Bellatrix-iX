@@ -378,36 +378,36 @@ const Implementation = ({ data: propsData = null }) => {
           <div className="flex flex-col lg:flex-row items-center gap-8">
             {/* Features Content - Left Side */}
             <div className="flex-1">
-              <div className="bg-gradient-to-br from-gray-800/90 via-gray-700/80 to-gray-800/90 rounded-3xl p-8 border border-gray-600/50 shadow-2xl hover:shadow-blue-500/20 hover:shadow-2xl transition-all duration-500 relative overflow-hidden group backdrop-blur-sm">
+              <div className="bg-gray-800 rounded-3xl p-8 border border-gray-600/50 shadow-2xl hover:shadow-blue-500/20 hover:shadow-2xl transition-all duration-500 relative overflow-hidden group backdrop-blur-sm">
                 {/* Creative Background Elements */}
-                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/30 to-cyan-500/30 rounded-full opacity-20 transform translate-x-16 -translate-y-16 group-hover:opacity-40 transition-opacity duration-500"></div>
-                <div className="absolute bottom-0 left-0 w-20 h-20 bg-gradient-to-tr from-purple-500/30 to-blue-500/30 rounded-full opacity-20 transform -translate-x-10 translate-y-10 group-hover:opacity-40 transition-opacity duration-500"></div>
-                <div className="absolute top-1/2 left-1/2 w-16 h-16 bg-gradient-to-r from-cyan-400/20 to-blue-400/20 rounded-full opacity-15 transform -translate-x-8 -translate-y-8 group-hover:opacity-30 transition-opacity duration-500"></div>
+                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/20 rounded-full opacity-20 transform translate-x-16 -translate-y-16 group-hover:opacity-40 transition-opacity duration-500"></div>
+                <div className="absolute bottom-0 left-0 w-20 h-20 bg-purple-500/20 rounded-full opacity-20 transform -translate-x-10 translate-y-10 group-hover:opacity-40 transition-opacity duration-500"></div>
+                <div className="absolute top-1/2 left-1/2 w-16 h-16 bg-cyan-400/15 rounded-full opacity-15 transform -translate-x-8 -translate-y-8 group-hover:opacity-30 transition-opacity duration-500"></div>
 
                 <div className="relative z-10 space-y-4">
                   {data.whyChooseSection.features.map((feature, index) => {
-                    const bgGradients = [
-                      "from-blue-700 to-blue-900",
-                      "from-blue-800 to-blue-950",
-                      "from-blue-900 to-slate-900",
-                      "from-blue-600 to-blue-800",
+                    const bgColors = [
+                      "bg-blue-800",
+                      "bg-blue-850",
+                      "bg-blue-900",
+                      "bg-blue-700",
                     ];
                     return (
                       <div
                         key={index}
-                        className="group/item hover:bg-gradient-to-r hover:from-gray-700/50 hover:to-transparent rounded-xl p-3 transition-all duration-300 hover:transform hover:translate-x-2"
+                        className="group/item hover:bg-gray-700/30 rounded-xl p-3 transition-all duration-300 hover:transform hover:translate-x-2"
                       >
                         <div className="flex items-center">
                           <div className="relative mr-3">
                             <div
-                              className={`w-7 h-7 bg-gradient-to-br ${bgGradients[index]} rounded-lg flex items-center justify-center shadow-lg group-hover/item:scale-110 transition-all duration-300`}
+                              className={`w-7 h-7 ${bgColors[index]} rounded-lg flex items-center justify-center shadow-lg group-hover/item:scale-110 transition-all duration-300`}
                             >
                               <span className="text-white font-bold text-xs">
                                 {feature.number}
                               </span>
                             </div>
                             <div
-                              className={`absolute -inset-1 bg-gradient-to-r ${bgGradients[index]} rounded-lg blur opacity-30 group-hover/item:opacity-60 transition-opacity duration-300`}
+                              className={`absolute -inset-1 ${bgColors[index]} rounded-lg blur opacity-30 group-hover/item:opacity-60 transition-opacity duration-300`}
                             ></div>
                           </div>
                           <div className="flex-1">

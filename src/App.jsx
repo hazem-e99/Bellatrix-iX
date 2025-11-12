@@ -29,7 +29,6 @@ import { CTAModalProvider } from "./contexts/CTAModalContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AuthRoutes from "./routes/AuthRoutes";
 import AuthDashboard from "./components/Admin/AuthDashboard";
-import AdminLogin from "./components/Admin/AdminLogin";
 
 function App() {
   return (
@@ -63,9 +62,6 @@ function App() {
           <Routes>
             {/* Authentication Routes */}
             <Route path="/auth/*" element={<AuthRoutes />} />
-
-            {/* Admin Login Route */}
-            <Route path="/admin/login" element={<AdminLogin />} />
 
             {/* Public Routes */}
             <Route path="/" element={<Layout />}>

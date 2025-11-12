@@ -4193,7 +4193,7 @@ const EnhancedPageBuilder = () => {
                             ? "bg-[var(--tw-green-500)] border-[var(--tw-green-500)] text-[var(--color-text-inverse)] cursor-pointer hover:bg-[var(--tw-green-600)] hover:border-[var(--tw-green-600)] hover:scale-110 shadow-lg shadow-[var(--tw-green-500)]/25"
                             : isCurrent
                             ? "bg-[var(--color-primary)] border-[var(--color-primary)] text-[var(--color-text-inverse)] cursor-default shadow-lg shadow-[var(--color-primary)]/25"
-                            : "bg-transparent border-[var(--color-text-secondary)] text-[var(--color-text-light)] cursor-not-allowed"
+                            : "bg-transparent border-[var(--color-text-secondary)] text-white cursor-not-allowed"
                         }
                         group-hover:shadow-lg
                       `}
@@ -4214,32 +4214,10 @@ const EnhancedPageBuilder = () => {
 
                     {/* Step Info with Enhanced Styling */}
                     <div className="flex-1 min-w-0 transition-all duration-200">
-                      <div
-                        className={`
-                          text-sm font-semibold transition-colors duration-200
-                          ${
-                            isCompleted
-                              ? "text-[var(--tw-green-400)] group-hover:text-[var(--tw-green-300)]"
-                              : isCurrent
-                              ? "text-[var(--color-primary-light)]"
-                              : "text-[var(--color-text-light)]"
-                          }
-                        `}
-                      >
+                      <div className="text-white text-sm font-semibold transition-colors duration-200">
                         {step.title}
                       </div>
-                      <div
-                        className={`
-                          text-xs transition-colors duration-200
-                          ${
-                            isCompleted
-                              ? "text-[var(--tw-green-300)]"
-                              : isCurrent
-                              ? "text-[var(--color-primary-light)]"
-                              : "text-[var(--color-text-muted)]"
-                          }
-                        `}
-                      >
+                      <div className="text-white text-xs transition-colors duration-200">
                         {step.description}
                       </div>
                     </div>
@@ -4694,7 +4672,7 @@ const PageDetailsStep = ({
             onChange={(e) => onDataChange("metaDescription", e.target.value)}
             placeholder="SEO description for search engines"
             rows={3}
-            className="block w-full rounded-lg bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-black placeholder-gray-400 focus:border-[var(--color-primary-light)] focus:ring-[var(--color-primary-light)]/20 shadow-sm resize-none"
+            className="block w-full rounded-lg bg-[var(--color-white-10)] backdrop-blur-sm border-[var(--color-white-20)] text-white placeholder-white/50 focus:border-[var(--color-primary-light)] focus:ring-[var(--color-primary-light)]/20 shadow-sm resize-none"
           />
         </div>
 

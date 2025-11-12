@@ -119,7 +119,7 @@ const Testimonials = ({ testimonials: propsTestimonials = [], sectionHeader: pro
         <div className="flex flex-col lg:flex-row items-center gap-8">
           {/* Testimonials Content - Left Side */}
           <div className="flex-1">
-            <div className="bg-gradient-to-br from-gray-800/90 via-gray-700/80 to-gray-800/90 rounded-3xl p-8 border border-gray-600/50 shadow-2xl hover:shadow-blue-500/20 hover:shadow-2xl transition-all duration-500 relative overflow-hidden group backdrop-blur-sm">
+            <div className="bg-gray-800 rounded-3xl p-8 border border-gray-600/50 shadow-2xl hover:shadow-blue-500/20 hover:shadow-2xl transition-all duration-500 relative overflow-hidden group backdrop-blur-sm">
               {/* Creative Background Elements Removed */}
               <div className="relative z-10 space-y-6">
                 {displayedTestimonials.map((testimonial, index) => (
