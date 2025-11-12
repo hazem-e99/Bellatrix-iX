@@ -1,6 +1,6 @@
 /**
  * Footer Settings API Utilities
- * 
+ *
  * Use these functions to fetch and display footer settings
  * anywhere in your application.
  */
@@ -15,21 +15,21 @@ import api from "../lib/api";
 export const fetchFooterSettings = async () => {
   try {
     const response = await api.get("/Settings/category/footer");
-    
+
     if (response.data?.success && response.data?.data) {
       const settings = response.data.data;
       const footerData = {};
-      
+
       // Map backend data to a simple object
       settings.forEach((setting) => {
         if (setting.key && setting.value !== null) {
           footerData[setting.key] = setting.value;
         }
       });
-      
+
       return footerData;
     }
-    
+
     return {};
   } catch (error) {
     console.error("Error fetching footer settings:", error);
@@ -45,12 +45,12 @@ export const fetchFooterSettings = async () => {
 export const fetchPublicFooterSettings = async () => {
   try {
     const response = await api.get("/Settings/public/dictionary");
-    
+
     if (response.data?.success && response.data?.data) {
       // Filter only footer category settings
       const allSettings = response.data.data;
       const footerData = {};
-      
+
       Object.entries(allSettings).forEach(([key, value]) => {
         // Assuming footer keys start with known prefixes
         if (
@@ -61,10 +61,10 @@ export const fetchPublicFooterSettings = async () => {
           footerData[key] = value;
         }
       });
-      
+
       return footerData;
     }
-    
+
     return {};
   } catch (error) {
     console.error("Error fetching public footer settings:", error);
@@ -80,11 +80,11 @@ export const fetchPublicFooterSettings = async () => {
 export const getFooterSetting = async (key) => {
   try {
     const response = await api.get(`/Settings/key/${key}`);
-    
+
     if (response.data?.success && response.data?.data) {
       return response.data.data.value;
     }
-    
+
     return null;
   } catch (error) {
     console.error(`Error fetching setting ${key}:`, error);

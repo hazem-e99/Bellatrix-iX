@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Footer Settings Update</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        background: #f5f5f5;
+      }
+      .container {
+        background: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      button {
+        padding: 10px 20px;
+        margin: 10px 5px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+      .test-btn {
+        background: #3b82f6;
+        color: white;
+      }
+      .fetch-btn {
+        background: #10b981;
+        color: white;
+      }
+      .update-btn {
+        background: #f59e0b;
+        color: white;
+      }
+      pre {
+        background: #1f2937;
+        color: #10b981;
+        padding: 15px;
+        border-radius: 4px;
+        overflow-x: auto;
+        max-height: 400px;
+        overflow-y: auto;
+      }
+      .log {
+        margin: 10px 0;
+      }
+      .success {
+        color: #10b981;
+      }
+      .error {
+        color: #ef4444;
+      }
+      .info {
+        color: #3b82f6;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🧪 Test Footer Settings API</h1>
+
+      <div>
+        <button class="fetch-btn" onclick="fetchSettings()">
+          1. Fetch Existing Settings (GET)
+        </button>
+        <button class="update-btn" onclick="updateSetting()">
+          2. Update Company Name (PUT)
+        </button>
+        <button class="test-btn" onclick="testFullCycle()">
+          3. Test Full Cycle
+        </button>
+      </div>
+
+      <h3>Console Output:</h3>
+      <div id="output"></div>
+
+      <h3>JSON Response:</h3>
+      <pre id="json"></pre>
+    </div>
+
+    <script>
+      const API_BASE = "http://bellatrix.runasp.net/api";
+      const outputDiv = document.getElementById("output");
+      const jsonPre = document.getElementById("json");
+
+      function log(message, type = "info") {
+        const div = document.createElement("div");
+        div.className = `log ${type}`;
+        div.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+        outputDiv.appendChild(div);
+        outputDiv.scrollTop = outputDiv.scrollHeight;
+      }
+
+      function showJSON(data) {
+        jsonPre.textContent = JSON.stringify(data, null, 2);
+      }
+
+      async function fetchSettings() {
+        try {
+          log("📥 Fetching footer settings...", "info");
+          const response = await fetch(`${API_BASE}/Settings/category/footer`);
+          const data = await response.json();
+
+          log(
+            `✅ GET Success! Found ${data.data?.length || 0} settings`,
+            "success"
+          );
+          showJSON(data);
+
+          return data.data;
+        } catch (error) {
+          log(`❌ GET Failed: ${error.message}`, "error");
+          console.error(error);
+        }
+      }
+
+      async function updateSetting() {
+        try {
+          // First, fetch to get the current setting
+          log("📥 Fetching current settings...", "info");
+          const settings = await fetchSettings();
+
+          const companyName = settings.find((s) => s.key === "company_name");
+
+          if (!companyName) {
+            log("❌ company_name not found in database", "error");
+            return;
+          }
+
+          log(`📝 Current company_name: "${companyName.value}"`, "info");
+
+          // Update with a new value
+          const newValue = `Test Company ${Date.now()}`;
+          const updatePayload = {
+            id: companyName.id,
+            key: companyName.key,
+            value: newValue,
+            description: companyName.description,
+            category: companyName.category,
+            isPublic: companyName.isPublic,
+            dataType: companyName.dataType,
+          };
+
+          log(`📤 Sending PUT request...`, "info");
+          log(`Payload: ${JSON.stringify(updatePayload, null, 2)}`, "info");
+
+          const response = await fetch(`${API_BASE}/Settings`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(updatePayload),
+          });
+
+          const data = await response.json();
+
+          if (response.ok && data.success) {
+            log(`✅ PUT Success! Updated to: "${newValue}"`, "success");
+            showJSON(data);
+
+            // Verify the update
+            setTimeout(async () => {
+              log("🔍 Verifying update...", "info");
+              await fetchSettings();
+            }, 1000);
+          } else {
+            log(`❌ PUT Failed: ${data.message || "Unknown error"}`, "error");
+            showJSON(data);
+          }
+        } catch (error) {
+          log(`❌ Error: ${error.message}`, "error");
+          console.error(error);
+        }
+      }
+
+      async function testFullCycle() {
+        outputDiv.innerHTML = "";
+        log("🚀 Starting full test cycle...", "info");
+
+        // Step 1: Fetch
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        await fetchSettings();
+
+        // Step 2: Update
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        await updateSetting();
+
+        log("✅ Test cycle complete!", "success");
+      }
+
+      // Run initial fetch on load
+      window.addEventListener("load", () => {
+        log("🎯 Test page loaded. Click buttons to test API.", "info");
+      });
+    </script>
+  </body>
+</html>
