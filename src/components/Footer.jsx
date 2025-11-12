@@ -66,9 +66,9 @@ const Footer = () => {
   return (
     <footer
       className="relative text-white pt-0 pb-8 px-0 overflow-hidden border-t-4 shadow-inner"
-      style={{ 
+      style={{
         backgroundColor: "var(--color-brand-dark-navy)",
-        borderTopColor: "var(--color-border-secondary)"
+        borderTopColor: "var(--color-border-secondary)",
       }}
     >
       <style>{footerStyles}</style>
@@ -83,23 +83,24 @@ const Footer = () => {
       />
 
       {/* Top border glow */}
-      <div 
+      <div
         className="absolute top-0 left-0 w-full h-2 blur-lg opacity-60 z-0"
         style={{
-          background: "linear-gradient(to right, var(--color-border-secondary), var(--color-primary), var(--color-border-secondary))"
+          background:
+            "linear-gradient(to right, var(--color-border-secondary), var(--color-primary), var(--color-border-secondary))",
         }}
       />
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 py-12">
           {/* Brand Column */}
           <div className="flex flex-col items-center lg:items-start gap-4">
-            <h3 
+            <h3
               className="text-3xl font-extrabold tracking-tight drop-shadow"
               style={{ color: "var(--color-text-inverse)" }}
             >
               Bellatrix
             </h3>
-            <p 
+            <p
               className="text-center lg:text-left max-w-xs"
               style={{ color: "var(--color-text-inverse)", opacity: 0.8 }}
             >
@@ -121,7 +122,7 @@ const Footer = () => {
                   }}
                   aria-label="Social Link"
                 >
-                  <span 
+                  <span
                     className="transition-colors duration-300"
                     style={{
                       color: "var(--color-text-muted)",
@@ -136,13 +137,13 @@ const Footer = () => {
 
           {/* Quick Links Column */}
           <div className="flex flex-col items-center lg:items-start gap-3">
-            <h4 
+            <h4
               className="text-xl font-semibold mb-2"
               style={{ color: "var(--color-text-inverse)" }}
             >
               Quick Links
             </h4>
-            <ul 
+            <ul
               className="flex flex-col gap-2"
               style={{ color: "var(--color-text-inverse)", opacity: 0.8 }}
             >
@@ -151,7 +152,9 @@ const Footer = () => {
               ) : error ? (
                 <li style={{ color: "var(--color-error)" }}>{error}</li>
               ) : categories.length === 0 ? (
-                <li style={{ color: "var(--color-text-muted)" }}>No links available</li>
+                <li style={{ color: "var(--color-text-muted)" }}>
+                  No links available
+                </li>
               ) : (
                 categories.map((cat) => {
                   const homePage = Array.isArray(cat.pages)
@@ -163,8 +166,8 @@ const Footer = () => {
                         <a
                           href={`/${homePage.slug}`}
                           className="footer-link transition-colors duration-300 cursor-pointer"
-                          style={{ 
-                            color: "inherit"
+                          style={{
+                            color: "inherit",
                           }}
                         >
                           {cat.name}
@@ -183,17 +186,21 @@ const Footer = () => {
                               className="footer-link transition duration-200 cursor-pointer"
                               style={{
                                 color: "var(--color-text-inverse)",
-                                opacity: 0.9
+                                opacity: 0.9,
                               }}
                             >
                               {cat.name}
                             </a>
                           ) : (
-                            <span style={{ color: "var(--color-text-muted)" }}>{cat.name}</span>
+                            <span style={{ color: "var(--color-text-muted)" }}>
+                              {cat.name}
+                            </span>
                           );
                         })()
                       ) : (
-                        <span style={{ color: "var(--color-text-muted)" }}>{cat.name}</span>
+                        <span style={{ color: "var(--color-text-muted)" }}>
+                          {cat.name}
+                        </span>
                       )}
                     </li>
                   );
@@ -204,13 +211,13 @@ const Footer = () => {
 
           {/* Our Services Column */}
           <div className="flex flex-col items-center lg:items-start gap-3">
-            <h4 
+            <h4
               className="text-xl font-semibold mb-2"
               style={{ color: "var(--color-text-inverse)" }}
             >
               Our Services
             </h4>
-            <div 
+            <div
               className="flex flex-col gap-2"
               style={{ color: "var(--color-text-inverse)", opacity: 0.8 }}
             >
@@ -260,11 +267,11 @@ const Footer = () => {
           </div>
 
           {/* Contact Column */}
-          <div 
+          <div
             className="flex flex-col items-center lg:items-start gap-3 text-sm"
             style={{ color: "var(--color-text-inverse)", opacity: 0.9 }}
           >
-            <h4 
+            <h4
               className="text-xl font-semibold mb-2"
               style={{ color: "var(--color-text-inverse)" }}
             >
@@ -281,14 +288,14 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        <div 
+        <div
           className="text-center pt-6 text-xs"
           style={{
             color: "var(--color-text-inverse)",
             opacity: 0.7,
             borderTop: "1px solid",
             borderColor: "var(--color-border-primary)",
-            borderTopOpacity: 0.4
+            borderTopOpacity: 0.4,
           }}
         >
           <p>

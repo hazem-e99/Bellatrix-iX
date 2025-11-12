@@ -246,7 +246,12 @@
 
   /* Accent Colors - Theme-aware */
   --color-accent-cyan: #22d3ee; /* cyan-400 - Default theme (blue) */
-  --color-accent-cyan-light: rgba(34, 211, 238, 0.3); /* cyan with 30% opacity */
+  --color-accent-cyan-light: rgba(
+    34,
+    211,
+    238,
+    0.3
+  ); /* cyan with 30% opacity */
 
   /* Interactive States */
   --color-hover: var(--color-blue-700);
@@ -329,7 +334,12 @@
 
   /* Accent Colors Override - Purple Theme */
   --color-accent-cyan: #991abb; /* purple-400 instead of cyan */
-  --color-accent-cyan-light: rgba(153, 26, 187, 0.3); /* purple-400 with 30% opacity */
+  --color-accent-cyan-light: rgba(
+    153,
+    26,
+    187,
+    0.3
+  ); /* purple-400 with 30% opacity */
 
   /* Semantic Aliases (UI Components) */
   --color-primary: var(--purple-500); /* Main brand color */
