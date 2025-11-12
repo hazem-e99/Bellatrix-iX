@@ -1266,7 +1266,7 @@ const Training = () => {
               {data.keyModules.map((module, index) => (
                 <div
                   key={index}
-                  className="group relative overflow-hidden bg-gradient-to-br from-gray-800/90 via-gray-700/80 to-gray-800/90 rounded-3xl p-6 border border-gray-600/50 shadow-2xl hover:shadow-blue-500/20 hover:shadow-2xl transition-all duration-500 backdrop-blur-sm"
+                  className="group relative overflow-hidden bg-gray-800 rounded-3xl p-6 border border-gray-600/50 shadow-2xl hover:shadow-blue-500/20 hover:shadow-2xl transition-all duration-500 backdrop-blur-sm"
                 >
                   <div
                     className={`absolute top-0 right-0 w-24 h-24 bg-gradient-to-br ${

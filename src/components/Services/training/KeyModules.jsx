@@ -15,7 +15,7 @@ const KeyModules = ({ keyModulesSection, keyModules }) => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {keyModules.map((module, index) => (
-          <div key={index} className="group relative overflow-hidden bg-gradient-to-br from-gray-800/90 via-gray-700/80 to-gray-800/90 rounded-3xl p-6 border border-gray-600/50 shadow-2xl hover:shadow-blue-500/20 hover:shadow-2xl transition-all duration-500 backdrop-blur-sm">
+          <div key={index} className="group relative overflow-hidden bg-gray-800 rounded-3xl p-6 border border-gray-600/50 shadow-2xl hover:shadow-blue-500/20 hover:shadow-2xl transition-all duration-500 backdrop-blur-sm">
             <div className="relative z-10">
               <div className={`w-12 h-12 bg-gradient-to-br ${
                 index % 4 === 0 ? 'from-blue-500 to-blue-600' :

@@ -431,70 +431,7 @@ const AdminDashboard = () => {
           </Card>
         </Grid>
 
-        <Grid item xs={12} lg={4}>
-          <Card className="bg-gray-800 rounded-2xl border border-gray-600 shadow-sm">
-            <div className="p-6 border-b border-gray-700">
-              <Typography variant="h6" className="text-white font-bold mb-2">
-                System Status
-              </Typography>
-              <Typography variant="body2" className="text-gray-300">
-                Everything is running smoothly
-              </Typography>
-            </div>
-            <CardContent className="p-6">
-              <div className="space-y-4">
-                <div className="flex justify-between items-center p-3 bg-gray-700 rounded-xl border border-gray-600">
-                  <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    <span className="text-gray-300 font-medium">
-                      Data Files
-                    </span>
-                  </div>
-                  <Chip
-                    label="All Synced"
-                    color="success"
-                    size="small"
-                    className="bg-green-600 text-green-100"
-                  />
-                </div>
-                <div className="flex justify-between items-center p-3 bg-gray-700 rounded-xl border border-gray-600">
-                  <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                    <span className="text-gray-300 font-medium">
-                      Last Backup
-                    </span>
-                  </div>
-                  <span className="text-sm text-gray-400 font-medium">
-                    2 hours ago
-                  </span>
-                </div>
-                <div className="flex justify-between items-center p-3 bg-gray-700 rounded-xl border border-gray-600">
-                  <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-violet-500 rounded-full"></div>
-                    <span className="text-gray-300 font-medium">Templates</span>
-                  </div>
-                  <span className="text-sm text-gray-400 font-medium">
-                    12 available
-                  </span>
-                </div>
-                <div className="flex justify-between items-center p-3 bg-gray-700 rounded-xl border border-gray-600">
-                  <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-amber-500 rounded-full"></div>
-                    <span className="text-gray-300 font-medium">
-                      Server Status
-                    </span>
-                  </div>
-                  <Chip
-                    label="Online"
-                    color="success"
-                    size="small"
-                    className="bg-green-600 text-green-100"
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </Grid>
+        {/* System Status removed per request */}
       </Grid>
     </div>
   );

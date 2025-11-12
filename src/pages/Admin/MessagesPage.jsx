@@ -285,16 +285,7 @@ const MessagesPage = () => {
               >
                 Unread
               </Button>
-              <Button
-                onClick={() => handleFilterChange("read")}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                  filterStatus === "read"
-                    ? "bg-blue-600 text-white"
-                    : "bg-white/10 text-gray-300 hover:bg-white/20"
-                }`}
-              >
-                Replied
-              </Button>
+
             </div>
           </div>
         </CardContent>

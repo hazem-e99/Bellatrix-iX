@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import {
   DocumentTextIcon,
   EyeIcon,
-  ClockIcon,
   ArrowTrendingUpIcon,
   ArrowTrendingDownIcon,
   UsersIcon,
@@ -12,10 +11,9 @@ import {
   PlusIcon,
   ArrowTopRightOnSquareIcon,
   ExclamationTriangleIcon,
-  CheckCircleIcon,
 } from "@heroicons/react/24/outline";
-import Card, { CardContent, CardHeader, CardTitle } from "../ui/Card";
-import Button from "../ui/Button";
+import Card, { CardContent, CardHeader, CardTitle } from "../UI/Card";
+import Button from "../UI/Button";
 import dashboardAPI from "../../lib/dashboardAPI";
 import toast from "react-hot-toast";
 
@@ -23,11 +21,7 @@ const ModernDashboard = () => {
   const navigate = useNavigate();
 
   // State for dashboard data
-  const [dashboardData, setDashboardData] = useState({
-    stats: null,
-    recentActivity: [],
-    systemStatus: null,
-  });
+  const [dashboardData, setDashboardData] = useState({ stats: null });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -38,18 +32,8 @@ const ModernDashboard = () => {
         setLoading(true);
         setError(null);
 
-        // Fetch all dashboard data in parallel
-        const [
-          statsData,
-          recentMessages,
-          recentPages,
-          systemStatus,
-        ] = await Promise.all([
-          dashboardAPI.getDashboardStats(),
-          dashboardAPI.getRecentContactMessages(5),
-          dashboardAPI.getRecentPages(5),
-          dashboardAPI.getSystemStatus(),
-        ]);
+        // Fetch stats data
+        const [statsData] = await Promise.all([dashboardAPI.getDashboardStats()]);
 
         // Transform stats data into the format expected by the UI
         const stats = [
@@ -91,31 +75,7 @@ const ModernDashboard = () => {
           },
         ];
 
-        // Transform recent activity from messages and pages
-        const recentActivity = [
-          ...recentMessages.map((message, index) => ({
-            id: `msg-${message.id || index}`,
-            action: "New message received",
-            item: message.subject || message.name || "Contact Form",
-            user: message.name || "Anonymous",
-            time: formatTimeAgo(message.createdAt || new Date()),
-            type: "message",
-          })),
-          ...recentPages.map((page, index) => ({
-            id: `page-${page.id || index}`,
-            action: page.isPublished ? "Page published" : "Page created",
-            item: page.name || page.title || "Untitled Page",
-            user: "Admin",
-            time: formatTimeAgo(page.createdAt || new Date()),
-            type: page.isPublished ? "publish" : "create",
-          })),
-        ].slice(0, 5); // Limit to 5 most recent activities
-
-        setDashboardData({
-          stats,
-          recentActivity,
-          systemStatus,
-        });
+        setDashboardData({ stats });
       } catch (err) {
         console.error("Error fetching dashboard data:", err);
         setError(err.message || "Failed to load dashboard data");
@@ -128,18 +88,7 @@ const ModernDashboard = () => {
     fetchDashboardData();
   }, []);
 
-  // Helper function to format time ago
-  const formatTimeAgo = (date) => {
-    const now = new Date();
-    const past = new Date(date);
-    const diffInMinutes = Math.floor((now - past) / (1000 * 60));
-
-    if (diffInMinutes < 1) return "Just now";
-    if (diffInMinutes < 60) return `${diffInMinutes} minutes ago`;
-    if (diffInMinutes < 1440)
-      return `${Math.floor(diffInMinutes / 60)} hours ago`;
-    return `${Math.floor(diffInMinutes / 1440)} days ago`;
-  };
+  // Time formatting helper removed (not used after Recent Activity removal)
 
   // Helper function to handle quick action clicks
   const handleQuickAction = (action) => {
@@ -203,58 +152,9 @@ const ModernDashboard = () => {
     },
   ];
 
-  const getColorClasses = (color) => {
-    const colors = {
-      blue: {
-        bg: "bg-[var(--color-primary-bg)]",
-        text: "text-[var(--color-primary)]",
-        border: "border-[var(--color-border-primary)]",
-        icon: "bg-[var(--color-primary)]",
-      },
-      purple: {
-        bg: "bg-[var(--tw-purple-100)]",
-        text: "text-[var(--tw-purple-700)]",
-        border: "border-[var(--tw-purple-300)]",
-        icon: "bg-[var(--tw-purple-600)]",
-      },
-      green: {
-        bg: "bg-[var(--tw-green-100)]",
-        text: "text-[var(--tw-green-600)]",
-        border: "border-[var(--tw-green-100)]",
-        icon: "bg-[var(--tw-green-600)]",
-      },
-      orange: {
-        bg: "bg-[var(--tw-yellow-100)]",
-        text: "text-[var(--tw-yellow-600)]",
-        border: "border-[var(--tw-yellow-100)]",
-        icon: "bg-[var(--tw-yellow-600)]",
-      },
-    };
-    return colors[color] || colors.blue;
-  };
+  // getColorClasses removed (not used after simplification)
 
-  const getActivityIcon = (type) => {
-    switch (type) {
-      case "create":
-        return <PlusIcon className="h-4 w-4 text-[var(--tw-green-500)]" />;
-      case "update":
-        return (
-          <DocumentTextIcon className="h-4 w-4 text-[var(--color-primary)]" />
-        );
-      case "publish":
-        return (
-          <ArrowTopRightOnSquareIcon className="h-4 w-4 text-[var(--tw-purple-500)]" />
-        );
-      case "message":
-        return <UsersIcon className="h-4 w-4 text-[var(--color-primary)]" />;
-      case "settings":
-        return <ClockIcon className="h-4 w-4 text-[var(--tw-yellow-500)]" />;
-      default:
-        return (
-          <DocumentTextIcon className="h-4 w-4 text-[var(--color-text-muted)]" />
-        );
-    }
-  };
+  // Recent activity has been removed from the dashboard UI per request.
 
   // Loading state
   if (loading) {
@@ -329,7 +229,7 @@ const ModernDashboard = () => {
     );
   }
 
-  const { stats, recentActivity, systemStatus } = dashboardData;
+  const { stats } = dashboardData;
 
   return (
     <div
@@ -355,7 +255,6 @@ const ModernDashboard = () => {
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, index) => {
-          const colorClasses = getColorClasses(stat.color);
           const IconComponent = stat.icon;
           const TrendIcon =
             stat.changeType === "increase"
@@ -473,136 +372,10 @@ const ModernDashboard = () => {
           </Card>
         </motion.div>
 
-        {/* Recent Activity */}
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.6 }}
-        >
-          <Card className="bg-[var(--color-white-10)] border border-[var(--color-white-20)] shadow">
-            <CardHeader>
-              <CardTitle className="text-[var(--color-text-inverse)]">
-                Recent Activity
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {recentActivity.map((activity) => (
-                  <motion.div
-                    key={activity.id}
-                    className="flex items-start space-x-3 p-3 rounded-lg hover:bg-[var(--color-white-10)] transition-colors"
-                    whileHover={{ scale: 1.01 }}
-                  >
-                    <div className="flex-shrink-0 mt-1">
-                      {getActivityIcon(activity.type)}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-[var(--color-text-inverse)]">
-                        {activity.action}
-                      </p>
-                      <p className="text-sm text-[var(--color-text-secondary)]">
-                        {activity.item}
-                      </p>
-                      <p className="text-xs text-[var(--color-text-light)] mt-1">
-                        {activity.time} • by {activity.user}
-                      </p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-              <div className="mt-4 pt-4 border-t border-[var(--color-white-10)]">
-                <Button
-                  variant="ghost"
-                  className="w-full text-sm text-[var(--color-text-inverse)] hover:bg-[var(--color-white-10)]"
-                >
-                  View all activity
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
+        {/* Recent Activity removed per request */}
       </div>
 
-      {/* System Status */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.8 }}
-      >
-        <Card className="bg-[var(--color-white-10)] border border-[var(--color-white-20)] shadow">
-          <CardHeader>
-            <CardTitle className="text-[var(--color-text-inverse)]">
-              System Status
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {systemStatus &&
-                Object.entries(systemStatus).map(([key, status]) => {
-                  if (key === "lastChecked") return null;
-
-                  const getStatusColor = (status) => {
-                    switch (status.status) {
-                      case "online":
-                      case "connected":
-                        return "bg-[var(--tw-green-500)]";
-                      case "error":
-                        return "bg-[var(--tw-red-500)]";
-                      case "unknown":
-                        return "bg-[var(--tw-yellow-500)]";
-                      default:
-                        return "bg-[var(--color-text-muted)]";
-                    }
-                  };
-
-                  const getStatusIcon = (status) => {
-                    switch (status.status) {
-                      case "online":
-                      case "connected":
-                        return (
-                          <CheckCircleIcon className="h-4 w-4 text-[var(--tw-green-400)]" />
-                        );
-                      case "error":
-                        return (
-                          <ExclamationTriangleIcon className="h-4 w-4 text-[var(--tw-red-400)]" />
-                        );
-                      default:
-                        return (
-                          <ClockIcon className="h-4 w-4 text-[var(--tw-yellow-400)]" />
-                        );
-                    }
-                  };
-
-                  return (
-                    <div key={key} className="flex items-center space-x-3">
-                      <div
-                        className={`h-3 w-3 ${getStatusColor(
-                          status
-                        )} rounded-full animate-pulse`}
-                      ></div>
-                      <div>
-                        <p className="text-sm font-medium text-[var(--color-text-inverse)] capitalize">
-                          {key}
-                        </p>
-                        <p className="text-xs text-[var(--color-text-secondary)]">
-                          {status.message}
-                        </p>
-                      </div>
-                    </div>
-                  );
-                })}
-            </div>
-            {systemStatus?.lastChecked && (
-              <div className="mt-4 pt-4 border-t border-[var(--color-white-10)]">
-                <p className="text-xs text-[var(--color-text-light)]">
-                  Last checked:{" "}
-                  {new Date(systemStatus.lastChecked).toLocaleString()}
-                </p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </motion.div>
+      {/* System Status removed per request */}
     </div>
   );
 };
