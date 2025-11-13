@@ -164,7 +164,7 @@ const ModernDashboard = () => {
           <h2 className="text-3xl font-bold text-[var(--color-text-inverse)] mb-2">
             Welcome back! 👋
           </h2>
-          <p className="text-[var(--color-text-secondary)] text-lg">
+          <p className="text-[var(--color-ww-100)] text-lg">
             Loading your dashboard...
           </p>
         </div>
@@ -201,7 +201,7 @@ const ModernDashboard = () => {
           <h2 className="text-3xl font-bold text-[var(--color-text-inverse)] mb-2">
             Welcome back! 👋
           </h2>
-          <p className="text-[var(--color-text-secondary)] text-lg">
+          <p className="text-[var(--color-ww-100)] text-lg">
             There was an error loading your dashboard.
           </p>
         </div>
@@ -246,7 +246,7 @@ const ModernDashboard = () => {
           <h2 className="text-3xl font-bold text-[var(--color-text-inverse)] mb-2">
             Welcome back! 👋
           </h2>
-          <p className="text-[var(--color-text-secondary)] text-lg">
+          <p className="text-[var(--color-ww-100)] text-lg">
             Here's what's happening with your website today.
           </p>
         </motion.div>
@@ -272,7 +272,7 @@ const ModernDashboard = () => {
                 <CardContent>
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm font-medium text-[var(--color-text-secondary)]">
+                      <p className="text-sm font-medium text-[var(--color-ww-100)]">
                         {stat.name}
                       </p>
                       <p className="text-3xl font-bold text-[var(--color-text-inverse)] mt-2">
@@ -348,7 +348,7 @@ const ModernDashboard = () => {
                         <CardContent>
                           <div className="flex items-center justify-between">
                             <div>
-                              <p className="text-sm font-medium text-[var(--color-text-secondary)]">
+                              <p className="text-sm font-medium text-[var(--color-ww-100)]">
                                 {action.name}
                               </p>
                               <p className="text-base font-semibold text-[var(--color-text-inverse)] mt-2">

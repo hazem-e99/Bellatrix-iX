@@ -131,7 +131,7 @@ export const componentSchemas = {
       {
         title: "Feature 1",
         description: "Description of feature 1",
-        icon: "⭐",
+        icon: "",
       },
       {
         title: "Feature 2",

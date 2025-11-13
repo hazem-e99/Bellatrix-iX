@@ -150,7 +150,7 @@ const ModernAdminLayout = () => {
             exit={{ opacity: 0 }}
             onClick={() => setSidebarOpen(false)}
           >
-            <div className="absolute inset-0 bg-[var(--color-text-secondary)] opacity-75" />
+            <div className="absolute inset-0 bg-[var(--color-ww-100)] opacity-75" />
           </motion.div>
         )}
       </AnimatePresence>
@@ -198,7 +198,7 @@ const ModernAdminLayout = () => {
                   className={`w-full flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-all duration-200 group ${
                     isActive(item.path)
                       ? "bg-[var(--color-primary)]/30 text-[var(--color-text-inverse)] border border-[var(--color-primary)]/30 shadow"
-                      : "text-[var(--color-text-secondary)] hover:bg-[var(--color-white-10)] hover:text-[var(--color-text-inverse)]"
+                      : "text-[var(--color-ww-100)] hover:bg-[var(--color-white-10)] hover:text-[var(--color-text-inverse)]"
                   }`}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}

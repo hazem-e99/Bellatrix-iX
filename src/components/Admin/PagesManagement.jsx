@@ -232,7 +232,7 @@ const PagesManagement = () => {
           <h3 className="text-lg font-medium text-[var(--color-text-inverse)] mb-2">
             Error Loading Pages
           </h3>
-          <p className="text-[var(--color-text-secondary)] mb-4">{error}</p>
+          <p className="text-[var(--color-ww-100)] mb-4">{error}</p>
           <Button onClick={fetchPages} variant="outline">
             <ArrowPathIcon className="h-4 w-4 mr-2" />
             Retry

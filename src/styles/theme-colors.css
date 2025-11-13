@@ -20,11 +20,12 @@
   --color-gray-200: #e5e7eb; /* 141x border-gray-200 */
   --color-gray-300: #d1d5db; /* 169x border-gray-300, 322x text-gray-300 */
   --color-gray-400: #c2bfbf; /* 234x text-gray-400 */
-  --color-gray-500: #ffffff; /* 167x text-gray-500 */
+  --color-gray-500: #000000; /* 167x text-gray-500 - Changed to black */
   --color-gray-600: #4b5563; /* 322x text-gray-600, 72x border-gray-600 */
-  --color-gray-700: #ffffff; /* 173x text-gray-700, 43x bg-gray-700, 57x border-gray-700 */
+  --color-gray-700: #000000; /* 173x text-gray-700, 43x bg-gray-700, 57x border-gray-700 - Changed to black */
   --color-gray-800: #1f2937; /* 182x text-gray-800, 80x bg-gray-800 */
   --color-gray-900: #111827; /* 159x text-gray-900 */
+  --color-ww-100: #ffffff; /* 159x text-gray-900 */
 
   /* Blue - Primary Brand Color */
   --color-blue-50: #eff6ff; /* 33x bg-blue-50 */
@@ -44,10 +45,10 @@
   --color-red-600: #dc2626; /* 54x text-red-600 */
 
   /* Cyan - Accent Color */
-  --color-cyan-300: #67e8f9; /* Various gradient uses */
-  --color-cyan-400: #22d3ee; /* 50x to-cyan-400, 38x border-cyan-400 */
-  --color-cyan-500: #06b6d4; /* 40x to-cyan-500 */
-  --color-cyan-600: #0891b2; /* Various uses */
+  --color-cyan-300: #ffffff; /* Various gradient uses - Changed to white */
+  --color-cyan-400: #ffffff; /* 50x to-cyan-400, 38x border-cyan-400 - Changed to white */
+  --color-cyan-500: #ffffff; /* 40x to-cyan-500 - Changed to white */
+  --color-cyan-600: #ffffff; /* Various uses - Changed to white */
 
   /* Shadow Colors */
   --shadow-blue-500: #3b82f6; /* 55x shadow-blue-500 */
@@ -165,10 +166,10 @@
   --tw-red-700: #b91c1c;
 
   /* Tailwind Cyan Palette */
-  --tw-cyan-300: #67e8f9;
-  --tw-cyan-400: #22d3ee;
-  --tw-cyan-500: #06b6d4;
-  --tw-cyan-600: #0891b2;
+  --tw-cyan-300: #ffffff;
+  --tw-cyan-400: #ffffff;
+  --tw-cyan-500: #ffffff;
+  --tw-cyan-600: #ffffff;
   --tw-cyan-700: #0e7490;
 
   /* Tailwind Green Palette */
@@ -318,17 +319,17 @@
   --color-blue-800: var(--silver-800);
   --color-blue-900: var(--silver-900);
 
-  /* Cyan → Silver Accent Mapping */
-  --tw-cyan-300: var(--silver-200); /* Light accent */
-  --tw-cyan-400: var(--silver-400); /* Medium accent - matches text-cyan-400 */
-  --tw-cyan-500: var(--silver-500); /* Primary */
-  --tw-cyan-600: var(--silver-600); /* Darker accent */
+  /* Cyan → White Mapping */
+  --tw-cyan-300: #ffffff; /* Light accent - white */
+  --tw-cyan-400: #ffffff; /* Medium accent - white */
+  --tw-cyan-500: #ffffff; /* Primary - white */
+  --tw-cyan-600: #ffffff; /* Darker accent - white */
   --tw-cyan-700: var(--silver-700); /* Deep accent */
 
-  --color-cyan-300: var(--silver-200);
-  --color-cyan-400: var(--silver-400);
-  --color-cyan-500: var(--silver-500);
-  --color-cyan-600: var(--silver-600);
+  --color-cyan-300: #ffffff;
+  --color-cyan-400: #ffffff;
+  --color-cyan-500: #ffffff;
+  --color-cyan-600: #ffffff;
   --color-cyan-700: var(--silver-700);
 
   /* Gray Scale Override - Darker for better readability on white backgrounds */

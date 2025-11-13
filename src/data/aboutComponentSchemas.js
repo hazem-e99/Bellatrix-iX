@@ -385,7 +385,7 @@ export const aboutComponentSchemas = {
         {
           title: "Excellence",
           description: "We deliver exceptional quality in every project, exceeding client expectations consistently.",
-          icon: "⭐",
+          icon: "",
           color: "from-gray-400 to-gray-600"
         },
         {
