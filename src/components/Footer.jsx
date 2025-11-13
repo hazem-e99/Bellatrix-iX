@@ -18,9 +18,21 @@ const footerStyles = `
   }
   .footer-link:hover {
     color: var(--color-primary) !important;
+    opacity: 1 !important;
   }
   .footer-scroll-btn:hover {
     background-color: var(--color-hover) !important;
+  }
+  
+  /* Silver Theme - Special colors for footer links */
+  [data-theme="purple"] .footer-link {
+    color: #b0b8c1 !important; /* silver-300 - lighter gray */
+  }
+  [data-theme="purple"] .footer-link:hover {
+    color: #8b95a1 !important; /* silver-400 - medium silver */
+  }
+  [data-theme="purple"] .footer-contact-text {
+    color: #b0b8c1 !important; /* silver-300 - same as quick links */
   }
 `;
 
@@ -268,7 +280,7 @@ const Footer = () => {
 
           {/* Contact Column */}
           <div
-            className="flex flex-col items-center lg:items-start gap-3 text-sm"
+            className="flex flex-col items-center lg:items-start gap-3 text-sm footer-contact-text"
             style={{ color: "var(--color-text-inverse)", opacity: 0.9 }}
           >
             <h4
@@ -277,7 +289,7 @@ const Footer = () => {
             >
               Contact Us
             </h4>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 footer-contact-text">
               <div className="flex items-center gap-2">
                 <Email fontSize="small" />
                 <span>info@bellatrix.com</span>

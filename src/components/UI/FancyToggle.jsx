@@ -27,7 +27,7 @@ const FancyToggle = ({
 
   const gradients = {
     purple: checked
-      ? "bg-gradient-to-r from-purple-500 to-blue-500 shadow-lg shadow-purple-500/40"
+      ? "bg-gradient-to-r from-gray-400 to-gray-600 shadow-lg shadow-gray-500/40"
       : "bg-gray-600 hover:bg-gray-500",
     blue: checked
       ? "bg-gradient-to-r from-blue-400 to-indigo-500 shadow-lg shadow-blue-500/40"
@@ -129,7 +129,7 @@ const FancyToggle = ({
                   ? "bg-green-400 shadow-green-400/50"
                   : gradient === "blue"
                   ? "bg-blue-400 shadow-blue-400/50"
-                  : "bg-purple-400 shadow-purple-400/50"
+                  : "bg-gray-400 shadow-gray-400/50"
                 : "bg-gray-400"
             }`}
             animate={{
@@ -145,7 +145,7 @@ const FancyToggle = ({
                   ? "text-green-400"
                   : gradient === "blue"
                   ? "text-blue-400"
-                  : "text-purple-400"
+                  : "text-gray-400"
                 : "text-gray-400"
             }`}
           >
@@ -260,7 +260,7 @@ export const ThemeToggle = ({
           {isLight ? (
             <div className="absolute inset-0 bg-yellow-300 rounded-full blur-lg opacity-20 animate-pulse pointer-events-none"></div>
           ) : (
-            <div className="absolute inset-0 bg-purple-500 rounded-full blur-md opacity-25 animate-pulse pointer-events-none"></div>
+            <div className="absolute inset-0 bg-gray-500 rounded-full blur-md opacity-25 animate-pulse pointer-events-none"></div>
           )}
         </div>
         <span
@@ -279,7 +279,7 @@ export const ThemeToggle = ({
         className={`text-xs font-medium transition-all duration-300 ${
           isLight
             ? "text-yellow-400 drop-shadow-sm"
-            : "text-purple-400 drop-shadow-sm"
+            : "text-gray-400 drop-shadow-sm"
         }`}
       >
         {isLight ? "🌞 Light" : "🌙 Dark"}
