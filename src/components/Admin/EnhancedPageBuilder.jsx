@@ -1309,7 +1309,7 @@ const EnhancedPageBuilder = () => {
             title: "Excellence",
             description:
               "We deliver exceptional quality in every project, exceeding client expectations consistently.",
-            color: "from-purple-500 to-pink-500",
+            color: "from-gray-400 to-gray-600",
             icon: "⭐",
           },
           {
@@ -4193,7 +4193,7 @@ const EnhancedPageBuilder = () => {
                             ? "bg-[var(--tw-green-500)] border-[var(--tw-green-500)] text-[var(--color-text-inverse)] cursor-pointer hover:bg-[var(--tw-green-600)] hover:border-[var(--tw-green-600)] hover:scale-110 shadow-lg shadow-[var(--tw-green-500)]/25"
                             : isCurrent
                             ? "bg-[var(--color-primary)] border-[var(--color-primary)] text-[var(--color-text-inverse)] cursor-default shadow-lg shadow-[var(--color-primary)]/25"
-                            : "bg-transparent border-[var(--color-text-secondary)] text-white cursor-not-allowed"
+                            : "bg-transparent border-[var(--color-ww-100)] text-white cursor-not-allowed"
                         }
                         group-hover:shadow-lg
                       `}
@@ -4509,7 +4509,7 @@ const CategorySelector = ({ value, onChange }) => {
           <h2 className="text-2xl font-bold text-[var(--color-primary-light)] mb-1">
             No Categories Found
           </h2>
-          <p className="text-lg text-[var(--color-text-secondary)] font-medium mb-2">
+          <p className="text-lg text-[var(--color-ww-100)] font-medium mb-2">
             You must create at least one category before you can create a new
             page.
           </p>
@@ -4627,7 +4627,7 @@ const PageDetailsStep = ({
                 </div>
               )}
             </div>
-            <p className="text-sm text-[var(--color-text-secondary)] mt-2">
+            <p className="text-sm text-[var(--color-ww-100)] mt-2">
               URL: /{pageData.slug || "page-url-slug"}
             </p>
             <p className="text-xs text-[var(--color-text-light)] mt-1">
@@ -5159,7 +5159,7 @@ const SectionsStep = ({
                         ? "border-red-400/40 bg-red-500/5 opacity-60 scale-95"
                         : component.theme === 1
                         ? "border-yellow-400/30 bg-yellow-500/5 border-white/20"
-                        : "border-purple-400/30 bg-purple-500/5 border-white/20"
+                        : "border-gray-400/30 bg-gray-500/5"
                     }`}
                     data-theme={themeClass}
                     data-component-visible={isVisible}
@@ -5473,9 +5473,9 @@ const SectionsStep = ({
                                                 title: "Excellence",
                                                 description:
                                                   "We deliver exceptional quality in every project, exceeding client expectations consistently.",
-                                                icon: "⭐",
+                                                icon: "",
                                                 color:
-                                                  "from-purple-500 to-pink-500",
+                                                  "from-gray-400 to-gray-600",
                                               },
                                               {
                                                 title: "Integrity",
@@ -6508,7 +6508,7 @@ const ReviewStep = ({ pageData, setPageData, showToast }) => {
                               ? "bg-red-500/10 border-red-400/30 opacity-60"
                               : component.theme === 1
                               ? "bg-yellow-500/10 border-yellow-400/30"
-                              : "bg-purple-500/10 border-purple-400/30"
+                              : "bg-gray-500/10 border-gray-400/30"
                           }`}
                           style={{ display: isVisible ? "flex" : "none" }}
                           data-theme={themeClass}

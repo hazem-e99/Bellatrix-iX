@@ -280,7 +280,7 @@ const PageComponentsEditor = ({
       case "about":
         return "👥";
       case "features":
-        return "⭐";
+        return "";
       case "testimonials":
         return "💬";
       case "solution":
@@ -1444,7 +1444,7 @@ const AddComponentModal = ({
       faq: { name: "FAQ", icon: "❓" },
       pricing: { name: "Pricing", icon: "💰" },
       about: { name: "About", icon: "👥" },
-      features: { name: "Features", icon: "⭐" },
+      features: { name: "Features", icon: "" },
       testimonials: { name: "Testimonials", icon: "💬" },
       solution: { name: "Solution", icon: "🔧" },
       services: { name: "Services", icon: "🛠️" },

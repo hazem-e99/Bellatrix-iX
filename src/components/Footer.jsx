@@ -14,13 +14,55 @@ const footerStyles = `
     background-color: var(--color-hover) !important;
   }
   .footer-social-link:hover span {
-    color: var(--color-text-inverse) !important;
+    color: #ffffff !important;
   }
+  .footer-social-link span {
+    color: #ffffff !important;
+    opacity: 0.9;
+  }
+  
+  /* Silver Theme - White icons */
+  [data-theme="purple"] .footer-social-link span {
+    color: #ffffff !important;
+    opacity: 0.9;
+  }
+  [data-theme="purple"] .footer-social-link:hover span {
+    color: #ffffff !important;
+    opacity: 1;
+  }
+  [data-theme="purple"] .footer-social-link:hover {
+    background-color: #6c757d !important;
+  }
+  
   .footer-link:hover {
     color: var(--color-primary) !important;
+    opacity: 1 !important;
   }
   .footer-scroll-btn:hover {
     background-color: var(--color-hover) !important;
+  }
+  
+  /* Quick Links - White text in both themes */
+  .footer-link {
+    color: #ffffff !important;
+    opacity: 0.9;
+  }
+  .footer-link:hover {
+    color: var(--color-primary) !important;
+    opacity: 1 !important;
+  }
+  
+  /* Silver Theme - White text for footer links */
+  [data-theme="purple"] .footer-link {
+    color: #ffffff !important;
+    opacity: 0.9;
+  }
+  [data-theme="purple"] .footer-link:hover {
+    color: #8b95a1 !important; /* silver-400 - medium silver */
+    opacity: 1 !important;
+  }
+  [data-theme="purple"] .footer-contact-text {
+    color: #b0b8c1 !important; /* silver-300 - same as quick links */
   }
 `;
 
@@ -118,15 +160,12 @@ const Footer = () => {
                   href={item.href}
                   className="footer-social-link group p-2 rounded-full transition-colors duration-300 shadow hover:scale-110"
                   style={{
-                    backgroundColor: "var(--color-bg-dark)",
+                    backgroundColor: "rgba(255, 255, 255, 0.1)",
                   }}
                   aria-label="Social Link"
                 >
                   <span
                     className="transition-colors duration-300"
-                    style={{
-                      color: "var(--color-text-muted)",
-                    }}
                   >
                     {item.icon}
                   </span>
@@ -145,7 +184,7 @@ const Footer = () => {
             </h4>
             <ul
               className="flex flex-col gap-2"
-              style={{ color: "var(--color-text-inverse)", opacity: 0.8 }}
+              style={{ color: "#ffffff" }}
             >
               {loading ? (
                 <li style={{ color: "var(--color-text-muted)" }}>Loading...</li>
@@ -166,9 +205,6 @@ const Footer = () => {
                         <a
                           href={`/${homePage.slug}`}
                           className="footer-link transition-colors duration-300 cursor-pointer"
-                          style={{
-                            color: "inherit",
-                          }}
                         >
                           {cat.name}
                         </a>
@@ -184,21 +220,17 @@ const Footer = () => {
                             <a
                               href={`/pages/${homePage.slug}`}
                               className="footer-link transition duration-200 cursor-pointer"
-                              style={{
-                                color: "var(--color-text-inverse)",
-                                opacity: 0.9,
-                              }}
                             >
                               {cat.name}
                             </a>
                           ) : (
-                            <span style={{ color: "var(--color-text-muted)" }}>
+                            <span style={{ color: "#ffffff", opacity: 0.9 }}>
                               {cat.name}
                             </span>
                           );
                         })()
                       ) : (
-                        <span style={{ color: "var(--color-text-muted)" }}>
+                        <span style={{ color: "#ffffff", opacity: 0.9 }}>
                           {cat.name}
                         </span>
                       )}
@@ -268,7 +300,7 @@ const Footer = () => {
 
           {/* Contact Column */}
           <div
-            className="flex flex-col items-center lg:items-start gap-3 text-sm"
+            className="flex flex-col items-center lg:items-start gap-3 text-sm footer-contact-text"
             style={{ color: "var(--color-text-inverse)", opacity: 0.9 }}
           >
             <h4
@@ -277,7 +309,7 @@ const Footer = () => {
             >
               Contact Us
             </h4>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 footer-contact-text">
               <div className="flex items-center gap-2">
                 <Email fontSize="small" />
                 <span>info@bellatrix.com</span>

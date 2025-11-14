@@ -20,11 +20,12 @@
   --color-gray-200: #e5e7eb; /* 141x border-gray-200 */
   --color-gray-300: #d1d5db; /* 169x border-gray-300, 322x text-gray-300 */
   --color-gray-400: #c2bfbf; /* 234x text-gray-400 */
-  --color-gray-500: #6b7280; /* 167x text-gray-500 */
+  --color-gray-500: #000000; /* 167x text-gray-500 - Changed to black */
   --color-gray-600: #4b5563; /* 322x text-gray-600, 72x border-gray-600 */
-  --color-gray-700: #ffffff; /* 173x text-gray-700, 43x bg-gray-700, 57x border-gray-700 */
+  --color-gray-700: #000000; /* 173x text-gray-700, 43x bg-gray-700, 57x border-gray-700 - Changed to black */
   --color-gray-800: #1f2937; /* 182x text-gray-800, 80x bg-gray-800 */
   --color-gray-900: #111827; /* 159x text-gray-900 */
+  --color-ww-100: #ffffff; /* 159x text-gray-900 */
 
   /* Blue - Primary Brand Color */
   --color-blue-50: #eff6ff; /* 33x bg-blue-50 */
@@ -44,10 +45,10 @@
   --color-red-600: #dc2626; /* 54x text-red-600 */
 
   /* Cyan - Accent Color */
-  --color-cyan-300: #67e8f9; /* Various gradient uses */
-  --color-cyan-400: #22d3ee; /* 50x to-cyan-400, 38x border-cyan-400 */
-  --color-cyan-500: #06b6d4; /* 40x to-cyan-500 */
-  --color-cyan-600: #0891b2; /* Various uses */
+  --color-cyan-300: #ffffff; /* Various gradient uses - Changed to white */
+  --color-cyan-400: #ffffff; /* 50x to-cyan-400, 38x border-cyan-400 - Changed to white */
+  --color-cyan-500: #ffffff; /* 40x to-cyan-500 - Changed to white */
+  --color-cyan-600: #ffffff; /* Various uses - Changed to white */
 
   /* Shadow Colors */
   --shadow-blue-500: #3b82f6; /* 55x shadow-blue-500 */
@@ -165,10 +166,10 @@
   --tw-red-700: #b91c1c;
 
   /* Tailwind Cyan Palette */
-  --tw-cyan-300: #67e8f9;
-  --tw-cyan-400: #22d3ee;
-  --tw-cyan-500: #06b6d4;
-  --tw-cyan-600: #0891b2;
+  --tw-cyan-300: #ffffff;
+  --tw-cyan-400: #ffffff;
+  --tw-cyan-500: #ffffff;
+  --tw-cyan-600: #ffffff;
   --tw-cyan-700: #0e7490;
 
   /* Tailwind Green Palette */
@@ -184,17 +185,17 @@
   --tw-yellow-600: #ca8a04;
   --tw-yellow-700: #a16207;
 
-  /* Tailwind Purple Palette - Two-Tone System with Full Scale */
-  --tw-purple-50: #f5e6f7; /* lightest - tinted white */
-  --tw-purple-100: #e1b3e8; /* very light purple */
-  --tw-purple-200: #c980d9; /* light purple */
-  --tw-purple-300: #b14dca; /* mid-light purple */
-  --tw-purple-400: #991abb; /* medium purple */
-  --tw-purple-500: #1e0021; /* main primary */
-  --tw-purple-600: #28002b; /* accent/secondary */
-  --tw-purple-700: #3a003d; /* darker mid-tone */
-  --tw-purple-800: #120015; /* very dark */
-  --tw-purple-900: #0c000f; /* deepest/darkest */
+  /* Tailwind Silver Palette - Two-Tone System with Full Scale */
+  --tw-silver-50: #f8f9fa; /* lightest - tinted white */
+  --tw-silver-100: #e8eaed; /* very light silver */
+  --tw-silver-200: #d1d5db; /* light silver */
+  --tw-silver-300: #b0b8c1; /* mid-light silver */
+  --tw-silver-400: #8b95a1; /* medium silver */
+  --tw-silver-500: #6c757d; /* main primary silver */
+  --tw-silver-600: #5a6268; /* accent/secondary silver */
+  --tw-silver-700: #495057; /* darker mid-tone silver */
+  --tw-silver-800: #343a40; /* very dark silver */
+  --tw-silver-900: #212529; /* deepest/darkest silver */
 
   /* ==================================================
      SEMANTIC COLOR ALIASES
@@ -274,107 +275,128 @@
 }
 
 /* ==================================================
-   PURPLE THEME VARIANT - FULL 1:1 BLUE MAPPING
+   SILVER THEME VARIANT - FULL 1:1 BLUE MAPPING
    ================================================== */
 [data-theme="purple"] {
   /* Base Two-Tone Colors */
-  --color-primary: #1e0021; /* primary main */
-  --color-primary-light: #28002b; /* accent/secondary */
-  --color-primary-dark: #3a003d; /* darker mid-tone */
+  --color-primary: #6c757d; /* primary main silver */
+  --color-primary-light: #8b95a1; /* accent/secondary silver */
+  --color-primary-dark: #495057; /* darker mid-tone silver */
 
-  /* Complete Purple Scale (matching blue 50-900) */
-  --purple-50: #f5e6f7; /* lightest - for backgrounds */
-  --purple-100: #e1b3e8; /* very light - for hover backgrounds */
-  --purple-200: #c980d9; /* light - for borders/subtle accents */
-  --purple-300: #b14dca; /* mid-light - for secondary text */
-  --purple-400: #991abb; /* medium - for icons/badges */
-  --purple-500: #1e0021; /* main primary - buttons/links */
-  --purple-600: #28002b; /* accent - primary hover */
-  --purple-700: #3a003d; /* darker - active states */
-  --purple-800: #120015; /* very dark - text on light bg */
-  --purple-900: #0c000f; /* deepest - headings/emphasis */
+  /* Complete Silver Scale (matching blue 50-900) */
+  --silver-50: #f8f9fa; /* lightest - for backgrounds */
+  --silver-100: #e8eaed; /* very light - for hover backgrounds */
+  --silver-200: #d1d5db; /* light - for borders/subtle accents */
+  --silver-300: #b0b8c1; /* mid-light - for secondary text */
+  --silver-400: #8b95a1; /* medium - for icons/badges */
+  --silver-500: #6c757d; /* main primary - buttons/links */
+  --silver-600: #5a6268; /* accent - primary hover */
+  --silver-700: #495057; /* darker - active states */
+  --silver-800: #343a40; /* very dark - text on light bg */
+  --silver-900: #212529; /* deepest - headings/emphasis */
 
-  /* 1:1 Blue → Purple Mapping (Tailwind utilities) */
-  --tw-blue-50: var(--purple-50);
-  --tw-blue-100: var(--purple-100);
-  --tw-blue-200: var(--purple-200);
-  --tw-blue-300: var(--purple-300);
-  --tw-blue-400: var(--purple-400);
-  --tw-blue-500: var(--purple-500); /* Primary */
-  --tw-blue-600: var(--purple-600); /* Accent */
-  --tw-blue-700: var(--purple-700);
-  --tw-blue-800: var(--purple-800);
-  --tw-blue-900: var(--purple-900);
+  /* 1:1 Blue → Silver Mapping (Tailwind utilities) */
+  --tw-blue-50: var(--silver-50);
+  --tw-blue-100: var(--silver-100);
+  --tw-blue-200: var(--silver-200);
+  --tw-blue-300: var(--silver-300);
+  --tw-blue-400: var(--silver-400);
+  --tw-blue-500: var(--silver-500); /* Primary */
+  --tw-blue-600: var(--silver-600); /* Accent */
+  --tw-blue-700: var(--silver-700);
+  --tw-blue-800: var(--silver-800);
+  --tw-blue-900: var(--silver-900);
 
   /* 1:1 Color Blue Mapping (Custom variables) */
-  --color-blue-50: var(--purple-50);
-  --color-blue-100: var(--purple-100);
-  --color-blue-200: var(--purple-200);
-  --color-blue-300: var(--purple-300);
-  --color-blue-400: var(--purple-400);
-  --color-blue-500: var(--purple-500);
-  --color-blue-600: var(--purple-600);
-  --color-blue-700: var(--purple-700);
-  --color-blue-800: var(--purple-800);
-  --color-blue-900: var(--purple-900);
+  --color-blue-50: var(--silver-50);
+  --color-blue-100: var(--silver-100);
+  --color-blue-200: var(--silver-200);
+  --color-blue-300: var(--silver-300);
+  --color-blue-400: var(--silver-400);
+  --color-blue-500: var(--silver-500);
+  --color-blue-600: var(--silver-600);
+  --color-blue-700: var(--silver-700);
+  --color-blue-800: var(--silver-800);
+  --color-blue-900: var(--silver-900);
 
-  /* Cyan → Purple Accent Mapping */
-  --tw-cyan-300: var(--purple-200); /* Light accent */
-  --tw-cyan-400: var(--purple-400); /* Medium accent - matches text-cyan-400 */
-  --tw-cyan-500: var(--purple-500); /* Primary */
-  --tw-cyan-600: var(--purple-600); /* Darker accent */
-  --tw-cyan-700: var(--purple-700); /* Deep accent */
+  /* Cyan → White Mapping */
+  --tw-cyan-300: #ffffff; /* Light accent - white */
+  --tw-cyan-400: #ffffff; /* Medium accent - white */
+  --tw-cyan-500: #ffffff; /* Primary - white */
+  --tw-cyan-600: #ffffff; /* Darker accent - white */
+  --tw-cyan-700: var(--silver-700); /* Deep accent */
 
-  --color-cyan-300: var(--purple-200);
-  --color-cyan-400: var(--purple-400);
-  --color-cyan-500: var(--purple-500);
-  --color-cyan-600: var(--purple-600);
-  --color-cyan-700: var(--purple-700);
+  --color-cyan-300: #ffffff;
+  --color-cyan-400: #ffffff;
+  --color-cyan-500: #ffffff;
+  --color-cyan-600: #ffffff;
+  --color-cyan-700: var(--silver-700);
 
-  /* Cyan/Blue with Opacity → Purple with Opacity */
-  --color-blue-15: rgba(153, 26, 187, 0.15); /* Purple 400 at 15% */
-  --color-blue-20: rgba(153, 26, 187, 0.2); /* Purple 400 at 20% */
-  --color-blue-40: rgba(153, 26, 187, 0.4); /* Purple 400 at 40% */
-  --color-blue-50: rgba(153, 26, 187, 0.5); /* Purple 400 at 50% */
-  --color-blue-60: rgba(153, 26, 187, 0.6); /* Purple 400 at 60% */
+  /* Gray Scale Override - Darker for better readability on white backgrounds */
+  --tw-gray-400: #6c757d; /* Darker than default - from silver-500 */
+  --tw-gray-500: #495057; /* Much darker - from silver-700 */
+  --tw-gray-600: #343a40; /* Very dark - from silver-800 */
+  --tw-gray-700: #212529; /* Almost black - from silver-900 */
+  --tw-gray-800: #1a1d20; /* Deeper black */
+  --tw-gray-900: #0d0e10; /* Darkest */
 
-  --color-cyan-20: rgba(153, 26, 187, 0.2); /* Purple 400 at 20% */
-  --color-cyan-40: rgba(153, 26, 187, 0.4); /* Purple 400 at 40% */
-  --color-cyan-50: rgba(153, 26, 187, 0.5); /* Purple 400 at 50% */
+  --color-gray-400: #6c757d; /* Darker gray for better contrast */
+  --color-gray-500: #495057; /* Much darker gray */
+  --color-gray-600: #343a40; /* Very dark gray */
+  --color-gray-700: #212529; /* Almost black */
+  --color-gray-800: #1a1d20; /* Deeper */
+  --color-gray-900: #0d0e10; /* Darkest */
 
-  /* Accent Colors Override - Purple Theme */
-  --color-accent-cyan: #991abb; /* purple-400 instead of cyan */
+  /* Cyan/Blue with Opacity → Silver with Opacity */
+  --color-blue-15: rgba(139, 149, 161, 0.15); /* Silver 400 at 15% */
+  --color-blue-20: rgba(139, 149, 161, 0.2); /* Silver 400 at 20% */
+  --color-blue-40: rgba(139, 149, 161, 0.4); /* Silver 400 at 40% */
+  --color-blue-50: rgba(139, 149, 161, 0.5); /* Silver 400 at 50% */
+  --color-blue-60: rgba(139, 149, 161, 0.6); /* Silver 400 at 60% */
+
+  --color-cyan-20: rgba(139, 149, 161, 0.2); /* Silver 400 at 20% */
+  --color-cyan-40: rgba(139, 149, 161, 0.4); /* Silver 400 at 40% */
+  --color-cyan-50: rgba(139, 149, 161, 0.5); /* Silver 400 at 50% */
+
+  /* Accent Colors Override - Silver Theme */
+  --color-accent-cyan: #8b95a1; /* silver-400 instead of cyan */
   --color-accent-cyan-light: rgba(
-    153,
-    26,
-    187,
+    139,
+    149,
+    161,
     0.3
-  ); /* purple-400 with 30% opacity */
+  ); /* silver-400 with 30% opacity */
 
   /* Semantic Aliases (UI Components) */
-  --color-primary: var(--purple-500); /* Main brand color */
-  --color-primary-light: var(--purple-400); /* Lighter variant */
-  --color-primary-dark: var(--purple-700); /* Darker variant */
-  --color-primary-bg: var(--purple-50); /* Background tint */
+  --color-primary: var(--silver-500); /* Main brand color */
+  --color-primary-light: var(--silver-400); /* Lighter variant */
+  --color-primary-dark: var(--silver-700); /* Darker variant */
+  --color-primary-bg: var(--silver-50); /* Background tint */
+
+  /* Text Colors Override - Darker for better contrast on white */
+  --color-text-primary: #0d0e10; /* Almost black for primary text */
+  --color-text-secondary: #212529; /* Dark gray for secondary text */
+  --color-text-muted: #495057; /* Medium dark for muted text */
+  --color-text-light: #6c757d; /* Lighter but still readable */
 
   /* Interactive States */
-  --color-hover: var(--purple-600); /* Hover state */
-  --color-focus: var(--purple-400); /* Focus ring */
-  --color-active: var(--purple-700); /* Active/pressed state */
-  --color-info: var(--purple-500); /* Info badges/alerts */
+  --color-hover: var(--silver-600); /* Hover state */
+  --color-focus: var(--silver-400); /* Focus ring */
+  --color-active: var(--silver-700); /* Active/pressed state */
+  --color-info: var(--silver-500); /* Info badges/alerts */
 
   /* Shadow Colors */
-  --color-shadow: rgba(30, 0, 33, 0.35);
-  --shadow-blue-500: rgba(30, 0, 33, 0.35);
-  --shadow-purple-500: rgba(30, 0, 33, 0.35);
+  --color-shadow: rgba(108, 117, 125, 0.35);
+  --shadow-blue-500: rgba(108, 117, 125, 0.35);
+  --shadow-silver-500: rgba(108, 117, 125, 0.35);
 
   /* Brand Colors Override */
-  --color-brand-dark-navy: #1e0021; /* Main primary */
-  --color-brand-midnight: #28002b; /* Accent */
-  --color-brand-variant: #3a003d; /* Mid-tone */
-  --color-brand-accent: #120015; /* Dark accent */
-  --color-brand-primary: #1e0021;
-  --color-brand-secondary: #28002b;
+  --color-brand-dark-navy: #6c757d; /* Main primary */
+  --color-brand-midnight: #5a6268; /* Accent */
+  --color-brand-variant: #495057; /* Mid-tone */
+  --color-brand-accent: #343a40; /* Dark accent */
+  --color-brand-primary: #6c757d;
+  --color-brand-secondary: #5a6268;
 }
 
 /* ==================================================
@@ -391,17 +413,17 @@
    USAGE EXAMPLES & THEME SWITCHING
    ================================================== */
 /*
-  PURPLE THEME ACTIVATION:
-  Add data-theme="purple" to activate the purple theme:
+  SILVER THEME ACTIVATION:
+  Add data-theme="purple" to activate the silver theme:
   
   <html data-theme="purple">
   or
   <div data-theme="purple" className="app-container">
   
-  This overrides all blue colors with purple equivalents:
-  - Primary buttons become purple instead of blue
-  - Links become purple instead of blue  
-  - Focus states become purple instead of blue
+  This overrides all blue colors with silver equivalents:
+  - Primary buttons become silver instead of blue
+  - Links become silver instead of blue  
+  - Focus states become silver instead of blue
   - All other colors (white, gray, etc.) remain unchanged
   
   JAVASCRIPT THEME SWITCHING:

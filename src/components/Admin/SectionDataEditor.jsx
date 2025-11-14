@@ -766,7 +766,7 @@ const SectionDataEditor = ({
 
   const getDefaultArrayItem = (arrayKey) => {
     const defaults = {
-      features: { title: "", description: "", icon: "⭐" },
+      features: { title: "", description: "", icon: "" },
       services: { name: "", description: "", icon: "🔧", link: "" },
       steps: { title: "", description: "", icon: "📋", duration: "" },
       plans: {

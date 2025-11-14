@@ -63,7 +63,7 @@ const AboutValues = ({ values = [], data = {} }) => {
         "We embrace new technologies and creative approaches to solve complex business challenges.",
     },
     {
-      icon: "⭐",
+      icon: "",
       title: "Customer Focus",
       description:
         "We put our customers at the center of everything we do, ensuring their success is our success.",
@@ -133,7 +133,7 @@ const AboutValues = ({ values = [], data = {} }) => {
                 }}
               ></div>
               <div className="relative">
-                <div className="text-4xl mb-4">{value.icon || "⭐"}</div>
+                <div className="text-4xl mb-4">{value.icon || ""}</div>
                 <h3 className="text-2xl font-bold text-white mb-4">
                   {value.title || "Value"}
                 </h3>

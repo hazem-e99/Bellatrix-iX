@@ -761,7 +761,7 @@ export const componentRegistry = {
       componentType: "RetailFeaturesSection",
       componentName: "Retail Features",
       category: "features",
-      icon: "⭐",
+      icon: "",
       filePath: "src/components/industries/retail/FeaturesSection.jsx",
       description: "Retail industry features",
       dataStructure: {
@@ -843,7 +843,7 @@ export const getComponentsByPageType = (pageType) => {
 export const componentCategories = [
   { id: "hero", label: "Hero Sections", icon: "🌟" },
   { id: "content", label: "Content", icon: "📝" },
-  { id: "features", label: "Features", icon: "⭐" },
+  { id: "features", label: "Features", icon: "" },
   { id: "benefits", label: "Benefits", icon: "✨" },
   { id: "pricing", label: "Pricing", icon: "💰" },
   { id: "process", label: "Process", icon: "📋" },
