@@ -30,6 +30,21 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
+    // Handle 401 Unauthorized specifically
+    if (error.response?.status === 401) {
+      console.error(
+        "🔐 [AUTH ERROR] 401 Unauthorized - Session expired or invalid token"
+      );
+      console.error("⚠️ [AUTH ERROR] Please log in again");
+
+      // Optional: Clear invalid token
+      localStorage.removeItem("authToken");
+      localStorage.removeItem("adminToken");
+
+      // Optional: Redirect to login (uncomment if needed)
+      // window.location.href = '/admin/login';
+    }
+
     const normalizedError = {
       message:
         error.response?.data?.message || error.message || "An error occurred",
@@ -40,17 +55,50 @@ api.interceptors.response.use(
   }
 );
 
-// Request interceptor to add auth token for admin endpoints
+// Request interceptor to add auth token for ALL requests
 api.interceptors.request.use(
   (config) => {
-    // Add auth token for admin endpoints using centralized token manager
-    const token = getAuthToken();
+    // ALWAYS try to get token from localStorage first (primary source: "authToken")
+    let token = localStorage.getItem("authToken");
+
+    // Fallback to other token storage locations
+    if (!token) {
+      token =
+        localStorage.getItem("adminToken") ||
+        sessionStorage.getItem("authToken") ||
+        getAuthToken(); // Last resort: use tokenManager function
+    }
+
+    console.log("🔑 [API REQUEST] Preparing request to:", config.url);
+    console.log("🔑 [API REQUEST] Token search:", {
+      fromAuthToken: localStorage.getItem("authToken") ? "Found" : "Not found",
+      fromAdminToken: localStorage.getItem("adminToken")
+        ? "Found"
+        : "Not found",
+      finalToken: token ? "YES" : "NO",
+    });
+
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+      console.log("✅ [AUTH] Authorization header added successfully");
+    } else {
+      console.warn(
+        '🔐 [AUTH WARNING] No token found in localStorage("authToken")'
+      );
+      console.warn(
+        "⚠️ [AUTH WARNING] Request will be sent WITHOUT authentication"
+      );
+      console.warn(
+        "⚠️ [AUTH WARNING] If this endpoint requires auth, it will return 401"
+      );
     }
+
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => {
+    console.error("❌ [API REQUEST ERROR]:", error);
+    return Promise.reject(error);
+  }
 );
 
 /**
