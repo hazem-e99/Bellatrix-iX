@@ -151,6 +151,18 @@ const useSettingsSync = () => {
    */
   const updateLocalSetting = useCallback(
     (key, settingData) => {
+      console.log(`🔄 [useSettingsSync] Updating local setting for "${key}":`, settingData);
+      
+      if (!key) {
+        console.error("❌ [useSettingsSync] Cannot update setting - key is missing");
+        return;
+      }
+      
+      if (!settingData) {
+        console.error(`❌ [useSettingsSync] Cannot update setting for "${key}" - settingData is missing`);
+        return;
+      }
+      
       setSettings((prev) => ({
         ...prev,
         [key]: {
@@ -165,6 +177,7 @@ const useSettingsSync = () => {
         },
       }));
       markClean(key);
+      console.log(`✅ [useSettingsSync] Successfully updated "${key}"`);
     },
     [markClean]
   );

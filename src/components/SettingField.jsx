@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   CheckCircleIcon,
   XCircleIcon,
@@ -31,6 +31,12 @@ const SettingField = ({
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [validationError, setValidationError] = useState(null);
   const [isDirty, setIsDirty] = useState(false);
+
+  // Update value when existingValue changes (when data loads from API)
+  useEffect(() => {
+    setValue(existingValue || "");
+    setIsDirty(false);
+  }, [existingValue]);
 
   const {
     key,
@@ -79,6 +85,14 @@ const SettingField = ({
       return;
     }
 
+    console.log(`💾 [SettingField] Saving field "${key}":`, {
+      existingId,
+      existingValue,
+      newValue: value,
+      willUpdate: !!existingId,
+      willCreate: !existingId,
+    });
+
     setIsSaving(true);
 
     try {
@@ -94,15 +108,18 @@ const SettingField = ({
           dataType: dataType || "string",
         };
 
+        console.log(`🔄 [SettingField] PUT request for "${key}":`, payload);
         const response = await updateSetting(payload);
 
         if (response.success) {
+          console.log(`✅ [SettingField] Update success for "${key}":`, response.data);
           toast.success(`${label} updated successfully`);
           setIsDirty(false);
-          if (onSaveSuccess) {
+          if (onSaveSuccess && response.data) {
             onSaveSuccess(response.data);
           }
         } else {
+          console.error(`❌ [SettingField] Update failed for "${key}":`, response.message);
           toast.error(response.message || "Failed to update setting");
         }
       } else {
@@ -111,6 +128,7 @@ const SettingField = ({
         const existsResponse = await checkKeyExists(key);
 
         if (existsResponse.success && existsResponse.data === true) {
+          console.warn(`⚠️ [SettingField] Key "${key}" already exists`);
           toast.error(
             `Setting with key "${key}" already exists. Please refresh the page.`
           );
@@ -126,20 +144,23 @@ const SettingField = ({
           dataType: dataType || "string",
         };
 
+        console.log(`➕ [SettingField] POST request for "${key}":`, payload);
         const response = await createSetting(payload);
 
         if (response.success) {
+          console.log(`✅ [SettingField] Create success for "${key}":`, response.data);
           toast.success(`${label} created successfully`);
           setIsDirty(false);
-          if (onSaveSuccess) {
+          if (onSaveSuccess && response.data) {
             onSaveSuccess(response.data);
           }
         } else {
+          console.error(`❌ [SettingField] Create failed for "${key}":`, response.message);
           toast.error(response.message || "Failed to create setting");
         }
       }
     } catch (error) {
-      console.error("Error saving setting:", error);
+      console.error(`❌ [SettingField] Exception for "${key}":`, error);
       toast.error(error.message || "An error occurred while saving");
     } finally {
       setIsSaving(false);
@@ -157,14 +178,20 @@ const SettingField = ({
    * Handle delete execution
    */
   const handleDeleteConfirm = async () => {
-    if (!existingId) return;
+    if (!existingId) {
+      console.warn(`⚠️ [SettingField] Cannot delete "${key}" - no existingId`);
+      toast.error("Cannot delete - setting has no ID");
+      return;
+    }
 
+    console.log(`🗑️ [SettingField] Deleting setting "${key}" with ID:`, existingId);
     setIsDeleting(true);
 
     try {
       const response = await deleteSetting(existingId);
 
       if (response.success) {
+        console.log(`✅ [SettingField] Delete success for "${key}"`);
         toast.success(`${label} deleted successfully`);
         setValue("");
         setIsDirty(false);
@@ -173,10 +200,11 @@ const SettingField = ({
           onDeleteSuccess(key);
         }
       } else {
+        console.error(`❌ [SettingField] Delete failed for "${key}":`, response.message);
         toast.error(response.message || "Failed to delete setting");
       }
     } catch (error) {
-      console.error("Error deleting setting:", error);
+      console.error(`❌ [SettingField] Delete exception for "${key}":`, error);
       toast.error(error.message || "An error occurred while deleting");
     } finally {
       setIsDeleting(false);

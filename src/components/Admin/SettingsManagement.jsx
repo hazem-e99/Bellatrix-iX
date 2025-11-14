@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { UserGroupIcon, ShieldCheckIcon } from "@heroicons/react/24/outline";
+import {
+  UserGroupIcon,
+  ShieldCheckIcon,
+  Cog6ToothIcon,
+} from "@heroicons/react/24/outline";
 import Button from "../ui/Button";
 import { Input } from "../ui/Input";
 import Card, { CardContent, CardHeader, CardTitle } from "../ui/Card";
 import Toast from "../ui/Toast";
 import { useJsonData } from "../../hooks/useJsonData";
 import Modal, { ModalFooter } from "../UI/Modal";
+import FooterSettings from "../../pages/FooterSettings";
 
 const SettingsManagement = () => {
   const [activeTab, setActiveTab] = useState("permissions");
@@ -134,6 +139,12 @@ const SettingsManagement = () => {
       name: "Permissions",
       icon: UserGroupIcon,
       description: "User roles and access control",
+    },
+    {
+      id: "footer",
+      name: "Footer Settings",
+      icon: Cog6ToothIcon,
+      description: "Manage footer content and links",
     },
   ];
 
@@ -330,6 +341,7 @@ const SettingsManagement = () => {
         >
           <div className="[&_input]:bg-white/5 [&_input]:border-white/20 [&_input]:text-white [&_textarea]:bg-white/5 [&_textarea]:border-white/20 [&_textarea]:text-white">
             {activeTab === "permissions" && renderPermissionSettings()}
+            {activeTab === "footer" && <FooterSettings />}
           </div>
         </motion.div>
 

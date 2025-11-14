@@ -15,7 +15,7 @@ export const FOOTER_SETTINGS_MAP = [
     validation: { required: true, minLength: 2, maxLength: 100 },
   },
   {
-    key: "footerText",
+    key: "company_tagline",
     label: "Footer Text",
     placeholder: "Enter footer description or tagline",
     dataType: "text",
@@ -25,7 +25,7 @@ export const FOOTER_SETTINGS_MAP = [
     validation: { maxLength: 500 },
   },
   {
-    key: "companyName",
+    key: "company_name",
     label: "Company Name",
     placeholder: "Your Company Name",
     dataType: "string",
@@ -35,7 +35,7 @@ export const FOOTER_SETTINGS_MAP = [
     validation: { required: true, minLength: 2, maxLength: 100 },
   },
   {
-    key: "email",
+    key: "company_email",
     label: "Contact Email",
     placeholder: "contact@example.com",
     dataType: "email",
@@ -49,7 +49,7 @@ export const FOOTER_SETTINGS_MAP = [
     },
   },
   {
-    key: "phone",
+    key: "company_phone",
     label: "Contact Phone",
     placeholder: "+1 (555) 123-4567",
     dataType: "string",
@@ -64,7 +64,7 @@ export const FOOTER_SETTINGS_MAP = [
     },
   },
   {
-    key: "address",
+    key: "company_address",
     label: "Business Address",
     placeholder: "123 Main Street, City, State, ZIP",
     dataType: "text",
@@ -74,7 +74,7 @@ export const FOOTER_SETTINGS_MAP = [
     validation: { maxLength: 200 },
   },
   {
-    key: "facebook",
+    key: "social_facebook",
     label: "Facebook URL",
     placeholder: "https://facebook.com/yourpage",
     dataType: "url",
@@ -89,7 +89,7 @@ export const FOOTER_SETTINGS_MAP = [
     },
   },
   {
-    key: "twitter",
+    key: "social_twitter",
     label: "Twitter URL",
     placeholder: "https://twitter.com/yourhandle",
     dataType: "url",
@@ -104,7 +104,7 @@ export const FOOTER_SETTINGS_MAP = [
     },
   },
   {
-    key: "linkedin",
+    key: "social_linkedin",
     label: "LinkedIn URL",
     placeholder: "https://linkedin.com/company/yourcompany",
     dataType: "url",
@@ -119,7 +119,7 @@ export const FOOTER_SETTINGS_MAP = [
     },
   },
   {
-    key: "instagram",
+    key: "social_instagram",
     label: "Instagram URL",
     placeholder: "https://instagram.com/youraccount",
     dataType: "url",
@@ -134,7 +134,7 @@ export const FOOTER_SETTINGS_MAP = [
     },
   },
   {
-    key: "youtube",
+    key: "social_youtube",
     label: "YouTube URL",
     placeholder: "https://youtube.com/c/yourchannel",
     dataType: "url",
@@ -149,7 +149,7 @@ export const FOOTER_SETTINGS_MAP = [
     },
   },
   {
-    key: "copyrightText",
+    key: "copyright_text",
     label: "Copyright Text",
     placeholder: "© 2025 Company Name. All rights reserved.",
     dataType: "string",
@@ -159,7 +159,7 @@ export const FOOTER_SETTINGS_MAP = [
     validation: { maxLength: 200 },
   },
   {
-    key: "privacyPolicyUrl",
+    key: "privacy_policy_url",
     label: "Privacy Policy URL",
     placeholder: "/privacy-policy",
     dataType: "url",
@@ -169,7 +169,7 @@ export const FOOTER_SETTINGS_MAP = [
     validation: { maxLength: 200 },
   },
   {
-    key: "termsOfServiceUrl",
+    key: "terms_of_service_url",
     label: "Terms of Service URL",
     placeholder: "/terms-of-service",
     dataType: "url",
