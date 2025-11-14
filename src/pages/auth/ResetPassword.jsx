@@ -52,27 +52,27 @@ const ResetPassword = () => {
     const newErrors = {};
 
     if (!formData.email.trim()) {
-      newErrors.email = 'البريد الإلكتروني مطلوب';
+      newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'البريد الإلكتروني غير صالح';
+      newErrors.email = 'Invalid email address';
     }
 
     if (!formData.resetToken.trim()) {
-      newErrors.resetToken = 'رمز التحقق مطلوب';
+      newErrors.resetToken = 'Verification code is required';
     } else if (formData.resetToken.length < 6) {
-      newErrors.resetToken = 'رمز التحقق يجب أن يكون 6 أرقام على الأقل';
+      newErrors.resetToken = 'Verification code must be at least 6 digits';
     }
 
     if (!formData.newPassword.trim()) {
-      newErrors.newPassword = 'كلمة المرور الجديدة مطلوبة';
+      newErrors.newPassword = 'New password is required';
     } else if (formData.newPassword.length < 6) {
-      newErrors.newPassword = 'كلمة المرور يجب أن تكون 6 أحرف على الأقل';
+      newErrors.newPassword = 'Password must be at least 6 characters';
     }
 
     if (!formData.confirmPassword.trim()) {
-      newErrors.confirmPassword = 'يرجى تأكيد كلمة المرور';
+      newErrors.confirmPassword = 'Please confirm your password';
     } else if (formData.newPassword !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'كلمات المرور غير متطابقة';
+      newErrors.confirmPassword = 'Passwords do not match';
     }
 
     setErrors(newErrors);
@@ -214,7 +214,7 @@ const ResetPassword = () => {
                   className={`block w-full px-3 py-2 border ${
                     errors.newPassword ? 'border-red-300 focus:ring-red-500 focus:border-red-500' : 'border-gray-300 focus:ring-blue-500 focus:border-blue-500'
                   } rounded-md shadow-sm focus:outline-none focus:ring-2`}
-                  placeholder="أدخل كلمة المرور الجديدة"
+                  placeholder="Enter your new password"
                 />
                 <button
                   type="button"
