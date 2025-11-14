@@ -408,8 +408,8 @@ const SettingsManagement = () => {
       "footer_link_1_url",
       "footer_link_2_url",
       "footer_link_3_url",
-      "social_facebook",
-      "social_twitter",
+      "facebook",
+      "twitter",
       "social_linkedin",
     ];
 
@@ -452,8 +452,8 @@ const SettingsManagement = () => {
       footer_service_3: "Third service name",
       footer_service_4: "Fourth service name",
       footer_service_5: "Fifth service name",
-      social_facebook: "Facebook profile URL",
-      social_twitter: "Twitter profile URL",
+      facebook: "Facebook profile URL",
+      twitter: "Twitter profile URL",
       social_linkedin: "LinkedIn profile URL",
     };
     return descriptions[key] || "";
@@ -1165,21 +1165,21 @@ const SettingsManagement = () => {
                 Facebook URL
               </label>
               <Input
-                value={footerSettings.social_facebook}
+                value={footerSettings.facebook}
                 onChange={(e) =>
                   setFooterSettings({
                     ...footerSettings,
-                    social_facebook: e.target.value,
+                    facebook: e.target.value,
                   })
                 }
                 placeholder="https://facebook.com/yourpage"
                 className={`bg-white/5 border-white/20 text-white ${
-                  footerErrors.social_facebook ? "border-red-500" : ""
+                  footerErrors.facebook ? "border-red-500" : ""
                 }`}
               />
-              {footerErrors.social_facebook && (
+              {footerErrors.facebook && (
                 <p className="text-red-400 text-xs mt-1">
-                  {footerErrors.social_facebook}
+                  {footerErrors.facebook}
                 </p>
               )}
             </div>
@@ -1189,21 +1189,21 @@ const SettingsManagement = () => {
                 Twitter URL
               </label>
               <Input
-                value={footerSettings.social_twitter}
+                value={footerSettings.twitter}
                 onChange={(e) =>
                   setFooterSettings({
                     ...footerSettings,
-                    social_twitter: e.target.value,
+                    twitter: e.target.value,
                   })
                 }
                 placeholder="https://twitter.com/yourhandle"
                 className={`bg-white/5 border-white/20 text-white ${
-                  footerErrors.social_twitter ? "border-red-500" : ""
+                  footerErrors.twitter ? "border-red-500" : ""
                 }`}
               />
-              {footerErrors.social_twitter && (
+              {footerErrors.twitter && (
                 <p className="text-red-400 text-xs mt-1">
-                  {footerErrors.social_twitter}
+                  {footerErrors.twitter}
                 </p>
               )}
             </div>
@@ -1257,8 +1257,8 @@ const SettingsManagement = () => {
               footer_service_3: "",
               footer_service_4: "",
               footer_service_5: "",
-              social_facebook: "",
-              social_twitter: "",
+              facebook: "",
+              twitter: "",
               social_linkedin: "",
             })
           }
