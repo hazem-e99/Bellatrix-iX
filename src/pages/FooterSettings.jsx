@@ -65,7 +65,7 @@ const FooterSettings = () => {
    */
   const handleFieldSaveSuccess = (updatedSetting) => {
     console.log("📥 [FooterSettings] Received save success:", updatedSetting);
-    
+
     // updatedSetting is the SettingDTO returned from API
     if (updatedSetting && updatedSetting.key) {
       updateLocalSetting(updatedSetting.key, updatedSetting);
@@ -74,7 +74,10 @@ const FooterSettings = () => {
       setFooterSettings(settings);
       console.log("✅ [FooterSettings] Field saved and UI refreshed");
     } else {
-      console.error("❌ [FooterSettings] Invalid updatedSetting received:", updatedSetting);
+      console.error(
+        "❌ [FooterSettings] Invalid updatedSetting received:",
+        updatedSetting
+      );
     }
   };
 

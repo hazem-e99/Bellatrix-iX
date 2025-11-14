@@ -112,14 +112,20 @@ const SettingField = ({
         const response = await updateSetting(payload);
 
         if (response.success) {
-          console.log(`✅ [SettingField] Update success for "${key}":`, response.data);
+          console.log(
+            `✅ [SettingField] Update success for "${key}":`,
+            response.data
+          );
           toast.success(`${label} updated successfully`);
           setIsDirty(false);
           if (onSaveSuccess && response.data) {
             onSaveSuccess(response.data);
           }
         } else {
-          console.error(`❌ [SettingField] Update failed for "${key}":`, response.message);
+          console.error(
+            `❌ [SettingField] Update failed for "${key}":`,
+            response.message
+          );
           toast.error(response.message || "Failed to update setting");
         }
       } else {
@@ -148,14 +154,20 @@ const SettingField = ({
         const response = await createSetting(payload);
 
         if (response.success) {
-          console.log(`✅ [SettingField] Create success for "${key}":`, response.data);
+          console.log(
+            `✅ [SettingField] Create success for "${key}":`,
+            response.data
+          );
           toast.success(`${label} created successfully`);
           setIsDirty(false);
           if (onSaveSuccess && response.data) {
             onSaveSuccess(response.data);
           }
         } else {
-          console.error(`❌ [SettingField] Create failed for "${key}":`, response.message);
+          console.error(
+            `❌ [SettingField] Create failed for "${key}":`,
+            response.message
+          );
           toast.error(response.message || "Failed to create setting");
         }
       }
@@ -184,7 +196,10 @@ const SettingField = ({
       return;
     }
 
-    console.log(`🗑️ [SettingField] Deleting setting "${key}" with ID:`, existingId);
+    console.log(
+      `🗑️ [SettingField] Deleting setting "${key}" with ID:`,
+      existingId
+    );
     setIsDeleting(true);
 
     try {
@@ -200,7 +215,10 @@ const SettingField = ({
           onDeleteSuccess(key);
         }
       } else {
-        console.error(`❌ [SettingField] Delete failed for "${key}":`, response.message);
+        console.error(
+          `❌ [SettingField] Delete failed for "${key}":`,
+          response.message
+        );
         toast.error(response.message || "Failed to delete setting");
       }
     } catch (error) {

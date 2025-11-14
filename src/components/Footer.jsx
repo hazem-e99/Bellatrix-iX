@@ -78,7 +78,8 @@ const Footer = () => {
   // Footer settings from API
   const [footerSettings, setFooterSettings] = useState({
     companyName: "Bellatrix",
-    companyDescription: "Empowering your business with next-gen enterprise software solutions.",
+    companyDescription:
+      "Empowering your business with next-gen enterprise software solutions.",
     contactEmail: "info@bellatrix.com",
     contactPhone: "(555) 123-4567",
     contactAddress: "123 Business Avenue, Suite 500",
@@ -107,25 +108,29 @@ const Footer = () => {
       try {
         console.log("🔄 [Footer] Fetching settings from /api/Settings/public");
         const response = await getPublicDictionary();
-        
+
         if (response.success && response.data) {
           console.log("✅ [Footer] Settings loaded:", response.data);
-          
+
           // Map API keys to footer settings
           const apiData = response.data;
           const newSettings = {
-            companyName: apiData.company_name || apiData.siteTitle || "Bellatrix",
-            companyDescription: apiData.company_tagline || "Empowering your business with next-gen enterprise software solutions.",
+            companyName:
+              apiData.company_name || apiData.siteTitle || "Bellatrix",
+            companyDescription:
+              apiData.company_tagline ||
+              "Empowering your business with next-gen enterprise software solutions.",
             contactEmail: apiData.company_email || "info@bellatrix.com",
             contactPhone: apiData.company_phone || "(555) 123-4567",
-            contactAddress: apiData.company_address || "123 Business Avenue, Suite 500",
+            contactAddress:
+              apiData.company_address || "123 Business Avenue, Suite 500",
             facebook: apiData.social_facebook || "#",
             linkedin: apiData.social_linkedin || "#",
             instagram: apiData.social_instagram || "#",
             youtube: apiData.social_youtube || "#",
             twitter: apiData.social_twitter || "#",
           };
-          
+
           setFooterSettings(newSettings);
           console.log("✅ [Footer] Settings applied:", newSettings);
         } else {
@@ -206,30 +211,30 @@ const Footer = () => {
             </p>
             <div className="flex space-x-4 mt-2">
               {[
-                { 
-                  icon: <Twitter fontSize="medium" />, 
+                {
+                  icon: <Twitter fontSize="medium" />,
                   href: footerSettings.twitter,
-                  label: "Twitter"
+                  label: "Twitter",
                 },
-                { 
-                  icon: <LinkedIn fontSize="medium" />, 
+                {
+                  icon: <LinkedIn fontSize="medium" />,
                   href: footerSettings.linkedin,
-                  label: "LinkedIn"
+                  label: "LinkedIn",
                 },
-                { 
-                  icon: <Facebook fontSize="medium" />, 
+                {
+                  icon: <Facebook fontSize="medium" />,
                   href: footerSettings.facebook,
-                  label: "Facebook"
+                  label: "Facebook",
                 },
-                { 
-                  icon: <Instagram fontSize="medium" />, 
+                {
+                  icon: <Instagram fontSize="medium" />,
                   href: footerSettings.instagram,
-                  label: "Instagram"
+                  label: "Instagram",
                 },
-                { 
-                  icon: <YouTube fontSize="medium" />, 
+                {
+                  icon: <YouTube fontSize="medium" />,
                   href: footerSettings.youtube,
-                  label: "YouTube"
+                  label: "YouTube",
                 },
               ].map((item, idx) => (
                 <a
@@ -243,9 +248,7 @@ const Footer = () => {
                   }}
                   aria-label={item.label}
                 >
-                  <span
-                    className="transition-colors duration-300"
-                  >
+                  <span className="transition-colors duration-300">
                     {item.icon}
                   </span>
                 </a>
@@ -261,10 +264,7 @@ const Footer = () => {
             >
               Quick Links
             </h4>
-            <ul
-              className="flex flex-col gap-2"
-              style={{ color: "#ffffff" }}
-            >
+            <ul className="flex flex-col gap-2" style={{ color: "#ffffff" }}>
               {loading ? (
                 <li style={{ color: "var(--color-text-muted)" }}>Loading...</li>
               ) : error ? (
@@ -409,7 +409,8 @@ const Footer = () => {
           }}
         >
           <p>
-            &copy; {new Date().getFullYear()} {footerSettings.companyName}. All rights reserved.
+            &copy; {new Date().getFullYear()} {footerSettings.companyName}. All
+            rights reserved.
           </p>
         </div>
         {/* Scroll to Top Button */}
