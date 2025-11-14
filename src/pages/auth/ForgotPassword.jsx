@@ -23,7 +23,7 @@ const ForgotPassword = () => {
       }, 1000);
       return () => clearTimeout(timer);
     } else if (isSubmitted && countdown === 0) {
-      navigate('/auth/verification', { 
+      navigate('/auth/reset-password', { 
         state: { email: formData.email } 
       });
     }
@@ -81,69 +81,92 @@ const ForgotPassword = () => {
 
   if (isSubmitted) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-gray-800">
-        <div className="w-full max-w-md px-6">
-          <div className="bg-white rounded-lg shadow-xl p-8">
+      <div className="min-h-screen flex">
+        {/* Left Side - Logo Section (50%) */}
+        <div className="hidden lg:flex lg:w-1/2 bg-white relative overflow-hidden">
+          <div className="relative z-10 flex flex-col items-center justify-center w-full p-12">
+            <img 
+              src="/images/logoThree.png" 
+              alt="Bellatrix Logo" 
+              className="w-full h-auto object-contain"
+            />
+          </div>
+        </div>
+
+        {/* Right Side - Success Message (50%) */}
+        <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-gray-50">
+          <div className="w-full max-w-md">
+            {/* Mobile Logo */}
+            <div className="lg:hidden text-center mb-8">
+              <img 
+                src="/images/logoThree.png" 
+                alt="Bellatrix Logo" 
+                className="w-auto h-24 object-contain mx-auto mb-4"
+              />
+            </div>
+
+            <div className="bg-white rounded-3xl shadow-2xl p-10 border border-gray-100">
             <div className="text-center mb-6">
-              <div className="mx-auto h-14 w-14 flex items-center justify-center rounded-lg bg-green-100 mb-4">
+              <div className="inline-block p-3 rounded-2xl bg-green-50 mb-4">
                 <svg className="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <h2 className="text-2xl font-bold text-gray-900">
-                تحقق من بريدك الإلكتروني
+              <h2 className="text-3xl font-bold text-gray-900 mb-2">
+                Check Your Email
               </h2>
               <p className="mt-2 text-sm text-gray-600">
-                لقد أرسلنا تعليمات إعادة تعيين كلمة المرور إلى
+                We've sent password reset instructions to
               </p>
               <p className="mt-1 text-sm font-medium text-gray-900">{formData.email}</p>
               {countdown > 0 && (
                 <p className="mt-3 text-sm text-blue-600">
-                  سيتم التوجيه خلال {countdown} ثانية...
+                  Redirecting in {countdown} seconds...
                 </p>
               )}
             </div>
             
             <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
               <p className="text-sm text-green-800">
-                يرجى التحقق من بريدك الإلكتروني واتباع التعليمات لإعادة تعيين كلمة المرور. 
-                سينتهي صلاحية الرابط خلال 24 ساعة.
+                We've sent the verification code to your email. 
+                The code will expire in 24 hours.
               </p>
             </div>
 
             <div className="space-y-3">
               <Link
-                to="/auth/verification"
+                to="/auth/reset-password"
                 state={{ email: formData.email }}
                 className="w-full inline-flex justify-center items-center px-4 py-2.5 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
-                إدخال رمز التحقق
+                Enter Verification Code and Reset Password
               </Link>
               
               <Link
                 to="/auth/login"
                 className="w-full inline-flex justify-center items-center px-4 py-2.5 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
-                العودة لتسجيل الدخول
+                Back to Sign In
               </Link>
             </div>
             
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-600">
-                لم تستلم البريد؟{' '}
+                Didn't receive the email?{' '}
                 <button
                   type="button"
                   className="font-medium text-blue-600 hover:text-blue-500"
                   onClick={() => setIsSubmitted(false)}
                 >
-                  إعادة المحاولة
+                  Try Again
                 </button>
               </p>
             </div>
 
             <div className="mt-6 text-center text-sm text-gray-600">
-              © 2024 Bellatrix. جميع الحقوق محفوظة
+              © 2024 Bellatrix. All rights reserved
             </div>
+          </div>
           </div>
         </div>
       </div>
@@ -151,22 +174,49 @@ const ForgotPassword = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-gray-800">
-      <div className="w-full max-w-md px-6">
-        <div className="bg-white rounded-lg shadow-xl p-8">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold text-gray-900">
-              نسيت كلمة المرور؟
+    <div className="min-h-screen flex">
+      {/* Left Side - Logo Section (50%) */}
+      <div className="hidden lg:flex lg:w-1/2 bg-white relative overflow-hidden">
+        <div className="relative z-10 flex flex-col items-center justify-center w-full p-12">
+          <img 
+            src="/images/logoThree.png" 
+            alt="Bellatrix Logo" 
+            className="w-full h-auto object-contain"
+          />
+        </div>
+      </div>
+
+      {/* Right Side - Forgot Password Form (50%) */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-gray-50">
+        <div className="w-full max-w-md">
+          {/* Mobile Logo */}
+          <div className="lg:hidden text-center mb-8">
+            <img 
+              src="/images/logoThree.png" 
+              alt="Bellatrix Logo" 
+              className="w-auto h-24 object-contain mx-auto mb-4"
+            />
+          </div>
+
+          <div className="bg-white rounded-3xl shadow-2xl p-10 border border-gray-100">
+          <div className="text-center mb-10">
+            <div className="inline-block p-3 rounded-2xl bg-blue-50 mb-4">
+              <svg className="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">
+              Forgot Password?
             </h2>
-            <p className="mt-2 text-sm text-gray-600">
-              أدخل بريدك الإلكتروني وسنرسل لك تعليمات إعادة التعيين
+            <p className="text-sm text-gray-500">
+              Enter your email and we'll send you reset instructions
             </p>
           </div>
           
           <form className="space-y-5" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                البريد الإلكتروني
+                Email Address
               </label>
               <input
                 id="email"
@@ -178,7 +228,7 @@ const ForgotPassword = () => {
                 className={`block w-full px-3 py-2 border ${
                   errors.email ? 'border-red-300 focus:ring-red-500 focus:border-red-500' : 'border-gray-300 focus:ring-blue-500 focus:border-blue-500'
                 } rounded-md shadow-sm focus:outline-none focus:ring-2`}
-                placeholder="أدخل بريدك الإلكتروني"
+                placeholder="Enter your email"
               />
               {errors.email && (
                 <p className="mt-1 text-sm text-red-600">{errors.email}</p>
@@ -187,8 +237,8 @@ const ForgotPassword = () => {
 
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
               <p className="text-sm text-blue-800">
-                سنرسل لك رابطًا آمنًا لإعادة تعيين كلمة المرور. 
-                تأكد من استخدام نفس البريد الإلكتروني المستخدم في التسجيل.
+                We'll send you a secure link to reset your password. 
+                Make sure to use the same email used for registration.
               </p>
             </div>
 
@@ -200,7 +250,7 @@ const ForgotPassword = () => {
               {isSubmitting ? (
                 <LoadingSpinner size="sm" />
               ) : (
-                'إرسال رابط إعادة التعيين'
+                'Send Reset Link'
               )}
             </button>
 
@@ -209,14 +259,15 @@ const ForgotPassword = () => {
                 to="/auth/login"
                 className="inline-block px-6 py-2.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md transition-colors"
               >
-                العودة لتسجيل الدخول
+                Back to Sign In
               </Link>
             </div>
           </form>
 
           <div className="mt-6 text-center text-sm text-gray-600">
-            © 2024 Bellatrix. جميع الحقوق محفوظة
+            © 2024 Bellatrix. All rights reserved
           </div>
+        </div>
         </div>
       </div>
     </div>

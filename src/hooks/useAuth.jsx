@@ -224,6 +224,9 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     setIsAuthenticated(false);
     toast.success('تم تسجيل الخروج بنجاح');
+    // Return true to indicate logout was successful
+    // The component using this should handle navigation
+    return true;
   };
 
   const value = {

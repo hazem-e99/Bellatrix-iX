@@ -80,7 +80,7 @@ export const authService = {
   resetPassword: async (resetData) => {
     const response = await authApi.post('/api/Authentication/Reset-Password', {
       email: resetData.email,
-      resetToken: resetData.token,
+      resetToken: resetData.resetToken,
       newPassword: resetData.newPassword,
       confirmPassword: resetData.confirmPassword,
     });

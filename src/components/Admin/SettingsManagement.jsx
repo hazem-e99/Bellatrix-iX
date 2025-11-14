@@ -282,7 +282,7 @@ const SettingsManagement = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white p-8">
+    <div className="min-h-screen text-white p-8" style={{ backgroundColor: "#001038" }}>
       <div className="max-w-7xl mx-auto space-y-8">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -290,17 +290,17 @@ const SettingsManagement = () => {
           className="flex items-center justify-between"
         >
           <div>
-            <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">
+            <h1 className="text-4xl font-bold text-white">
               Settings Management
             </h1>
-            <p className="text-gray-400 mt-2">
+            <p className="text-gray-300 mt-2">
               Configure system preferences and access control
             </p>
           </div>
         </motion.div>
 
         {/* Simple Horizontal Tabs */}
-        <div className="flex gap-2 border-b border-gray-700/50">
+        <div className="flex gap-2 border-b border-white/10">
           {tabs.map((tab) => {
             const isActive = activeTab === tab.id;
             const Icon = tab.icon;
@@ -311,7 +311,7 @@ const SettingsManagement = () => {
                 className={`relative flex items-center gap-2 px-6 py-3 font-medium transition-all duration-200 ${
                   isActive
                     ? "text-blue-400"
-                    : "text-gray-400 hover:text-gray-300"
+                    : "text-gray-300 hover:text-white"
                 }`}
               >
                 <Icon className="w-5 h-5" />
@@ -319,7 +319,7 @@ const SettingsManagement = () => {
                 {isActive && (
                   <motion.div
                     layoutId="activeTabIndicator"
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500 to-blue-600"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-500"
                     initial={false}
                     transition={{ type: "spring", stiffness: 500, damping: 30 }}
                   />
@@ -354,7 +354,8 @@ const SettingsManagement = () => {
         isOpen={isRoleModalOpen}
         onClose={closeRoleModal}
         title={editingRoleId != null ? "Edit Role" : "Add New Role"}
-        className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/20"
+        className="border-white/20"
+        style={{ backgroundColor: "#001038" }}
       >
         <div className="space-y-6">
           <div>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
-import { clearAuthData } from "../../utils/tokenManager";
+import { useAuth } from "../../hooks/useAuth";
 import {
   AppBar,
   Box,
@@ -47,6 +47,7 @@ const AdminLayout = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
+  const { logout } = useAuth();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -61,10 +62,9 @@ const AdminLayout = () => {
   };
 
   const handleExitAdmin = () => {
-    // Clear all authentication data from localStorage
-    clearAuthData();
-    // Navigate to admin login page
-    navigate("/admin/login");
+    // Use the centralized logout function from useAuth
+    logout();
+    navigate('/auth/login');
     handleProfileMenuClose();
   };
 
