@@ -74,7 +74,7 @@ export const FOOTER_SETTINGS_MAP = [
     validation: { maxLength: 200 },
   },
   {
-    key: "social_facebook",
+    key: "facebook_link",
     label: "Facebook URL",
     placeholder: "https://facebook.com/yourpage",
     dataType: "url",
@@ -89,7 +89,7 @@ export const FOOTER_SETTINGS_MAP = [
     },
   },
   {
-    key: "social_twitter",
+    key: "twitter_link",
     label: "Twitter URL",
     placeholder: "https://twitter.com/yourhandle",
     dataType: "url",

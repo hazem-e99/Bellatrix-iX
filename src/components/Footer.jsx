@@ -124,11 +124,11 @@ const Footer = () => {
             contactPhone: apiData.company_phone || "(555) 123-4567",
             contactAddress:
               apiData.company_address || "123 Business Avenue, Suite 500",
-            facebook: apiData.social_facebook || "#",
+            facebook: apiData.facebook_link || "#",
             linkedin: apiData.social_linkedin || "#",
             instagram: apiData.social_instagram || "#",
             youtube: apiData.social_youtube || "#",
-            twitter: apiData.social_twitter || "#",
+            twitter: apiData.twitter_link || "#",
           };
 
           setFooterSettings(newSettings);

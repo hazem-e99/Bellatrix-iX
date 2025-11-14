@@ -31,8 +31,8 @@ console.log("\nAfter:", JSON.stringify(normalizedSettings, null, 2));
 
 // Result:
 // [
-//   { key: "social_facebook", value: "https://facebook.com/mycompany" },
-//   { key: "social_twitter", value: "https://twitter.com/mycompany" },
+//   { key: "facebook_link", value: "https://facebook.com/mycompany" },
+//   { key: "twitter_link", value: "https://twitter.com/mycompany" },
 //   { key: "company_name", value: "My Company Inc." },
 //   { key: "company_email", value: "info@mycompany.com" },
 //   { key: "copyright_text", value: "© 2025 My Company. All rights reserved." }
@@ -58,8 +58,8 @@ console.log("\nAfter:", JSON.stringify(normalizedObject, null, 2));
 
 // Result:
 // {
-//   "social_facebook": "https://facebook.com/mycompany",
-//   "social_twitter": "https://twitter.com/mycompany",
+//   "facebook_link": "https://facebook.com/mycompany",
+//   "twitter_link": "https://twitter.com/mycompany",
 //   "social_linkedin": "https://linkedin.com/company/mycompany",
 //   "company_name": "My Company Inc.",
 //   "privacy_policy_url": "https://mycompany.com/privacy"
@@ -141,8 +141,8 @@ console.log("Invalid items:", bulkResult.invalid);
 console.log("\n\nExample 5: Denormalization\n");
 
 const backendSettings = [
-  { key: "social_facebook", value: "https://facebook.com" },
-  { key: "social_twitter", value: "https://twitter.com" },
+  { key: "facebook_link", value: "https://facebook.com" },
+  { key: "twitter_link", value: "https://twitter.com" },
   { key: "company_name", value: "My Company" },
   { key: "copyright_text", value: "© 2025" },
 ];

@@ -45,14 +45,14 @@ console.log("Test Suite 1: normalizeKey\n");
 
 assertEqual(
   normalizeKey("Facebook URL"),
-  "social_facebook",
-  "Should convert 'Facebook URL' to 'social_facebook'"
+  "facebook_link",
+  "Should convert 'Facebook URL' to 'facebook_link'"
 );
 
 assertEqual(
   normalizeKey("Twitter URL"),
-  "social_twitter",
-  "Should convert 'Twitter URL' to 'social_twitter'"
+  "twitter_link",
+  "Should convert 'Twitter URL' to 'twitter_link'"
 );
 
 assertEqual(
@@ -78,8 +78,8 @@ const testArray = [
 ];
 
 const expectedArray = [
-  { key: "social_facebook", value: "https://facebook.com" },
-  { key: "social_twitter", value: "https://twitter.com" },
+  { key: "facebook_link", value: "https://facebook.com" },
+  { key: "twitter_link", value: "https://twitter.com" },
 ];
 
 assertEqual(
@@ -147,9 +147,9 @@ assert(
 console.log("\nTest Suite 5: denormalizeKey\n");
 
 assertEqual(
-  denormalizeKey("social_facebook"),
+  denormalizeKey("facebook_link"),
   "Facebook URL",
-  "Should reverse 'social_facebook' to 'Facebook URL'"
+  "Should reverse 'facebook_link' to 'Facebook URL'"
 );
 
 assertEqual(
@@ -164,7 +164,7 @@ assertEqual(
 console.log("\nTest Suite 6: denormalizeSettingKeys\n");
 
 const backendArray = [
-  { key: "social_facebook", value: "https://facebook.com" },
+  { key: "facebook_link", value: "https://facebook.com" },
   { key: "company_name", value: "Test" },
 ];
 
@@ -190,8 +190,8 @@ assert(
 );
 
 assert(
-  needsNormalization("social_facebook") === false,
-  "Should return false for 'social_facebook'"
+  needsNormalization("facebook_link") === false,
+  "Should return false for 'facebook_link'"
 );
 
 assert(
@@ -254,8 +254,8 @@ assertEqual(
 console.log("\nTest Suite 10: All Supported Keys\n");
 
 const allKeys = [
-  ["Facebook URL", "social_facebook"],
-  ["Twitter URL", "social_twitter"],
+  ["Facebook URL", "facebook_link"],
+  ["Twitter URL", "twitter_link"],
   ["LinkedIn URL", "social_linkedin"],
   ["Instagram URL", "social_instagram"],
   ["YouTube URL", "social_youtube"],

@@ -8,8 +8,8 @@
  */
 const KEY_MAPPING = {
   // Social Media
-  "Facebook URL": "social_facebook",
-  "Twitter URL": "social_twitter",
+  "Facebook URL": "facebook_link",
+  "Twitter URL": "twitter_link",
   "LinkedIn URL": "social_linkedin",
   "Instagram URL": "social_instagram",
   "YouTube URL": "social_youtube",

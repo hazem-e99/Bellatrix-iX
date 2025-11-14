@@ -20,6 +20,7 @@ import {
   bulkUpdateSettings,
   createSetting,
   getPublicSettings,
+  getSettingByKey,
 } from "../services/settingsApi";
 
 /**
@@ -155,19 +156,71 @@ const FooterSettings = () => {
         }
       }
 
-      // 2️⃣ Create new items individually
+      // 2️⃣ Create new items individually (or update if they exist)
       if (itemsToCreate.length > 0) {
         for (const payload of itemsToCreate) {
           try {
-            const createResponse = await createSetting(payload);
-            if (createResponse.success && createResponse.data) {
-              successCount++;
-              updateLocalSetting(createResponse.data.key, createResponse.data);
+            // First check if key exists in database
+            console.log(
+              `🔍 [FooterSettings] Checking if key "${payload.key}" exists...`
+            );
+            const existingSettingResponse = await getSettingByKey(payload.key);
+
+            if (
+              existingSettingResponse.success &&
+              existingSettingResponse.data
+            ) {
+              // Key exists - UPDATE instead of CREATE
+              console.warn(
+                `⚠️ [FooterSettings] Key "${payload.key}" already exists. Performing UPDATE.`
+              );
+
+              const existingSetting = existingSettingResponse.data;
+              const updatePayload = {
+                id: existingSetting.id,
+                key: payload.key,
+                value: payload.value,
+                description:
+                  payload.description || existingSetting.description || "",
+                category:
+                  payload.category || existingSetting.category || "footer",
+                isPublic:
+                  payload.isPublic !== undefined
+                    ? payload.isPublic
+                    : existingSetting.isPublic !== undefined
+                    ? existingSetting.isPublic
+                    : true,
+                dataType:
+                  payload.dataType || existingSetting.dataType || "string",
+              };
+
+              // Add to bulk update instead
+              const updateResponse = await bulkUpdateSettings([updatePayload]);
+              if (updateResponse.success) {
+                successCount++;
+                updateLocalSetting(payload.key, existingSetting);
+              } else {
+                failCount++;
+                console.error(
+                  `Update failed for ${payload.key}:`,
+                  updateResponse.message
+                );
+              }
             } else {
-              failCount++;
+              // Key doesn't exist - CREATE new
+              const createResponse = await createSetting(payload);
+              if (createResponse.success && createResponse.data) {
+                successCount++;
+                updateLocalSetting(
+                  createResponse.data.key,
+                  createResponse.data
+                );
+              } else {
+                failCount++;
+              }
             }
           } catch (err) {
-            console.error(`Create error for ${payload.key}:`, err);
+            console.error(`Error processing ${payload.key}:`, err);
             failCount++;
           }
         }

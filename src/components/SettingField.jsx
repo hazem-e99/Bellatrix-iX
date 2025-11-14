@@ -10,7 +10,7 @@ import { validateField } from "../constants/settingsMap";
 import {
   updateSetting,
   createSetting,
-  checkKeyExists,
+  getSettingByKey,
 } from "../services/settingsApi";
 
 /**
@@ -125,46 +125,90 @@ const SettingField = ({
           toast.error(response.message || "Failed to update setting");
         }
       } else {
-        // CREATE new setting
-        // First check if key exists
-        const existsResponse = await checkKeyExists(key);
+        // CREATE new setting OR UPDATE if exists
+        // First check if key exists in database
+        console.log(`🔍 [SettingField] Checking if key "${key}" exists...`);
+        const existingSettingResponse = await getSettingByKey(key);
 
-        if (existsResponse.success && existsResponse.data === true) {
-          console.warn(`⚠️ [SettingField] Key "${key}" already exists`);
-          toast.error(
-            `Setting with key "${key}" already exists. Please refresh the page.`
+        if (existingSettingResponse.success && existingSettingResponse.data) {
+          // Key exists in database - UPDATE instead of CREATE
+          console.warn(
+            `⚠️ [SettingField] Key "${key}" already exists in database. Performing UPDATE instead of CREATE.`
           );
-          return;
-        }
 
-        const payload = {
-          key,
-          value: value || "",
-          description: description || "",
-          category: category || "footer",
-          isPublic: isPublicDefault !== undefined ? isPublicDefault : true,
-          dataType: dataType || "string",
-        };
+          const existingSetting = existingSettingResponse.data;
+          const payload = {
+            id: existingSetting.id,
+            key,
+            value: value || "",
+            description: description || existingSetting.description || "",
+            category: category || existingSetting.category || "footer",
+            isPublic:
+              isPublicDefault !== undefined
+                ? isPublicDefault
+                : existingSetting.isPublic !== undefined
+                ? existingSetting.isPublic
+                : true,
+            dataType: dataType || existingSetting.dataType || "string",
+          };
 
-        console.log(`➕ [SettingField] POST request for "${key}":`, payload);
-        const response = await createSetting(payload);
-
-        if (response.success) {
           console.log(
-            `✅ [SettingField] Create success for "${key}":`,
-            response.data
+            `🔄 [SettingField] UPDATE request for existing key "${key}":`,
+            payload
           );
-          toast.success(`${label} created successfully`);
-          setIsDirty(false);
-          if (onSaveSuccess && response.data) {
-            onSaveSuccess(response.data);
+          const response = await updateSetting(payload);
+
+          if (response.success) {
+            console.log(
+              `✅ [SettingField] Update success for "${key}":`,
+              response.data
+            );
+            toast.success(`${label} updated successfully`);
+            setIsDirty(false);
+            if (onSaveSuccess && response.data) {
+              onSaveSuccess(response.data);
+            }
+          } else {
+            console.error(
+              `❌ [SettingField] Update failed for "${key}":`,
+              response.message
+            );
+            toast.error(response.message || "Failed to update setting");
           }
         } else {
-          console.error(
-            `❌ [SettingField] Create failed for "${key}":`,
-            response.message
+          // Key doesn't exist - CREATE new setting
+          const payload = {
+            key,
+            value: value || "",
+            description: description || "",
+            category: category || "footer",
+            isPublic: isPublicDefault !== undefined ? isPublicDefault : true,
+            dataType: dataType || "string",
+          };
+
+          console.log(
+            `➕ [SettingField] POST request for new key "${key}":`,
+            payload
           );
-          toast.error(response.message || "Failed to create setting");
+          const response = await createSetting(payload);
+
+          if (response.success) {
+            console.log(
+              `✅ [SettingField] Create success for "${key}":`,
+              response.data
+            );
+            toast.success(`${label} created successfully`);
+            setIsDirty(false);
+            if (onSaveSuccess && response.data) {
+              onSaveSuccess(response.data);
+            }
+          } else {
+            console.error(
+              `❌ [SettingField] Create failed for "${key}":`,
+              response.message
+            );
+            toast.error(response.message || "Failed to create setting");
+          }
         }
       }
     } catch (error) {
