@@ -11,7 +11,7 @@ import {
   denormalizeSettingKeys,
   needsNormalization,
   normalizeSettingsBulk,
-} from './settingsKeyNormalizer.js';
+} from "./settingsKeyNormalizer.js";
 
 // Test utilities
 let passedTests = 0;
@@ -31,17 +31,17 @@ function assertEqual(actual, expected, testName) {
   const passed = JSON.stringify(actual) === JSON.stringify(expected);
   assert(passed, testName);
   if (!passed) {
-    console.error('  Expected:', expected);
-    console.error('  Actual:', actual);
+    console.error("  Expected:", expected);
+    console.error("  Actual:", actual);
   }
 }
 
-console.log('🧪 Running Settings Key Normalizer Tests\n');
+console.log("🧪 Running Settings Key Normalizer Tests\n");
 
 // ============================================================================
 // Test 1: normalizeKey - Basic mappings
 // ============================================================================
-console.log('Test Suite 1: normalizeKey\n');
+console.log("Test Suite 1: normalizeKey\n");
 
 assertEqual(
   normalizeKey("Facebook URL"),
@@ -70,7 +70,7 @@ assertEqual(
 // ============================================================================
 // Test 2: normalizeSettingKeys - Array format
 // ============================================================================
-console.log('\nTest Suite 2: normalizeSettingKeys\n');
+console.log("\nTest Suite 2: normalizeSettingKeys\n");
 
 const testArray = [
   { key: "Facebook URL", value: "https://facebook.com" },
@@ -91,7 +91,7 @@ assertEqual(
 // ============================================================================
 // Test 3: normalizeSettingKeysDictionary - Object format
 // ============================================================================
-console.log('\nTest Suite 3: normalizeSettingKeysDictionary\n');
+console.log("\nTest Suite 3: normalizeSettingKeysDictionary\n");
 
 const testObject = {
   "Facebook URL": "https://facebook.com",
@@ -99,8 +99,8 @@ const testObject = {
 };
 
 const expectedObject = {
-  "social_facebook": "https://facebook.com",
-  "company_name": "Test Company",
+  social_facebook: "https://facebook.com",
+  company_name: "Test Company",
 };
 
 assertEqual(
@@ -112,7 +112,7 @@ assertEqual(
 // ============================================================================
 // Test 4: Full setting objects (preserve other fields)
 // ============================================================================
-console.log('\nTest Suite 4: Preserve Other Fields\n');
+console.log("\nTest Suite 4: Preserve Other Fields\n");
 
 const fullSetting = [
   {
@@ -127,15 +127,9 @@ const fullSetting = [
 
 const normalizedFull = normalizeSettingKeys(fullSetting);
 
-assert(
-  normalizedFull[0].key === "social_facebook",
-  "Should change key field"
-);
+assert(normalizedFull[0].key === "social_facebook", "Should change key field");
 
-assert(
-  normalizedFull[0].id === 1,
-  "Should preserve id field"
-);
+assert(normalizedFull[0].id === 1, "Should preserve id field");
 
 assert(
   normalizedFull[0].description === "Facebook page",
@@ -150,7 +144,7 @@ assert(
 // ============================================================================
 // Test 5: denormalizeKey - Reverse mapping
 // ============================================================================
-console.log('\nTest Suite 5: denormalizeKey\n');
+console.log("\nTest Suite 5: denormalizeKey\n");
 
 assertEqual(
   denormalizeKey("social_facebook"),
@@ -167,7 +161,7 @@ assertEqual(
 // ============================================================================
 // Test 6: denormalizeSettingKeys - Array reverse
 // ============================================================================
-console.log('\nTest Suite 6: denormalizeSettingKeys\n');
+console.log("\nTest Suite 6: denormalizeSettingKeys\n");
 
 const backendArray = [
   { key: "social_facebook", value: "https://facebook.com" },
@@ -188,7 +182,7 @@ assertEqual(
 // ============================================================================
 // Test 7: needsNormalization
 // ============================================================================
-console.log('\nTest Suite 7: needsNormalization\n');
+console.log("\nTest Suite 7: needsNormalization\n");
 
 assert(
   needsNormalization("Facebook URL") === true,
@@ -208,7 +202,7 @@ assert(
 // ============================================================================
 // Test 8: normalizeSettingsBulk - With statistics
 // ============================================================================
-console.log('\nTest Suite 8: normalizeSettingsBulk\n');
+console.log("\nTest Suite 8: normalizeSettingsBulk\n");
 
 const bulkInput = [
   { key: "Facebook URL", value: "fb" },
@@ -222,10 +216,7 @@ const bulkResult = normalizeSettingsBulk(bulkInput, {
   skipInvalid: false,
 });
 
-assert(
-  bulkResult.stats.total === 4,
-  "Should count all items"
-);
+assert(bulkResult.stats.total === 4, "Should count all items");
 
 assert(
   bulkResult.stats.normalized === 1,
@@ -245,19 +236,11 @@ assert(
 // ============================================================================
 // Test 9: Edge cases
 // ============================================================================
-console.log('\nTest Suite 9: Edge Cases\n');
+console.log("\nTest Suite 9: Edge Cases\n");
 
-assertEqual(
-  normalizeSettingKeys([]),
-  [],
-  "Should handle empty array"
-);
+assertEqual(normalizeSettingKeys([]), [], "Should handle empty array");
 
-assertEqual(
-  normalizeSettingKeys(null),
-  null,
-  "Should handle null input"
-);
+assertEqual(normalizeSettingKeys(null), null, "Should handle null input");
 
 assertEqual(
   normalizeSettingKeysDictionary({}),
@@ -268,7 +251,7 @@ assertEqual(
 // ============================================================================
 // Test 10: All supported mappings
 // ============================================================================
-console.log('\nTest Suite 10: All Supported Keys\n');
+console.log("\nTest Suite 10: All Supported Keys\n");
 
 const allKeys = [
   ["Facebook URL", "social_facebook"],
@@ -297,16 +280,21 @@ allKeys.forEach(([oldKey, newKey]) => {
 // ============================================================================
 // Test Summary
 // ============================================================================
-console.log('\n' + '='.repeat(60));
-console.log('📊 Test Summary:');
+console.log("\n" + "=".repeat(60));
+console.log("📊 Test Summary:");
 console.log(`   ✅ Passed: ${passedTests}`);
 console.log(`   ❌ Failed: ${failedTests}`);
 console.log(`   📈 Total: ${passedTests + failedTests}`);
-console.log(`   🎯 Success Rate: ${((passedTests / (passedTests + failedTests)) * 100).toFixed(2)}%`);
-console.log('='.repeat(60));
+console.log(
+  `   🎯 Success Rate: ${(
+    (passedTests / (passedTests + failedTests)) *
+    100
+  ).toFixed(2)}%`
+);
+console.log("=".repeat(60));
 
 if (failedTests === 0) {
-  console.log('\n🎉 All tests passed!');
+  console.log("\n🎉 All tests passed!");
   process.exit(0);
 } else {
   console.log(`\n⚠️  ${failedTests} test(s) failed`);

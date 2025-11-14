@@ -9,7 +9,7 @@ import {
   denormalizeSettingKeys,
   normalizeSettingsBulk,
   normalizeKey,
-} from './settingsKeyNormalizer';
+} from "./settingsKeyNormalizer";
 
 // ============================================================================
 // Example 1: Basic Array Normalization
