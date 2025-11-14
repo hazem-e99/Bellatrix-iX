@@ -133,21 +133,6 @@ const SettingsManagement = () => {
     }
   };
 
-  const tabs = [
-    {
-      id: "permissions",
-      name: "Permissions",
-      icon: UserGroupIcon,
-      description: "User roles and access control",
-    },
-    {
-      id: "footer",
-      name: "Footer Settings",
-      icon: Cog6ToothIcon,
-      description: "Manage footer content and links",
-    },
-  ];
-
   const showToast = (type, message) => {
     setToast({ show: true, type, message });
     setTimeout(() => setToast({ show: false, type: "", message: "" }), 3000);
@@ -281,6 +266,21 @@ const SettingsManagement = () => {
     </div>
   );
 
+  const tabs = [
+    {
+      id: "permissions",
+      name: "Permissions",
+      description: "User roles and access control",
+      icon: UserGroupIcon,
+    },
+    {
+      id: "footer",
+      name: "Footer Settings",
+      description: "Manage footer content and links",
+      icon: Cog6ToothIcon,
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white p-8">
       <div className="max-w-7xl mx-auto space-y-8">
@@ -299,7 +299,8 @@ const SettingsManagement = () => {
           </div>
         </motion.div>
 
-        <nav className="flex space-x-1 bg-white/5 backdrop-blur-sm p-1 rounded-xl border border-white/10">
+        {/* Simple Horizontal Tabs */}
+        <div className="flex gap-2 border-b border-gray-700/50">
           {tabs.map((tab) => {
             const isActive = activeTab === tab.id;
             const Icon = tab.icon;
@@ -307,31 +308,26 @@ const SettingsManagement = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`relative flex-1 flex flex-col items-center px-6 py-4 rounded-lg transition-all duration-200 ${
+                className={`relative flex items-center gap-2 px-6 py-3 font-medium transition-all duration-200 ${
                   isActive
-                    ? "bg-gradient-to-r from-blue-600 to-blue-700 shadow-lg shadow-blue-500/25 text-white"
-                    : "text-gray-400 hover:text-white hover:bg-white/5"
+                    ? "text-blue-400"
+                    : "text-gray-400 hover:text-gray-300"
                 }`}
               >
-                <Icon
-                  className={`h-6 w-6 mb-2 ${
-                    isActive ? "text-white" : "text-gray-400"
-                  }`}
-                />
-                <span className="font-medium">{tab.name}</span>
-                <div className="text-xs text-gray-400 mt-1">
-                  {tab.description}
-                </div>
+                <Icon className="w-5 h-5" />
+                <span>{tab.name}</span>
                 {isActive && (
                   <motion.div
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-500"
-                    layoutId="activeTab"
+                    layoutId="activeTabIndicator"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500 to-blue-600"
+                    initial={false}
+                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
                   />
                 )}
               </button>
             );
           })}
-        </nav>
+        </div>
 
         <motion.div
           key={activeTab}

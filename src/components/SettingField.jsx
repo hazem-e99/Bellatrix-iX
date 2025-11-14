@@ -239,14 +239,22 @@ const SettingField = ({
   // Determine if field is a textarea
   const isTextarea = dataType === "text";
 
+  // Check if this is a dynamic field (not in FOOTER_SETTINGS_MAP)
+  const isDynamicField = fieldDef.description?.startsWith("Dynamic setting:");
+
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 transition-all hover:shadow-md">
       {/* Label and Description */}
       <div className="mb-2">
-        <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1">
+        <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1 flex items-center gap-2">
           {label}
           {fieldDef.validation?.required && (
             <span className="text-red-500 ml-1">*</span>
+          )}
+          {isDynamicField && (
+            <span className="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full border border-green-500/30">
+              Dynamic
+            </span>
           )}
         </label>
         {description && (

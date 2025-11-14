@@ -212,16 +212,47 @@ const useSettingsSync = () => {
   }, []);
 
   /**
-   * Get settings for all defined fields
+   * Get settings for all defined fields + dynamic settings
    */
   const getAllFieldSettings = useCallback(() => {
-    return FOOTER_SETTINGS_MAP.map((field) => ({
+    // Start with predefined fields from FOOTER_SETTINGS_MAP
+    const predefinedFields = FOOTER_SETTINGS_MAP.map((field) => ({
       fieldDef: field,
       existingValue: getValue(field.key),
       existingId: getId(field.key),
       isDirty: isDirty(field.key),
     }));
-  }, [getValue, getId, isDirty]);
+
+    // Find dynamic settings (settings not in FOOTER_SETTINGS_MAP)
+    const predefinedKeys = new Set(FOOTER_SETTINGS_MAP.map((f) => f.key));
+    const dynamicSettings = Object.keys(settings)
+      .filter((key) => !predefinedKeys.has(key))
+      .map((key) => {
+        const setting = settings[key];
+        return {
+          fieldDef: {
+            key: key,
+            label: key
+              .split("_")
+              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(" "),
+            placeholder: `Enter ${key}...`,
+            dataType: setting.dataType || "string",
+            category: setting.category || "footer",
+            isPublicDefault:
+              setting.isPublic !== undefined ? setting.isPublic : true,
+            description: setting.description || `Dynamic setting: ${key}`,
+            validation: {},
+          },
+          existingValue: setting.value || "",
+          existingId: setting.id || null,
+          isDirty: isDirty(key),
+        };
+      });
+
+    // Combine predefined and dynamic settings
+    return [...predefinedFields, ...dynamicSettings];
+  }, [getValue, getId, isDirty, settings]);
 
   /**
    * Refresh settings
