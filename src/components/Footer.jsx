@@ -4,9 +4,12 @@ import {
   LinkedIn,
   Email,
   ArrowUpward,
+  Instagram,
+  YouTube,
 } from "@mui/icons-material";
 import { useState, useEffect } from "react";
 import SEO from "./SEO";
+import { getPublicDictionary } from "../services/settingsApi";
 
 // Add inline styles for hover effects
 const footerStyles = `
@@ -72,6 +75,20 @@ const Footer = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Footer settings from API
+  const [footerSettings, setFooterSettings] = useState({
+    companyName: "Bellatrix",
+    companyDescription: "Empowering your business with next-gen enterprise software solutions.",
+    contactEmail: "info@bellatrix.com",
+    contactPhone: "(555) 123-4567",
+    contactAddress: "123 Business Avenue, Suite 500",
+    facebook: "#",
+    linkedin: "#",
+    instagram: "#",
+    youtube: "#",
+    twitter: "#",
+  });
+
   // Scroll to top handler
   const handleScrollTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -83,6 +100,45 @@ const Footer = () => {
       setShowTop(window.scrollY > 200);
     };
   }
+
+  // Fetch footer settings from API
+  useEffect(() => {
+    const fetchFooterSettings = async () => {
+      try {
+        console.log("🔄 [Footer] Fetching settings from /api/Settings/public");
+        const response = await getPublicDictionary();
+        
+        if (response.success && response.data) {
+          console.log("✅ [Footer] Settings loaded:", response.data);
+          
+          // Map API keys to footer settings
+          const apiData = response.data;
+          const newSettings = {
+            companyName: apiData.company_name || apiData.siteTitle || "Bellatrix",
+            companyDescription: apiData.company_tagline || "Empowering your business with next-gen enterprise software solutions.",
+            contactEmail: apiData.company_email || "info@bellatrix.com",
+            contactPhone: apiData.company_phone || "(555) 123-4567",
+            contactAddress: apiData.company_address || "123 Business Avenue, Suite 500",
+            facebook: apiData.social_facebook || "#",
+            linkedin: apiData.social_linkedin || "#",
+            instagram: apiData.social_instagram || "#",
+            youtube: apiData.social_youtube || "#",
+            twitter: apiData.social_twitter || "#",
+          };
+          
+          setFooterSettings(newSettings);
+          console.log("✅ [Footer] Settings applied:", newSettings);
+        } else {
+          console.warn("⚠️ [Footer] Failed to load settings, using defaults");
+        }
+      } catch (err) {
+        console.error("❌ [Footer] Error loading settings:", err);
+        // Keep default values on error
+      }
+    };
+
+    fetchFooterSettings();
+  }, []);
 
   // Fetch categories for Quick Links
   useEffect(() => {
@@ -140,29 +196,52 @@ const Footer = () => {
               className="text-3xl font-extrabold tracking-tight drop-shadow"
               style={{ color: "var(--color-text-inverse)" }}
             >
-              Bellatrix
+              {footerSettings.companyName}
             </h3>
             <p
               className="text-center lg:text-left max-w-xs"
               style={{ color: "var(--color-text-inverse)", opacity: 0.8 }}
             >
-              Empowering your business with next-gen enterprise software
-              solutions.
+              {footerSettings.companyDescription}
             </p>
             <div className="flex space-x-4 mt-2">
               {[
-                { icon: <Twitter fontSize="medium" />, href: "#" },
-                { icon: <LinkedIn fontSize="medium" />, href: "#" },
-                { icon: <Facebook fontSize="medium" />, href: "#" },
+                { 
+                  icon: <Twitter fontSize="medium" />, 
+                  href: footerSettings.twitter,
+                  label: "Twitter"
+                },
+                { 
+                  icon: <LinkedIn fontSize="medium" />, 
+                  href: footerSettings.linkedin,
+                  label: "LinkedIn"
+                },
+                { 
+                  icon: <Facebook fontSize="medium" />, 
+                  href: footerSettings.facebook,
+                  label: "Facebook"
+                },
+                { 
+                  icon: <Instagram fontSize="medium" />, 
+                  href: footerSettings.instagram,
+                  label: "Instagram"
+                },
+                { 
+                  icon: <YouTube fontSize="medium" />, 
+                  href: footerSettings.youtube,
+                  label: "YouTube"
+                },
               ].map((item, idx) => (
                 <a
                   key={idx}
                   href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="footer-social-link group p-2 rounded-full transition-colors duration-300 shadow hover:scale-110"
                   style={{
                     backgroundColor: "rgba(255, 255, 255, 0.1)",
                   }}
-                  aria-label="Social Link"
+                  aria-label={item.label}
                 >
                   <span
                     className="transition-colors duration-300"
@@ -312,11 +391,10 @@ const Footer = () => {
             <div className="flex flex-col gap-2 footer-contact-text">
               <div className="flex items-center gap-2">
                 <Email fontSize="small" />
-                <span>info@bellatrix.com</span>
+                <span>{footerSettings.contactEmail}</span>
               </div>
-              <div>123 Business Avenue, Suite 500</div>
-              <div>San Francisco, CA 94107</div>
-              <div>Phone: (555) 123-4567</div>
+              <div>{footerSettings.contactAddress}</div>
+              <div>Phone: {footerSettings.contactPhone}</div>
             </div>
           </div>
         </div>
@@ -331,7 +409,7 @@ const Footer = () => {
           }}
         >
           <p>
-            &copy; {new Date().getFullYear()} Bellatrix. All rights reserved.
+            &copy; {new Date().getFullYear()} {footerSettings.companyName}. All rights reserved.
           </p>
         </div>
         {/* Scroll to Top Button */}
