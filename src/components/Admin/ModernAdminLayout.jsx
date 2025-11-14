@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
-import { clearAuthData } from "../../utils/tokenManager";
+import { useAuth } from "../../hooks/useAuth";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Bars3Icon,
@@ -11,10 +11,8 @@ import {
   Cog6ToothIcon,
   BellIcon,
   MagnifyingGlassIcon,
-  UserCircleIcon,
   SunIcon,
   MoonIcon,
-  ChevronDownIcon,
   PowerIcon,
   ChatBubbleLeftRightIcon,
 } from "@heroicons/react/24/outline";
@@ -33,11 +31,11 @@ import MessageNotification from "./MessageNotification";
 
 const ModernAdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { isDark, theme, toggleTheme, toggleColorTheme } = useTheme();
+  const { logout } = useAuth();
   const isEnhancedCreate = location.pathname.startsWith(
     "/admin/pages/enhanced-create"
   );
@@ -227,8 +225,18 @@ const ModernAdminLayout = () => {
             })}
           </nav>
 
-          {/* Bottom section */}
-          <div className="border-t border-[var(--color-white-10)] p-4">
+          {/* Bottom section with Logout */}
+          <div className="border-t border-[var(--color-white-10)] p-4 space-y-3">
+            <button
+              onClick={() => {
+                logout();
+                navigate('/auth/login');
+              }}
+              className="w-full flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-all duration-200 text-red-400 hover:bg-red-500/10 hover:text-red-300 group"
+            >
+              <PowerIcon className="mr-3 h-5 w-5" />
+              <span>Logout</span>
+            </button>
             <div className="flex items-center space-x-3 text-sm text-[var(--color-text-secondary)]">
               <div className="h-2 w-2 bg-[var(--tw-green-400)] rounded-full animate-pulse"></div>
               <span>All systems operational</span>
@@ -260,179 +268,14 @@ const ModernAdminLayout = () => {
                 <h1 className="text-2xl font-bold text-[var(--color-text-inverse)]">
                   {getCurrentPageTitle()}
                 </h1>
-                <p className="text-sm text-[var(--color-text-secondary)]">
+                <p className="text-sm text-[var(--color-admin-text-secondary)]">
                   {menuItems.find((item) => isActive(item.path))?.description}
                 </p>
               </div>
             </div>
 
             <div className="flex items-center space-x-4">
-              {/* Dark/Light theme toggle */}
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={toggleTheme}
-                className="text-white hover:text-white hover:bg-white/20 transition-colors duration-200"
-                title="Toggle Dark/Light Mode"
-              >
-                {isDark ? (
-                  <SunIcon className="h-5 w-5" />
-                ) : (
-                  <MoonIcon className="h-5 w-5" />
-                )}
-              </Button>
-
-              {/* Color theme toggle (Default/Dark) */}
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={toggleColorTheme}
-                className="text-white hover:text-white hover:bg-white/20 transition-colors duration-200"
-                title={`Switch to ${
-                  theme === "default" ? "Dark" : "Default"
-                } Theme`}
-              >
-                <div
-                  className={`h-5 w-5 rounded-full border-2 border-white ${
-                    theme === "dark" || theme === "purple"
-                      ? "bg-gradient-to-r from-gray-800 to-black"
-                      : "bg-gradient-to-r from-blue-500 to-blue-700"
-                  }`}
-                />
-              </Button>
-
-              {/* Notifications */}
-              <div className="relative">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => {
-                    const opening = !notificationsOpen;
-                    setNotificationsOpen(opening);
-                    // If opening the dropdown, mark message notifications as read
-                    if (opening) {
-                      try {
-                        messageNotifications.forEach((n) => {
-                          const msgId = n.message?.id;
-                          if (msgId && typeof markAsRead === 'function') {
-                            markAsRead(msgId);
-                          }
-                        });
-                      } catch (e) {
-                        console.error('Error marking notifications as read', e);
-                      }
-                      // Hide legacy unread dot once viewed
-                      setNotificationsViewed(true);
-                    }
-                  }}
-                  className="text-white hover:text-white hover:bg-white/20 transition-colors duration-200"
-                >
-                  <BellIcon className="h-5 w-5" />
-                  {((!notificationsViewed ? legacyUnreadCount : 0) + unreadCount) > 0 && (
-                    <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500 ring-2 ring-white" />
-                  )}
-                  {((!notificationsViewed ? legacyUnreadCount : 0) + unreadCount) > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium">
-                      {((!notificationsViewed ? legacyUnreadCount : 0) + unreadCount) > 9
-                        ? "9+"
-                        : ((!notificationsViewed ? legacyUnreadCount : 0) + unreadCount)}
-                    </span>
-                  )}
-                </Button>
-
-                {/* Notifications dropdown */}
-                <AnimatePresence>
-                  {notificationsOpen && (
-                    <motion.div
-                      className="absolute right-0 mt-2 w-80 rounded-lg shadow-lg ring-1 ring-[var(--color-black)] ring-opacity-5 z-50"
-                      style={{ backgroundColor: "var(--notif-bg)", border: "1px solid var(--notif-border)" }}
-                      initial={{ opacity: 0, scale: 0.95, y: -10 }}
-                      animate={{ opacity: 1, scale: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 0.95, y: -10 }}
-                    >
-                      <div className="p-4 border-b" style={{ borderColor: "var(--notif-border)", backgroundColor: "var(--notif-bg)" }}>
-                        <h3 className="text-lg font-semibold" style={{ color: "var(--notif-text-primary)" }}>
-                          Notifications
-                        </h3>
-                      </div>
-                      <div className="max-h-64 overflow-y-auto">
-                        {legacyNotifications.map((notification) => (
-                          <div
-                            key={notification.id}
-                            className="p-4 border-b last:border-b-0 transition-colors duration-150 hover:bg-[var(--notif-bg-accent)]"
-                            style={{ borderColor: "var(--notif-border)", backgroundColor: "transparent" }}
-                          >
-                            <div className="flex items-start space-x-3">
-                              <div
-                                className={`h-2 w-2 rounded-full mt-2`}
-                                style={{ backgroundColor: notification.unread ? "var(--notif-unread-dot)" : "var(--notif-read-dot)" }}
-                              />
-                              <div className="flex-1">
-                                <p className="text-sm font-semibold" style={{ color: "var(--notif-text-primary)" }}>
-                                  {notification.title}
-                                </p>
-                                <p className="text-sm mt-1" style={{ color: "var(--notif-text-secondary)" }}>
-                                  {notification.message}
-                                </p>
-                                <p className="text-xs mt-2" style={{ color: "var(--notif-text-muted)" }}>
-                                  {notification.time}
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-
-              {/* User menu */}
-              <div className="relative">
-                <Button
-                  variant="ghost"
-                  onClick={() => setUserMenuOpen(!userMenuOpen)}
-                  className="flex items-center space-x-2 text-white hover:text-white hover:bg-white/20 transition-colors duration-200"
-                >
-                  <UserCircleIcon className="h-6 w-6" />
-                  <ChevronDownIcon className="h-4 w-4" />
-                </Button>
-
-                {/* User dropdown */}
-                <AnimatePresence>
-                  {userMenuOpen && (
-                    <motion.div
-                      className="absolute right-0 mt-2 w-48 bg-[var(--color-bg-primary)] rounded-lg shadow-lg ring-1 ring-[var(--color-black)] ring-opacity-5 z-50 border border-[var(--color-border-primary)]"
-                      initial={{ opacity: 0, scale: 0.95, y: -10 }}
-                      animate={{ opacity: 1, scale: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 0.95, y: -10 }}
-                    >
-                      <div className="p-4 border-b border-[var(--color-border-primary)] bg-[var(--color-bg-secondary)]">
-                        <p className="text-sm font-semibold text-[var(--color-text-primary)]">
-                          Admin User
-                        </p>
-                        <p className="text-sm text-[var(--color-text-secondary)]">
-                          admin@bellatrix.com
-                        </p>
-                      </div>
-                      <div className="py-2">
-                        <button
-                          onClick={() => {
-                            // Clear all authentication data from localStorage
-                            clearAuthData();
-                            // Navigate to admin login page
-                            navigate("/admin/login");
-                          }}
-                          className="flex w-full items-center px-4 py-3 text-sm font-medium text-[var(--color-text-primary)] hover:bg-[var(--color-primary-bg)] hover:text-[var(--color-primary)] transition-colors duration-150"
-                        >
-                          <PowerIcon className="mr-3 h-4 w-4" />
-                          Logout
-                        </button>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
+              {/* Icons removed as requested */}
             </div>
           </div>
         </header>
@@ -446,17 +289,6 @@ const ModernAdminLayout = () => {
           <Outlet />
         </main>
       </div>
-
-      {/* Click outside to close dropdowns */}
-      {(userMenuOpen || notificationsOpen) && (
-        <div
-          className="fixed inset-0 z-30"
-          onClick={() => {
-            setUserMenuOpen(false);
-            setNotificationsOpen(false);
-          }}
-        />
-      )}
 
       {/* Message Notifications */}
       {messageNotifications.map((notification) => (

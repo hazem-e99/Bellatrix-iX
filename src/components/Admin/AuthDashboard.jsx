@@ -7,7 +7,7 @@ const AuthDashboard = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/admin/login');
+    navigate('/auth/login');
   };
 
   return (

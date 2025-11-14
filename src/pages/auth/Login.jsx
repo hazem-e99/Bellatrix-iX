@@ -79,38 +79,70 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-gray-800">
-      {/* Login Card */}
-      <div className="w-full max-w-md px-6">
-        <div className="bg-white rounded-lg shadow-xl p-8">
-          {/* Logo and Title */}
-          <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold text-gray-900">
-              تسجيل الدخول
-            </h2>
-            <p className="mt-2 text-sm text-gray-600">
-              أدخل بياناتك للوصول إلى لوحة التحكم
-            </p>
+    <div className="min-h-screen flex">
+      {/* Left Side - Logo Section (50%) */}
+      <div className="hidden lg:flex lg:w-1/2 bg-white relative overflow-hidden">
+        <div className="relative z-10 flex flex-col items-center justify-center w-full p-12">
+          <img 
+            src="/images/logoThree.png" 
+            alt="Bellatrix Logo" 
+            className="w-full h-auto object-contain"
+          />
+        </div>
+      </div>
+
+      {/* Right Side - Login Form (50%) */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-gray-50">
+        <div className="w-full max-w-md">
+          {/* Mobile Logo */}
+          <div className="lg:hidden text-center mb-8">
+            <img 
+              src="/images/logoThree.png" 
+              alt="Bellatrix Logo" 
+              className="w-auto h-24 object-contain mx-auto mb-4"
+            />
           </div>
+
+          <div className="bg-white rounded-3xl shadow-2xl p-10 border border-gray-100">
+            <div className="text-center mb-10">
+              <div className="inline-block p-3 rounded-2xl bg-blue-50 mb-4">
+                <svg className="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              </div>
+              <h2 className="text-3xl font-bold text-gray-900 mb-2">
+                Sign In
+              </h2>
+              <p className="text-sm text-gray-500">
+                Enter your credentials to access the dashboard
+              </p>
+            </div>
           
           <form className="space-y-5" onSubmit={handleSubmit}>
             {/* Email Field */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                البريد الإلكتروني
+              <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+                Email Address
               </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                value={formData.email}
-                onChange={handleChange}
-                className={`block w-full px-3 py-2 border ${
-                  errors.email ? 'border-red-300 focus:ring-red-500 focus:border-red-500' : 'border-gray-300 focus:ring-blue-500 focus:border-blue-500'
-                } rounded-md shadow-sm focus:outline-none focus:ring-2`}
-                placeholder="admin@example.com"
-              />
+              <div className="relative">
+                <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                  <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className={`block w-full pr-10 px-4 py-3 border ${
+                    errors.email ? 'border-red-300 focus:ring-red-500 focus:border-red-500' : 'border-gray-300 focus:ring-blue-500 focus:border-blue-500'
+                  } rounded-xl shadow-sm focus:outline-none focus:ring-2 transition-all duration-200`}
+                  placeholder="admin@example.com"
+                />
+              </div>
               {errors.email && (
                 <p className="mt-1 text-sm text-red-600">{errors.email}</p>
               )}
@@ -118,10 +150,15 @@ const Login = () => {
             
             {/* Password Field */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                كلمة المرور
+              <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-2">
+                Password
               </label>
               <div className="relative">
+                <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                  <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
                 <input
                   id="password"
                   name="password"
@@ -129,9 +166,9 @@ const Login = () => {
                   autoComplete="current-password"
                   value={formData.password}
                   onChange={handleChange}
-                  className={`block w-full px-3 py-2 border ${
+                  className={`block w-full pr-10 pl-10 px-4 py-3 border ${
                     errors.password ? 'border-red-300 focus:ring-red-500 focus:border-red-500' : 'border-gray-300 focus:ring-blue-500 focus:border-blue-500'
-                  } rounded-md shadow-sm focus:outline-none focus:ring-2`}
+                  } rounded-xl shadow-sm focus:outline-none focus:ring-2 transition-all duration-200`}
                   placeholder="••••••••"
                 />
                 <button
@@ -167,8 +204,8 @@ const Login = () => {
                   onChange={handleChange}
                   className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
-                <label htmlFor="rememberMe" className="mr-2 block text-sm text-gray-700">
-                  تذكرني
+                <label htmlFor="rememberMe" className="ml-2 block text-sm text-gray-700">
+                  Remember me
                 </label>
               </div>
 
@@ -176,7 +213,7 @@ const Login = () => {
                 to="/auth/forgot-password"
                 className="text-sm font-medium text-blue-600 hover:text-blue-500"
               >
-                نسيت كلمة المرور؟
+                Forgot password?
               </Link>
             </div>
 
@@ -184,20 +221,21 @@ const Login = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="w-full flex justify-center py-3.5 px-4 border border-transparent rounded-xl shadow-lg text-base font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-[1.02]"
             >
               {isSubmitting ? (
                 <LoadingSpinner size="sm" />
               ) : (
-                'تسجيل الدخول'
+                'Sign In'
               )}
             </button>
           </form>
 
           {/* Footer */}
-          <div className="text-center text-sm text-gray-600">
-            © 2024 Bellatrix. جميع الحقوق محفوظة
+          <div className="mt-6 text-center text-sm text-gray-600">
+            © 2024 Bellatrix. All rights reserved
           </div>
+        </div>
         </div>
       </div>
     </div>

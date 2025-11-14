@@ -227,6 +227,9 @@
   --color-text-muted: var(--color-gray-500);
   --color-text-light: var(--color-gray-400);
   --color-text-inverse: var(--color-white);
+  
+  /* Admin Dashboard Specific Text Colors */
+  --color-admin-text-secondary: var(--color-white);
 
   /* Background Colors */
   --color-bg-primary: var(--color-white);

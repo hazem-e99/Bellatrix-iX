@@ -102,8 +102,31 @@ const Verification = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
+    <div className="min-h-screen flex">
+      {/* Left Side - Logo Section (50%) */}
+      <div className="hidden lg:flex lg:w-1/2 bg-white relative overflow-hidden">
+        <div className="relative z-10 flex flex-col items-center justify-center w-full p-12">
+          <img 
+            src="/images/logoThree.png" 
+            alt="Bellatrix Logo" 
+            className="w-full h-auto object-contain"
+          />
+        </div>
+      </div>
+
+      {/* Right Side - Verification Form (50%) */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-gray-50">
+        <div className="w-full max-w-md">
+          {/* Mobile Logo */}
+          <div className="lg:hidden text-center mb-8">
+            <img 
+              src="/images/logoThree.png" 
+              alt="Bellatrix Logo" 
+              className="w-auto h-24 object-contain mx-auto mb-4"
+            />
+          </div>
+
+          <div className="bg-white rounded-2xl shadow-xl p-8">
         <div>
           <div className="mx-auto h-12 w-12 flex items-center justify-center rounded-full bg-green-100">
             <svg className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -228,6 +251,8 @@ const Verification = () => {
             </p>
           </div>
         </form>
+        </div>
+        </div>
       </div>
     </div>
   );

@@ -3900,12 +3900,24 @@ const EnhancedPageBuilder = () => {
 
       // Apply default values to ensure no null, undefined, or empty values
       let createPageDTO = applyDefaultValues(pageData, status);
+      console.log("📦 Applied default values to pageData:", {
+        name: createPageDTO.name,
+        categoryId: createPageDTO.categoryId,
+        slug: createPageDTO.slug,
+        metaTitle: createPageDTO.metaTitle,
+        metaDescription: createPageDTO.metaDescription,
+        componentsCount: createPageDTO.components?.length,
+        status: status,
+      });
+
       // If saving as draft, force isPublished to false
       if (status === "draft") {
         createPageDTO = { ...createPageDTO, isPublished: false };
+        console.log("📝 Saving as draft, isPublished set to false");
       }
 
       // Unified required fields check for publish
+      console.log("🔍 Checking required fields for publish status:", status);
       if (
         status === "published" &&
         (!createPageDTO.name ||
@@ -3916,6 +3928,12 @@ const EnhancedPageBuilder = () => {
           !createPageDTO.metaDescription ||
           !createPageDTO.metaDescription.trim())
       ) {
+        console.error("❌ Required fields missing for publish:", {
+          hasName: !!createPageDTO.name?.trim(),
+          hasCategoryId: !!createPageDTO.categoryId,
+          hasMetaTitle: !!createPageDTO.metaTitle?.trim(),
+          hasMetaDescription: !!createPageDTO.metaDescription?.trim(),
+        });
         showToast(
           "Please fill in all required page data before publishing.",
           "error"
@@ -3925,9 +3943,11 @@ const EnhancedPageBuilder = () => {
         isSavingRef.current = false;
         return;
       }
+      console.log("✅ Required fields check passed");
 
       // Validate required fields - use helper function to ensure lock is reset on validation errors
       const validateAndReturn = (message) => {
+        console.error("❌ Validation failed:", message);
         showToast(message, "error");
         // Reset states before returning from validation error
         setLoading(false);
@@ -3936,42 +3956,64 @@ const EnhancedPageBuilder = () => {
         return;
       };
 
+      console.log("🔍 Validating page name...");
       if (!createPageDTO.name || !createPageDTO.name.trim()) {
         return validateAndReturn("Page name is required");
       }
+      console.log("✅ Page name validated");
 
+      console.log("🔍 Validating category...");
       if (!createPageDTO.categoryId) {
         return validateAndReturn("Please select a category");
       }
+      console.log("✅ Category validated");
 
       // SEO Meta Title required validation
+      console.log("🔍 Validating SEO Meta Title...");
       if (!createPageDTO.metaTitle || !createPageDTO.metaTitle.trim()) {
         return validateAndReturn("SEO Meta Title is required.");
       }
+      console.log("✅ SEO Meta Title validated");
 
       // SEO Meta Description required validation
+      console.log("🔍 Validating SEO Meta Description...");
       if (
         !createPageDTO.metaDescription ||
         !createPageDTO.metaDescription.trim()
       ) {
         return validateAndReturn("SEO Meta Description is required.");
       }
+      console.log("✅ SEO Meta Description validated");
 
       // Validate slug format after applying defaults
+      console.log("🔍 Validating slug format:", createPageDTO.slug);
       if (!/^[a-z0-9-]+$/.test(createPageDTO.slug)) {
         return validateAndReturn(
           "Generated slug contains invalid characters. Please check the page name."
         );
       }
+      console.log("✅ Slug format validated");
 
       // Validate components and orderIndex uniqueness
+      console.log("🔍 Starting component validation...", {
+        totalComponents: createPageDTO.components?.length || 0,
+      });
+
       if (createPageDTO.components && createPageDTO.components.length > 0) {
         const orderIndexes = new Set();
         for (let i = 0; i < createPageDTO.components.length; i++) {
           const comp = createPageDTO.components[i];
+          console.log(`🔍 Validating component ${i + 1}/${createPageDTO.components.length}:`, {
+            componentType: comp.componentType,
+            componentName: comp.componentName,
+            orderIndex: comp.orderIndex,
+            hasContent: !!comp.content,
+            contentType: typeof comp.content,
+          });
 
           // Check component type
           if (!comp.componentType?.trim()) {
+            console.error(`❌ Component ${i + 1} missing componentType`);
             return validateAndReturn(
               "Component " + (i + 1) + " is missing component type"
             );
@@ -3979,6 +4021,7 @@ const EnhancedPageBuilder = () => {
 
           // Check component name
           if (!comp.componentName?.trim()) {
+            console.error(`❌ Component ${i + 1} missing componentName`);
             return validateAndReturn(
               "Component " + (i + 1) + " is missing component name"
             );
@@ -3986,6 +4029,11 @@ const EnhancedPageBuilder = () => {
 
           // Check content
           if (!comp.content || typeof comp.content !== "object") {
+            console.error(`❌ Component ${i + 1} has invalid content:`, {
+              hasContent: !!comp.content,
+              contentType: typeof comp.content,
+              content: comp.content,
+            });
             return validateAndReturn(
               "Component " + (i + 1) + " has invalid content"
             );
@@ -3994,6 +4042,7 @@ const EnhancedPageBuilder = () => {
           // Check orderIndex uniqueness
           const orderIndex = comp.orderIndex;
           if (orderIndexes.has(orderIndex)) {
+            console.error(`❌ Duplicate orderIndex ${orderIndex} found in component ${i + 1}`);
             return validateAndReturn(
               "Duplicate order index found: " +
                 orderIndex +
@@ -4001,7 +4050,11 @@ const EnhancedPageBuilder = () => {
             );
           }
           orderIndexes.add(orderIndex);
+          console.log(`✅ Component ${i + 1} validation passed`);
         }
+        console.log("✅ All components validated successfully");
+      } else {
+        console.log("ℹ️ No components to validate");
       }
 
       console.log("🚀 Final data being sent to API:", createPageDTO);
@@ -4012,9 +4065,10 @@ const EnhancedPageBuilder = () => {
         orderIndexes: createPageDTO.components?.map((c) => c.orderIndex) || [],
       });
 
+      console.log("🔄 About to call pagesAPI.createPage...");
       // Make the API call to create page with components
-      await pagesAPI.createPage(createPageDTO);
-      console.log("✅ Page created successfully!");
+      const response = await pagesAPI.createPage(createPageDTO);
+      console.log("✅ Page created successfully! Response:", response);
 
       // Show appropriate success message based on status
       if (status === "published") {
@@ -4032,6 +4086,11 @@ const EnhancedPageBuilder = () => {
       }, 1500);
     } catch (error) {
       console.error("❌ Failed to save page:", error);
+      console.error("❌ Error details:", {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+      });
       showToast(error.message || "Failed to save page", "error");
     } finally {
       // Reset loading states and save lock
