@@ -13,7 +13,7 @@ const KEY_MAPPING = {
   "LinkedIn URL": "social_linkedin",
   "Instagram URL": "social_instagram",
   "YouTube URL": "social_youtube",
-  
+
   // Company Information
   "Company Name": "company_name",
   "Company Email": "company_email",
@@ -21,15 +21,15 @@ const KEY_MAPPING = {
   "Company Address": "company_address",
   "Company Tagline": "company_tagline",
   "Footer Text": "company_tagline", // Alias
-  
+
   // Legal & Policy
   "Copyright Text": "copyright_text",
   "Privacy Policy URL": "privacy_policy_url",
   "Terms of Service URL": "terms_of_service_url",
-  
+
   // Site Settings
   "Site Title": "siteTitle",
-  
+
   // Add more mappings as needed
 };
 
@@ -46,7 +46,7 @@ export function normalizeKey(key) {
  * Normalize setting keys in an array of settings
  * @param {Array<Object>} settings - Array of setting objects with 'key' property
  * @returns {Array<Object>} - Array with normalized keys
- * 
+ *
  * @example
  * const settings = [
  *   { key: "Facebook URL", value: "https://facebook.com" },
@@ -90,7 +90,7 @@ export function normalizeSettingKeys(settings) {
  * Normalize setting keys in an object (dictionary format)
  * @param {Object} settings - Object with setting keys as properties
  * @returns {Object} - Object with normalized keys
- * 
+ *
  * @example
  * const settings = {
  *   "Facebook URL": "https://facebook.com",
@@ -105,7 +105,10 @@ export function normalizeSettingKeys(settings) {
  */
 export function normalizeSettingKeysDictionary(settings) {
   if (!settings || typeof settings !== "object") {
-    console.warn("[normalizeSettingKeysDictionary] Input is not an object:", settings);
+    console.warn(
+      "[normalizeSettingKeysDictionary] Input is not an object:",
+      settings
+    );
     return settings;
   }
 
@@ -113,12 +116,14 @@ export function normalizeSettingKeysDictionary(settings) {
 
   Object.entries(settings).forEach(([oldKey, value]) => {
     const newKey = normalizeKey(oldKey);
-    
+
     // Only log if key was actually changed
     if (oldKey !== newKey) {
-      console.log(`🔄 [normalizeSettingKeysDictionary] "${oldKey}" → "${newKey}"`);
+      console.log(
+        `🔄 [normalizeSettingKeysDictionary] "${oldKey}" → "${newKey}"`
+      );
     }
-    
+
     normalized[newKey] = value;
   });
 
@@ -131,10 +136,13 @@ export function normalizeSettingKeysDictionary(settings) {
  * @returns {string} - The human-readable key name
  */
 export function denormalizeKey(backendKey) {
-  const reverseMap = Object.entries(KEY_MAPPING).reduce((acc, [humanKey, snakeKey]) => {
-    acc[snakeKey] = humanKey;
-    return acc;
-  }, {});
+  const reverseMap = Object.entries(KEY_MAPPING).reduce(
+    (acc, [humanKey, snakeKey]) => {
+      acc[snakeKey] = humanKey;
+      return acc;
+    },
+    {}
+  );
 
   return reverseMap[backendKey] || backendKey;
 }
@@ -217,7 +225,7 @@ export function normalizeSettingsBulk(settings, options = {}) {
     if (!setting || typeof setting !== "object" || !setting.key) {
       result.stats.invalid++;
       result.invalid.push({ index, setting, reason: "Invalid format" });
-      
+
       if (!skipInvalid) {
         result.normalized.push(setting);
       }
@@ -233,7 +241,7 @@ export function normalizeSettingsBulk(settings, options = {}) {
     if (oldKey !== newKey) {
       result.stats.normalized++;
       result.changed.push({ index, oldKey, newKey, setting: normalized });
-      
+
       if (logChanges) {
         console.log(`✨ [Bulk] Setting #${index}: "${oldKey}" → "${newKey}"`);
       }

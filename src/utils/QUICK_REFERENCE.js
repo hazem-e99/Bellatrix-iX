@@ -7,7 +7,7 @@
 // IMPORT
 // ============================================================================
 
-import { normalizeSettingKeys } from './utils/settingsKeyNormalizer';
+import { normalizeSettingKeys } from "./utils/settingsKeyNormalizer";
 
 // ============================================================================
 // USAGE 1: Simple Array Normalization (Most Common)
@@ -119,11 +119,11 @@ const normalized = normalizeSettingKeys(fullSettings);
 const result1 = normalizeSettingKeys(mySettingsArray);
 
 // Object → Object
-import { normalizeSettingKeysDictionary } from './utils/settingsKeyNormalizer';
+import { normalizeSettingKeysDictionary } from "./utils/settingsKeyNormalizer";
 const result2 = normalizeSettingKeysDictionary(mySettingsObject);
 
 // Single Key → Single Key
-import { normalizeKey } from './utils/settingsKeyNormalizer';
+import { normalizeKey } from "./utils/settingsKeyNormalizer";
 const result3 = normalizeKey("Facebook URL"); // → "social_facebook"
 
 // ============================================================================
