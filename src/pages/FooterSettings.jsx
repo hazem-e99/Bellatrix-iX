@@ -327,8 +327,8 @@ const FooterSettings = () => {
                 Footer Field Settings
               </CardTitle>
               <p className="text-gray-400 mt-2">
-                Configure individual footer settings. Changes are tracked
-                and can be saved all at once.
+                Configure individual footer settings. Changes are tracked and
+                can be saved all at once.
               </p>
             </CardHeader>
             <CardContent>
@@ -349,7 +349,6 @@ const FooterSettings = () => {
         </motion.div>
 
         {/* Footer Info */}
-    
       </div>
 
       {/* Add Setting Modal */}
