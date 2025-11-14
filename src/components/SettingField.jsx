@@ -10,7 +10,6 @@ import { validateField } from "../constants/settingsMap";
 import {
   updateSetting,
   createSetting,
-  deleteSetting,
   checkKeyExists,
 } from "../services/settingsApi";
 
@@ -23,12 +22,9 @@ const SettingField = ({
   existingValue,
   existingId,
   onSaveSuccess,
-  onDeleteSuccess,
 }) => {
   const [value, setValue] = useState(existingValue || "");
   const [isSaving, setIsSaving] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [validationError, setValidationError] = useState(null);
   const [isDirty, setIsDirty] = useState(false);
 
@@ -179,63 +175,6 @@ const SettingField = ({
     }
   };
 
-  /**
-   * Handle delete confirmation
-   */
-  const handleDeleteClick = () => {
-    setShowDeleteConfirm(true);
-  };
-
-  /**
-   * Handle delete execution
-   */
-  const handleDeleteConfirm = async () => {
-    if (!existingId) {
-      console.warn(`⚠️ [SettingField] Cannot delete "${key}" - no existingId`);
-      toast.error("Cannot delete - setting has no ID");
-      return;
-    }
-
-    console.log(
-      `🗑️ [SettingField] Deleting setting "${key}" with ID:`,
-      existingId
-    );
-    setIsDeleting(true);
-
-    try {
-      const response = await deleteSetting(existingId);
-
-      if (response.success) {
-        console.log(`✅ [SettingField] Delete success for "${key}"`);
-        toast.success(`${label} deleted successfully`);
-        setValue("");
-        setIsDirty(false);
-        setShowDeleteConfirm(false);
-        if (onDeleteSuccess) {
-          onDeleteSuccess(key);
-        }
-      } else {
-        console.error(
-          `❌ [SettingField] Delete failed for "${key}":`,
-          response.message
-        );
-        toast.error(response.message || "Failed to delete setting");
-      }
-    } catch (error) {
-      console.error(`❌ [SettingField] Delete exception for "${key}":`, error);
-      toast.error(error.message || "An error occurred while deleting");
-    } finally {
-      setIsDeleting(false);
-    }
-  };
-
-  /**
-   * Handle delete cancel
-   */
-  const handleDeleteCancel = () => {
-    setShowDeleteConfirm(false);
-  };
-
   // Determine if field is a textarea
   const isTextarea = dataType === "text";
 
@@ -273,7 +212,7 @@ const SettingField = ({
               onChange={handleChange}
               placeholder={placeholder}
               rows={3}
-              disabled={isSaving || isDeleting}
+              disabled={isSaving}
               className={`w-full px-3 py-2 border rounded-md text-sm transition-colors
                 ${
                   validationError
@@ -301,7 +240,7 @@ const SettingField = ({
               value={value}
               onChange={handleChange}
               placeholder={placeholder}
-              disabled={isSaving || isDeleting}
+              disabled={isSaving}
               className={`w-full px-3 py-2 border rounded-md text-sm transition-colors
                 ${
                   validationError
@@ -348,7 +287,7 @@ const SettingField = ({
           {/* Save Button */}
           <button
             onClick={handleSave}
-            disabled={!isDirty || isSaving || isDeleting}
+            disabled={!isDirty || isSaving}
             className="p-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             title="Save"
           >
@@ -370,89 +309,8 @@ const SettingField = ({
               </svg>
             )}
           </button>
-
-          {/* Delete Button */}
-          {existingId && (
-            <button
-              onClick={handleDeleteClick}
-              disabled={isSaving || isDeleting}
-              className="p-2 rounded-md bg-red-600 text-white hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              title="Delete"
-            >
-              {isDeleting ? (
-                <ArrowPathIcon className="w-4 h-4 animate-spin" />
-              ) : (
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                  />
-                </svg>
-              )}
-            </button>
-          )}
         </div>
       </div>
-
-      {/* Delete Confirmation Modal */}
-      {showDeleteConfirm && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md mx-4 shadow-xl">
-            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
-              Confirm Delete
-            </h3>
-            <p className="text-gray-600 dark:text-gray-300 mb-4">
-              Are you sure you want to delete "{label}"? This action cannot be
-              undone.
-            </p>
-            <div className="flex justify-end gap-3">
-              <button
-                onClick={handleDeleteCancel}
-                disabled={isDeleting}
-                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleDeleteConfirm}
-                disabled={isDeleting}
-                className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 disabled:opacity-50 flex items-center gap-2"
-              >
-                {isDeleting ? (
-                  <>
-                    <ArrowPathIcon className="w-4 h-4 animate-spin" />
-                    Deleting...
-                  </>
-                ) : (
-                  <>
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                      />
-                    </svg>
-                    Delete
-                  </>
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

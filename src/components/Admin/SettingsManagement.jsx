@@ -4,6 +4,7 @@ import {
   UserGroupIcon,
   ShieldCheckIcon,
   Cog6ToothIcon,
+  UserPlusIcon,
 } from "@heroicons/react/24/outline";
 import Button from "../ui/Button";
 import { Input } from "../ui/Input";
@@ -12,10 +13,14 @@ import Toast from "../ui/Toast";
 import { useJsonData } from "../../hooks/useJsonData";
 import Modal, { ModalFooter } from "../UI/Modal";
 import FooterSettings from "../../pages/FooterSettings";
+import AddAdminModal from "../AddAdminModal";
+import AdminsList from "../AdminsList";
 
 const SettingsManagement = () => {
   const [activeTab, setActiveTab] = useState("permissions");
   const [toast, setToast] = useState({ show: false, type: "", message: "" });
+  const [isAddAdminModalOpen, setIsAddAdminModalOpen] = useState(false);
+  const [adminsRefreshTrigger, setAdminsRefreshTrigger] = useState(0);
 
   const [permissionSettings, setPermissionSettings] = useState({
     roles: [
@@ -146,8 +151,62 @@ const SettingsManagement = () => {
     );
   };
 
+  const handleAdminCreated = () => {
+    showToast(
+      "success",
+      "Admin created successfully! Verification email sent."
+    );
+    // Refresh admins list
+    setAdminsRefreshTrigger((prev) => prev + 1);
+  };
+
   const renderPermissionSettings = () => (
     <div className="space-y-8">
+      {/* Add Admin Button Section */}
+      <Card className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm border-white/20 shadow-xl">
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="p-2 bg-gradient-to-br from-green-500/20 to-green-600/20 rounded-lg">
+                <UserPlusIcon className="h-6 w-6 text-green-400" />
+              </div>
+              <div>
+                <CardTitle className="text-white text-xl font-bold">
+                  Admin Management
+                </CardTitle>
+                <p className="text-gray-400 text-sm mt-1">
+                  Add new administrators to the system
+                </p>
+              </div>
+            </div>
+            <Button
+              onClick={() => setIsAddAdminModalOpen(true)}
+              className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 shadow-lg hover:shadow-green-500/25 flex items-center gap-2"
+            >
+              <UserPlusIcon className="w-5 h-5" />
+              Add Admin
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="bg-gradient-to-r from-green-900/20 to-green-800/20 border border-green-700/50 rounded-lg p-4">
+            <p className="text-sm text-gray-300 font-medium mb-2">
+              ℹ️ Admin Registration Process:
+            </p>
+            <ul className="text-sm text-gray-400 space-y-1 list-disc list-inside">
+              <li>Click "Add Admin" to create a new administrator account</li>
+              <li>A verification email will be sent to the new admin</li>
+              <li>Admin must verify their email before accessing the system</li>
+              <li>Assign appropriate role based on required access level</li>
+            </ul>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Admins List Table */}
+      <AdminsList refreshTrigger={adminsRefreshTrigger} />
+
+      {/* User Roles & Permissions Section */}
       <Card className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm border-white/20 shadow-xl">
         <CardHeader>
           <div className="flex items-center justify-between">
@@ -447,6 +506,13 @@ const SettingsManagement = () => {
           </Button>
         </ModalFooter>
       </Modal>
+
+      {/* Add Admin Modal */}
+      <AddAdminModal
+        isOpen={isAddAdminModalOpen}
+        onClose={() => setIsAddAdminModalOpen(false)}
+        onSuccess={handleAdminCreated}
+      />
     </div>
   );
 };

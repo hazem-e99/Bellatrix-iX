@@ -80,16 +80,6 @@ const FooterSettings = () => {
   };
 
   /**
-   * Handle single field delete success
-   */
-  const handleFieldDeleteSuccess = (key) => {
-    removeLocalSetting(key);
-    // Refresh footer settings
-    const settings = getAllFieldSettings();
-    setFooterSettings(settings);
-  };
-
-  /**
    * Handle bulk save
    * - Items with ID → PUT /api/Settings/bulk
    * - Items without ID → POST /api/Settings (individually)
@@ -340,7 +330,6 @@ const FooterSettings = () => {
                     existingValue={item.existingValue}
                     existingId={item.existingId}
                     onSaveSuccess={handleFieldSaveSuccess}
-                    onDeleteSuccess={handleFieldDeleteSuccess}
                   />
                 ))}
               </div>
