@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ModernDashboard from './ModernDashboard';
-import PagesManagement from './PagesManagement';
+import PagesManagement from './Admin/PagesManagement';
 import TemplatesManagement from './TemplatesManagement';
 import SettingsManagement from './SettingsManagement';
 import { ToastContainer } from './ui/Interactive';

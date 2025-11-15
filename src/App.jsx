@@ -4,61 +4,36 @@ import Layout from "./components/Layout";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import MainServices from "./components/Services/MainServices";
 import About from "./pages/About";
-// import HRSolution from "./pages/HrPage/HR";
 import HRPage from "./pages/HrPage/HR";
 import SolutionMain from "./components/solution/SolutionMain";
-import Support from "./components/Support/Support";
 import Manufacturing from "./pages/Industries/Manufacturing";
 import Retail from "./pages/Industries/Retail";
-import IndustryMain from "./components/industries/IndustryMain";
 import PayrollPage from "./pages/Payroll";
 import AdminDashboard from "./components/Admin/AdminDashboard";
 import AdminLayout from "./components/Admin/AdminLayout";
 import ModernAdminLayout from "./components/Admin/ModernAdminLayout";
 import ModernDashboard from "./components/Admin/ModernDashboard";
-import PagesManagement from "./components/Admin/PagesManagement";
+import PagesManagement from "./components/Admin/PagesManagement/index";
 import CategoriesManagement from "./components/Admin/CategoriesManagement";
 import EnhancedPageBuilder from "./components/Admin/EnhancedPageBuilder";
 import TemplatesManagement from "./components/Admin/TemplatesManagement";
 import SettingsManagement from "./components/Admin/SettingsManagement";
 import MessagesPage from "./pages/Admin/MessagesPage";
-import DynamicPageRenderer from "./components/DynamicPageRenderer";
+import DynamicPageRenderer from "./components/DynamicPageRenderer/index";
 import { ThemeProvider } from "./context/ThemeContext";
 import { AuthProvider } from "./hooks/useAuth.jsx";
 import { CTAModalProvider } from "./contexts/CTAModalContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AuthRoutes from "./routes/AuthRoutes";
 import AuthDashboard from "./components/Admin/AuthDashboard";
+import { toastConfig } from "./config/toast";
 
 function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
         <CTAModalProvider>
-          <Toaster
-            position="top-right"
-            toastOptions={{
-              duration: 4000,
-              style: {
-                background: "#363636",
-                color: "#fff",
-              },
-              success: {
-                duration: 3000,
-                iconTheme: {
-                  primary: "#10B981",
-                  secondary: "#fff",
-                },
-              },
-              error: {
-                duration: 5000,
-                iconTheme: {
-                  primary: "#EF4444",
-                  secondary: "#fff",
-                },
-              },
-            }}
-          />
+          <Toaster {...toastConfig} />
           <Routes>
             {/* Authentication Routes */}
             <Route path="/auth/*" element={<AuthRoutes />} />

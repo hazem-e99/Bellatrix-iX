@@ -1,81 +1,12 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { AnimatePresence } from "framer-motion";
-import { EyeIcon, ExclamationTriangleIcon } from "@heroicons/react/24/outline";
-import Card, { CardContent, CardHeader, CardTitle } from "../UI/Card";
-
-// Import About components
+import { EyeIcon } from "@heroicons/react/24/outline";
 import { motion } from "framer-motion";
-import AboutHero from "../About/AboutHero";
-import AboutMission from "../About/AboutMission";
-import AboutTeam from "../About/AboutTeam";
-import AboutValues from "../About/AboutValues";
-import AboutJourney from "../About/AboutJourney";
-import AboutMilestones from "../About/AboutMilestones";
-import AboutDifferentiators from "../About/AboutDifferentiators";
-import AboutCTA from "../About/AboutCTA";
-
-// HR & Payroll Components
-import PayrollHero from "../solution/payroll/PayrollHero";
-import PayrollWorkflow from "../solution/payroll/PayrollWorkflow";
-import PayrollStepper from "../solution/payroll/PayrollStepper";
-import PayrollPainPoints from "../solution/payroll/PayrollPainPoints";
-import PayrollFAQ from "../solution/payroll/PayrollFAQ";
-import PayrollCTA from "../solution/payroll/PayrollCTA";
-import HRHero from "../solution/hr/HeroSection";
-import HRModules from "../solution/hr/ModulesSection";
-import HRBenefits from "../solution/hr/BenefitsSection";
-import HRUseCases from "../solution/hr/UseCasesSection";
-import HRPricing from "../solution/hr/PricingSection";
-import HRFAQ from "../solution/hr/FAQSection";
-import HRCTA from "../solution/hr/CTASection";
-
-// Landing Page Components
-import Hero from "../Hero";
-import Services from "../Services";
-import Testimonials from "../Testimonials";
-import Industries from "../Industries";
-
-// Services Components
-import ImplementationHero from "../Services/Implementation/HeroSection";
-import ImplementationProcess from "../Services/Implementation/ProcessSection";
-import ImplementationWhyChoose from "../Services/Implementation/WhyChooseSection";
-import ImplementationPricing from "../Services/Implementation/PricingSection";
-import ImplementationCta from "../Services/Implementation/CtaSection";
-import TrainingHero from "../Services/training/HeroSection";
-import TrainingPrograms from "../Services/training/ProgramsSection";
-import TrainingKeyModules from "../Services/training/KeyModulesSection";
-import TrainingWhyChoose from "../Services/training/WhyChooseSection";
-
-import IntegrationHero from "../Services/Integration/HeroSection";
-import IntegrationTypes from "../Services/Integration/IntegrationTypes";
-import IntegrationBenefits from "../Services/Integration/BenefitsSection";
-import IntegrationPopular from "../Services/Integration/PopularIntegrations";
-import IntegrationCta from "../Services/Integration/CtaSection";
-
-import ServiceGrid from "../Services/ServiceGrid";
-import ImplementationCTA from "../Services/Implementation/CtaSection";
-import PayrollHowItWorks from "../solution/payroll/PayrollHowItWorks";
-
-// Industries Components - Manufacturing
-import ManufacturingHero from "../industries/Manufacturing/HeroSection";
-import ManufacturingSolutions from "../industries/Manufacturing/SolutionsSection";
-import ManufacturingChallenges from "../industries/Manufacturing/ChallengesSection";
-import ManufacturingIndustryStats from "../industries/Manufacturing/IndustryStats";
-import ManufacturingImplementationProcess from "../industries/Manufacturing/ImplementationProcess";
-import ManufacturingCaseStudies from "../industries/Manufacturing/CaseStudies";
-import ManufacturingCTA from "../industries/Manufacturing/CTASection";
-
-// Industries Components - Retail
-import RetailHero from "../industries/retail/HeroSection";
-import RetailChallenges from "../industries/retail/ChallengesSection";
-import RetailSolutions from "../industries/retail/SolutionsSection";
-import RetailFeatures from "../industries/retail/FeaturesSection";
-import RetailCaseStudies from "../industries/retail/CaseStudiesSection";
-import RetailImplementation from "../industries/retail/ImplementationSection";
-import RetailCTA from "../industries/retail/CTASection";
-
-// Common/Shared Components
-import CTAButton from "../CTAButton";
+import Card, { CardContent, CardHeader, CardTitle } from "../UI/Card";
+import { componentRegistry, getComponentByType } from "../../config/previewComponentRegistry";
+import PreviewError from "./LivePreview/PreviewError";
+import ComponentNotFound from "./LivePreview/ComponentNotFound";
+import ErrorBoundaryWrapper from "./LivePreview/ErrorBoundaryWrapper";
 
 /**
  * Real-time Component Preview System
@@ -89,106 +20,6 @@ const ComponentPreview = ({
   className = "",
 }) => {
   const [error, setError] = useState(null);
-
-  // Component registry mapping - All available components for preview
-  const componentRegistry = {
-    // Add WhyChooseSection for preview
-    WhyChooseSection: ImplementationWhyChoose,
-    // ===========================================
-    // ABOUT PAGE COMPONENTS
-    // ===========================================
-    AboutHeroSection: AboutHero,
-    AboutMissionSection: AboutMission,
-    AboutTeamSection: AboutTeam,
-    AboutValuesSection: AboutValues,
-    AboutJourneySection: AboutJourney,
-    AboutMilestonesSection: AboutMilestones,
-    AboutDifferentiatorsSection: AboutDifferentiators,
-    AboutCTASection: AboutCTA,
-
-    // ===========================================
-    // HR & PAYROLL COMPONENTS
-    // ===========================================
-    PayrollHeroSection: PayrollHero,
-    PayrollWorkflowSection: PayrollWorkflow,
-    PayrollStepperSection: PayrollStepper,
-    PayrollPainPointsSection: PayrollPainPoints,
-    PayrollFAQSection: PayrollFAQ,
-    PayrollCTASection: PayrollCTA,
-    PayrollHowItWorksSection: PayrollHowItWorks,
-    HRHeroSection: HRHero,
-    HRModulesSection: HRModules,
-    HRBenefitsSection: HRBenefits,
-    HRUseCasesSection: HRUseCases,
-    HRPricingSection: HRPricing,
-    HRFAQSection: HRFAQ,
-    HRCTASection: HRCTA,
-
-    // ===========================================
-    // LANDING PAGE COMPONENTS
-    // ===========================================
-    Hero: Hero,
-    HeroSection: Hero,
-    Services: Services,
-    ServicesSection: Services,
-    Testimonials: Testimonials,
-    TestimonialsSection: Testimonials,
-    Industries: Industries,
-    IndustriesSection: Industries,
-
-    // ===========================================
-    // SERVICES COMPONENTS
-    // ===========================================
-    ImplementationHeroSection: ImplementationHero,
-    ImplementationProcessSection: ImplementationProcess,
-    ImplementationWhyChooseSection: ImplementationWhyChoose,
-    ImplementationPricingSection: ImplementationPricing,
-    ImplementationCtaSection: ImplementationCta,
-    // Alias: some saved pages may use uppercase 'CTA' in the componentType
-    ImplementationCTASection: ImplementationCta,
-    // Service grid used in some pages
-    ServiceGrid: ServiceGrid,
-    ServiceGridSection: ServiceGrid,
-
-    // Training Components
-    TrainingHeroSection: TrainingHero,
-    TrainingProgramsSection: TrainingPrograms,
-    // Alias: some pages/store entries use plain "ProgramsSection" as the componentType
-    ProgramsSection: TrainingPrograms,
-    ProgramsSectionSection: TrainingPrograms,
-    TrainingKeyModulesSection: TrainingKeyModules,
-    TrainingWhyChooseSection: TrainingWhyChoose,
-
-    // Integration Components
-    // (Customization and Integration components removed)
-
-    // ===========================================
-    // INDUSTRY COMPONENTS - MANUFACTURING
-    // ===========================================
-    ManufacturingHeroSection: ManufacturingHero,
-    ManufacturingSolutionsSection: ManufacturingSolutions,
-    ManufacturingChallengesSection: ManufacturingChallenges,
-    ManufacturingIndustryStats: ManufacturingIndustryStats,
-    ManufacturingImplementationProcess: ManufacturingImplementationProcess,
-    ManufacturingCaseStudies: ManufacturingCaseStudies,
-    ManufacturingCTASection: ManufacturingCTA,
-
-    // ===========================================
-    // INDUSTRY COMPONENTS - RETAIL
-    // ===========================================
-    RetailHeroSection: RetailHero,
-    RetailChallengesSection: RetailChallenges,
-    RetailSolutionsSection: RetailSolutions,
-    RetailFeaturesSection: RetailFeatures,
-    RetailCaseStudies: RetailCaseStudies,
-    // RetailCaseStudiesSection: RetailCaseStudies,
-    RetailCTASection: RetailCTA,
-
-    // ===========================================
-    // COMMON/SHARED COMPONENTS
-    // ===========================================
-    CTAButton: CTAButton,
-  };
 
   // Transform data to component props format
   // Create a stable JSON snapshot of componentData so nested/mutated fields
@@ -1935,82 +1766,14 @@ const ComponentPreview = ({
   const Component = resolveComponentFromRegistry(componentType);
 
   // Error boundary wrapper
-  const ErrorBoundaryWrapper = ({ children }) => {
-    const [hasError, setHasError] = useState(false);
-    const [errorDetails, setErrorDetails] = useState(null);
-
-    const dataString = JSON.stringify(componentData);
-
-    useEffect(() => {
-      setHasError(false);
-      setErrorDetails(null);
-    }, [dataString]);
-
-    const handleError = (error, errorInfo) => {
-      console.error(`Component Error in ${componentType}:`, error, errorInfo);
-      setHasError(true);
-      setErrorDetails({ error, errorInfo });
-    };
-
-    if (hasError) {
-      return (
-        <div className="p-6 border border-red-200 dark:border-red-700 rounded-lg bg-red-50 dark:bg-red-900/20">
-          <div className="flex items-center space-x-2 mb-4">
-            <ExclamationTriangleIcon className="h-5 w-5 text-red-500" />
-            <h3 className="text-lg font-semibold text-red-700 dark:text-red-300">
-              Component Render Error
-            </h3>
-          </div>
-          <p className="text-sm text-red-600 dark:text-red-400 mb-2">
-            {componentType} failed to render with the current configuration.
-          </p>
-          <details className="text-xs text-red-500">
-            <summary className="cursor-pointer">Error Details</summary>
-            <pre className="mt-2 p-2 bg-red-100 dark:bg-red-800/20 rounded overflow-auto">
-              {errorDetails?.error?.toString()}
-            </pre>
-          </details>
-        </div>
-      );
-    }
-
-    try {
-      return children;
-    } catch (error) {
-      handleError(error);
-      return null;
-    }
-  };
+  // ErrorBoundaryWrapper is now imported from ./LivePreview/ErrorBoundaryWrapper
 
   if (!Component) {
-    return (
-      <div className="p-6 border border-yellow-200 dark:border-yellow-700 rounded-lg bg-yellow-50 dark:bg-yellow-900/20">
-        <div className="flex items-center space-x-2 mb-2">
-          <ExclamationTriangleIcon className="h-5 w-5 text-yellow-500" />
-          <h3 className="text-lg font-semibold text-yellow-700 dark:text-yellow-300">
-            Component Not Found
-          </h3>
-        </div>
-        <p className="text-sm text-yellow-600 dark:text-yellow-400">
-          Component type "{componentType}" is not registered in the preview
-          system.
-        </p>
-      </div>
-    );
+    return <ComponentNotFound componentType={componentType} />;
   }
 
   if (error) {
-    return (
-      <div className="p-6 border border-red-200 dark:border-red-700 rounded-lg bg-red-50 dark:bg-red-900/20">
-        <div className="flex items-center space-x-2 mb-2">
-          <ExclamationTriangleIcon className="h-5 w-5 text-red-500" />
-          <h3 className="text-lg font-semibold text-red-700 dark:text-red-300">
-            Preview Error
-          </h3>
-        </div>
-        <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
-      </div>
-    );
+    return <PreviewError error={error} componentType={componentType} />;
   }
 
   return (
@@ -2025,7 +1788,10 @@ const ComponentPreview = ({
             filter: isVisible ? "none" : "grayscale(50%)",
           }}
         >
-          <ErrorBoundaryWrapper>
+          <ErrorBoundaryWrapper
+            componentType={componentType}
+            componentData={componentData}
+          >
             {/* Wrap component in section with theme attribute for proper styling */}
             <section data-theme={theme === 1 ? "light" : "dark"}>
               <Component {...transformedProps} />
