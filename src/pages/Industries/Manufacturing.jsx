@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import ContactForm from "../../components/ContactForm";
 import Modal from "../../components/Modal";
-import ImplementationStepper from "../../components/Industries/Manufacturing/ImplementationStepper";
+import ImplementationStepper from "../../components/Industries/Manufacturing/ManufacturingStepper";
 
 const Manufacturing = () => {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
