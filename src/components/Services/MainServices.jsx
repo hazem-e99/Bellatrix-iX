@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import Implementation from "../Services/Implementation/Implementation";
-import Training from "../Services/Training/Training";
+import Implementation from "./Implementation/Implementation";
+import Training from "./training/Training";
 import Support from "../Support/Support";
-import Customization from "../Services/Customization/Customization";
-import IntegrationMain from "../Services/Integration/IntegrationMain";
-import NetSuiteConsultingMain from "../Services/NetSuiteConsulting/NetSuiteConsultingMain";
+import Customization from "./Customization/Customization";
+import IntegrationMain from "./Integration/IntegrationMain";
+import NetSuiteConsultingMain from "./NetSuiteConsulting/NetSuiteConsultingMain";
 
 // Add more imports as needed for other service components
 
