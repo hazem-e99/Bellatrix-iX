@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ContactForm from "../../components/ContactForm";
 import Modal from "../../components/Modal";
-import ImplementationStepper from "../../components/Industries/retail/ImplementationStepper.jsx";
+import ImplementationStepper from "../../components/Industries/retail/ImplementationStepper";
 
 const Retail = () => {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
