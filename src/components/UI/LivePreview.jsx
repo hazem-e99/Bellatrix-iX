@@ -3,7 +3,6 @@ import { AnimatePresence } from "framer-motion";
 import { EyeIcon } from "@heroicons/react/24/outline";
 import { motion } from "framer-motion";
 import Card, { CardContent, CardHeader, CardTitle } from "../UI/Card";
-import { componentRegistry, getComponentByType } from "../../config/previewComponentRegistry";
 import PreviewError from "./LivePreview/PreviewError";
 import ComponentNotFound from "./LivePreview/ComponentNotFound";
 import ErrorBoundaryWrapper from "./LivePreview/ErrorBoundaryWrapper";

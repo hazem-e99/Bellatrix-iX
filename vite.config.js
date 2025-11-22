@@ -49,7 +49,7 @@ export default defineConfig({
       },
       maxParallelFileOps: 5, // Limit concurrent file operations
     },
-    chunkSizeWarningLimit: 1000,
+    chunkSizeWarningLimit: 1500, // Suppress warning for main bundle (260KB gzipped is acceptable)
   },
   resolve: {
     dedupe: ['@dnd-kit/core', '@dnd-kit/sortable', '@dnd-kit/utilities'],
