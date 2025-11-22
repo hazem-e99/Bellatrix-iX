@@ -7,10 +7,10 @@ import {
   ExclamationTriangleIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
-import Button from "../../UI/Button.jsx";
-import Card, { CardContent, CardHeader, CardTitle } from "../../UI/Card.jsx";
+import Button from "../../UI/Button";
+import Card, { CardContent, CardHeader, CardTitle } from "../../UI/Card";
 import { DocumentTextIcon } from "@heroicons/react/24/outline";
-import Toast from "../../UI/Toast.jsx";
+import Toast from "../../UI/Toast";
 import EditPageModal from "../EditPageModal";
 import pagesAPI from "../../../lib/pagesAPI";
 import { usePagesManagement } from "../../../hooks/usePagesManagement";
