@@ -10,9 +10,9 @@ import {
   ExclamationTriangleIcon,
   Bars3BottomLeftIcon,
 } from "@heroicons/react/24/outline";
-import Button from "../../ui/Button";
-import { Input } from "../../ui/Input";
-import Card, { CardContent, CardHeader, CardTitle } from "../../ui/Card";
+import Button from "../../UI/Button.jsx";
+import { Input } from "../../UI/Input.jsx";
+import Card, { CardContent, CardHeader, CardTitle } from "../../UI/Card.jsx";
 import {
   DndContext,
   closestCenter,
