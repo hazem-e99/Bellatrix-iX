@@ -5,8 +5,8 @@ import {
   EnvelopeIcon,
   CalendarIcon,
 } from "@heroicons/react/24/outline";
-import Button from "../ui/Button";
-import Card, { CardContent } from "../ui/Card";
+import Button from "../UI/Button";
+import Card, { CardContent } from "../UI/Card";
 import { motion } from "framer-motion";
 // Ensure linter recognizes usage in JSX by keeping a top-level reference
 const MOTION_REF = motion;

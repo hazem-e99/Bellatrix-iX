@@ -6,10 +6,10 @@ import {
   Cog6ToothIcon,
   UserPlusIcon,
 } from "@heroicons/react/24/outline";
-import Button from "../ui/Button";
-import { Input } from "../ui/Input";
-import Card, { CardContent, CardHeader, CardTitle } from "../ui/Card";
-import Toast from "../ui/Toast";
+import Button from "../UI/Button";
+import { Input } from "../UI/Input";
+import Card, { CardContent, CardHeader, CardTitle } from "../UI/Card";
+import Toast from "../UI/Toast";
 import { useJsonData } from "../../hooks/useJsonData";
 import Modal, { ModalFooter } from "../UI/Modal";
 import FooterSettings from "../../pages/FooterSettings";

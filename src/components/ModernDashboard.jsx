@@ -4,20 +4,6 @@ import {
   NavItem,
   StatsCard,
   QuickActionButton,
-  ActivityFeed,
-  ChartContainer,
-  NotificationBadge,
-  ThemeToggle,
-  ProgressRing,
-  Breadcrumb,
-} from './ui/Dashboard';
-import { Button, Card, Badge } from './ui/components';
-import { SearchInput, ToastContainer } from './ui/Interactive';
-import { useTheme, useToast } from '../../hooks/useCommon';
-
-const ModernDashboard = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('dashboard');
   const { isDark, toggleTheme } = useTheme();
   const { addToast } = useToast();
 

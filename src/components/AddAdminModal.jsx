@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { XMarkIcon, UserPlusIcon } from "@heroicons/react/24/outline";
 import toast from "react-hot-toast";
-import Button from "./ui/Button";
+import Button from "./UI/Button";
 import api from "../lib/api";
 
 /**

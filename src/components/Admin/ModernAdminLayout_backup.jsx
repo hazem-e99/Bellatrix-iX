@@ -22,8 +22,8 @@ import {
   ViewColumnsIcon as ViewColumnsIconSolid,
   Cog6ToothIcon as Cog6ToothIconSolid,
 } from "@heroicons/react/24/solid";
-import Button from "../ui/Button";
-import { Input } from "../ui/Input";
+import Button from "../UI/Button";
+import { Input } from "../UI/Input";
 import { useTheme } from "../../contexts/ThemeContext";
 
 const ModernAdminLayout = () => {

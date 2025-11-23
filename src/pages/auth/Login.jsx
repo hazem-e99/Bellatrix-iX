@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth.jsx';
-import LoadingSpinner from '../../components/ui/LoadingSpinner';
+import LoadingSpinner from '../../components/UI/LoadingSpinner';
 
 const Login = () => {
   const [formData, setFormData] = useState({

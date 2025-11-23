@@ -1,11 +1,3 @@
-import React, { useState, useMemo } from 'react';
-import { Button, Card, Badge, Input, Modal } from './ui/components';
-import { SearchInput, Pagination, ConfirmationDialog } from './ui/Interactive';
-import { useModal, usePagination, useDebounce, useToast } from '../../hooks/useCommon';
-
-const TemplatesManagement = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedTemplates, setSelectedTemplates] = useState([]);
   const [filterCategory, setFilterCategory] = useState('all');
   const [sortBy, setSortBy] = useState('updatedAt');
   const [sortOrder, setSortOrder] = useState('desc');

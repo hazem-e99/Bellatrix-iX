@@ -14,10 +14,10 @@ import {
   PhotoIcon,
 } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
-import Button from "../ui/Button";
-import { Input } from "../ui/Input";
-import Card, { CardContent, CardHeader, CardTitle } from "../ui/Card";
-import Modal, { ModalFooter } from "../ui/Modal";
+import Button from "../UI/Button";
+import { Input } from "../UI/Input";
+import Card, { CardContent, CardHeader, CardTitle } from "../UI/Card";
+import Modal, { ModalFooter } from "../UI/Modal";
 
 const TemplatesManagement = () => {
   const [searchTerm, setSearchTerm] = useState("");

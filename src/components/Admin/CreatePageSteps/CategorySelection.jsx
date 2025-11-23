@@ -5,8 +5,8 @@ import {
   ExclamationTriangleIcon,
   CheckIcon,
 } from "@heroicons/react/24/outline";
-import Card, { CardContent, CardHeader, CardTitle } from "../../ui/Card";
-import Button from "../../ui/Button";
+import Card, { CardContent, CardHeader, CardTitle } from "../../UI/Card";
+import Button from "../../UI/Button";
 
 const CategorySelection = ({ selectedCategory, onCategorySelect, selectedPage, onPageSelect }) => {
   const [categories, setCategories] = useState([]);

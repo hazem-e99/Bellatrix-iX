@@ -7,8 +7,8 @@ import {
   TrashIcon,
   ShieldCheckIcon,
 } from "@heroicons/react/24/outline";
-import Button from "./ui/Button";
-import Card, { CardContent, CardHeader, CardTitle } from "./ui/Card";
+import Button from "./UI/Button";
+import Card, { CardContent, CardHeader, CardTitle } from "./UI/Card";
 
 /**
  * AdminsList Component

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import MediaPicker from "../ui/MediaPicker";
+import MediaPicker from "../UI/MediaPicker";
 import { useMediaInput, attachMediaPicker } from "../hooks/useMediaInput";
 import { buildFullUrl } from "../utils/mediaUtils";
 

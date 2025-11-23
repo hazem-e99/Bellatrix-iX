@@ -3,7 +3,7 @@ import ModernDashboard from './ModernDashboard';
 import PagesManagement from './PagesManagement';
 import TemplatesManagement from './TemplatesManagement';
 import SettingsManagement from './SettingsManagement';
-import { ToastContainer } from './ui/Interactive';
+import { ToastContainer } from './UI/Interactive';
 import { useTheme, useToast, useKeyboard } from '../hooks/useCommon';
 
 const ModernUIShowcase = () => {

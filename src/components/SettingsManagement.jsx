@@ -1,11 +1,3 @@
-import React, { useState } from 'react';
-import { Button, Card, Badge, Input } from './ui/components';
-import { ToastContainer, ConfirmationDialog } from './ui/Interactive';
-import { useModal, useToast } from '../../hooks/useCommon';
-
-const SettingsManagement = () => {
-  const [activeTab, setActiveTab] = useState('general');
-  const { addToast } = useToast();
   const { isOpen: isResetOpen, openModal: openReset, closeModal: closeReset } = useModal();
 
   // Settings state
