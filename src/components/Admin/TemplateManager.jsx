@@ -21,13 +21,11 @@ import {
   Tabs,
   Tab,
 } from '@mui/material';
-import {
-  Add as AddIcon,
-  Edit as EditIcon,
-  Delete as DeleteIcon,
-  FileCopy as DuplicateIcon,
-  ViewModule as TemplateIcon,
-} from '@mui/icons-material';
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import DuplicateIcon from '@mui/icons-material/FileCopy';
+import TemplateIcon from '@mui/icons-material/ViewModule';
 import { useAdmin } from '../../hooks/useAdmin';
 
 const TemplateManager = () => {

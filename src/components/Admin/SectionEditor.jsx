@@ -17,11 +17,9 @@ import {
   AccordionSummary,
   AccordionDetails,
 } from '@mui/material';
-import {
-  ExpandMore as ExpandMoreIcon,
-  Add as AddIcon,
-  Delete as DeleteIcon,
-} from '@mui/icons-material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const SectionEditor = ({ section, onSave, onCancel }) => {
   const [formData, setFormData] = useState({
