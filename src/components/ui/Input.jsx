@@ -1,5 +1,5 @@
 import React from "react";
-import MediaPicker from "../MediaPicker";
+import MediaPicker from "./MediaPicker";
 
 const Input = React.forwardRef(
   (
