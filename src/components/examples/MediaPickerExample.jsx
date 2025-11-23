@@ -321,7 +321,7 @@ attachMediaPicker(input, {
             <h3 className="font-semibold text-gray-800 mb-2">4. React Hook:</h3>
             <pre className="bg-gray-100 p-3 rounded-md text-sm overflow-x-auto">
               {`import { useMediaInput } from './hooks/useMediaInput';
-import MediaPicker from './components/ui/MediaPicker';
+import MediaPicker from './components/UI/MediaPicker';
 
 function MyComponent() {
   const {
