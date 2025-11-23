@@ -5,7 +5,7 @@ import {
   ChevronUpIcon,
   ChevronDownIcon,
 } from "@heroicons/react/24/outline";
-import Button from "../UI/Button";
+import Button from "./Button";
 
 /**
  * Dynamic Form Generator
