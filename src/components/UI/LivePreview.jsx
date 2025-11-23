@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { AnimatePresence } from "framer-motion";
 import { EyeIcon, ExclamationTriangleIcon } from "@heroicons/react/24/outline";
-import Card, { CardContent, CardHeader, CardTitle } from "../UI/Card";
+import Card, { CardContent, CardHeader, CardTitle } from "./Card";
 
 // Import About components
 import { motion } from "framer-motion";
