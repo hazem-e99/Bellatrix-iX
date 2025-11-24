@@ -20,19 +20,19 @@ import {
   Cog6ToothIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import Button from "../UI/Button.jsx";
-import { Input } from "../UI/Input.jsx";
-import Card, { CardContent, CardHeader, CardTitle } from "../UI/Card.jsx";
-import Modal, { ModalFooter } from "../UI/Modal.jsx";
-import FancyToggle, { ComponentToggles } from "../UI/FancyToggle.jsx";
+import Button from "../UI/Button";
+import { Input } from "../UI/Input";
+import Card, { CardContent, CardHeader, CardTitle } from "../UI/Card";
+import Modal, { ModalFooter } from "../UI/Modal";
+import FancyToggle, { ComponentToggles } from "../UI/FancyToggle";
 import { validateVariant } from "../../utils/variantSystem";
-import Toast from "../UI/Toast.jsx";
+import Toast from "../UI/Toast";
 import SectionDataEditor from "./SectionDataEditor";
 import PagePreview from "./PagePreview";
-import MediaInputDetector from "../UI/MediaInputDetector.jsx";
-import DynamicContentForm from "../UI/DynamicContentForm.jsx";
-import DynamicFormGenerator from "../UI/DynamicFormGenerator.jsx";
-import { LivePreview, SplitScreenPreview } from "../UI/LivePreview.jsx";
+import MediaInputDetector from "../UI/MediaInputDetector";
+import DynamicContentForm from "../UI/DynamicContentForm";
+import DynamicFormGenerator from "../UI/DynamicFormGenerator";
+import { LivePreview, SplitScreenPreview } from "../UI/LivePreview";
 import { getAboutComponentSchema } from "../../data/aboutComponentSchemas";
 import { getGeneralComponentSchema } from "../../data/generalComponentSchemas";
 import {

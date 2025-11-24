@@ -18,9 +18,9 @@ import {
   useSortable,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import Button from '../UI/Button.jsx';
-import Card from '../UI/Card.jsx';
-import { Input } from '../UI/Input.jsx';
+import Button from '../UI/Button';
+import Card from '../UI/Card';
+import { Input } from '../UI/Input';
 import {
   ChevronDownIcon,
   ChevronUpIcon,

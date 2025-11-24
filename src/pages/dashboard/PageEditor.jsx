@@ -17,9 +17,9 @@ import {
 } from "@dnd-kit/sortable";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Button } from "../../components/UI/Button.jsx";
-import { Card } from "../../components/UI/Card.jsx";
-import { Input } from "../../components/UI/Input.jsx";
+import { Button } from "../../components/UI/Button";
+import { Card } from "../../components/UI/Card";
+import { Input } from "../../components/UI/Input";
 import { usePageEditorAPI, debounce } from "../../hooks/usePageEditor";
 import pagesAPI from "../../lib/pagesAPI";
 import {

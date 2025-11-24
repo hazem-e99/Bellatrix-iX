@@ -13,12 +13,12 @@ import {
   Cog6ToothIcon,
 } from "@heroicons/react/24/outline";
 import "./PageComponentsEditor.css";
-import Button from "../UI/Button.jsx";
-import Input from "../UI/Input.jsx";
-import Modal, { ModalFooter } from "../UI/Modal.jsx";
-import DynamicFormField from "../UI/DynamicFormField.jsx";
-import Card, { CardContent } from "../UI/Card.jsx";
-import FancyToggle from "../UI/FancyToggle.jsx";
+import Button from "../UI/Button";
+import Input from "../UI/Input";
+import Modal, { ModalFooter } from "../UI/Modal";
+import DynamicFormField from "../UI/DynamicFormField";
+import Card, { CardContent } from "../UI/Card";
+import FancyToggle from "../UI/FancyToggle";
 import pagesAPI from "../../lib/pagesAPI";
 import {
   DndContext,

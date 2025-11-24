@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { motion, AnimatePresence } from "framer-motion";
@@ -23,8 +23,8 @@ import {
   Cog6ToothIcon as Cog6ToothIconSolid,
   ChatBubbleLeftRightIcon as ChatBubbleLeftRightIconSolid,
 } from "@heroicons/react/24/solid";
-import Button from "../UI/Button.jsx";
-import { Input } from "../UI/Input.jsx";
+import Button from "../UI/Button";
+import { Input } from "../UI/Input";
 import { useTheme } from "../../context/ThemeContext";
 import { useMessageNotifications } from "../../hooks/useMessageNotifications";
 import MessageNotification from "./MessageNotification";

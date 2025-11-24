@@ -8,9 +8,9 @@ import {
   ArrowRightIcon,
   CogIcon,
 } from "@heroicons/react/24/outline";
-import Modal, { ModalFooter } from "../UI/Modal.jsx";
-import Button from "../UI/Button.jsx";
-import Input from "../UI/Input.jsx";
+import Modal, { ModalFooter } from "../UI/Modal";
+import Button from "../UI/Button";
+import Input from "../UI/Input";
 import PageComponentsEditor from "./PageComponentsEditor";
 import pagesAPI from "../../lib/pagesAPI";
 

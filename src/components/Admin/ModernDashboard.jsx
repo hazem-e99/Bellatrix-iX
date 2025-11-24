@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import {
@@ -12,8 +12,8 @@ import {
   ArrowTopRightOnSquareIcon,
   ExclamationTriangleIcon,
 } from "@heroicons/react/24/outline";
-import Card, { CardContent, CardHeader, CardTitle } from "../UI/Card.jsx";
-import Button from "../UI/Button.jsx";
+import Card, { CardContent, CardHeader, CardTitle } from "../UI/Card";
+import Button from "../UI/Button";
 import dashboardAPI from "../../lib/dashboardAPI";
 import toast from "react-hot-toast";
 

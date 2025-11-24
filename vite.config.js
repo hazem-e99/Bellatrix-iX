@@ -45,6 +45,7 @@ export default defineConfig({
   },
 
   resolve: {
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
     dedupe: ['react', 'react-dom'],
   },
 

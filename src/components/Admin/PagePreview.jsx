@@ -7,8 +7,8 @@ import {
   ExclamationTriangleIcon,
   CheckIcon,
 } from "@heroicons/react/24/outline";
-import Button from "../UI/Button.jsx";
-import Card, { CardContent, CardHeader, CardTitle } from "../UI/Card.jsx";
+import Button from "../UI/Button";
+import Card, { CardContent, CardHeader, CardTitle } from "../UI/Card";
 import { getComponentPathFromId, loadComponent } from "../componentMap";
 import { normalizeProps, validateProps } from "../../utils/normalizeProps";
 import { validateVariant } from "../../utils/variantSystem";

@@ -17,11 +17,11 @@ import {
   UserIcon,
   ClockIcon,
 } from "@heroicons/react/24/outline";
-import Button from "../../components/UI/Button.jsx";
-import { Input } from "../../components/UI/Input.jsx";
-import Card, { CardContent, CardHeader, CardTitle } from "../../components/UI/Card.jsx";
-import Modal, { ModalFooter } from "../../components/UI/Modal.jsx";
-import Toast from "../../components/UI/Toast.jsx";
+import Button from "../../components/UI/Button";
+import { Input } from "../../components/UI/Input";
+import Card, { CardContent, CardHeader, CardTitle } from "../../components/UI/Card";
+import Modal, { ModalFooter } from "../../components/UI/Modal";
+import Toast from "../../components/UI/Toast";
 import MessagesList from "../../components/Admin/MessagesList";
 import { 
   getContactMessages, 

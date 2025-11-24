@@ -14,12 +14,12 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "@heroicons/react/24/outline";
-import Button from "../UI/Button.jsx";
-import { Input } from "../UI/Input.jsx";
-import Card, { CardContent, CardHeader, CardTitle } from "../UI/Card.jsx";
+import Button from "../UI/Button";
+import { Input } from "../UI/Input";
+import Card, { CardContent, CardHeader, CardTitle } from "../UI/Card";
 import ModernPageEditor from "./ModernPageEditor";
-import Modal, { ModalFooter } from "../UI/Modal.jsx";
-import Toast from "../UI/Toast.jsx";
+import Modal, { ModalFooter } from "../UI/Modal";
+import Toast from "../UI/Toast";
 import EditPageModal from "./EditPageModal";
 import pagesAPI from "../../lib/pagesAPI";
 

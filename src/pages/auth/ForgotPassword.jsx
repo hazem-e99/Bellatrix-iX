@@ -1,7 +1,7 @@
 ﻿import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth.jsx';
-import LoadingSpinner from '../../components/UI/LoadingSpinner.jsx';
+import LoadingSpinner from '../../components/UI/LoadingSpinner';
 
 const ForgotPassword = () => {
   const [formData, setFormData] = useState({

@@ -6,12 +6,12 @@ import {
   PlusIcon,
 } from "@heroicons/react/24/outline";
 import toast from "react-hot-toast";
-import Button from "../components/UI/Button.jsx";
+import Button from "../components/UI/Button";
 import Card, {
   CardContent,
   CardHeader,
   CardTitle,
-} from "../components/UI/Card.jsx";
+} from "../components/UI/Card";
 import SettingField from "../components/SettingField";
 import AddSettingModal from "../components/AddSettingModal";
 import useSettingsSync from "../hooks/useSettingsSync";
