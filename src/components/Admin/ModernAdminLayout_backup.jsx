@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -22,8 +22,8 @@ import {
   ViewColumnsIcon as ViewColumnsIconSolid,
   Cog6ToothIcon as Cog6ToothIconSolid,
 } from "@heroicons/react/24/solid";
-import Button from "../UI/Button";
-import { Input } from "../UI/Input";
+import Button from "../UI/Button.jsx";
+import { Input } from "../UI/Input.jsx";
 import { useTheme } from "../../contexts/ThemeContext";
 
 const ModernAdminLayout = () => {

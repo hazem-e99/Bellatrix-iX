@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowPathIcon,
@@ -6,12 +6,12 @@ import {
   PlusIcon,
 } from "@heroicons/react/24/outline";
 import toast from "react-hot-toast";
-import Button from "../components/UI/Button";
+import Button from "../components/UI/Button.jsx";
 import Card, {
   CardContent,
   CardHeader,
   CardTitle,
-} from "../components/UI/Card";
+} from "../components/UI/Card.jsx";
 import SettingField from "../components/SettingField";
 import AddSettingModal from "../components/AddSettingModal";
 import useSettingsSync from "../hooks/useSettingsSync";

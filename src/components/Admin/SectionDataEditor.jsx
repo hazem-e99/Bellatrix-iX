@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+﻿import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   XMarkIcon,
@@ -11,11 +11,11 @@ import {
   PlusIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
-import Button from "../UI/Button";
-import { Input } from "../UI/Input";
-import Card, { CardContent, CardHeader, CardTitle } from "../UI/Card";
-import Modal, { ModalFooter } from "../UI/Modal";
-import MediaInputDetector from "../UI/MediaInputDetector";
+import Button from "../UI/Button.jsx";
+import { Input } from "../UI/Input.jsx";
+import Card, { CardContent, CardHeader, CardTitle } from "../UI/Card.jsx";
+import Modal, { ModalFooter } from "../UI/Modal.jsx";
+import MediaInputDetector from "../UI/MediaInputDetector.jsx";
 
 const SectionDataEditor = ({
   isOpen,

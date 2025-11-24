@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import Modal, { ModalFooter } from "../UI/Modal";
-import { Input } from "../UI/Input";
-import Button from "../UI/Button";
+﻿import React, { useState } from "react";
+import Modal, { ModalFooter } from "../UI/Modal.jsx";
+import { Input } from "../UI/Input.jsx";
+import Button from "../UI/Button.jsx";
 import { EnvelopeIcon, UserIcon } from "@heroicons/react/24/outline";
 
 const ReplyModal = ({ open, onClose, message, onSubmit }) => {

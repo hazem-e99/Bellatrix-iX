@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import { motion } from "framer-motion";
 import {
   MagnifyingGlassIcon,
@@ -14,10 +14,10 @@ import {
   PhotoIcon,
 } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
-import Button from "../UI/Button";
-import { Input } from "../UI/Input";
-import Card, { CardContent, CardHeader, CardTitle } from "../UI/Card";
-import Modal, { ModalFooter } from "../UI/Modal";
+import Button from "../UI/Button.jsx";
+import { Input } from "../UI/Input.jsx";
+import Card, { CardContent, CardHeader, CardTitle } from "../UI/Card.jsx";
+import Modal, { ModalFooter } from "../UI/Modal.jsx";
 
 const TemplatesManagement = () => {
   const [searchTerm, setSearchTerm] = useState("");

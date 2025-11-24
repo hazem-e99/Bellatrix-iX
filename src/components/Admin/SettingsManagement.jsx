@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   UserGroupIcon,
@@ -6,12 +6,12 @@ import {
   Cog6ToothIcon,
   UserPlusIcon,
 } from "@heroicons/react/24/outline";
-import Button from "../UI/Button";
-import { Input } from "../UI/Input";
-import Card, { CardContent, CardHeader, CardTitle } from "../UI/Card";
-import Toast from "../UI/Toast";
+import Button from "../UI/Button.jsx";
+import { Input } from "../UI/Input.jsx";
+import Card, { CardContent, CardHeader, CardTitle } from "../UI/Card.jsx";
+import Toast from "../UI/Toast.jsx";
 import { useJsonData } from "../../hooks/useJsonData";
-import Modal, { ModalFooter } from "../UI/Modal";
+import Modal, { ModalFooter } from "../UI/Modal.jsx";
 import FooterSettings from "../../pages/FooterSettings";
 import AddAdminModal from "../AddAdminModal";
 
