@@ -12,8 +12,8 @@ import {
   ArrowTopRightOnSquareIcon,
   ExclamationTriangleIcon,
 } from "@heroicons/react/24/outline";
-import Card, { CardContent, CardHeader, CardTitle } from "../UI/Card";
-import Button from "../UI/Button";
+import Card, { CardContent, CardHeader, CardTitle } from "../UI/Card.jsx";
+import Button from "../UI/Button.jsx";
 import dashboardAPI from "../../lib/dashboardAPI";
 import toast from "react-hot-toast";
 

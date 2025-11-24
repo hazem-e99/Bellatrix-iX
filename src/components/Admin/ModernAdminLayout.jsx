@@ -23,8 +23,8 @@ import {
   Cog6ToothIcon as Cog6ToothIconSolid,
   ChatBubbleLeftRightIcon as ChatBubbleLeftRightIconSolid,
 } from "@heroicons/react/24/solid";
-import Button from "../UI/Button";
-import { Input } from "../UI/Input";
+import Button from "../UI/Button.jsx";
+import { Input } from "../UI/Input.jsx";
 import { useTheme } from "../../context/ThemeContext";
 import { useMessageNotifications } from "../../hooks/useMessageNotifications";
 import MessageNotification from "./MessageNotification";
